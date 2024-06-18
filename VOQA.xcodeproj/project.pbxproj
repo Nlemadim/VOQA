@@ -1,0 +1,730 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0B31C3F12C21FF72006FB5D1 /* QuizPackageProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B31C3F02C21FF72006FB5D1 /* QuizPackageProtocol.swift */; };
+		0B31C3F32C220033006FB5D1 /* AudioQuiz.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B31C3F22C220033006FB5D1 /* AudioQuiz.swift */; };
+		0B31C3F52C220578006FB5D1 /* Performance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B31C3F42C220578006FB5D1 /* Performance.swift */; };
+		0B31C3F82C220E8E006FB5D1 /* BaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B31C3F72C220E8E006FB5D1 /* BaseView.swift */; };
+		0B31C3FA2C220EE1006FB5D1 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B31C3F92C220EE1006FB5D1 /* DatabaseManager.swift */; };
+		0B31C3FC2C220F06006FB5D1 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B31C3FB2C220F06006FB5D1 /* Errors.swift */; };
+		0B31C3FE2C2211AD006FB5D1 /* NetworkMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B31C3FD2C2211AD006FB5D1 /* NetworkMonitor.swift */; };
+		0B3656712C21D2B80033FA68 /* UserConfigurations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B3656702C21D2B80033FA68 /* UserConfigurations.swift */; };
+		0B3656732C21D7A80033FA68 /* Topic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B3656722C21D7A80033FA68 /* Topic.swift */; };
+		0B3656762C21DFC70033FA68 /* QuizCategories.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B3656752C21DFC70033FA68 /* QuizCategories.swift */; };
+		0B3656782C21E0AA0033FA68 /* TopicCategories.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B3656772C21E0AA0033FA68 /* TopicCategories.swift */; };
+		0B36567A2C21E0E90033FA68 /* PackageEdition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B3656792C21E0E90033FA68 /* PackageEdition.swift */; };
+		0B36567C2C21ED200033FA68 /* StandardQuizPackage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B36567B2C21ED200033FA68 /* StandardQuizPackage.swift */; };
+		0B36567E2C21ED340033FA68 /* CustomQuizPackage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B36567D2C21ED340033FA68 /* CustomQuizPackage.swift */; };
+		0B3656802C21F8AC0033FA68 /* QuestionStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B36567F2C21F8AC0033FA68 /* QuestionStatus.swift */; };
+		0B3656822C21F9D50033FA68 /* Question.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B3656812C21F9D50033FA68 /* Question.swift */; };
+		0BC091DE2C1D4463005FB223 /* VOQAApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BC091DD2C1D4463005FB223 /* VOQAApp.swift */; };
+		0BC091E02C1D4463005FB223 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BC091DF2C1D4463005FB223 /* ContentView.swift */; };
+		0BC091E22C1D4463005FB223 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BC091E12C1D4463005FB223 /* Item.swift */; };
+		0BC091E42C1D4465005FB223 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0BC091E32C1D4465005FB223 /* Assets.xcassets */; };
+		0BC091E82C1D4465005FB223 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0BC091E72C1D4465005FB223 /* Preview Assets.xcassets */; };
+		0BC091F22C1D4466005FB223 /* VOQATests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BC091F12C1D4466005FB223 /* VOQATests.swift */; };
+		0BC091FC2C1D4466005FB223 /* VOQAUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BC091FB2C1D4466005FB223 /* VOQAUITests.swift */; };
+		0BC091FE2C1D4466005FB223 /* VOQAUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BC091FD2C1D4466005FB223 /* VOQAUITestsLaunchTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		0BC091EE2C1D4466005FB223 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0BC091D22C1D4463005FB223 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0BC091D92C1D4463005FB223;
+			remoteInfo = VOQA;
+		};
+		0BC091F82C1D4466005FB223 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0BC091D22C1D4463005FB223 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0BC091D92C1D4463005FB223;
+			remoteInfo = VOQA;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		0B31C3F02C21FF72006FB5D1 /* QuizPackageProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizPackageProtocol.swift; sourceTree = "<group>"; };
+		0B31C3F22C220033006FB5D1 /* AudioQuiz.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioQuiz.swift; sourceTree = "<group>"; };
+		0B31C3F42C220578006FB5D1 /* Performance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Performance.swift; sourceTree = "<group>"; };
+		0B31C3F72C220E8E006FB5D1 /* BaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseView.swift; sourceTree = "<group>"; };
+		0B31C3F92C220EE1006FB5D1 /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
+		0B31C3FB2C220F06006FB5D1 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
+		0B31C3FD2C2211AD006FB5D1 /* NetworkMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMonitor.swift; sourceTree = "<group>"; };
+		0B3656702C21D2B80033FA68 /* UserConfigurations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserConfigurations.swift; sourceTree = "<group>"; };
+		0B3656722C21D7A80033FA68 /* Topic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Topic.swift; sourceTree = "<group>"; };
+		0B3656752C21DFC70033FA68 /* QuizCategories.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizCategories.swift; sourceTree = "<group>"; };
+		0B3656772C21E0AA0033FA68 /* TopicCategories.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopicCategories.swift; sourceTree = "<group>"; };
+		0B3656792C21E0E90033FA68 /* PackageEdition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PackageEdition.swift; sourceTree = "<group>"; };
+		0B36567B2C21ED200033FA68 /* StandardQuizPackage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandardQuizPackage.swift; sourceTree = "<group>"; };
+		0B36567D2C21ED340033FA68 /* CustomQuizPackage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomQuizPackage.swift; sourceTree = "<group>"; };
+		0B36567F2C21F8AC0033FA68 /* QuestionStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionStatus.swift; sourceTree = "<group>"; };
+		0B3656812C21F9D50033FA68 /* Question.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Question.swift; sourceTree = "<group>"; };
+		0BC091DA2C1D4463005FB223 /* VOQA.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VOQA.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		0BC091DD2C1D4463005FB223 /* VOQAApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VOQAApp.swift; sourceTree = "<group>"; };
+		0BC091DF2C1D4463005FB223 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		0BC091E12C1D4463005FB223 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
+		0BC091E32C1D4465005FB223 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		0BC091E52C1D4465005FB223 /* VOQA.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = VOQA.entitlements; sourceTree = "<group>"; };
+		0BC091E72C1D4465005FB223 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		0BC091ED2C1D4466005FB223 /* VOQATests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VOQATests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		0BC091F12C1D4466005FB223 /* VOQATests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VOQATests.swift; sourceTree = "<group>"; };
+		0BC091F72C1D4466005FB223 /* VOQAUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VOQAUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		0BC091FB2C1D4466005FB223 /* VOQAUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VOQAUITests.swift; sourceTree = "<group>"; };
+		0BC091FD2C1D4466005FB223 /* VOQAUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VOQAUITestsLaunchTests.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		0BC091D72C1D4463005FB223 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0BC091EA2C1D4466005FB223 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0BC091F42C1D4466005FB223 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0B31C3EF2C21FF55006FB5D1 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				0B31C3F02C21FF72006FB5D1 /* QuizPackageProtocol.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		0B31C3F62C220E6E006FB5D1 /* BaseView */ = {
+			isa = PBXGroup;
+			children = (
+				0B31C3F72C220E8E006FB5D1 /* BaseView.swift */,
+				0B31C3F92C220EE1006FB5D1 /* DatabaseManager.swift */,
+			);
+			path = BaseView;
+			sourceTree = "<group>";
+		};
+		0B31C3FF2C221C35006FB5D1 /* AppConfigurations */ = {
+			isa = PBXGroup;
+			children = (
+				0B31C3FB2C220F06006FB5D1 /* Errors.swift */,
+				0B31C3FD2C2211AD006FB5D1 /* NetworkMonitor.swift */,
+			);
+			path = AppConfigurations;
+			sourceTree = "<group>";
+		};
+		0B36566F2C21D22E0033FA68 /* DataModels */ = {
+			isa = PBXGroup;
+			children = (
+				0B31C3EF2C21FF55006FB5D1 /* Protocols */,
+				0B3656742C21DF7C0033FA68 /* Categorizations */,
+				0BC091E12C1D4463005FB223 /* Item.swift */,
+				0B3656702C21D2B80033FA68 /* UserConfigurations.swift */,
+				0B3656722C21D7A80033FA68 /* Topic.swift */,
+				0B36567B2C21ED200033FA68 /* StandardQuizPackage.swift */,
+				0B36567D2C21ED340033FA68 /* CustomQuizPackage.swift */,
+				0B3656812C21F9D50033FA68 /* Question.swift */,
+				0B31C3F22C220033006FB5D1 /* AudioQuiz.swift */,
+				0B31C3F42C220578006FB5D1 /* Performance.swift */,
+			);
+			path = DataModels;
+			sourceTree = "<group>";
+		};
+		0B3656742C21DF7C0033FA68 /* Categorizations */ = {
+			isa = PBXGroup;
+			children = (
+				0B3656752C21DFC70033FA68 /* QuizCategories.swift */,
+				0B3656772C21E0AA0033FA68 /* TopicCategories.swift */,
+				0B3656792C21E0E90033FA68 /* PackageEdition.swift */,
+				0B36567F2C21F8AC0033FA68 /* QuestionStatus.swift */,
+			);
+			path = Categorizations;
+			sourceTree = "<group>";
+		};
+		0BC091D12C1D4463005FB223 = {
+			isa = PBXGroup;
+			children = (
+				0BC091DC2C1D4463005FB223 /* VOQA */,
+				0BC091F02C1D4466005FB223 /* VOQATests */,
+				0BC091FA2C1D4466005FB223 /* VOQAUITests */,
+				0BC091DB2C1D4463005FB223 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		0BC091DB2C1D4463005FB223 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0BC091DA2C1D4463005FB223 /* VOQA.app */,
+				0BC091ED2C1D4466005FB223 /* VOQATests.xctest */,
+				0BC091F72C1D4466005FB223 /* VOQAUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0BC091DC2C1D4463005FB223 /* VOQA */ = {
+			isa = PBXGroup;
+			children = (
+				0BC091DD2C1D4463005FB223 /* VOQAApp.swift */,
+				0BC091DF2C1D4463005FB223 /* ContentView.swift */,
+				0B31C3FF2C221C35006FB5D1 /* AppConfigurations */,
+				0B36566F2C21D22E0033FA68 /* DataModels */,
+				0B31C3F62C220E6E006FB5D1 /* BaseView */,
+				0BC091E32C1D4465005FB223 /* Assets.xcassets */,
+				0BC091E52C1D4465005FB223 /* VOQA.entitlements */,
+				0BC091E62C1D4465005FB223 /* Preview Content */,
+			);
+			path = VOQA;
+			sourceTree = "<group>";
+		};
+		0BC091E62C1D4465005FB223 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				0BC091E72C1D4465005FB223 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		0BC091F02C1D4466005FB223 /* VOQATests */ = {
+			isa = PBXGroup;
+			children = (
+				0BC091F12C1D4466005FB223 /* VOQATests.swift */,
+			);
+			path = VOQATests;
+			sourceTree = "<group>";
+		};
+		0BC091FA2C1D4466005FB223 /* VOQAUITests */ = {
+			isa = PBXGroup;
+			children = (
+				0BC091FB2C1D4466005FB223 /* VOQAUITests.swift */,
+				0BC091FD2C1D4466005FB223 /* VOQAUITestsLaunchTests.swift */,
+			);
+			path = VOQAUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		0BC091D92C1D4463005FB223 /* VOQA */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0BC092012C1D4466005FB223 /* Build configuration list for PBXNativeTarget "VOQA" */;
+			buildPhases = (
+				0BC091D62C1D4463005FB223 /* Sources */,
+				0BC091D72C1D4463005FB223 /* Frameworks */,
+				0BC091D82C1D4463005FB223 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = VOQA;
+			productName = VOQA;
+			productReference = 0BC091DA2C1D4463005FB223 /* VOQA.app */;
+			productType = "com.apple.product-type.application";
+		};
+		0BC091EC2C1D4466005FB223 /* VOQATests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0BC092042C1D4466005FB223 /* Build configuration list for PBXNativeTarget "VOQATests" */;
+			buildPhases = (
+				0BC091E92C1D4466005FB223 /* Sources */,
+				0BC091EA2C1D4466005FB223 /* Frameworks */,
+				0BC091EB2C1D4466005FB223 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				0BC091EF2C1D4466005FB223 /* PBXTargetDependency */,
+			);
+			name = VOQATests;
+			productName = VOQATests;
+			productReference = 0BC091ED2C1D4466005FB223 /* VOQATests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		0BC091F62C1D4466005FB223 /* VOQAUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0BC092072C1D4466005FB223 /* Build configuration list for PBXNativeTarget "VOQAUITests" */;
+			buildPhases = (
+				0BC091F32C1D4466005FB223 /* Sources */,
+				0BC091F42C1D4466005FB223 /* Frameworks */,
+				0BC091F52C1D4466005FB223 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				0BC091F92C1D4466005FB223 /* PBXTargetDependency */,
+			);
+			name = VOQAUITests;
+			productName = VOQAUITests;
+			productReference = 0BC091F72C1D4466005FB223 /* VOQAUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		0BC091D22C1D4463005FB223 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1530;
+				LastUpgradeCheck = 1530;
+				TargetAttributes = {
+					0BC091D92C1D4463005FB223 = {
+						CreatedOnToolsVersion = 15.3;
+					};
+					0BC091EC2C1D4466005FB223 = {
+						CreatedOnToolsVersion = 15.3;
+						TestTargetID = 0BC091D92C1D4463005FB223;
+					};
+					0BC091F62C1D4466005FB223 = {
+						CreatedOnToolsVersion = 15.3;
+						TestTargetID = 0BC091D92C1D4463005FB223;
+					};
+				};
+			};
+			buildConfigurationList = 0BC091D52C1D4463005FB223 /* Build configuration list for PBXProject "VOQA" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 0BC091D12C1D4463005FB223;
+			productRefGroup = 0BC091DB2C1D4463005FB223 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				0BC091D92C1D4463005FB223 /* VOQA */,
+				0BC091EC2C1D4466005FB223 /* VOQATests */,
+				0BC091F62C1D4466005FB223 /* VOQAUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		0BC091D82C1D4463005FB223 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0BC091E82C1D4465005FB223 /* Preview Assets.xcassets in Resources */,
+				0BC091E42C1D4465005FB223 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0BC091EB2C1D4466005FB223 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0BC091F52C1D4466005FB223 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		0BC091D62C1D4463005FB223 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0B36567E2C21ED340033FA68 /* CustomQuizPackage.swift in Sources */,
+				0BC091E02C1D4463005FB223 /* ContentView.swift in Sources */,
+				0B3656732C21D7A80033FA68 /* Topic.swift in Sources */,
+				0B31C3F32C220033006FB5D1 /* AudioQuiz.swift in Sources */,
+				0B31C3FA2C220EE1006FB5D1 /* DatabaseManager.swift in Sources */,
+				0B3656762C21DFC70033FA68 /* QuizCategories.swift in Sources */,
+				0B3656712C21D2B80033FA68 /* UserConfigurations.swift in Sources */,
+				0B31C3F52C220578006FB5D1 /* Performance.swift in Sources */,
+				0B36567C2C21ED200033FA68 /* StandardQuizPackage.swift in Sources */,
+				0BC091E22C1D4463005FB223 /* Item.swift in Sources */,
+				0BC091DE2C1D4463005FB223 /* VOQAApp.swift in Sources */,
+				0B31C3F12C21FF72006FB5D1 /* QuizPackageProtocol.swift in Sources */,
+				0B3656782C21E0AA0033FA68 /* TopicCategories.swift in Sources */,
+				0B3656822C21F9D50033FA68 /* Question.swift in Sources */,
+				0B36567A2C21E0E90033FA68 /* PackageEdition.swift in Sources */,
+				0B3656802C21F8AC0033FA68 /* QuestionStatus.swift in Sources */,
+				0B31C3FE2C2211AD006FB5D1 /* NetworkMonitor.swift in Sources */,
+				0B31C3FC2C220F06006FB5D1 /* Errors.swift in Sources */,
+				0B31C3F82C220E8E006FB5D1 /* BaseView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0BC091E92C1D4466005FB223 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0BC091F22C1D4466005FB223 /* VOQATests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0BC091F32C1D4466005FB223 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0BC091FC2C1D4466005FB223 /* VOQAUITests.swift in Sources */,
+				0BC091FE2C1D4466005FB223 /* VOQAUITestsLaunchTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		0BC091EF2C1D4466005FB223 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0BC091D92C1D4463005FB223 /* VOQA */;
+			targetProxy = 0BC091EE2C1D4466005FB223 /* PBXContainerItemProxy */;
+		};
+		0BC091F92C1D4466005FB223 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0BC091D92C1D4463005FB223 /* VOQA */;
+			targetProxy = 0BC091F82C1D4466005FB223 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		0BC091FF2C1D4466005FB223 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		0BC092002C1D4466005FB223 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		0BC092022C1D4466005FB223 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = VOQA/VOQA.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"VOQA/Preview Content\"";
+				DEVELOPMENT_TEAM = VW5K99T4JJ;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = Voqa.io.VOQA;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		0BC092032C1D4466005FB223 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = VOQA/VOQA.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"VOQA/Preview Content\"";
+				DEVELOPMENT_TEAM = VW5K99T4JJ;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = Voqa.io.VOQA;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		0BC092052C1D4466005FB223 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = VW5K99T4JJ;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				MACOSX_DEPLOYMENT_TARGET = 14.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = Voqa.io.VOQATests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/VOQA.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/VOQA";
+			};
+			name = Debug;
+		};
+		0BC092062C1D4466005FB223 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = VW5K99T4JJ;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				MACOSX_DEPLOYMENT_TARGET = 14.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = Voqa.io.VOQATests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/VOQA.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/VOQA";
+			};
+			name = Release;
+		};
+		0BC092082C1D4466005FB223 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = VW5K99T4JJ;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				MACOSX_DEPLOYMENT_TARGET = 14.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = Voqa.io.VOQAUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = VOQA;
+			};
+			name = Debug;
+		};
+		0BC092092C1D4466005FB223 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = VW5K99T4JJ;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				MACOSX_DEPLOYMENT_TARGET = 14.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = Voqa.io.VOQAUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = VOQA;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		0BC091D52C1D4463005FB223 /* Build configuration list for PBXProject "VOQA" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0BC091FF2C1D4466005FB223 /* Debug */,
+				0BC092002C1D4466005FB223 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		0BC092012C1D4466005FB223 /* Build configuration list for PBXNativeTarget "VOQA" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0BC092022C1D4466005FB223 /* Debug */,
+				0BC092032C1D4466005FB223 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		0BC092042C1D4466005FB223 /* Build configuration list for PBXNativeTarget "VOQATests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0BC092052C1D4466005FB223 /* Debug */,
+				0BC092062C1D4466005FB223 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		0BC092072C1D4466005FB223 /* Build configuration list for PBXNativeTarget "VOQAUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0BC092082C1D4466005FB223 /* Debug */,
+				0BC092092C1D4466005FB223 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 0BC091D22C1D4463005FB223 /* Project object */;
+}
