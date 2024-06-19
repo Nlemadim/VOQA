@@ -28,6 +28,7 @@ struct BaseView<Content: View>: View {
         NavigationView {
             content()
                 .environment(\.modelContext, modelContext)
+                .preferredColorScheme(.dark)
                 .onAppear {
                     setupDataLayer()
                 }
