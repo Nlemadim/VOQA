@@ -32,10 +32,14 @@ struct VoqaWebView: View {
     }
     
     private func playAudio() {
+        let audioSession = AVAudioSession.sharedInstance()
         if let path = Bundle.main.path(forResource: "Sleeping Dreams", ofType: "mp3") {
             let url = URL(fileURLWithPath: path)
             
             do {
+                try audioSession.setCategory(.playback, mode: .default)
+                try audioSession.setActive(true)
+                
                 audioPlayer = try AVAudioPlayer(contentsOf: url)
                 audioPlayer?.play()
             } catch {
@@ -57,6 +61,6 @@ struct WebView: UIViewRepresentable {
         uiView.load(request)
     }
 }
-#Preview {
-    VoqaWebView()
-}
+//#Preview {
+//    //VoqaWebView()
+//}

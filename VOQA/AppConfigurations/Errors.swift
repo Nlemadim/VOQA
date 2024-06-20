@@ -17,6 +17,7 @@ protocol AppError: Error, Identifiable {
 enum ErrorType: Equatable {
     case databaseError(DatabaseErrorType)
     case connectionError(ConnectionErrorType)
+    case audioPlayerError(AudioPlayerErrorType)
 }
 
 enum DatabaseErrorType: Error {
@@ -36,7 +37,7 @@ struct DatabaseError: AppError {
     var title: String?
     var message: String?
     var errorType: ErrorType?
-
+    
     init(title: String? = nil, message: String? = nil, errorType: DatabaseErrorType? = nil) {
         self.title = title
         self.message = message
@@ -49,10 +50,30 @@ struct ConnectionError: AppError {
     var title: String?
     var message: String?
     var errorType: ErrorType?
-
+    
     init(title: String? = nil, message: String? = nil, errorType: ConnectionErrorType? = nil) {
         self.title = title
         self.message = message
         self.errorType = errorType.map { .connectionError($0) }
     }
 }
+
+enum AudioPlayerErrorType: Error {
+    case fileNotFound
+    case playbackFailed
+    case invalidURL
+}
+
+struct AudioPlayerError: AppError {
+    var id = UUID()
+    var title: String?
+    var message: String?
+    var errorType: ErrorType?
+    
+    init(title: String? = nil, message: String? = nil, errorType: AudioPlayerErrorType? = nil) {
+        self.title = title
+        self.message = message
+        self.errorType = errorType.map { .audioPlayerError($0) }
+    }
+}
+

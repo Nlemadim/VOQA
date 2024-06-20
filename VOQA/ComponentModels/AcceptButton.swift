@@ -22,7 +22,6 @@ struct AcceptButton: View {
                 .cornerRadius(10)
         }
         .disabled(!isEnabled)
-        .frame(width: .infinity)
         .frame(height: 44)
         .padding(.vertical)
         .padding()

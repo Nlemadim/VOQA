@@ -30,7 +30,10 @@ class DatabaseManager: ObservableObject {
             case .connectionError:
                 // Handle connection errors if necessary
                 break
-            }
+                
+            default:
+                break
+            } 
         }
     }
 }

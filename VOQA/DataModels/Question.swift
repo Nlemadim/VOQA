@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 @Model
-class Question {
+class Question: ObservableObject {
     @Attribute(.unique) var id: UUID
     var topicId: UUID
     var content: String
