@@ -13,8 +13,7 @@ struct ContentView: View {
 
     var body: some View {
         BaseView {
-            AudioPlyerTestViews()
-//            LaunchView()
+            LaunchView()
                 .padding()
         }
     }

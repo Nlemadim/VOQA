@@ -26,8 +26,6 @@ protocol StateObserver: AnyObject {
     func stateDidChange(to newState: QuizState)
 }
 
-
-
 class QuizContext {
     var state: QuizState
     var audioPlayer: AudioContentPlayer?
@@ -80,10 +78,6 @@ class StartedQuizState: BaseState {
         notifyObservers()
     }
 }
-
-
-
-
 
 /// State representing the countdown state of the quiz.
 class CountdownState: BaseState {
@@ -201,7 +195,6 @@ class ResponseState: BaseState {
         notifyObservers()
     }
 }
-
 
 /// State representing the feedback message state of the quiz.
 class FeedbackMessageState: BaseState {
