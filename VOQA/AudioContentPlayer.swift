@@ -75,7 +75,8 @@ class AudioContentPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate, Sta
     }
     
     func updateCurrentQuestionContent() {
-        currentQuestionContent = questions[currentQuestionIndex].content
+        guard self.context.activeQuiz else { return }
+        //currentQuestionContent = questions[currentQuestionIndex].content
     }
 
 
@@ -239,6 +240,7 @@ class AudioContentPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate, Sta
                 print("Main audio player finished")
                 self.secondaryPlayer?.stop()
                 if self.context.activeQuiz {
+                
                     self.context.setState(ListeningState())
                 }
             } else if player == self.secondaryPlayer {

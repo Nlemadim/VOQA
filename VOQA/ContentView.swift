@@ -13,15 +13,15 @@ struct ContentView: View {
 
     var body: some View {
         BaseView {
-            AudioPlyerTestViews()
 //            LaunchView()
+            QuestionDetailView(questions: sampleQuestions)
                 .padding()
         }
     }
 }
 
 #Preview {
-    ContentView()
+    QuestionDetailView(questions: sampleQuestions)
         .preferredColorScheme(.dark)
-    
 }
+

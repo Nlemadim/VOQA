@@ -28,7 +28,7 @@ enum WordProcessor: String {
             return WordProcessor.D.rawValue
             
         default:
-            return "Error" // To be modified with a word comparison algo and network response validation api
+            return "" // To be modified with a word comparison algo and network response validation api
         }
     }
 }

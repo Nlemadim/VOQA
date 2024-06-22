@@ -30,6 +30,7 @@ class QuizModerator {
         
         guard !response.isEmptyOrWhiteSpace else {
             context.setState(FeedbackMessageState(type: .noResponse))
+            print("No Response")
             return
         }
 

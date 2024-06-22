@@ -43,6 +43,7 @@
 		0B3666962C2664B70034C0EE /* dismissResponderBell.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0B3666952C2664B70034C0EE /* dismissResponderBell.wav */; };
 		0B3666982C2664C20034C0EE /* wrongAnswerBell.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0B3666972C2664C20034C0EE /* wrongAnswerBell.wav */; };
 		0B36669C2C2665140034C0EE /* errorBell.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0B36669B2C2665140034C0EE /* errorBell.wav */; };
+		0B36669E2C269F290034C0EE /* QuestionDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B36669D2C269F290034C0EE /* QuestionDetailView.swift */; };
 		0B7321F52C2253B600D7DED2 /* LaunchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B7321F42C2253B600D7DED2 /* LaunchView.swift */; };
 		0B7321F72C2253F100D7DED2 /* TermsAndConditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B7321F62C2253F100D7DED2 /* TermsAndConditions.swift */; };
 		0B7321F92C22543D00D7DED2 /* PrivacyPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B7321F82C22543D00D7DED2 /* PrivacyPolicy.swift */; };
@@ -53,9 +54,6 @@
 		0BC091E22C1D4463005FB223 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BC091E12C1D4463005FB223 /* Item.swift */; };
 		0BC091E42C1D4465005FB223 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0BC091E32C1D4465005FB223 /* Assets.xcassets */; };
 		0BC091E82C1D4465005FB223 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0BC091E72C1D4465005FB223 /* Preview Assets.xcassets */; };
-		0BC091F22C1D4466005FB223 /* VOQATests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BC091F12C1D4466005FB223 /* VOQATests.swift */; };
-		0BC091FC2C1D4466005FB223 /* VOQAUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BC091FB2C1D4466005FB223 /* VOQAUITests.swift */; };
-		0BC091FE2C1D4466005FB223 /* VOQAUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BC091FD2C1D4466005FB223 /* VOQAUITestsLaunchTests.swift */; };
 		0BFA2BEE2C25FED2004E3C10 /* SpeechManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BFA2BED2C25FED2004E3C10 /* SpeechManager.swift */; };
 		0BFA2BEF2C25FED2004E3C10 /* SpeechManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BFA2BED2C25FED2004E3C10 /* SpeechManager.swift */; };
 		0BFA2C012C26009C004E3C10 /* ResponseListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BFA2C002C26009C004E3C10 /* ResponseListener.swift */; };
@@ -128,6 +126,7 @@
 		0B3666952C2664B70034C0EE /* dismissResponderBell.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = dismissResponderBell.wav; path = ../dismissResponderBell.wav; sourceTree = "<group>"; };
 		0B3666972C2664C20034C0EE /* wrongAnswerBell.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = wrongAnswerBell.wav; path = ../wrongAnswerBell.wav; sourceTree = "<group>"; };
 		0B36669B2C2665140034C0EE /* errorBell.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = errorBell.wav; path = ../errorBell.wav; sourceTree = "<group>"; };
+		0B36669D2C269F290034C0EE /* QuestionDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionDetailView.swift; sourceTree = "<group>"; };
 		0B7321F42C2253B600D7DED2 /* LaunchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchView.swift; sourceTree = "<group>"; };
 		0B7321F62C2253F100D7DED2 /* TermsAndConditions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsAndConditions.swift; sourceTree = "<group>"; };
 		0B7321F82C22543D00D7DED2 /* PrivacyPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyPolicy.swift; sourceTree = "<group>"; };
@@ -141,10 +140,7 @@
 		0BC091E52C1D4465005FB223 /* VOQA.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = VOQA.entitlements; sourceTree = "<group>"; };
 		0BC091E72C1D4465005FB223 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		0BC091ED2C1D4466005FB223 /* VOQATests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VOQATests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		0BC091F12C1D4466005FB223 /* VOQATests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VOQATests.swift; sourceTree = "<group>"; };
 		0BC091F72C1D4466005FB223 /* VOQAUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VOQAUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		0BC091FB2C1D4466005FB223 /* VOQAUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VOQAUITests.swift; sourceTree = "<group>"; };
-		0BC091FD2C1D4466005FB223 /* VOQAUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VOQAUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		0BFA2BED2C25FED2004E3C10 /* SpeechManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpeechManager.swift; sourceTree = "<group>"; };
 		0BFA2C002C26009C004E3C10 /* ResponseListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponseListener.swift; sourceTree = "<group>"; };
 		0BFA2C032C2605EF004E3C10 /* ListeningState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ListeningState.swift; path = QuizPlayerStateManagement/ListeningState.swift; sourceTree = "<group>"; };
@@ -225,9 +221,9 @@
 		0B31C3F62C220E6E006FB5D1 /* BaseView */ = {
 			isa = PBXGroup;
 			children = (
-				0B36669A2C2664EA0034C0EE /* SFX */,
 				0B31C3F72C220E8E006FB5D1 /* BaseView.swift */,
 				0B31C3F92C220EE1006FB5D1 /* DatabaseManager.swift */,
+				0B36669D2C269F290034C0EE /* QuestionDetailView.swift */,
 			);
 			path = BaseView;
 			sourceTree = "<group>";
@@ -298,6 +294,7 @@
 				0B3666952C2664B70034C0EE /* dismissResponderBell.wav */,
 			);
 			name = SFX;
+			path = BaseView;
 			sourceTree = "<group>";
 		};
 		0B7321F32C22538C00D7DED2 /* PreLaunchStartUp */ = {
@@ -316,8 +313,6 @@
 			isa = PBXGroup;
 			children = (
 				0BC091DC2C1D4463005FB223 /* VOQA */,
-				0BC091F02C1D4466005FB223 /* VOQATests */,
-				0BC091FA2C1D4466005FB223 /* VOQAUITests */,
 				0BC091DB2C1D4463005FB223 /* Products */,
 				0B31C4082C223286006FB5D1 /* Frameworks */,
 			);
@@ -338,6 +333,7 @@
 			children = (
 				0BC091DD2C1D4463005FB223 /* VOQAApp.swift */,
 				0BC091DF2C1D4463005FB223 /* ContentView.swift */,
+				0B36669A2C2664EA0034C0EE /* SFX */,
 				0B31C3FF2C221C35006FB5D1 /* AppConfigurations */,
 				0B25E0DE2C24ECB600ACD552 /* Extensions */,
 				0B1A33122C24864200740205 /* QuizEngine */,
@@ -363,23 +359,6 @@
 				0BC091E72C1D4465005FB223 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
-			sourceTree = "<group>";
-		};
-		0BC091F02C1D4466005FB223 /* VOQATests */ = {
-			isa = PBXGroup;
-			children = (
-				0BC091F12C1D4466005FB223 /* VOQATests.swift */,
-			);
-			path = VOQATests;
-			sourceTree = "<group>";
-		};
-		0BC091FA2C1D4466005FB223 /* VOQAUITests */ = {
-			isa = PBXGroup;
-			children = (
-				0BC091FB2C1D4466005FB223 /* VOQAUITests.swift */,
-				0BC091FD2C1D4466005FB223 /* VOQAUITestsLaunchTests.swift */,
-			);
-			path = VOQAUITests;
 			sourceTree = "<group>";
 		};
 		0BFA2BF32C25FEF7004E3C10 /* AudioGroup */ = {
@@ -568,6 +547,7 @@
 				0BFA2BEE2C25FED2004E3C10 /* SpeechManager.swift in Sources */,
 				0B3656782C21E0AA0033FA68 /* TopicCategories.swift in Sources */,
 				0B1A33142C24867000740205 /* AudioContentPlayer.swift in Sources */,
+				0B36669E2C269F290034C0EE /* QuestionDetailView.swift in Sources */,
 				0B3656822C21F9D50033FA68 /* Question.swift in Sources */,
 				0B25E0DD2C24EC7A00ACD552 /* PlaybackState.swift in Sources */,
 				0B36567A2C21E0E90033FA68 /* PackageEdition.swift in Sources */,
@@ -592,7 +572,6 @@
 				0BFA2C0E2C262673004E3C10 /* QuizProtocols.swift in Sources */,
 				0BFA2C082C2606CC004E3C10 /* WordProcessor.swift in Sources */,
 				0BFA2C142C262E66004E3C10 /* QuizContext.swift in Sources */,
-				0BC091F22C1D4466005FB223 /* VOQATests.swift in Sources */,
 				0BFA2C0B2C261DA8004E3C10 /* FeedBackMessage.swift in Sources */,
 				0BFA2C052C2605EF004E3C10 /* ListeningState.swift in Sources */,
 				0BFA2BEF2C25FED2004E3C10 /* SpeechManager.swift in Sources */,
@@ -604,8 +583,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0BC091FC2C1D4466005FB223 /* VOQAUITests.swift in Sources */,
-				0BC091FE2C1D4466005FB223 /* VOQAUITestsLaunchTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
