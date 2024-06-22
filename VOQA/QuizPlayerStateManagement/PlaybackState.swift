@@ -30,19 +30,29 @@ class PlaybackState: BaseState {
             print("Playback paused")
         case .resume:
             print("Playback resumed")
-        case .stop:
             print("Playback protocol state is: \(action)")
             if let audioPlayer = context.audioPlayer {
                 DispatchQueue.main.async {
                     audioPlayer.stopAndResetPlayer()
                     audioPlayer.currentQuestionIndex += 1
-                }
-                print("Simulating waiting for answer protocol")
-                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                    print("Simulating continuation protocol")
+                    audioPlayer.updateCurrentQuestionContent()
                     audioPlayer.playCurrentQuestion()
                 }
             }
+        case .stop:
+            print("Playback protocol state is: \(action)")
+//            if let audioPlayer = context.audioPlayer {
+//                DispatchQueue.main.async {
+//                    audioPlayer.stopAndResetPlayer()
+//                    audioPlayer.currentQuestionIndex += 1
+//                    audioPlayer.updateHCurrentQuestionContent()
+//                }
+//                print("Simulating waiting for answer protocol")
+//                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+//                    print("Simulating continuation protocol")
+//                    audioPlayer.playCurrentQuestion()
+//                }
+//            }
         }
         notifyObservers()
     }

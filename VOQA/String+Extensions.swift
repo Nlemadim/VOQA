@@ -6,3 +6,23 @@
 //
 
 import Foundation
+
+extension String {
+    var pathExtension: String {
+        return (self as NSString).pathExtension
+    }
+
+    var deletingPathExtension: String {
+        return (self as NSString).deletingPathExtension
+    }
+    
+    var isEmptyOrWhiteSpace: Bool {
+        self.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+    }
+
+    var isSingleCharacterABCD: Bool {
+        return self.count == 1 && ["A", "B", "C", "D"].contains(self.uppercased())
+    }
+}
+
+

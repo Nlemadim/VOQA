@@ -22,9 +22,9 @@ class AudioContentPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate, Sta
     private var secondaryPlayer: AVAudioPlayer?
     private var feedbackPlayer: AVAudioPlayer?
     private var volume: Float = 1.0
-    private var questions: [Question] = []
+    var questions: [Question] = []
     private var shouldPlay: Bool = true
-    private var context: QuizContext
+    var context: QuizContext
 
     init(context: QuizContext) {
         self.context = context
@@ -66,16 +66,23 @@ class AudioContentPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate, Sta
 
     func playQuestions(_ questions: [Question]) {
         self.questions = questions
+        context.activeQuiz = true
         playCurrentQuestion()
     }
 
     func updateHasNextQuestion() {
         hasNextQuestion = currentQuestionIndex + 1 < questions.count
     }
+    
+    func updateCurrentQuestionContent() {
+        currentQuestionContent = questions[currentQuestionIndex].content
+    }
+
 
     func playCurrentQuestion() {
         guard currentQuestionIndex < questions.count else {
             print("No more questions to play.")
+            context.setState(ReviewState(action: .reviewing))
             return
         }
 
@@ -92,6 +99,7 @@ class AudioContentPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate, Sta
         updateHasNextQuestion()
     }
 
+
     func skipToQuestion(withId id: UUID) {
         guard let index = questions.firstIndex(where: { $0.id == id }), index + 1 < questions.count else { return }
         currentQuestionIndex = index + 1
@@ -103,8 +111,8 @@ class AudioContentPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate, Sta
         currentQuestionIndex += 1
         playCurrentQuestion()
     }
-
-    func playFeedbackAudio(_ feedbackType: FeedbackMessageState.FeedbackType, audioFile: String) {
+    
+    func playFeedbackAudio(type: FeedbackMessageState.FeedbackType, audioFile: String) {
         do {
             try startPlaybackFromBundle(fileName: audioFile.deletingPathExtension, fileType: audioFile.pathExtension, isFeedback: true)
         } catch {
@@ -112,6 +120,7 @@ class AudioContentPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate, Sta
             handleError(.fileNotFound, message: "The feedback audio file could not be found.")
         }
     }
+
 
     func playReviewAudio(_ audioFiles: [String]) {
         playMultipleAudioFiles(audioFiles, currentIndex: 0)
@@ -229,16 +238,26 @@ class AudioContentPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate, Sta
             if player == self.audioPlayer {
                 print("Main audio player finished")
                 self.secondaryPlayer?.stop()
-                self.context.setState(PlaybackState(action: .stop))
+                if self.context.activeQuiz {
+                    self.context.setState(ListeningState())
+                }
             } else if player == self.secondaryPlayer {
                 print("Secondary audio player finished")
                 // Handle completion of secondary player if needed
-            } else {
+            } else if player == self.feedbackPlayer {
                 print("Feedback player finished")
-                // self.context?.setState(DonePlayingState())
+                if self.context.activeQuiz {
+                    self.context.setState(PlaybackState(action: .resume))
+                }
+            } else if player == self.audioPlayer && !self.context.activeQuiz {
+                self.context.setState(ReviewState(action: .doneReviewing))
+            } else {
+                print("Unknown player finished")
             }
         }
     }
+
+
 
     func updateMeters() {
         audioPlayer?.updateMeters()
@@ -266,6 +285,7 @@ class AudioContentPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate, Sta
     private func loadCurrentQuestionIndex() {
         currentQuestionIndex = UserDefaults.standard.integer(forKey: "currentQuestionIndex")
         updateHasNextQuestion()
+        updateCurrentQuestionContent()
     }
 
     private func handleError(_ errorType: AudioPlayerErrorType, message: String) {
@@ -277,15 +297,7 @@ class AudioContentPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate, Sta
 }
 
 
-extension String {
-    var pathExtension: String {
-        return (self as NSString).pathExtension
-    }
 
-    var deletingPathExtension: String {
-        return (self as NSString).deletingPathExtension
-    }
-}
 
 
 
