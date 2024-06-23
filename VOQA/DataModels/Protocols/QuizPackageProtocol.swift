@@ -13,3 +13,33 @@ protocol QuizPackage {
     var topics: [Topic] { get }
     var audioQuiz: AudioQuiz? { get }
 }
+
+protocol QuizPackageProtocol {
+    var id: UUID { get }
+    var title: String { get }
+    var titleImage: String { get }
+    var summaryDesc: String { get }
+    var themeColors: [Int] { get }
+    var rating: Int? { get }
+    var numberOfRatings: Int? { get }
+    var edition: PackageEdition { get }
+    var curator: String? { get }
+    var users: Int? { get }
+}
+
+protocol AudioQuizProtocol {
+    var id: UUID { get }
+    var quizTitle: String { get }
+    var titleImage: String { get }
+    var shortTitle: String { get }
+    var firstStarted: Date { get }
+    var completions: Int { get }
+    var userHighScore: Int { get }
+    var ratings: Int { get }
+    var currentQuizTopics: [Topic] { get }
+}
+
+extension AudioQuiz: AudioQuizProtocol {}
+
+
+extension StandardQuizPackage: QuizPackageProtocol {}
