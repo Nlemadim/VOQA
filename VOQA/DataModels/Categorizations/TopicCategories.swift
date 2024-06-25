@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 enum TopicCategory: Int, Codable, Identifiable, CaseIterable {
-    case foundational, beginner, intermediate, advanced
+    case foundational = 1, beginner, intermediate, advanced
     
     var id: Self {
         self
@@ -28,4 +28,3 @@ enum TopicCategory: Int, Codable, Identifiable, CaseIterable {
         }
     }
 }
-

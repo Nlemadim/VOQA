@@ -25,88 +25,78 @@ struct MyCollectionView: View {
                 .accessibilityAddTraits(.isHeader)
             
             TabView(selection: $currentItem) {
-                Group {
-                    if quizzes.isEmpty {
-                        CustomContentUnavailableView(imageName: "IconImage")
-                    } else {
-                        ForEach(quizzes.indices, id: \.self) { index in
-                            let quiz = quizzes[index]
-                            VStack(spacing: 4) {
-                                Image(quiz.titleImage)
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fill)
-                                    .frame(width: 240, height: 240)
-                                    .cornerRadius(15.0)
-                                    .accessibilityLabel(Text("Quiz image"))
+                ForEach(quizzes.indices, id: \.self) { index in
+                    let quiz = quizzes[index]
+                    VStack(spacing: 8) {
+                        Image(quiz.titleImage)
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: 200, height: 200)
+                            .cornerRadius(15.0)
+                            .accessibilityLabel(Text("Quiz image"))
 
-                                Text(quiz.title)
-                                    .font(.callout)
-                                    .fontWeight(.black)
-                                    .lineLimit(3, reservesSpace: false)
-                                    .multilineTextAlignment(.center)
-                                    .frame(width: 180)
-                                    .padding(.horizontal, 8)
-                                    .accessibilityLabel(Text(quiz.title))
-                                
-                                Text(quiz.edition.descr)
-                                    .font(.caption)
-                                    .foregroundStyle(.secondary)
-                                    .hAlign(.center)
-                                    .accessibilityLabel(Text(quiz.edition.descr))
-                                
-                                if let curator = quiz.curator {
-                                    Text("Curated by: " + curator)
-                                        .font(.caption)
-                                        .foregroundStyle(.secondary)
-                                        .hAlign(.center)
-                                        .accessibilityLabel(Text("Curated by: \(curator)"))
-                                }
-                                
-                                if let users = quiz.users {
-                                    Text("Users: \(users)")
-                                        .font(.caption)
-                                        .foregroundStyle(.secondary)
-                                        .hAlign(.center)
-                                        .accessibilityLabel(Text("Users: \(users)"))
-                                }
-                                
-                                if let rating = quiz.rating {
-                                    HStack {
-                                        ForEach(1...5, id: \.self) { index in
-                                            if index <= rating {
-                                                Image(systemName: "star.fill")
-                                                    .imageScale(.small)
-                                                    .foregroundStyle(.yellow)
-                                                    .accessibilityLabel(Text("Star filled"))
-                                            } else {
-                                                Image(systemName: "star")
-                                                    .imageScale(.small)
-                                                    .foregroundStyle(.secondary)
-                                                    .accessibilityLabel(Text("Star"))
-                                            }
-                                        }
+                        Text(quiz.title)
+                            .font(.callout)
+                            .fontWeight(.black)
+                            .lineLimit(3, reservesSpace: false)
+                            .multilineTextAlignment(.center)
+                            .frame(width: 180)
+                            .padding(.horizontal, 8)
+                            .accessibilityLabel(Text(quiz.title))
+                        
+                        Text(quiz.edition.descr)
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                            .hAlign(.center)
+                            .accessibilityLabel(Text(quiz.edition.descr))
+                        
+                        if let curator = quiz.curator {
+                            Text("Curated by: " + curator)
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                                .hAlign(.center)
+                                .accessibilityLabel(Text("Curated by: \(curator)"))
+                        }
+                        
+                        if let users = quiz.users {
+                            Text("Users: \(users)")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                                .hAlign(.center)
+                                .accessibilityLabel(Text("Users: \(users)"))
+                        }
+                        
+                        if let rating = quiz.rating {
+                            HStack {
+                                ForEach(1...5, id: \.self) { index in
+                                    if index <= rating {
+                                        Image(systemName: "star.fill")
+                                            .imageScale(.small)
+                                            .foregroundStyle(.yellow)
+                                            .accessibilityLabel(Text("Star filled"))
+                                    } else {
+                                        Image(systemName: "star")
+                                            .imageScale(.small)
+                                            .foregroundStyle(.secondary)
+                                            .accessibilityLabel(Text("Star"))
                                     }
                                 }
                             }
                             .padding(.bottom)
-                            .onTapGesture {
-                                tapAction()
-                            }
-                            .onAppear {
-                                generator.updateAllColors(fromImageNamed: quiz.titleImage)
-                                backgroundImage = quiz.titleImage // Update background
-                            }
                         }
                     }
+                    .padding(.bottom)
+                    .onTapGesture {
+                        tapAction()
+                    }
                 }
+                .padding(.bottom)
             }
             .tabViewStyle(PageTabViewStyle(indexDisplayMode: .automatic))
-            .frame(height: 400)
+            .frame(height: 380)
         }
     }
 }
-
-
 
 
 struct CustomContentUnavailableView: View {

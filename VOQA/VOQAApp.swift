@@ -18,7 +18,8 @@ struct VOQAApp: App {
             Topic.self,
             Question.self,
             AudioQuiz.self,
-            Performance.self
+            Performance.self,
+            VoiceFeedbackMessages.self
         ])
         
         // Current app version

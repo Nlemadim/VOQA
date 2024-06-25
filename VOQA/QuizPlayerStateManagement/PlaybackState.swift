@@ -13,7 +13,9 @@ class PlaybackState: BaseState {
         case start
         case pause
         case resume
-        case stop
+        case pausedForResponse
+        case intermissionAndReview
+        case pausedForAd
     }
     
     var action: PlaybackAction
@@ -34,25 +36,21 @@ class PlaybackState: BaseState {
             if let audioPlayer = context.audioPlayer {
                 DispatchQueue.main.async {
                     audioPlayer.stopAndResetPlayer()
-                    audioPlayer.currentQuestionIndex += 1
-                    audioPlayer.updateCurrentQuestionContent()
-                    audioPlayer.playCurrentQuestion()
+                    if audioPlayer.hasNextQuestion {
+                        audioPlayer.currentQuestionIndex += 1
+                        audioPlayer.playCurrentQuestion()
+                    } else {
+                        let reviewState = ReviewState(action: .reviewing)
+                        reviewState.handleState(context: context)
+                    }
                 }
             }
-        case .stop:
+        case .pausedForResponse:
             print("Playback protocol state is: \(action)")
-//            if let audioPlayer = context.audioPlayer {
-//                DispatchQueue.main.async {
-//                    audioPlayer.stopAndResetPlayer()
-//                    audioPlayer.currentQuestionIndex += 1
-//                    audioPlayer.updateHCurrentQuestionContent()
-//                }
-//                print("Simulating waiting for answer protocol")
-//                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-//                    print("Simulating continuation protocol")
-//                    audioPlayer.playCurrentQuestion()
-//                }
-//            }
+            context.setState(ListeningState())
+            
+        default:
+            break
         }
         notifyObservers()
     }

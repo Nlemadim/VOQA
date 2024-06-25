@@ -80,6 +80,7 @@ struct NowPlayingView: View {
             
             Spacer()
         }
+        .padding()
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
     

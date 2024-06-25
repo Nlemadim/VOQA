@@ -8,13 +8,12 @@
 import Foundation
 
 enum QuestionStatus: Int, Codable, Identifiable, CaseIterable {
-    case newQuestion, repeatQuestion, modifiedQuestion
+    case newQuestion, repeatQuestion, modifiedQuestion, followUp
     var id: Self {
         self
     }
     
     var descr: String {
-        
         switch self {
         case .newQuestion:
             "New Question"
@@ -22,6 +21,8 @@ enum QuestionStatus: Int, Codable, Identifiable, CaseIterable {
             "Repeat Question"
         case .modifiedQuestion:
             "Modified Question"
+        case .followUp:
+            "Follow up Question"
         }
     }
 }

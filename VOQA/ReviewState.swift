@@ -1,8 +1,8 @@
 //
-//  Reviews.swift
+//  ReviewState.swift
 //  VOQA
 //
-//  Created by Tony Nlemadim on 6/21/24.
+//  Created by Tony Nlemadim on 6/22/24.
 //
 
 import Foundation
@@ -24,6 +24,7 @@ class ReviewState: BaseState {
         switch action {
         case .reviewing:
             // Play review feedback message
+            context.activeQuiz = false
             context.audioPlayer?.playReviewAudio(["review_message.mp3"])
         case .doneReviewing:
             // Transition to EndedQuizState

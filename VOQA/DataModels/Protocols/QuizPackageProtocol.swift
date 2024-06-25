@@ -14,7 +14,7 @@ protocol QuizPackage {
     var audioQuiz: AudioQuiz? { get }
 }
 
-protocol QuizPackageProtocol {
+protocol QuizPackageProtocol: Decodable {
     var id: UUID { get }
     var title: String { get }
     var titleImage: String { get }
@@ -27,7 +27,7 @@ protocol QuizPackageProtocol {
     var users: Int? { get }
 }
 
-protocol AudioQuizProtocol {
+protocol AudioQuizProtocol: Decodable {
     var id: UUID { get }
     var quizTitle: String { get }
     var titleImage: String { get }
@@ -36,10 +36,7 @@ protocol AudioQuizProtocol {
     var completions: Int { get }
     var userHighScore: Int { get }
     var ratings: Int { get }
-    var currentQuizTopics: [Topic] { get }
+    var currentQuizTopicIDs: [String] { get }
+    var topics: [Topic]? { get }
 }
 
-extension AudioQuiz: AudioQuizProtocol {}
-
-
-extension StandardQuizPackage: QuizPackageProtocol {}
