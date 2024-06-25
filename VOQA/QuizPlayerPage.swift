@@ -75,7 +75,7 @@ struct QuizPlayerPage: View {
                                     isDownloading: $quizContext.isDownloading,
                                     color: generator.dominantBackgroundColor,
                                     playAction: { expandSheet = true }
-                                    /Users/tonynlemadim/Documents/VoqaApp/VOQA/VOQA/MiniPlayer.swift                                )
+                                )
                             }
                         }
                         .frame(maxWidth: .infinity)
