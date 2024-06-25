@@ -14,23 +14,19 @@ struct QuizPlayerPage: View {
     @Environment(\.dismiss) private var dismiss
     @ObservedObject var quizContext: QuizContext
     @ObservedObject var connectionMonitor = NetworkMonitor.shared
-    
     @StateObject private var generator = ColorGenerator()
     
     @Query(sort: \Performance.id) var performanceCollection: [Performance]
 
-    
     @State private var answeredQuestions: Int = UserDefaultsManager.totalQuestionsAnswered()
     @State private var questionCount: Int = UserDefaultsManager.numberOfTestQuestions()
     @State private var quizzesCompleted: Int = UserDefaultsManager.numberOfQuizSessions()
-    
     
     @State var currentPerformance: [Performance] = []
     
     @Binding var selectedTab: Int
     
-    @State private var expandSheet: Bool = false
-    
+    @State var expandSheet: Bool = false
     @State var currentQuestionIndex: Int = 0
     @State var userHighScore: Int = 0
     
@@ -40,103 +36,104 @@ struct QuizPlayerPage: View {
 
     var body: some View {
         
-        NavigationView {
-            ZStack(alignment: .topLeading) {
-                Rectangle()
-                    .fill(.clear)
-                    .background(
-                        LinearGradient(gradient: Gradient(colors: [generator.dominantBackgroundColor, .black]), startPoint: .top, endPoint: .bottom)
-                    )
-                
-                VStack(alignment: .center) {
-                    Image("VoqaIcon")
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .clipped()
-                }
-                .frame(height: 280)
-                .blur(radius: 60)
-                
-                ScrollView(showsIndicators: false) {
-                    VStack(alignment: .leading, spacing: 10) {
-                        VStack(spacing: 5) {
-                            Image("VoqaIcon")
-                                .resizable()
-                                .frame(width: 250, height: 250)
-                                .cornerRadius(20)
-                                .padding()
-                            
-                            VStack(spacing: 0) {
-                                Text("VOQA")
-                                    .lineLimit(2, reservesSpace: true)
-                                    .multilineTextAlignment(.center)
+        
+        ZStack(alignment: .topLeading) {
+            Rectangle()
+                .fill(.clear)
+                .background(
+                    LinearGradient(gradient: Gradient(colors: [generator.dominantBackgroundColor, .black]), startPoint: .top, endPoint: .bottom)
+                )
+            
+            VStack(alignment: .center) {
+                Image("VoqaIcon")
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .clipped()
+            }
+            .frame(height: 280)
+            .blur(radius: 60)
+            
+            ScrollView(showsIndicators: false) {
+                VStack(alignment: .leading, spacing: 10) {
+                    VStack(spacing: 5) {
+                        Image("VoqaIcon")
+                            .resizable()
+                            .frame(width: 220, height: 220)
+                            .cornerRadius(20)
+                            .padding()
+                                                
+                        VStack(spacing: 0) {
+                            HStack(spacing: 4) {
+                                Spacer()
+                                Text("Start".uppercased())
+                                    .kerning(0.5)
                                     .fontWeight(.bold)
                                     .foregroundStyle(.primary)
-                                    .hAlign(.center)
-                                    .frame(maxWidth: .infinity)
+                                
+                                CircularPlayButton(
+                                    quizContext: quizContext,
+                                    isDownloading: $quizContext.isDownloading,
+                                    color: generator.dominantBackgroundColor,
+                                    playAction: { expandSheet = true }
+                                    /Users/tonynlemadim/Documents/VoqaApp/VOQA/VOQA/MiniPlayer.swift                                )
                             }
                         }
-                        .frame(height: 280)
-                        .padding()
-                        .padding(.horizontal, 40)
-                        .hAlign(.center)
+                        .frame(maxWidth: .infinity)
                     }
+                    .frame(height: 280)
                     .padding()
+                    .padding(.horizontal, 40)
+                    .hAlign(.center)
+                }
+                .padding()
+                
+                Divider()
+                    .foregroundStyle(generator.dominantLightToneColor)
+                    .activeGlow(generator.dominantLightToneColor, radius: 1)
+                
+                VStack {
                     
-                    Divider()
-                        .foregroundStyle(generator.dominantLightToneColor)
-                        .activeGlow(generator.dominantLightToneColor, radius: 1)
-                    
-                    VStack {
-                        
-                        if let nowPlaying = config.nowPlaying {
-                            NowPlayingView(
-                                nowPlaying: nowPlaying,
-                                generator: generator,
-                                questionCount: 0, // Modify later
-                                currentQuestionIndex: 0,
-                                color: Color.primary,
-                                quizContext: quizContext,
-                                isDownloading: .constant(false),
-                                playAction: { print("Play action") }
-                            )
-                        }
+                    if let nowPlaying = config.nowPlaying {
+                        NowPlayingView(
+                            nowPlaying: nowPlaying,
+                            generator: generator,
+                            questionCount: 0, // Modify later
+                            currentQuestionIndex: 0,
+                            color: Color.primary,
+                            quizContext: quizContext,
+                            isDownloading: .constant(false),
+                            playAction: { expandSheet = true }
+                        )
                     }
-                    .padding()
+                }
+                .padding()
+                .padding(.horizontal)
+                
+                Divider()
+                    .foregroundStyle(generator.dominantLightToneColor)
+                    .activeGlow(generator.dominantLightToneColor, radius: 1)
+                
+                PerformanceHistoryGraph(history: currentPerformance, mainColor: generator.enhancedDominantColor, subColor: .white.opacity(0.5))
                     .padding(.horizontal)
+                
+                VStack {
+                    HeaderView(title: "Summary")
+                        .padding()
                     
-                    Divider()
-                        .foregroundStyle(generator.dominantLightToneColor)
-                        .activeGlow(generator.dominantLightToneColor, radius: 1)
-                    
-                    PerformanceHistoryGraph(history: currentPerformance, mainColor: generator.enhancedDominantColor, subColor: .white.opacity(0.5))
-                        .padding(.horizontal)
-                    
-                    VStack {
-                        HeaderView(title: "Summary")
-                            .padding()
-                        
-                        ActivityInfoView(answeredQuestions: answeredQuestions, quizzesCompleted: quizzesCompleted, highScore: userHighScore, numberOfTestsTaken: 0)
-                    }
-                    
-                    Rectangle()
-                        .fill(.black)
-                        .frame(height: 100)
+                    ActivityInfoView(answeredQuestions: answeredQuestions, quizzesCompleted: quizzesCompleted, highScore: userHighScore, numberOfTestsTaken: 0)
                 }
+                
+                Rectangle()
+                    .fill(.black)
+                    .frame(height: 100)
             }
-            .onAppear {
-                filterPerformanceCollection()
-                generator.updateAllColors(fromImageNamed: "VoqaIcon")
-            }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    NavigationLink(destination: QuizPlayerSettingsMenu()) {
-                        Image(systemName: "gearshape.fill")
-                            .foregroundStyle(.white)
-                            .padding(.horizontal, 20.0)
-                    }
-                }
-            }
+        }
+        .fullScreenCover(isPresented: $expandSheet) {
+           FullScreenPlayer(quizContext: quizContext, expandSheet: $expandSheet)
+        }
+        .onAppear {
+            filterPerformanceCollection()
+            generator.updateAllColors(fromImageNamed: quizContext.quizTitleImage.isEmptyOrWhiteSpace ?  "VoqaIcon" : quizContext.quizTitleImage)
         }
     }
 
@@ -163,10 +160,6 @@ struct QuizPlayerPage: View {
         print("Loaded \(currentPerformance.count) performance records")
         print(filteredPerformance.first?.quizName ?? "Performance record Not found")
     }
-    
-   
-    
-    
     
     
     private func refreshQuizQuestions() {}
@@ -256,3 +249,9 @@ struct HeaderView: View {
         .hAlign(.leading)
     }
 }
+
+//#Preview {
+//    let context = QuizContext(state: IdleState())
+//    @State private var config = homePageConfig
+//    return QuizPlayerPage(quizContext: context, selectedTab: .constant(1), config: config)
+//}

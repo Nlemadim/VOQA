@@ -9,7 +9,7 @@ import SwiftUI
 import AVFoundation
 
 struct NowPlayingView: View {
-    var nowPlaying: AudioQuizProtocol?
+    var nowPlaying: (any AudioQuizProtocol)?
     var generator: ColorGenerator
     var questionCount: Int
     var currentQuestionIndex: Int
@@ -21,27 +21,27 @@ struct NowPlayingView: View {
     
     var body: some View {
         HStack {
-            VStack(spacing: 4) {
-                Image(nowPlaying?.titleImage ?? "IconImage")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .cornerRadius(10)
-                    .accessibilityLabel(Text(nowPlaying?.quizTitle ?? "Quiz Image"))
-            }
-            .frame(height: 150)
-            .overlay {
-                if isDownloading {
-                    ProgressView {
-                        Text("Downloading")
-                    }
-                    .foregroundStyle(.white)
-                    .accessibilityLabel(Text("Downloading"))
-                }
-            }
+//            VStack(spacing: 4) {
+//                Image(nowPlaying?.titleImage ?? "IconImage")
+//                    .resizable()
+//                    .aspectRatio(contentMode: .fit)
+//                    .cornerRadius(10)
+//                    .accessibilityLabel(Text(nowPlaying?.quizTitle ?? "Quiz Image"))
+//            }
+//            .frame(height: 100)
+//            .overlay {
+//                if isDownloading {
+//                    ProgressView {
+//                        Text("Downloading")
+//                    }
+//                    .foregroundStyle(.white)
+//                    .accessibilityLabel(Text("Downloading"))
+//                }
+//            }
             
             VStack(alignment: .leading, spacing: 8) {
                 Text(nowPlaying?.quizTitle.uppercased() ?? "VOQA")
-                    .font(.body)
+                    .font(.footnote)
                     .fontWeight(.semibold)
                     .accessibilityAddTraits(.isHeader)
                 
@@ -64,23 +64,24 @@ struct NowPlayingView: View {
                 
                 HStack {
                     VUMeterView(quizContext: quizContext)
+                        .hAlign(.trailing)
                     
-                    CircularPlayButton(
-                        quizContext: quizContext,
-                        isDownloading: $isDownloading,
-                        color: generator.dominantBackgroundColor,
-                        playAction: playAction
-                    )
-                    .hAlign(.trailing)
+//                    CircularPlayButton(
+//                        quizContext: quizContext,
+//                        isDownloading: $isDownloading,
+//                        color: generator.dominantBackgroundColor,
+//                        playAction: playAction
+//                    )
+//                    .hAlign(.trailing)
                 }
             }
             .padding(.top, 5)
-            .frame(height: 150)
+            .frame(width: .infinity)
             .padding(.horizontal, 4)
             
             Spacer()
         }
-        .padding()
+        .padding(.horizontal)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
     

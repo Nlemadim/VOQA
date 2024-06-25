@@ -10,7 +10,7 @@ import Foundation
 struct GalleryItem: Decodable {
     var title: String
     var subtitle: String?
-    var quizzes: [QuizPackageProtocol]
+    var quizzes: [any QuizPackageProtocol]
     
     enum CodingKeys: String, CodingKey {
         case title
@@ -18,7 +18,7 @@ struct GalleryItem: Decodable {
         case quizzes
     }
     
-    init(title: String, subtitle: String? = nil, quizzes: [QuizPackageProtocol]) {
+    init(title: String, subtitle: String? = nil, quizzes: [any QuizPackageProtocol]) {
         self.title = title
         self.subtitle = subtitle
         self.quizzes = quizzes
@@ -34,8 +34,8 @@ struct GalleryItem: Decodable {
 }
 
 struct HomePageConfig: Decodable {
-    var topCollectionQuizzes: [QuizPackageProtocol]
-    var nowPlaying: AudioQuizProtocol?
+    var topCollectionQuizzes: [any QuizPackageProtocol]
+    var nowPlaying: (any AudioQuizProtocol)?
     var currentItem: Int
     var backgroundImage: String
     var galleryItems: [GalleryItem]
@@ -48,7 +48,7 @@ struct HomePageConfig: Decodable {
         case galleryItems
     }
     
-    init(topCollectionQuizzes: [QuizPackageProtocol], nowPlaying: AudioQuizProtocol?, currentItem: Int, backgroundImage: String, galleryItems: [GalleryItem]) {
+    init(topCollectionQuizzes: [any QuizPackageProtocol], nowPlaying: (any AudioQuizProtocol)?, currentItem: Int, backgroundImage: String, galleryItems: [GalleryItem]) {
         self.topCollectionQuizzes = topCollectionQuizzes
         self.nowPlaying = nowPlaying
         self.currentItem = currentItem

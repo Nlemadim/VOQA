@@ -13,7 +13,7 @@ struct HomePage: View {
     @StateObject private var generator = ColorGenerator()
     @StateObject var keyboardObserver = KeyboardObserver()
     
-    @State private var selectedQuizPackage: QuizPackageProtocol?
+    @State private var selectedQuizPackage: QuizPackageType?
     @State private var selectedTab: Int = 0
     @State var didTapEdit = false
     @State var expandSheet = false
@@ -34,7 +34,12 @@ struct HomePage: View {
                                 generator: generator,
                                 backgroundImage: .constant(config.backgroundImage),
                                 tapAction: {
-                                    selectedQuizPackage = config.topCollectionQuizzes[config.currentItem]
+                                    let selected = config.topCollectionQuizzes[config.currentItem]
+                                    if let standardPackage = selected as? StandardQuizPackage {
+                                        selectedQuizPackage = .standard(standardPackage)
+                                    } else if let customPackage = selected as? CustomQuizPackage {
+                                        selectedQuizPackage = .custom(customPackage)
+                                    }
                                 }
                             )
                             
@@ -45,7 +50,11 @@ struct HomePage: View {
                                     title: item.title,
                                     subtitle: item.subtitle,
                                     tapAction: { quiz in
-                                        selectedQuizPackage = quiz
+                                        if let standardPackage = quiz as? StandardQuizPackage {
+                                            selectedQuizPackage = .standard(standardPackage)
+                                        } else if let customPackage = quiz as? CustomQuizPackage {
+                                            selectedQuizPackage = .custom(customPackage)
+                                        }
                                     }
                                 )
                             }
@@ -57,6 +66,10 @@ struct HomePage: View {
                     }
                     .zIndex(1)
                 }
+                .fullScreenCover(item: $selectedQuizPackage) { selectedQuiz in
+                    QuizDetailPage(package: selectedQuiz.wrapped, selectedTab: $selectedTab)
+                }
+                
                 .onAppear {
                     generator.updateAllColors(fromImageNamed: config.backgroundImage)
                 }
@@ -84,13 +97,16 @@ struct HomePage: View {
                     .tag(3)
             }
             .tint(.white).activeGlow(.white, radius: 2)
-            .safeAreaInset(edge: .bottom) {
-                BottomMiniPlayer(color: generator.dominantBackgroundColor)
-                    .opacity(keyboardObserver.isKeyboardVisible || didTapEdit ? 0 : 1)
-                    .onAppear {
-                        generator.updateAllColors(fromImageNamed: "VoqaIcon")
-                    }
-            }
+//            .safeAreaInset(edge: .bottom) {
+//                BottomMiniPlayer(color: generator.dominantBackgroundColor)
+//                    .opacity(keyboardObserver.isKeyboardVisible || didTapEdit ? 0 : 1)
+//                    .onTapGesture {
+//                        expandSheet = true
+//                    }
+//                    .onAppear {
+//                        generator.updateAllColors(fromImageNamed: "VoqaIcon")
+//                    }
+//            }
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Text("VOQA")
@@ -133,6 +149,7 @@ struct HomePage: View {
         .frame(height: 75)
         .offset(y: -49)
     }
+
     
     private func customizeTabBarAppearance() {
         let appearance = UITabBarAppearance()
@@ -142,3 +159,5 @@ struct HomePage: View {
         UITabBar.appearance().scrollEdgeAppearance = appearance
     }
 }
+
+

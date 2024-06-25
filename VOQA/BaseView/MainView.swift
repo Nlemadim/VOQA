@@ -31,11 +31,11 @@ struct MainView: View {
                 }
                 .tag(0)
             
-            QuizPlayerPage(quizContext: quizContext, selectedTab: $selectedTab, config: config)
-                .tabItem {
-                    TabIcons(title: "Quiz player", icon: "play.circle")
-                }
-                .tag(1)
+//            QuizPlayerPage(quizContext: quizContext, selectedTab: $selectedTab, expandSheet: .constant(false), config: config)
+//                .tabItem {
+//                    TabIcons(title: "Quiz player", icon: "play.circle")
+//                }
+//                .tag(1)
             
             ExploreView()
                 .tabItem {

@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct GalleryCollectionView: View {
-    var quizzes: [QuizPackageProtocol]
+    var quizzes: [any QuizPackageProtocol]
     var title: String
     var subtitle: String?
-    let tapAction: (QuizPackageProtocol) -> Void
+    let tapAction: (any QuizPackageProtocol) -> Void
 
     var body: some View {
         VStack(spacing: 4.0) {

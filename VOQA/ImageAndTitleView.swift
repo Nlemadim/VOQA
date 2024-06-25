@@ -10,8 +10,8 @@ import SwiftUI
 struct ImageAndTitleView: View {
     var title: String
     var titleImage: String
-    let tapAction: (QuizPackageProtocol) -> Void
-    var quiz: QuizPackageProtocol // Assume this is passed to the view
+    let tapAction: (any QuizPackageProtocol) -> Void
+    var quiz: any QuizPackageProtocol // Assume this is passed to the view
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {

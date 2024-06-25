@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct MyCollectionView: View {
-    var quizzes: [QuizPackageProtocol]
+    var quizzes: [any QuizPackageProtocol]
     @Binding var currentItem: Int
     @ObservedObject var generator: ColorGenerator
     @Binding var backgroundImage: String
