@@ -11,7 +11,6 @@ extension AudioContentPlayer {
     // MARK: - Playback Control
     internal func playQuestions(_ questions: [Question]) {
         self.questions = questions
-        context.activeQuiz = true
         playCurrentQuestion()
     }
 
@@ -21,9 +20,17 @@ extension AudioContentPlayer {
             context.setState(ReviewState(action: .reviewing))
             return
         }
+        
+       
 
         let question = questions[currentQuestionIndex]
         currentQuestionContent = question.content
+        updateHasNextQuestion()
+        
+        DispatchQueue.main.async {
+            self.context.hasMoreQuestions = self.hasNextQuestion
+            self.context.currentQuestionText = self.currentQuestionContent
+        }
 
         do {
             try startPlaybackFromBundle(fileName: question.audioUrl.deletingPathExtension, fileType: question.audioUrl.pathExtension)

@@ -9,39 +9,104 @@ import Foundation
 import SwiftUI
 import Speech
 import Combine
+import AVFoundation
 
-class ListeningState: BaseState {
+class ListeningState: StateObserver, QuizState {
+    
+    enum ListenerAction {
+        case prepareToTranscribe
+        case doneTranscribing
+    }
+    
     @Published var isRecordingAnswer: Bool = false
     @Published var selectedOption: String = ""
     @Published var userTranscript: String = ""
     
     private var cancellable: AnyCancellable?
-    private var speechRecognizer = SpeechManager()
-    
-    override func handleState(context: QuizContext) {
-        recordAnswer(context: context)
-        notifyObservers()
+    var speechRecognizer = SpeechManager()
+    private var audioPlayer: AVAudioPlayer?
+    private var context: QuizContext?
+    var observers: [StateObserver] = []
+    private var action: ListenerAction?
+
+    init(action: ListenerAction? = nil) {
+        print("Listener Initialized")
+        self.action = action
+    }
+
+    func handleState(context: QuizContext) {
+        
+        playListeningSound()
+        if let action = self.action {
+            self.speechRecognizer.prepareMicrophone()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+                self.performAction(action, context: context)
+            }
+        }
     }
     
-    private func recordAnswer(context: QuizContext) {
-        startRecordingAndTranscribing(context: context)
+    private func performAction(_ action: ListenerAction, context: QuizContext) {
+        switch action {
+        case .prepareToTranscribe:
+            print(action)
+            
+            self.startRecordingAndTranscribing(context: context)
+            
+        case.doneTranscribing:
+            print(action)
+            playCloseMicSound()
+            print("Listener Sign off")
+            context.setState(QuizModerator(action: .validateSpokenResponse))
+        }
     }
     
+    
+    private func playListeningSound() {
+        print("Mic Beeper!")
+        playSound(fileName: "showResponderBell", fileType: "wav")
+    }
+    
+    private func playCloseMicSound() {
+        print("Mic Closer!")
+        playSound(fileName: "dismissResponderBell", fileType: "wav")
+    }
+    
+    private func playSound(fileName: String, fileType: String) {
+        do {
+            let audioSession = AVAudioSession.sharedInstance()
+            try audioSession.setCategory(.playback, mode: .default)
+            try audioSession.setActive(true)
+            
+            if let path = Bundle.main.path(forResource: fileName, ofType: fileType) {
+                let url = URL(fileURLWithPath: path)
+                audioPlayer = try AVAudioPlayer(contentsOf: url)
+                audioPlayer?.play()
+            } else {
+                print("Sound file not found: \(fileName).\(fileType)")
+            }
+        } catch {
+            print("Failed to play sound: \(error.localizedDescription)")
+        }
+    }
+
     private func startRecordingAndTranscribing(context: QuizContext) {
         print("Starting transcription...")
-        self.isRecordingAnswer = true
         context.isListening = true
+        self.isRecordingAnswer = true
+        
         
         self.speechRecognizer.transcribe()
         print("Transcribing started")
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + context.responseTime) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + context.responseTime + 0.8) {
             self.speechRecognizer.stopTranscribing()
             self.isRecordingAnswer = false
             context.isListening = false
+            
             print("Transcription stopped")
             
             self.getTranscript(context: context)
+            self.performAction(.doneTranscribing, context: context)
         }
     }
     
@@ -49,23 +114,59 @@ class ListeningState: BaseState {
         cancellable = speechRecognizer.$transcript
             .sink { newTranscript in
                 self.selectedOption = self.processTranscript(transcript: newTranscript)
-                self.userTranscript = newTranscript
-                self.forwardResponse(context: context, response: self.selectedOption)
+                context.spokenAnswerOption = self.selectedOption
             }
+
     }
+    
+    private func presentMic() {
+        
+        cancellable = speechRecognizer.$isMicrophoneReady
+            .sink(receiveValue: { isReady in
+                if isReady {
+                    print("Listener Mic Ready")
+                    if let context = self.context {
+                        self.startRecordingAndTranscribing(context: context)
+                    }
+                }
+            })
+    }
+    
     
     private func processTranscript(transcript: String) -> String {
         let processedTranscript = WordProcessor.processWords(from: transcript)
         return processedTranscript
     }
     
-    private func forwardResponse(context: QuizContext, response: String) {
-        print("Forwarding response: \(response)")
-        if let currentQuestion = context.audioPlayer?.questions[context.audioPlayer?.currentQuestionIndex ?? 0] {
-            context.quizModerator?.validateResponse(response, for: currentQuestion.id)
+    func stateDidChange(to newState: any QuizState) {
+        
+    }
+    
+    func addObserver(_ observer: StateObserver) {
+        observers.append(observer)
+    }
+    
+    func notifyObservers() {
+        for observer in observers {
+            observer.stateDidChange(to: self)
+        }
+    }
+    
+    // AVAudioPlayerDelegate
+    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+        if flag {
+            print("Listener has sounded mic alert")
+            DispatchQueue.main.async {
+                player.stop()
+                player.delegate = nil
+                self.audioPlayer = nil
+
+            }
         }
     }
 }
+
+
 
 
 

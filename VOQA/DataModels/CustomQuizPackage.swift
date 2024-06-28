@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 @Model
-class CustomQuizPackage: QuizPackage, QuizPackageProtocol, Decodable  {
+class CustomQuizPackage:  Decodable  {
     @Attribute(.unique) var id: UUID
     var title: String
     var titleImage: String

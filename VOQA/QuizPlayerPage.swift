@@ -12,9 +12,9 @@ import SwiftData
 struct QuizPlayerPage: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
-    @ObservedObject var quizContext: QuizContext
     @ObservedObject var connectionMonitor = NetworkMonitor.shared
     @StateObject private var generator = ColorGenerator()
+    @StateObject private var context = QuizContext.create(state: IdleState())
     
     @Query(sort: \Performance.id) var performanceCollection: [Performance]
 
@@ -64,19 +64,19 @@ struct QuizPlayerPage: View {
                                                 
                         VStack(spacing: 0) {
                             HStack(spacing: 4) {
-                                Spacer()
                                 Text("Start".uppercased())
                                     .kerning(0.5)
                                     .fontWeight(.bold)
                                     .foregroundStyle(.primary)
                                 
                                 CircularPlayButton(
-                                    quizContext: quizContext,
-                                    isDownloading: $quizContext.isDownloading,
+                                    quizContext: context,
+                                    isDownloading: $context.isDownloading,
                                     color: generator.dominantBackgroundColor,
                                     playAction: { expandSheet = true }
                                 )
                             }
+                            .hAlign(.center)
                         }
                         .frame(maxWidth: .infinity)
                     }
@@ -92,19 +92,16 @@ struct QuizPlayerPage: View {
                     .activeGlow(generator.dominantLightToneColor, radius: 1)
                 
                 VStack {
-                    
-                    if let nowPlaying = config.nowPlaying {
-                        NowPlayingView(
-                            nowPlaying: nowPlaying,
-                            generator: generator,
-                            questionCount: 0, // Modify later
-                            currentQuestionIndex: 0,
-                            color: Color.primary,
-                            quizContext: quizContext,
-                            isDownloading: .constant(false),
-                            playAction: { expandSheet = true }
-                        )
-                    }
+                    NowPlayingView(
+                        nowPlaying: packetCover1,
+                        generator: generator,
+                        questionCount: 0, // Modify later
+                        currentQuestionIndex: 0,
+                        color: Color.primary,
+                        quizContext: context,
+                        isDownloading: .constant(false),
+                        playAction: { expandSheet = true }
+                    )
                 }
                 .padding()
                 .padding(.horizontal)
@@ -129,12 +126,39 @@ struct QuizPlayerPage: View {
             }
         }
         .fullScreenCover(isPresented: $expandSheet) {
-           FullScreenPlayer(quizContext: quizContext, expandSheet: $expandSheet)
+            FullScreenPlayer(quizContext: context, expandSheet: $expandSheet, configuration: config)
         }
         .onAppear {
+            setUpQuizEnvironment()
             filterPerformanceCollection()
-            generator.updateAllColors(fromImageNamed: quizContext.quizTitleImage.isEmptyOrWhiteSpace ?  "VoqaIcon" : quizContext.quizTitleImage)
+            generator.updateAllColors(fromImageNamed: context.quizTitleImage.isEmptyOrWhiteSpace ?  "VoqaIcon" : context.quizTitleImage)
         }
+    }
+    
+    let packetCover1 = PacketCover(
+        id: UUID(),
+        title: "General Knowledge",
+        titleImage: "IconImage",
+        summaryDesc: "Test your general knowledge with this quiz package.",
+        rating: 4,
+        numberOfRatings: 100,
+        edition: "basic",
+        curator: "Quiz Master",
+        users: 1000
+    )
+    
+    func setUpQuizEnvironment() {
+//        self.context.setState(QuestionPlayer())
+        context.questions = newMockQuestions
+        print(context.questions.count)
+    }
+    
+    static func createQuizContext(state: QuizState) -> QuizContext {
+        let questionPlayer = QuestionPlayer()
+        let moderator = QuizModerator()
+        let context = QuizContext(state: state, questionPlayer: questionPlayer, quizModerator: moderator)
+        
+        return context
     }
 
     private func userHighScore(from performances: [Performance]) -> Int {
@@ -169,8 +193,78 @@ struct QuizPlayerPage: View {
     private func renewQuiz() {}
     
     private func playSingleQuizQuestion() {}
-        
     
+    let newMockQuestions: [Question] = [
+        Question(
+            topicId: UUID(),
+            content: "What is the capital of France?",
+            options: ["Paris", "London", "Berlin", "Madrid"],
+            correctOption: "D",
+            isAnsweredCorrectly: true,
+            numberOfPresentations: 1,
+            ratings: 5,
+            numberOfRatings: 100,
+            audioScript: "What is the capital of France?",
+            audioUrl: "smallVoiceOver",
+            replayQuestionAudioScript: "Can you repeat the question?",
+            replayOptionAudioScript: "Can you repeat the options?",
+            status: .newQuestion,
+            difficultyLevel: 1,
+            answerPresentedDate: Date()
+        ),
+        Question(
+            topicId: UUID(),
+            content: "What is the largest planet in our Solar System?",
+            options: ["Earth", "Mars", "Jupiter", "Saturn"],
+            correctOption: "B",
+            isAnsweredCorrectly: false,
+            numberOfPresentations: 2,
+            ratings: 4,
+            numberOfRatings: 50,
+            audioScript: "What is the largest planet in our Solar System?",
+            audioUrl: "smallVoiceOver2",
+            replayQuestionAudioScript: "Can you repeat the question?",
+            replayOptionAudioScript: "Can you repeat the options?",
+            status: .repeatQuestion,
+            difficultyLevel: 2,
+            answerPresentedDate: nil
+        ),
+        Question(
+            topicId: UUID(),
+            content: "What is the chemical symbol for water?",
+            options: ["H2O", "O2", "CO2", "H2"],
+            correctOption: "C",
+            isAnsweredCorrectly: true,
+            numberOfPresentations: 3,
+            ratings: 3,
+            numberOfRatings: 30,
+            audioScript: "What is the chemical symbol for water?",
+            audioUrl: "smallVoiceOver",
+            replayQuestionAudioScript: "Can you repeat the question?",
+            replayOptionAudioScript: "Can you repeat the options?",
+            status: .modifiedQuestion,
+            difficultyLevel: 1,
+            answerPresentedDate: Date()
+        ),
+        Question(
+            topicId: UUID(),
+            content: "Who wrote 'Romeo and Juliet'?",
+            options: ["William Shakespeare", "Charles Dickens", "Mark Twain", "Jane Austen"],
+            correctOption: "A",
+            isAnsweredCorrectly: false,
+            numberOfPresentations: 1,
+            ratings: 5,
+            numberOfRatings: 80,
+            audioScript: "Who wrote 'Romeo and Juliet'?",
+            audioUrl: "smallVoiceOver2",
+            replayQuestionAudioScript: "Can you repeat the question?",
+            replayOptionAudioScript: "Can you repeat the options?",
+            status: .followUp,
+            difficultyLevel: 2,
+            answerPresentedDate: nil
+        )
+    ]
+        
     
     @ViewBuilder
     func ActivityInfoView(

@@ -8,20 +8,20 @@
 import SwiftUI
 
 struct GalleryCollectionView: View {
-    var quizzes: [any QuizPackageProtocol]
+    var quizzes: [PacketCover]
     var title: String
     var subtitle: String?
-    let tapAction: (any QuizPackageProtocol) -> Void
+    let tapAction: (PacketCover) -> Void
 
     var body: some View {
         VStack(spacing: 4.0) {
             Text(title.uppercased())
                 .font(.subheadline)
                 .fontWeight(.bold)
-                .kerning(-0.5) // Reduces the default spacing between characters
+                .kerning(-0.5)
                 .padding(.horizontal)
-                .lineLimit(1) // Ensures the text does not wrap
-                .truncationMode(.tail) // Adds "..." at the end if the text is too long
+                .lineLimit(1)
+                .truncationMode(.tail)
                 .hAlign(.leading)
                 .accessibilityAddTraits(.isHeader)
                        
@@ -36,20 +36,15 @@ struct GalleryCollectionView: View {
 
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 0) {
-                    ForEach(quizzes.indices, id: \.self) { index in
-                        let quiz = quizzes[index]
-                        ImageAndTitleView(title: quiz.title, titleImage: quiz.titleImage, tapAction: tapAction, quiz: quiz)
+                    ForEach(Array(quizzes.enumerated()), id: \.element.id) { _, quiz in
+                        ImageAndTitleView(title: quiz.title, titleImage: quiz.titleImage, tapAction: { _ in tapAction(quiz) }, packetCover: quiz)
                     }
                 }
             }
             .scrollTargetLayout()
             .scrollTargetBehavior(.viewAligned)
         }
-        .accessibilityElement(children: .combine) // Combine all elements into a single accessibility element
+        .accessibilityElement(children: .combine)
         .accessibilityLabel(Text("\(title) audio quiz"))
     }
 }
-
-//#Preview {
-//    GalleryCollectionView(quizzes: <#[any QuizPackageProtocol]#>, title: <#String#>, tapAction: <#(any QuizPackageProtocol) -> Void#>)
-//}

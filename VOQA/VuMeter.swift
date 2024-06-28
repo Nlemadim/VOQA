@@ -23,7 +23,7 @@ struct VUMeterView: View {
             }
         }
         .onReceive(timer) { _ in
-            if quizContext.audioPlayer?.isPlaying == true {
+            if quizContext.questionPlayer.isPlayingQuestion == true {
                 // Randomize the scale for each bar to simulate activity
                 withAnimation {
                     randomScales = randomScales.map { _ in CGFloat.random(in: 0.1...1.0) }

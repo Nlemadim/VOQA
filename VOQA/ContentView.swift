@@ -12,8 +12,8 @@ struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @StateObject private var databaseManager = DatabaseManager.shared
     @StateObject private var networkMonitor = NetworkMonitor.shared
-    @StateObject private var quizContext: QuizContext
-
+    //@StateObject private var quizContext: QuizContext
+    
     // Define all queries
     @Query var standardQuizPackages: [StandardQuizPackage]
     @Query var customQuizPackages: [CustomQuizPackage]
@@ -22,72 +22,46 @@ struct ContentView: View {
     @Query var audioQuizzes: [AudioQuiz]
     @Query var performances: [Performance]
     @Query var voiceFeedbackMessages: [VoiceFeedbackMessages]
-
-    @State private var config = homePageConfig
-    @State private var isSignedIn = false
-
-    init() {
-        let context = QuizContext(state: IdleState())
-        let audioPlayer = AudioContentPlayer(context: context)
-        let quizModerator = QuizModerator(context: context)
-        context.audioPlayer = audioPlayer
-        context.quizModerator = quizModerator
-        _quizContext = StateObject(wrappedValue: context)
-    }
-
+    
+    @State private var config = HomePageConfig.create()  // Use the new method to create the config
+    @State private var selectedTab: Int = 0
+    
+//    init() {
+//        let context = QuizContext.create(state: IdleState())
+//        _quizContext = StateObject(wrappedValue: context)
+//    }
+    
     var body: some View {
-        VStack {
-            if isSignedIn {
-                HomePage(quizContext: quizContext, config: config)
-            } else {
-                SignInView(isSignedIn: $isSignedIn)
-            }
-        }
-        .task {
-            setupDataLayer()
-        }
-        .alert(item: $databaseManager.currentError) { error in
-            Alert(
-                title: Text(error.title ?? "Error"),
-                message: Text(error.message ?? "An unknown error occurred."),
-                dismissButton: .default(Text("OK"))
-            )
-        }
-        .alert(item: $networkMonitor.connectionError) { error in
-            Alert(
-                title: Text(error.title ?? "Network Error"),
-                message: Text(error.message ?? "An unknown network error occurred."),
-                dismissButton: .default(Text("OK"))
-            )
-        }
-        .overlay(
-            databaseManager.showFullPageError ? fullPageErrorView : nil
-        )
-        .environmentObject(quizContext)
+        QuizPlayerPage(selectedTab: $selectedTab, config: config)
+            
+            //HomePage(config: config)
+        
+//        .alert(item: $databaseManager.currentError) { error in
+//            Alert(
+//                title: Text(error.title ?? "Error"),
+//                message: Text(error.message ?? "An unknown error occurred."),
+//                dismissButton: .default(Text("OK"))
+//            )
+//        }
+//        .alert(item: $networkMonitor.connectionError) { error in
+//            Alert(
+//                title: Text(error.title ?? "Network Error"),
+//                message: Text(error.message ?? "An unknown network error occurred."),
+//                dismissButton: .default(Text("OK"))
+//            )
+//        }
+//        .overlay(
+//            databaseManager.showFullPageError ? fullPageErrorView : nil
+//        )
+//        .environmentObject(quizContext)
     }
 }
 
-struct SignInView: View {
-    @Binding var isSignedIn: Bool
-
-    var body: some View {
-        VStack {
-            Text("Sign In")
-                .font(.largeTitle)
-                .padding()
-
-            Button(action: {
-                isSignedIn = true
-            }) {
-                Text("Sign In")
-                    .padding()
-                    .background(Color.blue)
-                    .foregroundColor(.white)
-                    .cornerRadius(10)
-            }
-        }
-    }
-}
+//extension QuizContext: Identifiable {
+//    var id: UUID {
+//        return UUID()
+//    }
+//}
 
 
 
@@ -132,6 +106,51 @@ extension ContentView {
         }
     }
     
+    static func createHomePageConfig() -> HomePageConfig {
+        let packetCover1 = PacketCover(
+            id: UUID(),
+            title: "General Knowledge",
+            titleImage: "IconImage",
+            summaryDesc: "Test your general knowledge with this quiz package.",
+            rating: 4,
+            numberOfRatings: 100,
+            edition: "Basic",
+            curator: "Quiz Master",
+            users: 1000
+        )
+        
+        let packetCover2 = PacketCover(
+            id: UUID(),
+            title: "Science Quiz",
+            titleImage: "IconImage",
+            summaryDesc: "Explore the wonders of science.",
+            rating: 5,
+            numberOfRatings: 150,
+            edition: "Curated",
+            curator: "Science Expert",
+            users: 500
+        )
+        
+        let packetCover3 = PacketCover(
+            id: UUID(),
+            title: "Chemistry Quiz",
+            titleImage: "IconImage",
+            summaryDesc: "Explore the wonders of science.",
+            rating: 5,
+            numberOfRatings: 150,
+            edition: "Curated",
+            curator: "Science Expert",
+            users: 500
+        )
+        
+        return HomePageConfig(
+            topCollectionQuizzes: [packetCover1, packetCover2, packetCover3],
+            currentItem: 0,
+            backgroundImage: "VoqaIcon",
+            galleryItems: [packetCover1, packetCover2, packetCover3]
+        )
+    }
+
     
     var fullPageErrorView: some View {
         VStack {

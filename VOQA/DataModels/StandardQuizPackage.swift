@@ -9,12 +9,20 @@ import Foundation
 import SwiftData
 
 @Model
-class StandardQuizPackage: QuizPackage, QuizPackageProtocol, Decodable {
-    @Attribute(.unique) var id: UUID
+final class StandardQuizPackage: Decodable, Identifiable {
+    
     var title: String
-    var titleImage: String
     var summaryDesc: String
+    var shortTitle: String
+    var firstStarted: Date
+    var completions: Int
+    
+    @Attribute(.externalStorage)
+    var titleImage: Data?
+    
+    @Attribute(.unique) var id: UUID
     @Relationship(deleteRule: .cascade) var topics: [Topic]
+    
     var themeColors: [Int]
     var rating: Int?
     var numberOfRatings: Int?
@@ -25,11 +33,14 @@ class StandardQuizPackage: QuizPackage, QuizPackageProtocol, Decodable {
     @Relationship(deleteRule: .cascade) var audioQuiz: AudioQuiz?
     @Relationship(deleteRule: .cascade) var performance: [Performance] = []
 
-    init(id: UUID = UUID(), title: String, titleImage: String, summaryDesc: String, topics: [Topic] = [], themeColors: [Int] = [], rating: Int? = nil, numberOfRatings: Int? = nil, edition: PackageEdition, curator: String? = nil, users: Int? = nil, category: [QuizCategories] = [], audioQuiz: AudioQuiz? = nil, performance: [Performance] = []) {
+    init(id: UUID = UUID(), title: String, titleImage: Data? = nil, summaryDesc: String, shortTitle: String = "", firstStarted: Date = Date(), completions: Int = 0, topics: [Topic] = [], themeColors: [Int] = [], rating: Int? = nil, numberOfRatings: Int? = nil, edition: PackageEdition, curator: String? = nil, users: Int? = nil, category: [QuizCategories] = [], audioQuiz: AudioQuiz? = nil, performance: [Performance] = []) {
         self.id = id
         self.title = title
         self.titleImage = titleImage
         self.summaryDesc = summaryDesc
+        self.shortTitle = shortTitle
+        self.firstStarted = firstStarted
+        self.completions = completions
         self.topics = topics
         self.themeColors = themeColors
         self.rating = rating
@@ -42,27 +53,15 @@ class StandardQuizPackage: QuizPackage, QuizPackageProtocol, Decodable {
         self.performance = performance
     }
 
-    convenience init(id: UUID) {
-        self.init(id: id, title: "VOQA", titleImage: "defaultImage.png", summaryDesc: "N/A", edition: .basic)
+    convenience init(id: UUID, title: String, titleImage: Data? = nil) {
+        self.init(id: id, title: title, titleImage: titleImage, summaryDesc: "N/A", edition: .basic)
     }
-
-    convenience init(id: UUID, name: String, imageUrl: String) {
-        self.init(id: id, title: name, titleImage: imageUrl, summaryDesc: "N/A", edition: .basic)
-    }
-
-    convenience init(id: UUID, name: String, imageUrl: String, category: [QuizCategories]) {
-        self.init(id: id, title: name, titleImage: imageUrl, summaryDesc: "N/A", edition: .basic, category: category)
-    }
-
-    convenience init(id: UUID, name: String, about: String, imageUrl: String, category: [QuizCategories]) {
-        self.init(id: id, title: name, titleImage: imageUrl, summaryDesc: about, edition: .basic, category: category)
-    }
-
+    
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         id = try container.decode(UUID.self, forKey: .id)
         title = try container.decode(String.self, forKey: .title)
-        titleImage = try container.decode(String.self, forKey: .titleImage)
+        titleImage = try container.decode(Data?.self, forKey: .titleImage)
         summaryDesc = try container.decode(String.self, forKey: .summaryDesc)
         topics = try container.decode([Topic].self, forKey: .topics)
         themeColors = try container.decode([Int].self, forKey: .themeColors)
@@ -74,6 +73,9 @@ class StandardQuizPackage: QuizPackage, QuizPackageProtocol, Decodable {
         category = try container.decode([QuizCategories].self, forKey: .category)
         performance = try container.decode([Performance].self, forKey: .performance)
         audioQuiz = try container.decodeIfPresent(AudioQuiz.self, forKey: .audioQuiz)
+        shortTitle = try container.decode(String.self, forKey: .shortTitle)
+        firstStarted = try container.decode(Date.self, forKey: .firstStarted)
+        completions = try container.decode(Int.self, forKey: .completions)
     }
 
     private enum CodingKeys: String, CodingKey {
@@ -91,5 +93,8 @@ class StandardQuizPackage: QuizPackage, QuizPackageProtocol, Decodable {
         case category
         case performance
         case audioQuiz
+        case shortTitle
+        case firstStarted
+        case completions
     }
 }

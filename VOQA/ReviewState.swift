@@ -18,14 +18,16 @@ class ReviewState: BaseState {
     
     init(action: ReviewAction) {
         self.action = action
+        print("Review State initialized")
     }
     
     override func handleState(context: QuizContext) {
         switch action {
         case .reviewing:
             // Play review feedback message
-            context.activeQuiz = false
-            context.audioPlayer?.playReviewAudio(["review_message.mp3"])
+            context.currentQuestionText = "Reviewing"     
+            context.setState(ReviewState(action: .doneReviewing))
+            //context.questionPlayer.playReviewAudio(["NextQuestionWave"])
         case .doneReviewing:
             // Transition to EndedQuizState
             context.setState(EndedQuizState())

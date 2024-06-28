@@ -17,30 +17,38 @@ class FeedbackMessageState: BaseState {
     }
     
     var type: FeedbackType
+    var feedbackMessages: [VoiceFeedbackMessages] = []
     
     init(type: FeedbackType) {
         self.type = type
+        print("Feedback Player Initialized")
     }
     
     override func handleState(context: QuizContext) {
         switch type {
         case .correctAnswer:
             // Handle playing correct answer feedback message logic
-            playFeedbackAudio(context, fileName: "correctAnswerBell.wav")
+            playFeedbackAudio(context, fileName: "NextQuestionWave.wav")
+            
         case .incorrectAnswer:
             // Handle playing incorrect answer feedback message logic
-            playFeedbackAudio(context, fileName: "wrongAnswerBell.wav")
+            playFeedbackAudio(context, fileName: "showResponderBell.wav")
         case .noResponse:
+            print("No response")
             // Handle playing no response feedback message logic
-            playFeedbackAudio(context, fileName: "errorBell.wav")
+            playFeedbackAudio(context, fileName: "dismissResponderBell.wav")
         case .transcriptionError:
+            print("Transcription Error")
             // Handle playing transcription error feedback message logic
-            playFeedbackAudio(context, fileName: "transcription_error.mp3")
+            playFeedbackAudio(context, fileName: "errorBell.mp3")
         }
         notifyObservers()
     }
     
+    //func setUpVoiceFeedbackMessages()
+    
+    
     private func playFeedbackAudio(_ context: QuizContext, fileName: String) {
-        context.audioPlayer?.playFeedbackAudio(type: type, audioFile: fileName)
+        //context.audioPlayer?.playFeedbackAudio(type: type, audioFile: fileName)
     }
 }

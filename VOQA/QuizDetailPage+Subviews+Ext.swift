@@ -14,7 +14,7 @@ extension QuizDetailPage {
         VStack(alignment: .leading, spacing: 10) {
             headerSection
             buttonsSection
-            categorySection
+//            categorySection
             aboutSection
             footerSection
         }
@@ -37,37 +37,36 @@ extension QuizDetailPage {
                 .frame(maxWidth: .infinity)
                 .hAlign(.center)
             
-            Text(package.edition.descr)
+            Text(package.edition)
                 .font(.caption)
                 .foregroundStyle(.secondary)
                 .hAlign(.center)
             
-            if let curator = package.curator {
-                Text("Curated by: " + curator)
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                    .hAlign(.center)
-            }
+            let curator = package.curator
+            Text("Curated by: " + curator)
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                .hAlign(.center)
             
-            if let users = package.users {
-                Text("Users: \(users)")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                    .hAlign(.center)
-            }
             
-            if let rating = package.rating {
-                HStack {
-                    ForEach(1...5, id: \.self) { index in
-                        if index <= rating {
-                            Image(systemName: "star.fill")
-                                .imageScale(.small)
-                                .foregroundStyle(.yellow)
-                        } else {
-                            Image(systemName: "star")
-                                .imageScale(.small)
-                                .foregroundStyle(.yellow)
-                        }
+            let users = package.users
+            Text("Users: \(users)")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                .hAlign(.center)
+            
+            
+            let rating = package.rating
+            HStack {
+                ForEach(1...5, id: \.self) { index in
+                    if index <= rating {
+                        Image(systemName: "star.fill")
+                            .imageScale(.small)
+                            .foregroundStyle(.yellow)
+                    } else {
+                        Image(systemName: "star")
+                            .imageScale(.small)
+                            .foregroundStyle(.yellow)
                     }
                 }
             }
@@ -84,7 +83,7 @@ extension QuizDetailPage {
                 .padding(.horizontal)
                 .padding()
                 .padding(.top)
-                
+                .hAlign(.center)
             
             PlainClearButton(color: generator.dominantBackgroundColor, label: "Download") {
                 
@@ -96,32 +95,32 @@ extension QuizDetailPage {
         .offset(y: -40)
     }
     
-    @ViewBuilder
-    internal var categorySection: some View {
-        VStack {
-            Text("Category")
-                .fontWeight(.bold)
-                .foregroundStyle(.primary)
-                .hAlign(.leading)
-            
-            HStack(spacing: 16.0) {
-                ForEach(package.category, id: \.self) { category in
-                    Text(category.descr)
-                        .font(.system(size: 10))
-                        .fontWeight(.light)
-                        .lineLimit(1)
-                        .padding(10)
-                        .background(
-                            RoundedRectangle(cornerRadius: 10)
-                                .stroke(lineWidth: 0.5)
-                        )
-                }
-            }
-            .hAlign(.leading)
-            .multilineTextAlignment(.leading)
-        }
-        .padding()
-    }
+//    @ViewBuilder
+//    internal var categorySection: some View {
+//        VStack {
+//            Text("Category")
+//                .fontWeight(.bold)
+//                .foregroundStyle(.primary)
+//                .hAlign(.leading)
+//            
+//            HStack(spacing: 16.0) {
+//                ForEach(package.category, id: \.self) { category in
+//                    Text(category.descr)
+//                        .font(.system(size: 10))
+//                        .fontWeight(.light)
+//                        .lineLimit(1)
+//                        .padding(10)
+//                        .background(
+//                            RoundedRectangle(cornerRadius: 10)
+//                                .stroke(lineWidth: 0.5)
+//                        )
+//                }
+//            }
+//            .hAlign(.leading)
+//            .multilineTextAlignment(.leading)
+//        }
+//        .padding()
+//    }
     
     @ViewBuilder
     internal var aboutSection: some View {

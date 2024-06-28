@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 import Speech
+import Combine
 
 class SpeechManager: ObservableObject {
     enum RecognizerError: Error {
@@ -22,13 +23,12 @@ class SpeechManager: ObservableObject {
             case .notAuthorizedToRecognize: return "Not authorized to recognize speech"
             case .notPermittedToRecord: return "Not permitted to record audio"
             case .recognizerIsUnavailable: return "Recognizer is unavailable"
-                
             }
         }
     }
     
     @Published var transcript: String = ""
-    
+    @Published var isMicrophoneReady: Bool = false
     
     public var isRecording = false
     
@@ -41,7 +41,7 @@ class SpeechManager: ObservableObject {
     private var recognitionRequest: SFSpeechAudioBufferRecognitionRequest?
     
     init() {
-        //MARK TODO: Dynamically Pass in Locale Identifier based on phone settings
+        //MARK: TODO: Dynamically Pass in Locale Identifier based on phone settings
         recognizer = SFSpeechRecognizer(locale: Locale(identifier: "en-US"))
         
         Task(priority: .background) {
@@ -102,7 +102,26 @@ class SpeechManager: ObservableObject {
             }
         }
     }
+    
+    func prepareMicrophone() {
+        print("Preparing Mic")
+        DispatchQueue.global(qos: .background).async { [weak self] in
+            do {
+                try Self.prepareAudioSession()
+                self?.isMicrophoneReady = true
+                print("Mic Ready: \(String(describing: self?.isMicrophoneReady))")
+            } catch {
+                self?.listenForError(error)
+                self?.isMicrophoneReady = false
+            }
+        }
+    }
 
+    private static func prepareAudioSession() throws {
+        let audioSession = AVAudioSession.sharedInstance()
+        try audioSession.setCategory(.record, mode: .measurement, options: .duckOthers)
+        try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
+    }
 
     private static func prepareEngine() throws -> (AVAudioEngine, SFSpeechAudioBufferRecognitionRequest) {
         let audioEngine = AVAudioEngine()
@@ -132,7 +151,7 @@ class SpeechManager: ObservableObject {
     }
     
     private func listenForAnswer(_ message: String) {
-            transcript = message
+        transcript = message
     }
     
     private func listenForError(_ error: Error) {
@@ -152,7 +171,7 @@ class SpeechManager: ObservableObject {
         audioEngine = nil
         recognitionRequest = nil
         task = nil
-        
+        isMicrophoneReady = false
     }
 }
 
@@ -175,4 +194,3 @@ extension AVAudioSession {
         }
     }
 }
-

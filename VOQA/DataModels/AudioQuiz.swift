@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 @Model
-final class AudioQuiz: AudioQuizProtocol, Decodable {
+final class AudioQuiz: Decodable {
     @Attribute(.unique) var id: UUID
     var quizTitle: String
     var titleImage: String
@@ -19,7 +19,7 @@ final class AudioQuiz: AudioQuizProtocol, Decodable {
     var userHighScore: Int
     var ratings: Int
     var currentQuizTopicIDs: [String] = []
-    var topics: [Topic]? = []
+    @Relationship(deleteRule: .cascade) var topics: [Topic] = []
 
     init(
         id: UUID = UUID(),
@@ -64,12 +64,12 @@ final class AudioQuiz: AudioQuizProtocol, Decodable {
         id = try container.decode(UUID.self, forKey: .id)
         quizTitle = try container.decode(String.self, forKey: .quizTitle)
         titleImage = try container.decode(String.self, forKey: .titleImage)
-        shortTitle = try container.decode(String.self, forKey: .shortTitle)
+        shortTitle = try container.decodeIfPresent(String.self, forKey: .shortTitle) ?? "VOQA"
         firstStarted = try container.decode(Date.self, forKey: .firstStarted)
         completions = try container.decode(Int.self, forKey: .completions)
         userHighScore = try container.decode(Int.self, forKey: .userHighScore)
         ratings = try container.decode(Int.self, forKey: .ratings)
-        currentQuizTopicIDs = try container.decode([String].self, forKey: .currentQuizTopicIDs)
-        topics = try container.decode([Topic].self, forKey: .topics)
+        currentQuizTopicIDs = try container.decodeIfPresent([String].self, forKey: .currentQuizTopicIDs) ?? []
+        topics = try container.decodeIfPresent([Topic].self, forKey: .topics) ?? []
     }
 }

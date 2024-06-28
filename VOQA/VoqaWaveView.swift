@@ -40,7 +40,7 @@ struct VoqaWaveView: View {
             .blendMode(.lighten)
             .drawingGroup()
         }
-        .onChange(of: quizContext.audioPlayer?.isPlaying) {_, _ in
+        .onChange(of: quizContext.isPlaying) {_, _ in
             voqaWave = VoqaWave(numWaves: colors.count, power: power)
             toggleTimerBasedOnAudioPlayerState()
         }
@@ -53,7 +53,7 @@ struct VoqaWaveView: View {
     }
     
     private func toggleTimerBasedOnAudioPlayerState() {
-        if quizContext.audioPlayer?.isPlaying == true {
+        if quizContext.isPlaying == true {
             // Start or continue the timer
             if timerCancellable == nil {
                 timerCancellable = timer.connect()

@@ -34,8 +34,8 @@ class AudioContentPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate, Sta
         configureAudioSession()
         loadCurrentQuestionIndex()
         context.state.addObserver(self)
-        context.audioPlayer = self // Set the audioPlayer reference in context
-        
+        //context.audioPlayer = self // Set the audioPlayer reference in context
+        print("AudioPlayers Initialized")
     }
 
     func stateDidChange(to newState: any QuizState) {

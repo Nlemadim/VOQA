@@ -9,7 +9,7 @@ import SwiftUI
 import AVFoundation
 
 struct NowPlayingView: View {
-    var nowPlaying: (any AudioQuizProtocol)?
+    var nowPlaying: PacketCover?
     var generator: ColorGenerator
     var questionCount: Int
     var currentQuestionIndex: Int
@@ -21,35 +21,35 @@ struct NowPlayingView: View {
     
     var body: some View {
         HStack {
-//            VStack(spacing: 4) {
-//                Image(nowPlaying?.titleImage ?? "IconImage")
-//                    .resizable()
-//                    .aspectRatio(contentMode: .fit)
-//                    .cornerRadius(10)
-//                    .accessibilityLabel(Text(nowPlaying?.quizTitle ?? "Quiz Image"))
-//            }
-//            .frame(height: 100)
-//            .overlay {
-//                if isDownloading {
-//                    ProgressView {
-//                        Text("Downloading")
-//                    }
-//                    .foregroundStyle(.white)
-//                    .accessibilityLabel(Text("Downloading"))
-//                }
-//            }
+            VStack(spacing: 4) {
+                Image(nowPlaying?.titleImage ?? "IconImage")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .cornerRadius(10)
+                    .accessibilityLabel(Text(nowPlaying?.title ?? "Quiz Image"))
+            }
+            .frame(height: 100)
+            .overlay {
+                if isDownloading {
+                    ProgressView {
+                        Text("Downloading")
+                    }
+                    .foregroundStyle(.white)
+                    .accessibilityLabel(Text("Downloading"))
+                }
+            }
             
             VStack(alignment: .leading, spacing: 8) {
-                Text(nowPlaying?.quizTitle.uppercased() ?? "VOQA")
+                Text(nowPlaying?.title.uppercased() ?? "VOQA")
                     .font(.footnote)
                     .fontWeight(.semibold)
                     .accessibilityAddTraits(.isHeader)
                 
                 HStack(spacing: 12) {
-                    Text(quizContext.audioPlayer?.isPlaying == true ? "Playing" : "Paused")
+                    Text(quizContext.isPlaying ? "Playing" : "Paused")
                         .foregroundStyle(.secondary)
                         .font(.footnote)
-                        .accessibilityLabel(Text(quizContext.audioPlayer?.isPlaying == true ? "Playing" : "Paused"))
+                        .accessibilityLabel(Text(quizContext.isPlaying ? "Playing" : "Paused"))
                     
                     Image(systemName: outputDeviceImageName())
                         .foregroundColor(.secondary)
@@ -57,26 +57,18 @@ struct NowPlayingView: View {
                         .accessibilityLabel(Text("Sound output device: \(outputDeviceDescription())"))
                 }
                 
-                Text("Completed Quizzes: \(nowPlaying?.completions ?? 0)")
+                Text("Completed Quizzes: \(nowPlaying?.users ?? 0)")
                     .font(.footnote)
                     .foregroundStyle(.secondary)
-                    .accessibilityLabel(Text("Completed Quizzes: \(nowPlaying?.completions ?? 0)"))
+                    .accessibilityLabel(Text("Completed Quizzes: \(nowPlaying?.users ?? 0)"))
                 
                 HStack {
                     VUMeterView(quizContext: quizContext)
                         .hAlign(.trailing)
-                    
-//                    CircularPlayButton(
-//                        quizContext: quizContext,
-//                        isDownloading: $isDownloading,
-//                        color: generator.dominantBackgroundColor,
-//                        playAction: playAction
-//                    )
-//                    .hAlign(.trailing)
                 }
             }
             .padding(.top, 5)
-            .frame(width: .infinity)
+            .frame(maxWidth: .infinity)
             .padding(.horizontal, 4)
             
             Spacer()

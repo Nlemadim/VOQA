@@ -10,7 +10,7 @@ import Foundation
 struct GalleryItem: Decodable {
     var title: String
     var subtitle: String?
-    var quizzes: [any QuizPackageProtocol]
+    var quizzes: [StandardQuizPackage]
     
     enum CodingKeys: String, CodingKey {
         case title
@@ -18,7 +18,7 @@ struct GalleryItem: Decodable {
         case quizzes
     }
     
-    init(title: String, subtitle: String? = nil, quizzes: [any QuizPackageProtocol]) {
+    init(title: String, subtitle: String? = nil, quizzes: [StandardQuizPackage]) {
         self.title = title
         self.subtitle = subtitle
         self.quizzes = quizzes
@@ -33,36 +33,78 @@ struct GalleryItem: Decodable {
     }
 }
 
-struct HomePageConfig: Decodable {
-    var topCollectionQuizzes: [any QuizPackageProtocol]
-    var nowPlaying: (any AudioQuizProtocol)?
+struct HomePageConfig {
+    var topCollectionQuizzes: [PacketCover]
     var currentItem: Int
     var backgroundImage: String
-    var galleryItems: [GalleryItem]
+    var galleryItems: [PacketCover]
     
-    enum CodingKeys: String, CodingKey {
-        case topCollectionQuizzes
-        case nowPlaying
-        case currentItem
-        case backgroundImage
-        case galleryItems
-    }
-    
-    init(topCollectionQuizzes: [any QuizPackageProtocol], nowPlaying: (any AudioQuizProtocol)?, currentItem: Int, backgroundImage: String, galleryItems: [GalleryItem]) {
-        self.topCollectionQuizzes = topCollectionQuizzes
-        self.nowPlaying = nowPlaying
-        self.currentItem = currentItem
-        self.backgroundImage = backgroundImage
-        self.galleryItems = galleryItems
-    }
-    
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        let quizPackages = try container.decode([StandardQuizPackage].self, forKey: .topCollectionQuizzes)
-        topCollectionQuizzes = quizPackages
-        nowPlaying = try container.decodeIfPresent(AudioQuiz.self, forKey: .nowPlaying)
-        currentItem = try container.decode(Int.self, forKey: .currentItem)
-        backgroundImage = try container.decode(String.self, forKey: .backgroundImage)
-        galleryItems = try container.decode([GalleryItem].self, forKey: .galleryItems)
+    static func create() -> HomePageConfig {
+        let packetCover1 = PacketCover(
+            id: UUID(),
+            title: "General Knowledge",
+            titleImage: "IconImage",
+            summaryDesc: "Test your general knowledge with this quiz package.",
+            rating: 4,
+            numberOfRatings: 100,
+            edition: "basic",
+            curator: "Quiz Master",
+            users: 1000
+        )
+
+        let packetCover2 = PacketCover(
+            id: UUID(),
+            title: "Science Quiz",
+            titleImage: "IconImage",
+            summaryDesc: "Explore the wonders of science.",
+            rating: 5,
+            numberOfRatings: 150,
+            edition: "curated",
+            curator: "Science Expert",
+            users: 500
+        )
+
+        let packetCover3 = PacketCover(
+            id: UUID(),
+            title: "Chemistry Quiz",
+            titleImage: "IconImage",
+            summaryDesc: "Dive into the world of chemistry.",
+            rating: 5,
+            numberOfRatings: 150,
+            edition: "curated",
+            curator: "Chemistry Expert",
+            users: 500
+        )
+
+        let packetCover4 = PacketCover(
+            id: UUID(),
+            title: "History Quiz",
+            titleImage: "IconImage",
+            summaryDesc: "Explore the events of the past.",
+            rating: 4,
+            numberOfRatings: 120,
+            edition: "curated",
+            curator: "History Expert",
+            users: 450
+        )
+
+        let packetCover5 = PacketCover(
+            id: UUID(),
+            title: "Math Quiz",
+            titleImage: "IconImage",
+            summaryDesc: "Test your mathematics skills.",
+            rating: 5,
+            numberOfRatings: 200,
+            edition: "basic",
+            curator: "Math Guru",
+            users: 700
+        )
+
+        return HomePageConfig(
+            topCollectionQuizzes: [packetCover1, packetCover2, packetCover3],
+            currentItem: 0,
+            backgroundImage: "VoqaIcon",
+            galleryItems: [packetCover1, packetCover2, packetCover3, packetCover4, packetCover5]
+        )
     }
 }

@@ -11,32 +11,47 @@ struct FullScreenPlayer: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var generator = ColorGenerator()
     @ObservedObject internal var quizContext: QuizContext
+    @State var buttonSelected: String? = ""
     
     @Binding var expandSheet: Bool
+    var configuration: HomePageConfig
     
     var body: some View {
         NavigationView {
             ZStack(alignment: .topLeading) {
                 VStack(alignment: .leading, spacing: 10) {
-                    Divider().activeGlow(generator.dominantLightToneColor, radius: 0.5)
-                        .padding()
+                   
                     GeometryReader { geometry in
                         VStack(spacing: 0) {
                             if quizContext.countdownTime > 0 {
-                              
-                                heroView
-                                    .frame(width: geometry.size.width, height: geometry.size.height / 3)
+                                
+                                VStack {
+                                    Divider().activeGlow(generator.dominantLightToneColor, radius: 0.5)
+                                       
+                                    heroView
+                                        .frame(width: geometry.size.width, height: geometry.size.height / 3)
+                                    
+                                    Divider().activeGlow(generator.dominantLightToneColor, radius: 0.5)
+                                    
+                                    playerControlButtons
+                                }
+                                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                                
                             } else {
                                 headerSection
                                     .frame(width: geometry.size.width, height: geometry.size.height / 3)
                                 Divider().activeGlow(generator.dominantLightToneColor, radius: 0.5)
+                                
+                                mainViewSection
+                                
+                                Divider().activeGlow(generator.dominantLightToneColor, radius: 0.5)
+                                playerControlButtons
                             }
-                            mainViewSection
+                            
                         }
                         .frame(width: geometry.size.width, height: geometry.size.height)
                     }
-                    Divider().activeGlow(generator.dominantLightToneColor, radius: 0.5)
-                    playerControlButtons
+                   
                 }
                 .toolbar {
                     ToolbarItem(placement: .navigationBarTrailing) {
@@ -57,10 +72,19 @@ struct FullScreenPlayer: View {
                 }
                 .background(generator.dominantBackgroundColor.gradient)
             }
+            .sheet(isPresented: .constant(presentResponseModal()), content: {
+                ResponseModalPresenter(context: quizContext, selectedOption: $buttonSelected)
+                    .presentationDetents([.height(150)])
+            })
             .onAppear {
+               
                 generator.updateAllColors(fromImageNamed: quizContext.quizTitleImage.isEmptyOrWhiteSpace ? "VoqaIcon" : quizContext.quizTitleImage)
             }
         }
+    }
+    
+    func presentResponseModal() -> Bool {
+        quizContext.isListening ? true : false
     }
 
     private func minimizeScreen() {
@@ -78,7 +102,7 @@ struct FullScreenPlayer: View {
                 .frame(height: 200)
                 .padding()
             
-            Text(quizContext.hasMoreQuestions ? "Get Ready!" : "Select a quiz to get started")
+            Text(quizContext.countdownTime > 0 ? "Start" : quizContext.countdownTime < 2 ? "Here we go!" : "Get Ready!" )
                 .font(.title3)
                 .multilineTextAlignment(.center)
                 .fontWeight(.bold)
@@ -164,17 +188,30 @@ struct FullScreenPlayer: View {
             questionsComplete: $quizContext.isLastQuestion,
             themeColor: generator.enhancedDominantColor,
             recordAction: {
-                // Implement record action
+                
             },
             playAction: {
-                // Implement play action
+                
+                DispatchQueue.main.async {
+                    print("Pressed play")
+                    self.quizContext.startQuiz()
+//                    if quizContext.activeQuiz {
+//                        
+//                        quizContext.questionPlayer.pausePlayback()
+//                        
+//                    } else {
+//                        
+//                        quizContext.questionPlayer.playQuestions(quizContext.questions, in: quizContext)
+//                    }
+                }
             },
             nextAction: {
-                // Implement next action
+                
             }
         )
         .hAlign(.center)
     }
+
 }
 
 
@@ -220,56 +257,6 @@ struct TranscriptView: View {
         }
     }
     
-//    func feedbackSelector(_ interactionState: InteractionState)  {
-//        switch interactionState {
-//        case .isNowPlaying:
-//            showTextFeedback = true
-//            showImageFeedback = false
-//            
-//        case .isListening:
-//            showTextFeedback = false
-//            showImageFeedback = true
-//            
-//        case .errorResponse:
-//            showTextFeedback = false
-//            showImageFeedback = true
-//            
-//        case .isCorrectAnswer:
-//            showImageFeedback = true
-//            
-//        case .isIncorrectAnswer:
-//            showTextFeedback = true
-//            showImageFeedback = false
-//            
-//        case .nowPlayingCorrection:
-//            showTextFeedback = true
-//            showImageFeedback = false
-//            
-//        default:
-//            showTextFeedback = false
-//            showImageFeedback = false
-//        }
-//    }
-    
-//    func interactionStateFeedBack(_ interactionState: InteractionState) -> String {
-//        switch interactionState {
-//            
-//        case .isListening:
-//            return "mic.fill"
-//        case .errorResponse:
-//            return "ear.trianglebadge.exclamationmark"
-//        case .isCorrectAnswer:
-//            return "hand.thumbsup.fill"
-//        case .isIncorrectAnswer:
-//            return "hand.thumbsdown.fill"
-//        case .resumingPlayback:
-//            return "book.fill"
-//        case .nowPlayingCorrection:
-//            return "book.fill"
-//        default:
-//            return ""
-//        }
-//    }
     
     private func startTypingAnimation(for text: String) {
         var displayedText = ""
@@ -316,7 +303,7 @@ struct PlayerControlButtons: View {
                 
                 
                 
-                CircularPlayButton(quizContext: quizContext, isDownloading: .constant(false), color: themeColor ?? .clear, playAction: {})
+                CircularPlayButton(quizContext: quizContext, isDownloading: .constant(false), color: themeColor ?? .clear, playAction: { playAction()})
                 
                 Spacer()
                 // Next/End Button

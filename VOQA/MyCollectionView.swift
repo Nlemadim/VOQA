@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct MyCollectionView: View {
-    var quizzes: [any QuizPackageProtocol]
+    var quizzes: [PacketCover]
     @Binding var currentItem: Int
     @ObservedObject var generator: ColorGenerator
     @Binding var backgroundImage: String
@@ -44,46 +44,40 @@ struct MyCollectionView: View {
                             .padding(.horizontal, 8)
                             .accessibilityLabel(Text(quiz.title))
                         
-                        Text(quiz.edition.descr)
+                        Text(quiz.edition)
                             .font(.caption)
                             .foregroundStyle(.secondary)
                             .hAlign(.center)
-                            .accessibilityLabel(Text(quiz.edition.descr))
+                            .accessibilityLabel(Text(quiz.edition))
                         
-                        if let curator = quiz.curator {
-                            Text("Curated by: " + curator)
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
-                                .hAlign(.center)
-                                .accessibilityLabel(Text("Curated by: \(curator)"))
-                        }
+                        Text("Curated by: \(quiz.curator)")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                            .hAlign(.center)
+                            .accessibilityLabel(Text("Curated by: \(quiz.curator)"))
                         
-                        if let users = quiz.users {
-                            Text("Users: \(users)")
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
-                                .hAlign(.center)
-                                .accessibilityLabel(Text("Users: \(users)"))
-                        }
+                        Text("Users: \(quiz.users)")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                            .hAlign(.center)
+                            .accessibilityLabel(Text("Users: \(quiz.users)"))
                         
-                        if let rating = quiz.rating {
-                            HStack {
-                                ForEach(1...5, id: \.self) { index in
-                                    if index <= rating {
-                                        Image(systemName: "star.fill")
-                                            .imageScale(.small)
-                                            .foregroundStyle(.yellow)
-                                            .accessibilityLabel(Text("Star filled"))
-                                    } else {
-                                        Image(systemName: "star")
-                                            .imageScale(.small)
-                                            .foregroundStyle(.secondary)
-                                            .accessibilityLabel(Text("Star"))
-                                    }
+                        HStack {
+                            ForEach(1...5, id: \.self) { index in
+                                if index <= quiz.rating {
+                                    Image(systemName: "star.fill")
+                                        .imageScale(.small)
+                                        .foregroundStyle(.yellow)
+                                        .accessibilityLabel(Text("Star filled"))
+                                } else {
+                                    Image(systemName: "star")
+                                        .imageScale(.small)
+                                        .foregroundStyle(.secondary)
+                                        .accessibilityLabel(Text("Star"))
                                 }
                             }
-                            .padding(.bottom)
                         }
+                        .padding(.bottom)
                     }
                     .padding(.bottom)
                     .onTapGesture {
@@ -97,6 +91,7 @@ struct MyCollectionView: View {
         }
     }
 }
+
 
 
 struct CustomContentUnavailableView: View {

@@ -14,9 +14,9 @@ struct QuizDetailPage: View {
     @StateObject internal var generator = ColorGenerator()
     @Binding var selectedTab: Int
     
-    var package: any QuizPackageProtocol
+    var package: PacketCover
     
-    init(package: any QuizPackageProtocol, selectedTab: Binding<Int>) {
+    init(package: PacketCover, selectedTab: Binding<Int>) {
         self.package = package
         _selectedTab = selectedTab
     }

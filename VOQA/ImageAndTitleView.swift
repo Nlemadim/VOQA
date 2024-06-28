@@ -10,8 +10,8 @@ import SwiftUI
 struct ImageAndTitleView: View {
     var title: String
     var titleImage: String
-    let tapAction: (any QuizPackageProtocol) -> Void
-    var quiz: any QuizPackageProtocol // Assume this is passed to the view
+    let tapAction: (PacketCover) -> Void
+    var packetCover: PacketCover
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -30,29 +30,29 @@ struct ImageAndTitleView: View {
                     .multilineTextAlignment(.leading)
                     .accessibilityLabel(Text(title))
                 
-                Text(quiz.edition.descr)
+                Text(packetCover.edition)
                     .font(.caption)
                     .foregroundColor(.primary)
-                    .accessibilityLabel(Text(quiz.edition.descr))
+                    .accessibilityLabel(Text(packetCover.edition))
                 
-                if let curator = quiz.curator {
-                    Text("Curated by: " + curator)
+                if !packetCover.curator.isEmptyOrWhiteSpace {
+                    Text("Curated by: " + packetCover.curator)
                         .font(.caption)
                         .foregroundColor(.primary)
-                        .accessibilityLabel(Text("Curated by: \(curator)"))
+                        .accessibilityLabel(Text("Curated by: \(packetCover.curator)"))
                 }
                 
-                if let users = quiz.users {
-                    Text("\(users) users")
+                if packetCover.users > 0 {
+                    Text("\(packetCover.users) users")
                         .font(.caption)
                         .foregroundColor(.primary)
-                        .accessibilityLabel(Text("\(users) users"))
+                        .accessibilityLabel(Text("\(packetCover.users) users"))
                 }
                 
-                if let rating = quiz.rating {
+                if packetCover.rating > 0 {
                     HStack(spacing: 2) {
                         ForEach(1...5, id: \.self) { index in
-                            if index <= rating {
+                            if index <= packetCover.rating {
                                 Image(systemName: "star.fill")
                                     .imageScale(.small)
                                     .foregroundColor(.yellow)
@@ -73,13 +73,9 @@ struct ImageAndTitleView: View {
         .padding(10)
         .padding(.bottom, 20)
         .onTapGesture {
-            tapAction(quiz)
+            tapAction(packetCover)
         }
         .accessibilityElement(children: .combine) // Combine all elements into a single accessibility element
         .accessibilityLabel(Text("Quiz: \(title)"))
     }
 }
-
-//#Preview {
-//    ImageAndTitleView(title: <#String#>, titleImage: <#String#>, tapAction: <#(any QuizPackageProtocol) -> Void#>, quiz: <#any QuizPackageProtocol#>)
-//}

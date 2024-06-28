@@ -23,7 +23,7 @@ struct CircularPlayButton: View {
                 ProgressView()
                     .progressViewStyle(CircularProgressViewStyle(tint: .white))
             } else {
-                Image(systemName: quizContext.audioPlayer?.isPlaying == true ? "pause.fill" : "play.fill")
+                Image(systemName: quizContext.isPlaying == true ? "pause.fill" : "play.fill")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 22.5, height: 22.5)
@@ -39,8 +39,8 @@ struct CircularPlayButton: View {
                 .stroke(Color.white, lineWidth: 1)
         )
         .disabled(isDownloading)
-        .accessibilityLabel(imageLabel ?? (quizContext.audioPlayer?.isPlaying == true ? "Pause" : "Play"))
-        .accessibilityHint(isDownloading ? "Downloading..." : (quizContext.audioPlayer?.isPlaying == true ? "Tap to pause" : "Tap to play"))
+        .accessibilityLabel(imageLabel ?? (quizContext.isPlaying == true ? "Pause" : "Play"))
+        .accessibilityHint(isDownloading ? "Downloading..." : (quizContext.isPlaying == true ? "Tap to pause" : "Tap to play"))
     }
 }
 
