@@ -17,7 +17,7 @@ class QuizModerator: NSObject, ObservableObject, AVAudioPlayerDelegate, StateObs
     
     var isQandA = UserDefaultsManager.isQandAEnabled() // returns a bool to know if to play the answer or not
     var context: QuizContext?
-    private var action: ModeratorAction?
+    var action: ModeratorAction?
     var responseTime: TimeInterval = 5.0 // Default response time
     private var audioPlayer: AVAudioPlayer?
     var observers: [StateObserver] = []
@@ -35,82 +35,57 @@ class QuizModerator: NSObject, ObservableObject, AVAudioPlayerDelegate, StateObs
     private func performAction(_ action: ModeratorAction, context: QuizContext) {
         switch action {
         case .validateSpokenResponse:
-            //Tried Using context.@Published var currentQuestionID. Will invistigate why i cant track the question this way
-            let question = context.questionPlayer.questions[context.questionPlayer.currentQuestionIndex]
-            validateResponse(context.spokenAnswerOption, question: question)
+            print("Moderator validateSpokenResponse action triggered")
+            validateResponse(context.spokenAnswerOption, for: context.currentQuestionId ?? UUID())
         }
     }
 
     func startQuiz() {
         context?.activeQuiz = true
         context?.setState(StartedQuizState())
-        // Other initialization logic for starting a quiz
     }
     
-    func validateResponse(_ response: String, question: Question) {
-        print("Moderator Hit")
-        let isQandA = self.isQandA
-
-        DispatchQueue.main.async {
-        
-            if response.lowercased().isEmptyOrWhiteSpace {
-                print("No response!")
-                if isQandA {
-                    self.playNoResponseCallout()
-                } else {
-                    self.transitionToNextState()
-                }
-            } else if response.lowercased() == question.correctOption.lowercased() {
-                print("Correct answer!")
-                if isQandA {
-                    self.playCorrectAnswerCallout()
-                } else {
-                    self.transitionToNextState()
-                }
-            } else {
-                print("Incorrect answer.")
-                if isQandA {
-                    self.playWrongAnswerCallout()
-                } else {
-                    self.transitionToNextState()
-                }
-            }
-        }
-    }
 
     func validateResponse(_ response: String, for questionId: UUID) {
-        print("Moderator Hit")
+        print("Moderator validateResponse called with response: \(response) for questionId: \(questionId)")
         
         guard let question = context?.questions.first(where: { $0.id == questionId }) else {
-            print("Question not found")
-            print("\(String(describing: context?.questions.count))")
-            print("\(String(describing: context?.currentQuestionId))")
-            print("Moderating Question: \(questionId)")
+            print("No question found for the given questionId")
             return
         }
-
+        
+        print("Correct answer for question: \(question.correctOption)")
+        
         if response.lowercased().isEmptyOrWhiteSpace {
+            print("Response is empty or whitespace")
             if isQandA {
+                print("isQandA is true, playing no response callout")
                 playNoResponseCallout()
             } else {
+                print("isQandA is false, transitioning to next state")
                 transitionToNextState()
             }
         } else if response.lowercased() == question.correctOption.lowercased() {
-            print("Correct answer!")
+            print("Response is correct")
             if isQandA {
+                print("isQandA is true, playing correct answer callout")
                 playCorrectAnswerCallout()
             } else {
+                print("isQandA is false, transitioning to next state")
                 transitionToNextState()
             }
         } else {
-            print("Incorrect answer.")
+            print("Response is incorrect")
             if isQandA {
+                print("isQandA is true, playing wrong answer callout")
                 playWrongAnswerCallout()
             } else {
+                print("isQandA is false, transitioning to next state")
                 transitionToNextState()
             }
         }
     }
+
 
     private func playCorrectAnswerCallout() {
         playSound(fileName: "correctAnswerBell", fileType: "wav")
@@ -125,20 +100,35 @@ class QuizModerator: NSObject, ObservableObject, AVAudioPlayerDelegate, StateObs
     }
 
     private func transitionToNextState() {
-        print("Checking question status")
-        guard let context = context else { return }
+        print("Moderator transitionToNextState called")
+        
+        guard let context = context else {
+            print("Context is nil, exiting transitionToNextState")
+            return
+        }
+        
+        print("Current Question Index: \(context.questionPlayer.currentQuestionIndex)")
+        print("Total Questions: \(context.questionPlayer.questions.count)")
+        print("Has More Questions: \(context.questionPlayer.hasMoreQuestions)")
+        
         if context.questionPlayer.hasMoreQuestions {
-            
             DispatchQueue.main.async {
                 context.hasMoreQuestions = true
                 print("Proceeding with quiz")
                 context.questionPlayer.currentQuestionIndex += 1
                 context.updateQuestionCounter(questionIndex: context.questionPlayer.currentQuestionIndex, count: context.questions.count)
-                context.setState(QuestionPlayer(action: .playNextQuestion))
+                if let nextQuestion = context.questionPlayer.questions[safe: context.questionPlayer.currentQuestionIndex] {
+                    context.updateCurrentQuestionId(nextQuestion.id)
+                }
+                context.setState(context.questionPlayer)
+                // just added this line
+                context.questionPlayer.performAction(.playNextQuestion, context: context)
+                print("Set state to existing QuestionPlayer with action .playNextQuestion")
             }
         } else {
             context.hasMoreQuestions = false
             context.setState(ReviewState(action: .reviewing))
+            print("Set state to ReviewState with action .reviewing")
         }
     }
 

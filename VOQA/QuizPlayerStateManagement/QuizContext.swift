@@ -19,7 +19,6 @@ class QuizContext: ObservableObject, QuizState {
     }
 
     var observers: [StateObserver] = []
-    
     var questionPlayer: QuestionPlayer
     var quizModerator: QuizModerator
     
@@ -50,6 +49,8 @@ class QuizContext: ObservableObject, QuizState {
         self.state = state
         self.questionPlayer = questionPlayer
         self.quizModerator = quizModerator
+        self.questionPlayer.context = self
+        self.quizModerator.context = self
         setupObservers()
     }
     
@@ -62,11 +63,12 @@ class QuizContext: ObservableObject, QuizState {
     }
     
     func setState(_ state: QuizState) {
+        print("Setting state to \(type(of: state))")
         self.state = state
         self.state.handleState(context: self)
         notifyObservers()
     }
-    
+
     func startQuiz() {
         print("Context Player Hit")
         guard !self.questions.isEmpty else {
@@ -98,6 +100,11 @@ class QuizContext: ObservableObject, QuizState {
                 self.questionCounter = "Ready to play \(self.questions.count) questions"
             }
         }
+    }
+    
+    func updateCurrentQuestionId(_ questionId: UUID) {
+        self.currentQuestionId = questionId
+        print("Updated currentQuestionId to \(questionId)")
     }
     
     func updateQuizDetails() {

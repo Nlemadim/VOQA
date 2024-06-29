@@ -34,22 +34,6 @@ class IdleState: BaseState {
     }
 }
 
-/// State representing the downloading state of the quiz.
-class DownloadingState: BaseState {
-    override func handleState(context: QuizContext) {
-        // Handle downloading state logic
-        notifyObservers()
-    }
-}
-
-/// State representing the finished downloading state of the quiz.
-class FinishedDownloadingState: BaseState {
-    override func handleState(context: QuizContext) {
-        // Handle finished downloading state logic
-        notifyObservers()
-    }
-}
-
 
 /// State representing the awaiting response state of the quiz.
 class AwaitingResponseState: BaseState {
@@ -67,78 +51,21 @@ class ProcessingState: BaseState {
     }
 }
 
-/// State representing the response-related state of the quiz.
-class ResponseState: BaseState {
-    enum ResponseType {
-        case hasResponded
-        case noResponse
-        case errorResponse
-        case successfulResponse
-        case errorTranscription
-        case successfulTranscription
-        case correctAnswer
-        case incorrectAnswer
-    }
-    
-    var type: ResponseType
-    
-    init(type: ResponseType) {
-        self.type = type
-    }
-    
+/// State representing the started quiz state of the quiz.
+class StartedQuizState: BaseState {
     override func handleState(context: QuizContext) {
-        switch type {
-        case .hasResponded:
-            // Handle has responded logic
-            break
-        case .noResponse:
-            // Handle no response logic
-            context.setState(FeedbackMessageState(type: .noResponse))
-        case .errorResponse:
-            // Handle error response logic
-            break
-        case .successfulResponse:
-            // Handle successful response logic
-            break
-        case .errorTranscription:
-            // Handle error transcription logic
-            context.setState(FeedbackMessageState(type: .transcriptionError))
-        case .successfulTranscription:
-            // Handle successful transcription logic
-            break
-        case .correctAnswer:
-            // Handle correct answer logic
-            context.setState(FeedbackMessageState(type: .correctAnswer))
-        case .incorrectAnswer:
-            // Handle incorrect answer logic
-            context.setState(FeedbackMessageState(type: .incorrectAnswer))
-        }
+        // Handle started quiz logic
         notifyObservers()
     }
 }
 
-/// State representing the error message state of the quiz.
-class ErrorMessageState: BaseState {
-    enum ErrorMessageType {
-        case playing
-        case donePlaying
-    }
-    
-    var type: ErrorMessageType
-    
-    init(type: ErrorMessageType) {
-        self.type = type
-    }
-    
+/// State representing the started quiz state of the quiz.
+class EndedQuizState: BaseState {
     override func handleState(context: QuizContext) {
-        switch type {
-        case .playing:
-            // Handle playing error message logic
-            break
-        case .donePlaying:
-            // Handle done playing error message logic
-            break
-        }
+        context.activeQuiz = false
+        // Handle any additional logic for ending the quiz, such as reloading questions for future implementation
         notifyObservers()
     }
 }
+
+

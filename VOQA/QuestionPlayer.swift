@@ -18,11 +18,11 @@ class QuestionPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate, StateOb
     @Published var isPlayingQuestion: Bool = false
     @Published var hasMoreQuestions: Bool = false
     @Published var currentQuestionIndex: Int = 0
-    @Published var currentQuestionId: UUID? = nil
+    @Published var currentQuestionId: UUID?
 
     private var audioPlayer: AVAudioPlayer?
     var questions: [Question] = []
-    private var context: QuizContext?
+    var context: QuizContext?
     var observers: [StateObserver] = []
     private var action: QuestionPlayerAction?
 
@@ -30,57 +30,65 @@ class QuestionPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate, StateOb
         self.action = action
         super.init()
     }
-
-    func updateHasNextQuestion() {
-        hasMoreQuestions = currentQuestionIndex < questions.count
-        let currentQuestionId = questions[currentQuestionIndex].id
-        self.currentQuestionId = currentQuestionId
-        if let context = context {
-            DispatchQueue.main.async {
-                context.currentQuestionId = currentQuestionId
-                context.currentQuestion = self.questions[self.currentQuestionIndex]
-            }
+    
+    func handleState(context: QuizContext) {
+        print("QuestionPlayer handleState called")
+        if let action = self.action {
+            performAction(action, context: context)
         }
-
-        print("Question Playing ID: \(currentQuestionId)")
-        print("Context has captured Question Playing ID: \(String(describing: context?.currentQuestion?.id ?? nil))")
     }
+
+    private func updateHasNextQuestion() {
+        hasMoreQuestions = currentQuestionIndex < questions.count - 1
+        if hasMoreQuestions {
+            let nextQuestionId = questions[currentQuestionIndex + 1].id
+            context?.updateCurrentQuestionId(nextQuestionId)
+        }
+        print("Updated hasMoreQuestions: \(hasMoreQuestions), next question ID: \(String(describing: context?.currentQuestionId))")
+    }
+
 
     func pausePlayback() {
         audioPlayer?.pause()
     }
 
     func playQuestions(_ questions: [Question], in context: QuizContext) {
-        print("Question Player Hit")
         self.questions = questions
         self.context = context
         updateHasNextQuestion()
         playQuestion(questions[currentQuestionIndex])
     }
-
-    func handleState(context: QuizContext) {
-        if let action = self.action {
-            performAction(action, context: context)
-        }
+    
+    private func playQuestion(_ question: Question) {
+        isPlayingQuestion = true
+        currentQuestionId = question.id
+        context?.updateCurrentQuestionId(question.id)
+        print("Playing question with ID: \(question.id)")
+        startPlaybackFromBundle(fileName: question.audioUrl)
     }
 
-    private func performAction(_ action: QuestionPlayerAction, context: QuizContext) {
+   
+
+    func performAction(_ action: QuestionPlayerAction, context: QuizContext) {
+        print("QuestionPlayer performAction called with action: \(action)")
+        print("Current Question Index: \(currentQuestionIndex)")
+        print("Total Questions: \(questions.count)")
+        
         switch action {
         case .playNextQuestion:
             guard currentQuestionIndex < questions.count else {
+                print("No more questions to play, resetting player")
                 resetPlayer()
                 return
             }
+            
             let question = questions[currentQuestionIndex]
+            print("Playing question at index \(currentQuestionIndex): \(question)")
             playQuestion(question)
         }
     }
 
-    private func playQuestion(_ question: Question) {
-        isPlayingQuestion = true
-        startPlaybackFromBundle(fileName: question.audioUrl)
-    }
-
+    
     internal func startPlaybackFromBundle(fileName: String, fileType: String = "mp3") {
         do {
             let audioSession = AVAudioSession.sharedInstance()
@@ -122,7 +130,6 @@ class QuestionPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate, StateOb
 
     private func transitionToListeningState() {
         guard let context = context else { return }
-        //context.isListening = true
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             context.setState(ListeningState(action: .prepareToTranscribe))
         }
@@ -154,6 +161,7 @@ class QuestionPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate, StateOb
     
     // StateObserver
     func stateDidChange(to newState: QuizState) {
+        print("Question Player state did change to \(type(of: newState))")
         // Handle state changes if needed
     }
 }
@@ -164,3 +172,35 @@ extension Array {
         return indices.contains(index) ? self[index] : nil
     }
 }
+
+
+/**
+ fix: Ensure QuestionPlayer performs action immediately after state transition to prevent unintended state changes
+
+ ## Bug Description
+ - The application was experiencing unintended state transitions where `ListeningState` was being triggered unexpectedly after transitioning to `QuestionPlayer`.
+ - This was likely due to `QuestionPlayer` initializing without performing an action, causing the `audioPlayerDidFinishPlaying` method to be invoked unexpectedly when no sound was played.
+
+ ## Fix Description
+ - Added an explicit call to `performAction(.playNextQuestion, context: context)` immediately after setting the state to `QuestionPlayer` in `transitionToNextState` method of `QuizModerator`.
+ - This ensures that `QuestionPlayer` starts playing the next question immediately, preventing any unintended state changes.
+
+ ## Established Flow (as of this commit)
+ 1. **Transition from `QuizModerator` to `QuestionPlayer`:**
+    - `QuizModerator` transitions to `QuestionPlayer` and performs the `playNextQuestion` action.
+    - The `performAction` method in `QuestionPlayer` verifies the `currentQuestionIndex`, updates the `currentQuestionId`, and starts playing the question.
+
+ 2. **Handling `audioPlayerDidFinishPlaying`:**
+    - When a question finishes playing, `audioPlayerDidFinishPlaying` is invoked.
+    - This method triggers `proceedToNextQuestion`, which checks if there are more questions.
+    - If more questions are available, it transitions to `ListeningState`; otherwise, it resets the player.
+
+ 3. **Flow Control:**
+    - The explicit call to `performAction(.playNextQuestion, context: context)` ensures `QuestionPlayer` performs the intended action immediately after the state transition.
+    - This prevents the `audioPlayerDidFinishPlaying` method from being invoked unexpectedly due to the absence of sound playback.
+
+ By following this updated flow, the state transitions and actions are now correctly managed, ensuring the quiz application works smoothly without unintended state changes.
+
+
+ 
+ */

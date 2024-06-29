@@ -147,18 +147,19 @@ struct QuizPlayerPage: View {
         users: 1000
     )
     
-    func setUpQuizEnvironment() {
-//        self.context.setState(QuestionPlayer())
-        context.questions = newMockQuestions
-        print(context.questions.count)
-    }
-    
     static func createQuizContext(state: QuizState) -> QuizContext {
         let questionPlayer = QuestionPlayer()
         let moderator = QuizModerator()
         let context = QuizContext(state: state, questionPlayer: questionPlayer, quizModerator: moderator)
-        
+        // Ensure questionPlayer has a reference to the context
+        questionPlayer.context = context
         return context
+    }
+
+    func setUpQuizEnvironment() {
+        context.questions = newMockQuestions
+        context.questionPlayer.questions = newMockQuestions // Ensure questionPlayer gets the questions
+        print(context.questions.count)
     }
 
     private func userHighScore(from performances: [Performance]) -> Int {

@@ -35,8 +35,6 @@ class ListeningState: StateObserver, QuizState {
     }
 
     func handleState(context: QuizContext) {
-        
-        playListeningSound()
         if let action = self.action {
             self.speechRecognizer.prepareMicrophone()
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
@@ -46,20 +44,24 @@ class ListeningState: StateObserver, QuizState {
     }
     
     private func performAction(_ action: ListenerAction, context: QuizContext) {
+        print("Listener performAction called with action: \(action)")
+        
         switch action {
         case .prepareToTranscribe:
-            print(action)
-            
+            //playListeningSound()
+            print("Action: prepareToTranscribe")
+            self.speechRecognizer.prepareMicrophone()
             self.startRecordingAndTranscribing(context: context)
             
-        case.doneTranscribing:
-            print(action)
+        case .doneTranscribing:
+            print("Action: doneTranscribing")
             playCloseMicSound()
-            print("Listener Sign off")
-            context.setState(QuizModerator(action: .validateSpokenResponse))
+            print("Listener Sign off - Setting state to existing QuizModerator with action .validateSpokenResponse")
+            context.quizModerator.action = .validateSpokenResponse
+            context.setState(context.quizModerator)
         }
     }
-    
+
     
     private func playListeningSound() {
         print("Mic Beeper!")
@@ -93,44 +95,42 @@ class ListeningState: StateObserver, QuizState {
         print("Starting transcription...")
         context.isListening = true
         self.isRecordingAnswer = true
-        
+        print("Context isListening set to \(context.isListening)")
+        print("isRecordingAnswer set to \(self.isRecordingAnswer)")
         
         self.speechRecognizer.transcribe()
         print("Transcribing started")
         
         DispatchQueue.main.asyncAfter(deadline: .now() + context.responseTime + 0.8) {
+            print("Transcription stopping...")
             self.speechRecognizer.stopTranscribing()
             self.isRecordingAnswer = false
             context.isListening = false
-            
             print("Transcription stopped")
+            print("Context isListening set to \(context.isListening)")
+            print("isRecordingAnswer set to \(self.isRecordingAnswer)")
             
             self.getTranscript(context: context)
             self.performAction(.doneTranscribing, context: context)
         }
     }
+
     
     private func getTranscript(context: QuizContext) {
+        print("Getting transcript...")
         cancellable = speechRecognizer.$transcript
             .sink { newTranscript in
+                print("Received new transcript: \(newTranscript)")
                 self.selectedOption = self.processTranscript(transcript: newTranscript)
+                print("Processed transcript to selectedOption: \(self.selectedOption)")
                 context.spokenAnswerOption = self.selectedOption
-            }
+                print("Context spokenAnswerOption set to \(context.spokenAnswerOption)")
 
+                // Capture message passed to moderator
+                print("Message to Moderator: \(context.spokenAnswerOption)")
+            }
     }
-    
-    private func presentMic() {
-        
-        cancellable = speechRecognizer.$isMicrophoneReady
-            .sink(receiveValue: { isReady in
-                if isReady {
-                    print("Listener Mic Ready")
-                    if let context = self.context {
-                        self.startRecordingAndTranscribing(context: context)
-                    }
-                }
-            })
-    }
+
     
     
     private func processTranscript(transcript: String) -> String {
@@ -139,7 +139,8 @@ class ListeningState: StateObserver, QuizState {
     }
     
     func stateDidChange(to newState: any QuizState) {
-        
+        print("Listener state did change to \(type(of: newState))")
+        // Handle state-specific updates if needed
     }
     
     func addObserver(_ observer: StateObserver) {
@@ -170,22 +171,7 @@ class ListeningState: StateObserver, QuizState {
 
 
 
-/// State representing the started quiz state of the quiz.
-class StartedQuizState: BaseState {
-    override func handleState(context: QuizContext) {
-        // Handle started quiz logic
-        notifyObservers()
-    }
-}
 
-/// State representing the started quiz state of the quiz.
-class EndedQuizState: BaseState {
-    override func handleState(context: QuizContext) {
-        context.activeQuiz = false
-        // Handle any additional logic for ending the quiz, such as reloading questions for future implementation
-        notifyObservers()
-    }
-}
 
 ///// State representing the countdown state of the quiz.
 //class CountdownState: BaseState {
