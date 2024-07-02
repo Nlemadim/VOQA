@@ -8,30 +8,73 @@
 import Foundation
 
 /// State representing the review state of the quiz.
-class ReviewState: BaseState {
+class ReviewState: StateObserver, QuizState {
+    
     enum ReviewAction {
         case reviewing
         case doneReviewing
     }
     
-    var action: ReviewAction
-    
-    init(action: ReviewAction) {
-        self.action = action
-        print("Review State initialized")
+    enum ScoreFeedback {
+        case noScore
+        case tenPercent
+        case twentyPercent
+        case thirtyPercent
+        case fortyPercent
+        case fifTyPercent
+        case sixtyPercent
+        case seventyPercent
+        case eigthyPercent
+        case ninetyPercent
+        case perfectScore
     }
     
-    override func handleState(context: QuizContext) {
+    var action: ReviewAction?
+    var context: QuizContext?
+    var observers: [StateObserver] = []
+    
+    init(action: ReviewAction? = nil) {
+        print("ReviewState handleState called")
+        self.action = action
+    }
+    
+    func handleState(context: QuizContext) {
+        if let action = self.action {
+            performAction(action, context: context)
+        }
+    }
+    
+    func performAction(_ action: ReviewAction, context: QuizContext) {
         switch action {
         case .reviewing:
-            // Play review feedback message
-            context.currentQuestionText = "Reviewing"     
-            context.setState(ReviewState(action: .doneReviewing))
-            //context.questionPlayer.playReviewAudio(["NextQuestionWave"])
+            print("Reviewer reviewing action triggered")
+            
+            context.currentQuestionText = "Reviewing"
+            
+            context.quizContextPlayer.performAudioAction(.reviewing)
+            
         case .doneReviewing:
-            // Transition to EndedQuizState
+            print("Reviewer doneReviewing action triggered")
+            
             context.setState(EndedQuizState())
         }
-        notifyObservers()
+    }
+    
+    // StateObserver
+    func stateDidChange(to newState: QuizState) {
+        // Handle state changes if needed
+    }
+
+    // QuizState
+    func addObserver(_ observer: StateObserver) {
+        observers.append(observer)
+    }
+
+    func notifyObservers() {
+        for observer in observers {
+            observer.stateDidChange(to: self)
+        }
     }
 }
+
+

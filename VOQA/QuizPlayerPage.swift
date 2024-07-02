@@ -13,7 +13,7 @@ struct QuizPlayerPage: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
     @ObservedObject var connectionMonitor = NetworkMonitor.shared
-    @StateObject private var generator = ColorGenerator()
+    //@StateObject private var generator = ColorGenerator()
     @StateObject private var context = QuizContext.create(state: IdleState())
     
     @Query(sort: \Performance.id) var performanceCollection: [Performance]
@@ -31,6 +31,7 @@ struct QuizPlayerPage: View {
     @State var userHighScore: Int = 0
     
     @State var quizName = UserDefaultsManager.quizName()
+    @State var isQandA: Bool = UserDefaultsManager.isQandAEnabled()
     
     var config: HomePageConfig
 
@@ -41,7 +42,7 @@ struct QuizPlayerPage: View {
             Rectangle()
                 .fill(.clear)
                 .background(
-                    LinearGradient(gradient: Gradient(colors: [generator.dominantBackgroundColor, .black]), startPoint: .top, endPoint: .bottom)
+                    LinearGradient(gradient: Gradient(colors: [.themePurple, .black]), startPoint: .top, endPoint: .bottom)
                 )
             
             VStack(alignment: .center) {
@@ -72,7 +73,7 @@ struct QuizPlayerPage: View {
                                 CircularPlayButton(
                                     quizContext: context,
                                     isDownloading: $context.isDownloading,
-                                    color: generator.dominantBackgroundColor,
+                                    color: .themePurple,
                                     playAction: { expandSheet = true }
                                 )
                             }
@@ -88,13 +89,12 @@ struct QuizPlayerPage: View {
                 .padding()
                 
                 Divider()
-                    .foregroundStyle(generator.dominantLightToneColor)
-                    .activeGlow(generator.dominantLightToneColor, radius: 1)
+                    .foregroundStyle(.teal)
+                    .activeGlow(.teal, radius: 1)
                 
                 VStack {
                     NowPlayingView(
                         nowPlaying: packetCover1,
-                        generator: generator,
                         questionCount: 0, // Modify later
                         currentQuestionIndex: 0,
                         color: Color.primary,
@@ -107,10 +107,10 @@ struct QuizPlayerPage: View {
                 .padding(.horizontal)
                 
                 Divider()
-                    .foregroundStyle(generator.dominantLightToneColor)
-                    .activeGlow(generator.dominantLightToneColor, radius: 1)
+                    .foregroundStyle(.teal)
+                    .activeGlow(.teal, radius: 1)
                 
-                PerformanceHistoryGraph(history: currentPerformance, mainColor: generator.enhancedDominantColor, subColor: .white.opacity(0.5))
+                PerformanceHistoryGraph(history: currentPerformance, mainColor: .orange, subColor: .yellow)
                     .padding(.horizontal)
                 
                 VStack {
@@ -131,7 +131,7 @@ struct QuizPlayerPage: View {
         .onAppear {
             setUpQuizEnvironment()
             filterPerformanceCollection()
-            generator.updateAllColors(fromImageNamed: context.quizTitleImage.isEmptyOrWhiteSpace ?  "VoqaIcon" : context.quizTitleImage)
+//            generator.updateAllColors(fromImageNamed: context.quizTitleImage.isEmptyOrWhiteSpace ?  "VoqaIcon" : context.quizTitleImage)
         }
     }
     
@@ -147,14 +147,15 @@ struct QuizPlayerPage: View {
         users: 1000
     )
     
-    static func createQuizContext(state: QuizState) -> QuizContext {
-        let questionPlayer = QuestionPlayer()
-        let moderator = QuizModerator()
-        let context = QuizContext(state: state, questionPlayer: questionPlayer, quizModerator: moderator)
-        // Ensure questionPlayer has a reference to the context
-        questionPlayer.context = context
-        return context
-    }
+//    static func create(state: QuizState) -> QuizContext {
+//        let questionPlayer = QuestionPlayer()
+//        let moderator = QuizModerator()
+//        let reviewer = ReviewState()
+//        let feedbackMessaenger = FeedbackMessageState()
+//        let context = QuizContext(state: state, questionPlayer: questionPlayer, quizModerator: moderator, reviewer: reviewer, feedbackMessenger: feedbackMessaenger)
+//        
+//        return context
+//    }
 
     func setUpQuizEnvironment() {
         context.questions = newMockQuestions
@@ -196,74 +197,74 @@ struct QuizPlayerPage: View {
     private func playSingleQuizQuestion() {}
     
     let newMockQuestions: [Question] = [
-        Question(
-            topicId: UUID(),
-            content: "What is the capital of France?",
-            options: ["Paris", "London", "Berlin", "Madrid"],
-            correctOption: "D",
-            isAnsweredCorrectly: true,
-            numberOfPresentations: 1,
-            ratings: 5,
-            numberOfRatings: 100,
-            audioScript: "What is the capital of France?",
-            audioUrl: "smallVoiceOver",
-            replayQuestionAudioScript: "Can you repeat the question?",
-            replayOptionAudioScript: "Can you repeat the options?",
-            status: .newQuestion,
-            difficultyLevel: 1,
-            answerPresentedDate: Date()
-        ),
-        Question(
-            topicId: UUID(),
-            content: "What is the largest planet in our Solar System?",
-            options: ["Earth", "Mars", "Jupiter", "Saturn"],
-            correctOption: "B",
-            isAnsweredCorrectly: false,
-            numberOfPresentations: 2,
-            ratings: 4,
-            numberOfRatings: 50,
-            audioScript: "What is the largest planet in our Solar System?",
-            audioUrl: "smallVoiceOver2",
-            replayQuestionAudioScript: "Can you repeat the question?",
-            replayOptionAudioScript: "Can you repeat the options?",
-            status: .repeatQuestion,
-            difficultyLevel: 2,
-            answerPresentedDate: nil
-        ),
-        Question(
-            topicId: UUID(),
-            content: "What is the chemical symbol for water?",
-            options: ["H2O", "O2", "CO2", "H2"],
-            correctOption: "C",
-            isAnsweredCorrectly: true,
-            numberOfPresentations: 3,
-            ratings: 3,
-            numberOfRatings: 30,
-            audioScript: "What is the chemical symbol for water?",
-            audioUrl: "smallVoiceOver",
-            replayQuestionAudioScript: "Can you repeat the question?",
-            replayOptionAudioScript: "Can you repeat the options?",
-            status: .modifiedQuestion,
-            difficultyLevel: 1,
-            answerPresentedDate: Date()
-        ),
-        Question(
-            topicId: UUID(),
-            content: "Who wrote 'Romeo and Juliet'?",
-            options: ["William Shakespeare", "Charles Dickens", "Mark Twain", "Jane Austen"],
-            correctOption: "A",
-            isAnsweredCorrectly: false,
-            numberOfPresentations: 1,
-            ratings: 5,
-            numberOfRatings: 80,
-            audioScript: "Who wrote 'Romeo and Juliet'?",
-            audioUrl: "smallVoiceOver2",
-            replayQuestionAudioScript: "Can you repeat the question?",
-            replayOptionAudioScript: "Can you repeat the options?",
-            status: .followUp,
-            difficultyLevel: 2,
-            answerPresentedDate: nil
-        )
+//        Question(
+//            topicId: UUID(),
+//            content: "What is the capital of France?",
+//            options: ["Paris", "London", "Berlin", "Madrid"],
+//            correctOption: "D",
+//            isAnsweredCorrectly: true,
+//            numberOfPresentations: 1,
+//            ratings: 5,
+//            numberOfRatings: 100,
+//            audioScript: "What is the capital of France?",
+//            audioUrl: "smallVoiceOver",
+//            replayQuestionAudioScript: "Can you repeat the question?",
+//            replayOptionAudioScript: "Can you repeat the options?",
+//            status: .newQuestion,
+//            difficultyLevel: 1,
+//            answerPresentedDate: Date()
+//        ),
+//        Question(
+//            topicId: UUID(),
+//            content: "What is the largest planet in our Solar System?",
+//            options: ["Earth", "Mars", "Jupiter", "Saturn"],
+//            correctOption: "B",
+//            isAnsweredCorrectly: false,
+//            numberOfPresentations: 2,
+//            ratings: 4,
+//            numberOfRatings: 50,
+//            audioScript: "What is the largest planet in our Solar System?",
+//            audioUrl: "smallVoiceOver2",
+//            replayQuestionAudioScript: "Can you repeat the question?",
+//            replayOptionAudioScript: "Can you repeat the options?",
+//            status: .repeatQuestion,
+//            difficultyLevel: 2,
+//            answerPresentedDate: nil
+//        ),
+//        Question(
+//            topicId: UUID(),
+//            content: "What is the chemical symbol for water?",
+//            options: ["H2O", "O2", "CO2", "H2"],
+//            correctOption: "C",
+//            isAnsweredCorrectly: true,
+//            numberOfPresentations: 3,
+//            ratings: 3,
+//            numberOfRatings: 30,
+//            audioScript: "What is the chemical symbol for water?",
+//            audioUrl: "smallVoiceOver",
+//            replayQuestionAudioScript: "Can you repeat the question?",
+//            replayOptionAudioScript: "Can you repeat the options?",
+//            status: .modifiedQuestion,
+//            difficultyLevel: 1,
+//            answerPresentedDate: Date()
+//        ),
+//        Question(
+//            topicId: UUID(),
+//            content: "Who wrote 'Romeo and Juliet'?",
+//            options: ["William Shakespeare", "Charles Dickens", "Mark Twain", "Jane Austen"],
+//            correctOption: "A",
+//            isAnsweredCorrectly: false,
+//            numberOfPresentations: 1,
+//            ratings: 5,
+//            numberOfRatings: 80,
+//            audioScript: "Who wrote 'Romeo and Juliet'?",
+//            audioUrl: "smallVoiceOver2",
+//            replayQuestionAudioScript: "Can you repeat the question?",
+//            replayOptionAudioScript: "Can you repeat the options?",
+//            status: .followUp,
+//            difficultyLevel: 2,
+//            answerPresentedDate: nil
+//        )
     ]
         
     

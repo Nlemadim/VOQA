@@ -9,7 +9,7 @@ import SwiftUI
 
 struct FullScreenPlayer: View {
     @Environment(\.dismiss) private var dismiss
-    @StateObject private var generator = ColorGenerator()
+    //@StateObject private var generator = ColorGenerator()
     @ObservedObject internal var quizContext: QuizContext
     @State var buttonSelected: String? = ""
     
@@ -23,30 +23,18 @@ struct FullScreenPlayer: View {
                    
                     GeometryReader { geometry in
                         VStack(spacing: 0) {
-                            if quizContext.countdownTime > 0 {
-                                
-                                VStack {
-                                    Divider().activeGlow(generator.dominantLightToneColor, radius: 0.5)
-                                       
-                                    heroView
-                                        .frame(width: geometry.size.width, height: geometry.size.height / 3)
-                                    
-                                    Divider().activeGlow(generator.dominantLightToneColor, radius: 0.5)
-                                    
-                                    playerControlButtons
-                                }
-                                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                                
-                            } else {
-                                headerSection
-                                    .frame(width: geometry.size.width, height: geometry.size.height / 3)
-                                Divider().activeGlow(generator.dominantLightToneColor, radius: 0.5)
-                                
-                                mainViewSection
-                                
-                                Divider().activeGlow(generator.dominantLightToneColor, radius: 0.5)
-                                playerControlButtons
-                            }
+                            headerSection
+                                .frame(width: geometry.size.width, height: geometry.size.height / 3)
+                            Divider().activeGlow(.themePurple, radius: 0.5)
+                                .padding(.top)
+                            
+                            //mainViewSection
+                            heroView
+                                .frame(width: geometry.size.width, height: geometry.size.height / 3)
+                            
+                            Divider().activeGlow(.themePurple, radius: 0.5)
+                                .padding(.bottom)
+                            playerControlButtons
                             
                         }
                         .frame(width: geometry.size.width, height: geometry.size.height)
@@ -57,7 +45,7 @@ struct FullScreenPlayer: View {
                     ToolbarItem(placement: .navigationBarTrailing) {
                         Button(action: { minimizeScreen() }, label: {
                             Image(systemName: "chevron.down.circle")
-                                .foregroundStyle(generator.dominantBackgroundColor.dynamicTextColor())
+                                .foregroundStyle(.white.dynamicTextColor())
                         })
                     }
                     
@@ -70,16 +58,12 @@ struct FullScreenPlayer: View {
                             .opacity(quizContext.activeQuiz ? 0 : 1)
                     }
                 }
-                .background(generator.dominantBackgroundColor.gradient)
+                .background(.themePurple.gradient)
             }
             .sheet(isPresented: .constant(presentResponseModal()), content: {
                 ResponseModalPresenter(context: quizContext, selectedOption: $buttonSelected)
                     .presentationDetents([.height(150)])
             })
-            .onAppear {
-               
-                generator.updateAllColors(fromImageNamed: quizContext.quizTitleImage.isEmptyOrWhiteSpace ? "VoqaIcon" : quizContext.quizTitleImage)
-            }
         }
     }
     
@@ -106,17 +90,17 @@ struct FullScreenPlayer: View {
                 .font(.title3)
                 .multilineTextAlignment(.center)
                 .fontWeight(.bold)
-                .foregroundStyle(generator.dominantBackgroundColor.dynamicTextColor())
+                .foregroundStyle(.white.dynamicTextColor())
                 .padding(.top, 2)
             
             Text("\(Int(quizContext.countdownTime))")
                 .font(.title)
                 .fontWeight(.bold)
-                .foregroundStyle(generator.dominantBackgroundColor.dynamicTextColor())
+                .foregroundStyle(.white.dynamicTextColor())
                 .padding(.top, 2)
                 .opacity(quizContext.activeQuiz ? 1 : 0)
         }
-        .foregroundStyle(generator.dominantBackgroundColor.dynamicTextColor())
+        .foregroundStyle(.white.dynamicTextColor())
         .padding()
         .frame(width: 380, height: 180)
         .frame(maxWidth: 380)
@@ -162,7 +146,7 @@ struct FullScreenPlayer: View {
                 // VoqaWaveView(colors: [...], isSpeaking: quizContext.isSpeaking)
             }
         }
-        .foregroundStyle(generator.dominantBackgroundColor.dynamicTextColor())
+        .foregroundStyle(.white.dynamicTextColor())
         .padding()
         .frame(width: 380, height: 180)
         .frame(maxWidth: 380)
@@ -176,7 +160,7 @@ struct FullScreenPlayer: View {
             Text(quizContext.currentQuestionText)
                 .font(.title)
                 .fontWeight(.bold)
-                .foregroundStyle(generator.dominantBackgroundColor.dynamicTextColor())
+                .foregroundStyle(.white.dynamicTextColor())
                 .padding()
         }
     }
@@ -186,7 +170,7 @@ struct FullScreenPlayer: View {
         PlayerControlButtons(
             quizContext: quizContext,
             questionsComplete: $quizContext.isLastQuestion,
-            themeColor: generator.enhancedDominantColor,
+            themeColor: .themePurple,
             recordAction: {
                 
             },

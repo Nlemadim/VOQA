@@ -10,7 +10,7 @@ import AVFoundation
 
 struct NowPlayingView: View {
     var nowPlaying: PacketCover?
-    var generator: ColorGenerator
+   // var generator: ColorGenerator
     var questionCount: Int
     var currentQuestionIndex: Int
     var color: Color

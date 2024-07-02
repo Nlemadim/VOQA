@@ -7,48 +7,72 @@
 
 import Foundation
 
+enum FeedbackAction {
+    case correctAnswer
+    case incorrectAnswer
+    case noResponse
+    case transcriptionError
+    case proceedWithQuiz
+}
+
 /// State representing the feedback message state of the quiz.
-class FeedbackMessageState: BaseState {
-    enum FeedbackType {
-        case correctAnswer
-        case incorrectAnswer
-        case noResponse
-        case transcriptionError
-    }
+class FeedbackMessageState: StateObserver, QuizState {
     
-    var type: FeedbackType
+    var action: FeedbackAction?
+    var context: QuizContext?
+    var observers: [StateObserver] = []
     var feedbackMessages: [VoiceFeedbackMessages] = []
     
-    init(type: FeedbackType) {
-        self.type = type
+    init(action: FeedbackAction? = nil) {
+        self.action = action
         print("Feedback Player Initialized")
     }
     
-    override func handleState(context: QuizContext) {
-        switch type {
+    func handleState(context: QuizContext) {
+        if let action = self.action {
+            performAction(action, context: context)
+        }
+    }
+
+    func performAction(_ action: FeedbackAction, context: QuizContext) {
+        switch action {
         case .correctAnswer:
-            // Handle playing correct answer feedback message logic
-            playFeedbackAudio(context, fileName: "NextQuestionWave.wav")
+            
+            context.quizContextPlayer.performAudioAction(.playCorrectAnswerCallout)
             
         case .incorrectAnswer:
-            // Handle playing incorrect answer feedback message logic
-            playFeedbackAudio(context, fileName: "showResponderBell.wav")
+            
+            context.quizContextPlayer.performAudioAction(.playWrongAnswerCallout)
+            
         case .noResponse:
-            print("No response")
-            // Handle playing no response feedback message logic
-            playFeedbackAudio(context, fileName: "dismissResponderBell.wav")
+            
+            context.quizContextPlayer.performAudioAction(.playNoResponseCallout)
+            
         case .transcriptionError:
-            print("Transcription Error")
-            // Handle playing transcription error feedback message logic
-            playFeedbackAudio(context, fileName: "errorBell.mp3")
+            
+            context.quizContextPlayer.performAudioAction(.playNoResponseCallout)
+            
+        case .proceedWithQuiz:
+            
+            context.setState(context.quizModerator)
+            
+            context.quizModerator.performAction(.proceedWithQuiz, context: context)
         }
-        notifyObservers()
     }
     
-    //func setUpVoiceFeedbackMessages()
-    
-    
-    private func playFeedbackAudio(_ context: QuizContext, fileName: String) {
-        //context.audioPlayer?.playFeedbackAudio(type: type, audioFile: fileName)
+    // StateObserver
+    func stateDidChange(to newState: QuizState) {
+        // Handle state changes if needed
+    }
+
+    // QuizState
+    func addObserver(_ observer: StateObserver) {
+        observers.append(observer)
+    }
+
+    func notifyObservers() {
+        for observer in observers {
+            observer.stateDidChange(to: self)
+        }
     }
 }

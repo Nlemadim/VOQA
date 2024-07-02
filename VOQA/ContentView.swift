@@ -70,168 +70,168 @@ struct ContentView: View {
         .preferredColorScheme(.dark)
 }
 
-extension ContentView {
-    func setupDataLayer() {
-        // Initialize DataService
-        databaseManager.setupDataService(id: UUID(), downloadUrl: Config.audioRequestURL)
-        guard voiceFeedbackMessages.isEmpty else {
-            var itemCount = 0
-            for item in voiceFeedbackMessages {
-                itemCount += 1
-                print("VoiceFeedbackMessages ID: \(item.id), has: \(itemCount) items")
-            }
-            return
-        }
-        // Load Voice Feedback Messages
-        let voiceFeedbackContainer = loadMainVoiceFeedBackMessages()
-        
-        // Download Voice Feedback Messages
-        databaseManager.downloadVoiceFeedbackMessages(container: voiceFeedbackContainer) { result in
-            switch result {
-            case .success(let messages):
-                
-                modelContext.insert(messages)
-                
-                do {
-                    try modelContext.save()
-                    
-                } catch {
-                    print("Failed to save new voice feedback messages: \(error)")
-                }
-                
-                print("Downloaded voice feedback messages: \(messages)")
-            case .failure(let error):
-                print("Failed to download voice feedback messages: \(error)")
-            }
-        }
-    }
-    
-    static func createHomePageConfig() -> HomePageConfig {
-        let packetCover1 = PacketCover(
-            id: UUID(),
-            title: "General Knowledge",
-            titleImage: "IconImage",
-            summaryDesc: "Test your general knowledge with this quiz package.",
-            rating: 4,
-            numberOfRatings: 100,
-            edition: "Basic",
-            curator: "Quiz Master",
-            users: 1000
-        )
-        
-        let packetCover2 = PacketCover(
-            id: UUID(),
-            title: "Science Quiz",
-            titleImage: "IconImage",
-            summaryDesc: "Explore the wonders of science.",
-            rating: 5,
-            numberOfRatings: 150,
-            edition: "Curated",
-            curator: "Science Expert",
-            users: 500
-        )
-        
-        let packetCover3 = PacketCover(
-            id: UUID(),
-            title: "Chemistry Quiz",
-            titleImage: "IconImage",
-            summaryDesc: "Explore the wonders of science.",
-            rating: 5,
-            numberOfRatings: 150,
-            edition: "Curated",
-            curator: "Science Expert",
-            users: 500
-        )
-        
-        return HomePageConfig(
-            topCollectionQuizzes: [packetCover1, packetCover2, packetCover3],
-            currentItem: 0,
-            backgroundImage: "VoqaIcon",
-            galleryItems: [packetCover1, packetCover2, packetCover3]
-        )
-    }
-
-    
-    var fullPageErrorView: some View {
-        VStack {
-            Text(databaseManager.currentError?.title ?? "Error")
-                .font(.largeTitle)
-                .padding()
-            Text(databaseManager.currentError?.message ?? "An unknown error occurred.")
-                .padding()
-            Button(action: {
-                // Handle retry logic here
-                databaseManager.showFullPageError = false
-            }) {
-                Text("Retry")
-                    .padding()
-                    .background(Color.blue)
-                    .foregroundColor(.white)
-                    .cornerRadius(8)
-            }
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color.white)
-        .edgesIgnoringSafeArea(.all)
-    }
-    
-    private func loadMainVoiceFeedBackMessages() -> VoiceFeedbackContainer {
-        return VoiceFeedbackContainer(
-            id: UUID(),
-            quizStartMessageScript: "Get ready for a new quiz.",
-            quizEndingMessageScript: "Well done! This quiz is now complete.",
-            nextQuestionCalloutScript: "Next question coming up.",
-            finalQuestionCalloutScript: "This is the final question.",
-            repeatQuestionCalloutScript: "Repeating the last question.",
-            listeningCalloutScript: "I'm listening...",
-            waitingForResponseCalloutScript: "I didn't register a response so I'll skip this question.",
-            pausedCalloutScript: "Quiz is now paused.",
-            correctAnswerCalloutScript: "That's the correct answer!",
-            correctAnswerLowStreakCallOutScript: "Correct! You're on a streak.",
-            correctAnswerMidStreakCalloutScript: "Correct yet again! You're on fire! Let's keep going.",
-            correctAnswerHighStreakCalloutScript: "Amazing! That's a perfect streak!",
-            inCorrectAnswerCalloutScript: "That's not quite right.",
-            zeroScoreCommentScript: "No points earned. Try harder next time.",
-            tenPercentScoreCommentScript: "You scored ten percent. Practice makes perfect.",
-            twentyPercentScoreCommentScript: "You scored twenty percent. Let's keep learning.",
-            thirtyPercentScoreCommentScript: "Thirty percent scored, you're getting there.",
-            fortyPercentScoreCommentScript: "Forty percent scored, good effort.",
-            fiftyPercentScoreCommentScript: "Halfway there! You scored fifty percent!",
-            sixtyPercentScoreCommentScript: "Sixty percent scored, well done!",
-            seventyPercentScoreCommentScript: "You scored seventy percent, great job!",
-            eightyPercentScoreCommentScript: "You scored an impressive eighty percent, excellent work.",
-            ninetyPercentScoreCommentScript: "Wow! You scored ninety percent, almost a perfect score! Great job!",
-            perfectScoreCommentScript: "Perfect score! You got all questions correct! Congratulations!",
-            errorTranscriptionScript: "Error transcribing your response. Skipping this question for now.",
-            invalidResponseCalloutScript: "I did not register your response so this question will be marked as unanswered and will not count towards your final score. Unanswered questions will be randomly presented at different quizzes.",
-            invalidResponseUserAdvisoryScript: "Please try to respond with valid options only. Invalid responses are skipped.",
-            quizStartAudioUrl: "https://example.com/audio/quizStart.mp3",
-            quizEndingAudioUrl: "https://example.com/audio/quizEnd.mp3",
-            nextQuestionCalloutAudioUrl: "https://example.com/audio/nextQuestion.mp3",
-            finalQuestionCalloutAudioUrl: "https://example.com/audio/finalQuestion.mp3",
-            repeatQuestionCalloutAudioUrl: "https://example.com/audio/repeatQuestion.mp3",
-            listeningCalloutAudioUrl: "https://example.com/audio/listening.mp3",
-            waitingForResponseCalloutAudioUrl: "https://example.com/audio/waitingForResponse.mp3",
-            pausedCalloutAudioUrl: "https://example.com/audio/paused.mp3",
-            correctAnswerCalloutAudioUrl: "https://example.com/audio/correctAnswer.mp3",
-            correctAnswerLowStreakCallOutAudioUrl: "https://example.com/audio/correctLowStreak.mp3",
-            correctAnswerMidStreakCalloutAudioUrl: "https://example.com/audio/correctMidStreak.mp3",
-            correctAnswerHighStreakCalloutAudioUrl: "https://example.com/audio/correctHighStreak.mp3",
-            inCorrectAnswerCalloutAudioUrl: "https://example.com/audio/incorrectAnswer.mp3",
-            zeroScoreCommentAudioUrl: "https://example.com/audio/zeroScore.mp3",
-            tenPercentScoreCommentAudioUrl: "https://example.com/audio/tenPercentScore.mp3",
-            twentyPercentScoreCommentAudioUrl: "https://example.com/audio/twentyPercentScore.mp3",
-            thirtyPercentScoreCommentAudioUrl: "https://example.com/audio/thirtyPercentScore.mp3",
-            fortyPercentScoreCommentAudioUrl: "https://example.com/audio/fortyPercentScore.mp3",
-            fiftyPercentScoreCommentAudioUrl: "https://example.com/audio/fiftyPercentScore.mp3",
-            sixtyPercentScoreCommentAudioUrl: "https://example.com/audio/sixtyPercentScore.mp3",
-            seventyPercentScoreCommentAudioUrl: "https://example.com/audio/seventyPercentScore.mp3",
-            eightyPercentScoreCommentAudioUrl: "https://example.com/audio/eightyPercentScore.mp3",
-            ninetyPercentScoreCommentAudioUrl: "https://example.com/audio/ninetyPercentScore.mp3",
-            perfectScoreCommentAudioUrl: "https://example.com/audio/perfectScore.mp3",
-            errorTranscriptionAudioUrl: "https://example.com/audio/errorTranscription.mp3",
-            invalidResponseCalloutAudioUrl: "https://example.com/audio/invalidResponse.mp3",
-            invalidResponseUserAdvisoryAudioUrl: "https://example.com/audio/invalidResponseUserAdvisory.mp3"
-        )
-    }
-}
+//extension ContentView {
+//    func setupDataLayer() {
+//        // Initialize DataService
+//        databaseManager.setupDataService(id: UUID(), downloadUrl: Config.audioRequestURL)
+//        guard voiceFeedbackMessages.isEmpty else {
+//            var itemCount = 0
+//            for item in voiceFeedbackMessages {
+//                itemCount += 1
+//                print("VoiceFeedbackMessages ID: \(item.id), has: \(itemCount) items")
+//            }
+//            return
+//        }
+//        // Load Voice Feedback Messages
+//        let voiceFeedbackContainer = loadMainVoiceFeedBackMessages()
+//        
+//        // Download Voice Feedback Messages
+//        databaseManager.downloadVoiceFeedbackMessages(container: voiceFeedbackContainer) { result in
+//            switch result {
+//            case .success(let messages):
+//                
+//                modelContext.insert(messages)
+//                
+//                do {
+//                    try modelContext.save()
+//                    
+//                } catch {
+//                    print("Failed to save new voice feedback messages: \(error)")
+//                }
+//                
+//                print("Downloaded voice feedback messages: \(messages)")
+//            case .failure(let error):
+//                print("Failed to download voice feedback messages: \(error)")
+//            }
+//        }
+//    }
+//    
+//    static func createHomePageConfig() -> HomePageConfig {
+//        let packetCover1 = PacketCover(
+//            id: UUID(),
+//            title: "General Knowledge",
+//            titleImage: "IconImage",
+//            summaryDesc: "Test your general knowledge with this quiz package.",
+//            rating: 4,
+//            numberOfRatings: 100,
+//            edition: "Basic",
+//            curator: "Quiz Master",
+//            users: 1000
+//        )
+//        
+//        let packetCover2 = PacketCover(
+//            id: UUID(),
+//            title: "Science Quiz",
+//            titleImage: "IconImage",
+//            summaryDesc: "Explore the wonders of science.",
+//            rating: 5,
+//            numberOfRatings: 150,
+//            edition: "Curated",
+//            curator: "Science Expert",
+//            users: 500
+//        )
+//        
+//        let packetCover3 = PacketCover(
+//            id: UUID(),
+//            title: "Chemistry Quiz",
+//            titleImage: "IconImage",
+//            summaryDesc: "Explore the wonders of science.",
+//            rating: 5,
+//            numberOfRatings: 150,
+//            edition: "Curated",
+//            curator: "Science Expert",
+//            users: 500
+//        )
+//        
+//        return HomePageConfig(
+//            topCollectionQuizzes: [packetCover1, packetCover2, packetCover3],
+//            currentItem: 0,
+//            backgroundImage: "VoqaIcon",
+//            galleryItems: [packetCover1, packetCover2, packetCover3]
+//        )
+//    }
+//
+//    
+//    var fullPageErrorView: some View {
+//        VStack {
+//            Text(databaseManager.currentError?.title ?? "Error")
+//                .font(.largeTitle)
+//                .padding()
+//            Text(databaseManager.currentError?.message ?? "An unknown error occurred.")
+//                .padding()
+//            Button(action: {
+//                // Handle retry logic here
+//                databaseManager.showFullPageError = false
+//            }) {
+//                Text("Retry")
+//                    .padding()
+//                    .background(Color.blue)
+//                    .foregroundColor(.white)
+//                    .cornerRadius(8)
+//            }
+//        }
+//        .frame(maxWidth: .infinity, maxHeight: .infinity)
+//        .background(Color.white)
+//        .edgesIgnoringSafeArea(.all)
+//    }
+//    
+//    private func loadMainVoiceFeedBackMessages() -> VoiceFeedbackContainer {
+//        return VoiceFeedbackContainer(
+//            id: UUID(),
+//            quizStartMessageScript: "Get ready for a new quiz.",
+//            quizEndingMessageScript: "Well done! This quiz is now complete.",
+//            nextQuestionCalloutScript: "Next question coming up.",
+//            finalQuestionCalloutScript: "This is the final question.",
+//            repeatQuestionCalloutScript: "Repeating the last question.",
+//            listeningCalloutScript: "I'm listening...",
+//            waitingForResponseCalloutScript: "I didn't register a response so I'll skip this question.",
+//            pausedCalloutScript: "Quiz is now paused.",
+//            correctAnswerCalloutScript: "That's the correct answer!",
+//            correctAnswerLowStreakCallOutScript: "Correct! You're on a streak.",
+//            correctAnswerMidStreakCalloutScript: "Correct yet again! You're on fire! Let's keep going.",
+//            correctAnswerHighStreakCalloutScript: "Amazing! That's a perfect streak!",
+//            inCorrectAnswerCalloutScript: "That's not quite right.",
+//            zeroScoreCommentScript: "No points earned. Try harder next time.",
+//            tenPercentScoreCommentScript: "You scored ten percent. Practice makes perfect.",
+//            twentyPercentScoreCommentScript: "You scored twenty percent. Let's keep learning.",
+//            thirtyPercentScoreCommentScript: "Thirty percent scored, you're getting there.",
+//            fortyPercentScoreCommentScript: "Forty percent scored, good effort.",
+//            fiftyPercentScoreCommentScript: "Halfway there! You scored fifty percent!",
+//            sixtyPercentScoreCommentScript: "Sixty percent scored, well done!",
+//            seventyPercentScoreCommentScript: "You scored seventy percent, great job!",
+//            eightyPercentScoreCommentScript: "You scored an impressive eighty percent, excellent work.",
+//            ninetyPercentScoreCommentScript: "Wow! You scored ninety percent, almost a perfect score! Great job!",
+//            perfectScoreCommentScript: "Perfect score! You got all questions correct! Congratulations!",
+//            errorTranscriptionScript: "Error transcribing your response. Skipping this question for now.",
+//            invalidResponseCalloutScript: "I did not register your response so this question will be marked as unanswered and will not count towards your final score. Unanswered questions will be randomly presented at different quizzes.",
+//            invalidResponseUserAdvisoryScript: "Please try to respond with valid options only. Invalid responses are skipped.",
+//            quizStartAudioUrl: "https://example.com/audio/quizStart.mp3",
+//            quizEndingAudioUrl: "https://example.com/audio/quizEnd.mp3",
+//            nextQuestionCalloutAudioUrl: "https://example.com/audio/nextQuestion.mp3",
+//            finalQuestionCalloutAudioUrl: "https://example.com/audio/finalQuestion.mp3",
+//            repeatQuestionCalloutAudioUrl: "https://example.com/audio/repeatQuestion.mp3",
+//            listeningCalloutAudioUrl: "https://example.com/audio/listening.mp3",
+//            waitingForResponseCalloutAudioUrl: "https://example.com/audio/waitingForResponse.mp3",
+//            pausedCalloutAudioUrl: "https://example.com/audio/paused.mp3",
+//            correctAnswerCalloutAudioUrl: "https://example.com/audio/correctAnswer.mp3",
+//            correctAnswerLowStreakCallOutAudioUrl: "https://example.com/audio/correctLowStreak.mp3",
+//            correctAnswerMidStreakCalloutAudioUrl: "https://example.com/audio/correctMidStreak.mp3",
+//            correctAnswerHighStreakCalloutAudioUrl: "https://example.com/audio/correctHighStreak.mp3",
+//            inCorrectAnswerCalloutAudioUrl: "https://example.com/audio/incorrectAnswer.mp3",
+//            zeroScoreCommentAudioUrl: "https://example.com/audio/zeroScore.mp3",
+//            tenPercentScoreCommentAudioUrl: "https://example.com/audio/tenPercentScore.mp3",
+//            twentyPercentScoreCommentAudioUrl: "https://example.com/audio/twentyPercentScore.mp3",
+//            thirtyPercentScoreCommentAudioUrl: "https://example.com/audio/thirtyPercentScore.mp3",
+//            fortyPercentScoreCommentAudioUrl: "https://example.com/audio/fortyPercentScore.mp3",
+//            fiftyPercentScoreCommentAudioUrl: "https://example.com/audio/fiftyPercentScore.mp3",
+//            sixtyPercentScoreCommentAudioUrl: "https://example.com/audio/sixtyPercentScore.mp3",
+//            seventyPercentScoreCommentAudioUrl: "https://example.com/audio/seventyPercentScore.mp3",
+//            eightyPercentScoreCommentAudioUrl: "https://example.com/audio/eightyPercentScore.mp3",
+//            ninetyPercentScoreCommentAudioUrl: "https://example.com/audio/ninetyPercentScore.mp3",
+//            perfectScoreCommentAudioUrl: "https://example.com/audio/perfectScore.mp3",
+//            errorTranscriptionAudioUrl: "https://example.com/audio/errorTranscription.mp3",
+//            invalidResponseCalloutAudioUrl: "https://example.com/audio/invalidResponse.mp3",
+//            invalidResponseUserAdvisoryAudioUrl: "https://example.com/audio/invalidResponseUserAdvisory.mp3"
+//        )
+//    }
+//}

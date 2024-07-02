@@ -9,10 +9,12 @@ import Foundation
 import Combine
 import AVFoundation
 
-class QuizContext: ObservableObject, QuizState {
-    func handleState(context: QuizContext) { }
-
-    var state: QuizState {
+class QuizContext: ObservableObject,  QuizState {
+    lazy var quizContextPlayer: QuizContextPlayer = {
+        return QuizContextPlayer(context: self)
+    }()
+    
+    @Published var state: QuizState {
         didSet {
             notifyObservers()
         }
@@ -21,6 +23,10 @@ class QuizContext: ObservableObject, QuizState {
     var observers: [StateObserver] = []
     var questionPlayer: QuestionPlayer
     var quizModerator: QuizModerator
+    var reviewer: ReviewState
+    var listener: ListeningState
+    var feedbackMessenger: FeedbackMessageState
+    //var feedbackMessagState: FeedbackMessageState
     
     @Published var activeQuiz: Bool = false
     @Published var countdownTime: TimeInterval = 5.0 // Default countdown time
@@ -45,19 +51,29 @@ class QuizContext: ObservableObject, QuizState {
     
     private var timer: Timer?
     
-    init(state: QuizState, questionPlayer: QuestionPlayer, quizModerator: QuizModerator) {
+    init(state: QuizState, questionPlayer: QuestionPlayer, quizModerator: QuizModerator, reviewer: ReviewState, feedbackMessenger: FeedbackMessageState, listener: ListeningState) {
+        
         self.state = state
         self.questionPlayer = questionPlayer
         self.quizModerator = quizModerator
+        self.reviewer = reviewer
+        self.listener = listener
+        self.feedbackMessenger = feedbackMessenger
         self.questionPlayer.context = self
         self.quizModerator.context = self
+        self.reviewer.context = self
+        self.feedbackMessenger.context = self
+        self.listener.context = self
         setupObservers()
     }
     
     static func create(state: QuizState) -> QuizContext {
         let questionPlayer = QuestionPlayer()
         let moderator = QuizModerator()
-        let context = QuizContext(state: state, questionPlayer: questionPlayer, quizModerator: moderator) // Temporary nil assignment
+        let reviewer = ReviewState()
+        let listener = ListeningState()
+        let feedbackMessaenger = FeedbackMessageState()
+        let context = QuizContext(state: state, questionPlayer: questionPlayer, quizModerator: moderator, reviewer: reviewer, feedbackMessenger: feedbackMessaenger, listener: listener)
         
         return context
     }
@@ -65,8 +81,21 @@ class QuizContext: ObservableObject, QuizState {
     func setState(_ state: QuizState) {
         print("Setting state to \(type(of: state))")
         self.state = state
-        self.state.handleState(context: self)
+        
+        if let audioAction = AudioFileSorter.getAudioAction(for: state, context: self) {
+            quizContextPlayer.performAudioAction(audioAction)
+        } else {
+            self.state.handleState(context: self)
+        }
+  
         notifyObservers()
+    }
+    
+    func handleState(context: QuizContext) {
+//        if state is QuizModerator {
+//            context.quizModerator.performAction(.proceedWithQuiz, context: context)
+//            state.handleState(context: context)
+//        }
     }
 
     func startQuiz() {
@@ -115,27 +144,6 @@ class QuizContext: ObservableObject, QuizState {
         }
     }
     
-    private func startCountdown() {
-        print("Starting countdown")
-        timer?.invalidate()
-        var remainingTime = countdownTime
-        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] timer in
-            guard let self = self else { return }
-            if remainingTime > 0 {
-                remainingTime -= 1
-                self.countdownTime = remainingTime
-            } else {
-                timer.invalidate()
-                self.playFirstQuestion()
-            }
-        }
-    }
-    
-    private func playFirstQuestion() {
-        DispatchQueue.main.async {
-            self.questionPlayer.playQuestions(self.questions, in: self)
-        }
-    }
     
     func stopCountdown() {
         timer?.invalidate()
@@ -172,4 +180,27 @@ class QuizContext: ObservableObject, QuizState {
             .assign(to: &$currentQuestionId)
         print("current question ID: \(String(describing: currentQuestionId ?? nil))")
     }
+    
+    private func startCountdown() {
+        print("Starting countdown")
+        timer?.invalidate()
+        var remainingTime = countdownTime
+        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] timer in
+            guard let self = self else { return }
+            if remainingTime > 0 {
+                remainingTime -= 1
+                self.countdownTime = remainingTime
+            } else {
+                timer.invalidate()
+                self.playFirstQuestion()
+            }
+        }
+    }
+    
+    private func playFirstQuestion() {
+        DispatchQueue.main.async {
+            self.questionPlayer.playQuestions(self.questions, in: self)
+        }
+    }
+    
 }
