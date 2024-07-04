@@ -13,10 +13,12 @@ class QuizModerator: NSObject, ObservableObject, AVAudioPlayerDelegate, StateObs
     
     enum ModeratorAction {
         case validateSpokenResponse
+        case getTotalScore
         case checkStatus
         case prepareNextQuestion
         case proceedWithQuiz
         case review
+        case revertState
     }
     
     enum ValidationFeedback {
@@ -54,71 +56,49 @@ class QuizModerator: NSObject, ObservableObject, AVAudioPlayerDelegate, StateObs
          
             validateResponse(context.spokenAnswerOption, for: context.currentQuestionId ?? UUID())
             
-        case .proceedWithQuiz:
-            print("Moderator proceedWithQuiz action triggered")
-            
-            context.setState(context.questionPlayer)
-            
-            context.questionPlayer.performAction(.playNextQuestion, context: context)
-            
         case .review:
             print("Moderator review action triggered")
             
             context.hasMoreQuestions = false
             context.setState(ReviewState(action: .reviewing))
             
-        case .prepareNextQuestion:
-            goToNextQuestion()
+        case .revertState:
+            print("Moderator is reverting state")
             
-        case .checkStatus:
-            checkQuestionStatus()
+            context.setState(context.presenter)
+            context.presenter.performAction(.goToNextQuestion, context: context)
+            
+        default:
+            break
         }
     }
     
-    private func playFeedbackMessage(action: FeedbackAction, context: QuizContext) {
-        
-        context.setState(context.feedbackMessenger)
-        
-        context.feedbackMessenger.performAction(action, context: context)
-    }
-    
-//    private func transitionToNextState() {
-//        print("Moderator transitionToNextState called")
+//    private func playFeedbackMessage(action: FeedbackAction, context: QuizContext) {
 //        
-//        guard let context = context else {
-//            print("Context is nil, exiting transitionToNextState")
-//            return
-//        }
+//        context.setState(context.feedbackMessenger)
 //        
-//        print("Current Question Index: \(context.questionPlayer.currentQuestionIndex)")
-//        print("Total Questions: \(context.questionPlayer.questions.count)")
-//        print("Has More Questions: \(context.questionPlayer.hasMoreQuestions)")
-//        
+//        context.feedbackMessenger.performAction(action, context: context)
+//    }
+//    
+//    func checkQuestionStatus() {
+//        guard let context = context else { return }
 //        if context.questionPlayer.hasMoreQuestions {
-//            self.getNewQuestion = true
-//            goToNextQuestion()
+//            self.performAction(.prepareNextQuestion, context: context)
+//        } else {
+//            self.performAction(.review, context: context)
 //        }
 //    }
-    
-    func checkQuestionStatus() {
-        guard let context = context else { return }
-        if context.questionPlayer.hasMoreQuestions {
-            self.performAction(.prepareNextQuestion, context: context)
-        } else {
-            self.performAction(.review, context: context)
-        }
-    }
-    
-    func goToNextQuestion() {
-        guard let context = context else { return }
-        
-        context.quizContextPlayer.performAudioAction(.nextQuestion)
-        
-        context.questionPlayer.currentQuestionIndex += 1
-        
-        context.updateQuestionCounter(questionIndex: context.questionPlayer.currentQuestionIndex, count: context.questions.count)
-    
-    }
+//    
+//    func goToNextQuestion() {
+//        guard let context = context else { return }
+//        
+//        context.quizContextPlayer.performAudioAction(.nextQuestion)
+//        
+//        context.questionPlayer.currentQuestionIndex += 1
+//        
+//        context.updateQuestionCounter(questionIndex: context.questionPlayer.currentQuestionIndex, count: context.questions.count)
+//    
+//    }
     
     func validateResponse(_ response: String, for questionId: UUID) {
         guard let context = context else { return }
@@ -136,14 +116,17 @@ class QuizModerator: NSObject, ObservableObject, AVAudioPlayerDelegate, StateObs
             print("Response is empty or whitespace")
             
             if isFeedbackEnabled {
+                
                 print("isQandA is true, playing no response callout")
                 
-                playFeedbackMessage(action: .noResponse, context: context)
+                context.setState(context.presenter)
+                context.presenter.performAction(.noResponse, context: context)
                 
             } else {
+                
                 print("isQandA is false, transitioning to next state")
                 
-                self.performAction(.checkStatus, context: context)
+                self.performAction(.revertState, context: context)
             }
         } else if response.lowercased() == question.correctOption.lowercased() {
             
@@ -153,14 +136,14 @@ class QuizModerator: NSObject, ObservableObject, AVAudioPlayerDelegate, StateObs
                 
                 print("isQandA is true, playing correct answer callout")
                 
-                playFeedbackMessage(action: .correctAnswer, context: context)
+                context.setState(context.presenter)
+                context.presenter.performAction(.correctAnswerFeedback, context: context)
             
-                
             } else {
                 
                 print("isQandA is false, transitioning to next state")
                 
-                self.performAction(.checkStatus, context: context)
+                self.performAction(.revertState, context: context)
             }
         } else {
             
@@ -170,15 +153,17 @@ class QuizModerator: NSObject, ObservableObject, AVAudioPlayerDelegate, StateObs
                 
                 print("isQandA is true, playing wrong answer callout")
                 
-                playFeedbackMessage(action: .incorrectAnswer, context: context)
+                context.setState(context.presenter)
+                context.presenter.performAction(.incorrectAnswerFeedback, context: context)
                
             } else {
                 print("isQandA is false, transitioning to next state")
                 
-                self.performAction(.checkStatus, context: context)
+                self.performAction(.revertState, context: context)
             }
         }
     }
+    
 
     // StateObserver
     func stateDidChange(to newState: QuizState) {

@@ -26,6 +26,7 @@ class QuizContext: ObservableObject,  QuizState {
     var reviewer: ReviewState
     var listener: ListeningState
     var feedbackMessenger: FeedbackMessageState
+    var presenter: QuizPresenter
     //var feedbackMessagState: FeedbackMessageState
     
     @Published var activeQuiz: Bool = false
@@ -51,7 +52,7 @@ class QuizContext: ObservableObject,  QuizState {
     
     private var timer: Timer?
     
-    init(state: QuizState, questionPlayer: QuestionPlayer, quizModerator: QuizModerator, reviewer: ReviewState, feedbackMessenger: FeedbackMessageState, listener: ListeningState) {
+    init(state: QuizState, questionPlayer: QuestionPlayer, quizModerator: QuizModerator, reviewer: ReviewState, feedbackMessenger: FeedbackMessageState, listener: ListeningState, presenter: QuizPresenter) {
         
         self.state = state
         self.questionPlayer = questionPlayer
@@ -59,11 +60,13 @@ class QuizContext: ObservableObject,  QuizState {
         self.reviewer = reviewer
         self.listener = listener
         self.feedbackMessenger = feedbackMessenger
+        self.presenter = presenter
         self.questionPlayer.context = self
         self.quizModerator.context = self
         self.reviewer.context = self
         self.feedbackMessenger.context = self
         self.listener.context = self
+        self.presenter.context = self
         setupObservers()
     }
     
@@ -73,7 +76,8 @@ class QuizContext: ObservableObject,  QuizState {
         let reviewer = ReviewState()
         let listener = ListeningState()
         let feedbackMessaenger = FeedbackMessageState()
-        let context = QuizContext(state: state, questionPlayer: questionPlayer, quizModerator: moderator, reviewer: reviewer, feedbackMessenger: feedbackMessaenger, listener: listener)
+        let presenter = QuizPresenter()
+        let context = QuizContext(state: state, questionPlayer: questionPlayer, quizModerator: moderator, reviewer: reviewer, feedbackMessenger: feedbackMessaenger, listener: listener, presenter: presenter)
         
         return context
     }
@@ -92,10 +96,6 @@ class QuizContext: ObservableObject,  QuizState {
     }
     
     func handleState(context: QuizContext) {
-//        if state is QuizModerator {
-//            context.quizModerator.performAction(.proceedWithQuiz, context: context)
-//            state.handleState(context: context)
-//        }
     }
 
     func startQuiz() {
@@ -166,18 +166,25 @@ class QuizContext: ObservableObject,  QuizState {
     }
 
     private func setupObservers() {
-        questionPlayer.$isPlayingQuestion
+        presenter.$isNowPlaying
             .receive(on: DispatchQueue.main)
             .assign(to: &$isPlaying)
         
-        questionPlayer.$hasMoreQuestions
+        presenter.$hasMoreQuestions
             .receive(on: DispatchQueue.main)
             .assign(to: &$hasMoreQuestions)
         
-        questionPlayer.$currentQuestionId
+        presenter.$currentQuestionId
             .map { $0 }
             .receive(on: DispatchQueue.main)
             .assign(to: &$currentQuestionId)
+        
+        presenter.$currentQuestion
+            .map { $0 }
+            .receive(on: DispatchQueue.main)
+            .assign(to: &$currentQuestion)
+        
+        
         print("current question ID: \(String(describing: currentQuestionId ?? nil))")
     }
     
@@ -199,7 +206,8 @@ class QuizContext: ObservableObject,  QuizState {
     
     private func playFirstQuestion() {
         DispatchQueue.main.async {
-            self.questionPlayer.playQuestions(self.questions, in: self)
+            self.presenter.performAction(.startQuiz(self.questions), context: self)
+            //self.questionPlayer.playQuestions(self.questions, in: self)
         }
     }
     

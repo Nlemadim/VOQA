@@ -53,20 +53,14 @@ class ListeningState: StateObserver, QuizState {
         print("Listener performAction called with action: \(action)")
         
         switch action {
-        case .prepareToTranscribe:
-            print("Action: prepareToTranscribe")
-            
-            context.isListening = true
-            
-            context.quizContextPlayer.performAudioAction(.playMicBeeper(.micOn))
-        
-
+    
         case .prepareMicrophone:
             print("Action: prepareMicrophone")
             
             self.speechRecognizer.prepareMicrophone()
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                context.isListening = true
                 self.performAction(.transcribe, context: context)
             }
             
@@ -77,21 +71,28 @@ class ListeningState: StateObserver, QuizState {
             
         case .doneTranscribing:
             print("Action: doneTranscribing")
+            
             speechRecognizer.stopTranscribing()
-            context.quizContextPlayer.performAudioAction(.playMicBeeper(.micOff))
-           
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                self.performAction(.proceedWithQuiz, context: context)
-                print("Context spokenAnswerOption set to \(context.spokenAnswerOption)")
-                print("Context isListening set to \(context.isListening)")
-            }
+            context.setState(context.presenter)
             
-        case .proceedWithQuiz:
-            print("Listener Sign off - Setting state to existing QuizModerator with action .validateSpokenResponse")
+            context.presenter.performAction(.dismissMic, context: context)
             
-            context.quizModerator.action = .validateSpokenResponse
-            context.setState(context.quizModerator)
+            
+//            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+//                self.performAction(.proceedWithQuiz, context: context)
+//                print("Context spokenAnswerOption set to \(context.spokenAnswerOption)")
+//                print("Context isListening set to \(context.isListening)")
+//            }
+            
+//        case .proceedWithQuiz:
+//            print("Listener Sign off - Setting state to existing QuizModerator with action .validateSpokenResponse")
+//            
+//            context.quizModerator.action = .validateSpokenResponse
+//            context.setState(context.quizModerator)
+            
+        default:
+            break
         }
     }
 

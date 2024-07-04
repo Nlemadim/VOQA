@@ -197,73 +197,72 @@ struct QuizPlayerPage: View {
     private func playSingleQuizQuestion() {}
     
     let newMockQuestions: [Question] = [
+        Question(
+            topicId: UUID(),
+            content: "What is the capital of France?",
+            options: ["Paris", "London", "Berlin", "Madrid"],
+            correctOption: "A",
+            audioScript: "New Question! What is the capital of France?",
+            audioUrl: "TheDoerVoiceOver",
+            correctionScript: "Thats not right. The correct answer is France",
+            correctionScriptUrl: "LightWork-Vosfx",
+            replayQuestionAudioScript: "Absolutely! The question is: What is the capital of France?",
+            replayOptionAudioScript: "Ok, The options are; Paris, London, Berlin, Madrid",
+            topicCategory: TopicCategory.advanced
+        )
+//        
 //        Question(
 //            topicId: UUID(),
 //            content: "What is the capital of France?",
 //            options: ["Paris", "London", "Berlin", "Madrid"],
 //            correctOption: "D",
-//            isAnsweredCorrectly: true,
-//            numberOfPresentations: 1,
-//            ratings: 5,
-//            numberOfRatings: 100,
 //            audioScript: "What is the capital of France?",
-//            audioUrl: "smallVoiceOver",
+//            audioUrl: "smallVoiceOver2",
+//            correctionScript: "Thats not right. The correct answer is France",
+//            correctionScriptUrl: "",
 //            replayQuestionAudioScript: "Can you repeat the question?",
 //            replayOptionAudioScript: "Can you repeat the options?",
-//            status: .newQuestion,
-//            difficultyLevel: 1,
-//            answerPresentedDate: Date()
+//            topicCategory: TopicCategory.intermediate
 //        ),
+//        
 //        Question(
 //            topicId: UUID(),
 //            content: "What is the largest planet in our Solar System?",
 //            options: ["Earth", "Mars", "Jupiter", "Saturn"],
 //            correctOption: "B",
-//            isAnsweredCorrectly: false,
-//            numberOfPresentations: 2,
-//            ratings: 4,
-//            numberOfRatings: 50,
 //            audioScript: "What is the largest planet in our Solar System?",
 //            audioUrl: "smallVoiceOver2",
-//            replayQuestionAudioScript: "Can you repeat the question?",
-//            replayOptionAudioScript: "Can you repeat the options?",
-//            status: .repeatQuestion,
-//            difficultyLevel: 2,
-//            answerPresentedDate: nil
+//            correctionScript: "Thats not right. The correct answer is France",
+//            correctionScriptUrl: "",
+//            replayQuestionAudioScript: "Sure! What is the largest planet in our Solar System?",
+//            replayOptionAudioScript: "Ofcourse! The options are Earth, Mars, Jupiter, Saturn",
+//            topicCategory: TopicCategory.beginner
 //        ),
 //        Question(
 //            topicId: UUID(),
 //            content: "What is the chemical symbol for water?",
 //            options: ["H2O", "O2", "CO2", "H2"],
 //            correctOption: "C",
-//            isAnsweredCorrectly: true,
-//            numberOfPresentations: 3,
-//            ratings: 3,
-//            numberOfRatings: 30,
 //            audioScript: "What is the chemical symbol for water?",
-//            audioUrl: "smallVoiceOver",
-//            replayQuestionAudioScript: "Can you repeat the question?",
-//            replayOptionAudioScript: "Can you repeat the options?",
-//            status: .modifiedQuestion,
-//            difficultyLevel: 1,
-//            answerPresentedDate: Date()
+//            audioUrl: "smallVoiceOver2",
+//            correctionScript: "Thats not right. The correct answer is France",
+//            correctionScriptUrl: "",
+//            replayQuestionAudioScript: "Sure! What is the largest planet in our Solar System?",
+//            replayOptionAudioScript: "Ofcourse! The options are Earth, Mars, Jupiter, Saturn",
+//            topicCategory: TopicCategory.advanced
 //        ),
 //        Question(
 //            topicId: UUID(),
 //            content: "Who wrote 'Romeo and Juliet'?",
 //            options: ["William Shakespeare", "Charles Dickens", "Mark Twain", "Jane Austen"],
 //            correctOption: "A",
-//            isAnsweredCorrectly: false,
-//            numberOfPresentations: 1,
-//            ratings: 5,
-//            numberOfRatings: 80,
 //            audioScript: "Who wrote 'Romeo and Juliet'?",
 //            audioUrl: "smallVoiceOver2",
-//            replayQuestionAudioScript: "Can you repeat the question?",
-//            replayOptionAudioScript: "Can you repeat the options?",
-//            status: .followUp,
-//            difficultyLevel: 2,
-//            answerPresentedDate: nil
+//            correctionScript: "Thats not right. The correct answer is France",
+//            correctionScriptUrl: "",
+//            replayQuestionAudioScript: "Sure! What is the largest planet in our Solar System?",
+//            replayOptionAudioScript: "Ofcourse! The options are Earth, Mars, Jupiter, Saturn",
+//            topicCategory: TopicCategory.foundational
 //        )
     ]
         

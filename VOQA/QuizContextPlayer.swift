@@ -8,7 +8,23 @@
 import Foundation
 import AVFoundation
 
+enum AudioAction {
+    case playCorrectAnswerCallout
+    case playWrongAnswerCallout
+    case playNoResponseCallout
+    case playMicBeeper(Beeper)
+    case playQuestion(url: String)
+    case playAnswer(url: String)
+    case nextQuestion
+    case reviewing
+    case pausePlay
+    case reset
+    
+}
+
+
 class QuizContextPlayer: NSObject, AVAudioPlayerDelegate {
+    
     var audioPlayer: AVAudioPlayer?
     var context: QuizContext
     
@@ -17,40 +33,45 @@ class QuizContextPlayer: NSObject, AVAudioPlayerDelegate {
     }
     
     func handleState(context: QuizContext) {
-        if context.state is QuizModerator {
-            print("ContextPlayer is transferring state back to Moderator")
-            
-            context.quizModerator.performAction(.proceedWithQuiz, context: context)
-        }
-        
-        if context.state is FeedbackMessageState {
-            print("ContextPlayer is transferring state back to Feedback Messenger")
-            
-            context.feedbackMessenger.performAction(.proceedWithQuiz, context: context)
-        }
-        
-        if context.state is ReviewState {
-            print("ContextPlayer is transferring state back to Reviewer")
-            
-            context.reviewer.performAction(.reviewing, context: context)
-        }
-        
-        if context.state is QuestionPlayer {
-            print("ContextPlayer is transferring state back to Question Player")
-            
-            context.questionPlayer.performAction(.playNextQuestion, context: context)
-        }
-        
-        if context.state is ListeningState {
-            print("ContextPlayer is transferring state back to Listening State")
-            
-            if context.isListening {
-                context.listener.performAction(.prepareMicrophone, context: context)
-            } else {
-                context.listener.performAction(.proceedWithQuiz, context: context)
+        if context.state is QuizPresenter {
+            if context.presenter.nowPresentingMic {
+                
+                context.quizContextPlayer.performAudioAction(.playMicBeeper(.micOn))
+                
             }
             
+            
+
         }
+        
+//        if context.state is FeedbackMessageState {
+//            print("ContextPlayer is transferring state back to Feedback Messenger")
+//            
+//            context.feedbackMessenger.performAction(.proceedWithQuiz, context: context)
+//        }
+//        
+//        if context.state is ReviewState {
+//            print("ContextPlayer is transferring state back to Reviewer")
+//            
+//            context.reviewer.performAction(.reviewing, context: context)
+//        }
+//        
+//        if context.state is QuestionPlayer {
+//            print("ContextPlayer is transferring state back to Question Player")
+//            
+//            context.questionPlayer.performAction(.playNextQuestion, context: context)
+//        }
+//        
+//        if context.state is ListeningState {
+//            print("ContextPlayer is transferring state back to Listening State")
+//            
+//            if context.isListening {
+//                context.listener.performAction(.prepareMicrophone, context: context)
+//            } else {
+//                context.listener.performAction(.proceedWithQuiz, context: context)
+//            }
+//            
+//        }
     }
     
     func performAudioAction(_ action: AudioAction) {
@@ -71,6 +92,11 @@ class QuizContextPlayer: NSObject, AVAudioPlayerDelegate {
             playAudioQuestion(question: url)
         case .playAnswer(url: let url):
             playQuestionAnswer(answer: url)
+        case .pausePlay:
+            pausePlayback()
+        case .reset:
+            audioPlayer?.stop()
+            audioPlayer = nil
         }
     }
     
@@ -113,8 +139,12 @@ class QuizContextPlayer: NSObject, AVAudioPlayerDelegate {
         }
     }
     
+    private func pausePlayback() {
+        audioPlayer?.pause()
+    }
+    
     private func playLocalSFX(fileName: String, fileType: String) {
-        print("Playing Moderator sfx")
+        print("Playing local sfx")
         do {
             let audioSession = AVAudioSession.sharedInstance()
             try audioSession.setCategory(.playback, mode: .default)
@@ -163,7 +193,6 @@ class QuizContextPlayer: NSObject, AVAudioPlayerDelegate {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                         self.handleState(context: self.context)
                     }
-                    
                 }
             } else {
                 print("Unknown player finished")

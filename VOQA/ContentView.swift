@@ -15,13 +15,13 @@ struct ContentView: View {
     //@StateObject private var quizContext: QuizContext
     
     // Define all queries
-    @Query var standardQuizPackages: [StandardQuizPackage]
-    @Query var customQuizPackages: [CustomQuizPackage]
-    @Query var topics: [Topic]
-    @Query var questions: [Question]
-    @Query var audioQuizzes: [AudioQuiz]
-    @Query var performances: [Performance]
-    @Query var voiceFeedbackMessages: [VoiceFeedbackMessages]
+//    @Query var standardQuizPackages: [StandardQuizPackage]
+//    @Query var customQuizPackages: [CustomQuizPackage]
+//    @Query var topics: [Topic]
+//    @Query var questions: [Question]
+//    @Query var audioQuizzes: [AudioQuiz]
+//    @Query var performances: [Performance]
+//    @Query var voiceFeedbackMessages: [VoiceFeedbackMessages]
     
     @State private var config = HomePageConfig.create()  // Use the new method to create the config
     @State private var selectedTab: Int = 0
@@ -32,7 +32,8 @@ struct ContentView: View {
 //    }
     
     var body: some View {
-        QuizPlayerPage(selectedTab: $selectedTab, config: config)
+        QuizContextModuleTest()
+        //QuizPlayerPage(selectedTab: $selectedTab, config: config)
             
             //HomePage(config: config)
         

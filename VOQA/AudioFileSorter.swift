@@ -7,17 +7,6 @@
 
 import Foundation
 
-enum AudioAction {
-    case playCorrectAnswerCallout
-    case playWrongAnswerCallout
-    case playNoResponseCallout
-    case playMicBeeper(Beeper)
-    case playQuestion(url: String)
-    case playAnswer(url: String)
-    case nextQuestion
-    case reviewing
-    
-}
 
 typealias Beeper = ListeningState.MicBeeper
 
@@ -58,27 +47,4 @@ class AudioFileSorter {
         }
     }
     
-    private static func getAudioActionForPresenter(presenter: QuizPresenter) -> AudioAction? {
-        guard let presentation = presenter.action else { return nil }
-        
-        switch presentation {
-            
-        case .presentQuestion(let questionUrl):
-            return .playQuestion(url: questionUrl)
-            
-        case .presentAnswer(let answerUrl):
-            return .playAnswer(url: answerUrl)
-            
-        case .presentMic(let beeper):
-            return .playMicBeeper(beeper)
-            
-        case .dismissMic(_):
-            return .playMicBeeper(.micOff)
-            
-        default:
-            break
-        }
-        
-        return nil
-    }
 }

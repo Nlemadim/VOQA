@@ -23,58 +23,283 @@ class QuizPresenter: QuizState, StateObserver {
         }
     }
     
-    enum PresenterAction {
-        case presentQuestion(String)
-        case presentAnswer(String)
-        case presentMic(Beeper)
-        case dismissMic(Beeper)
+    enum PresenterAction: Equatable {
+        static func == (lhs: QuizPresenter.PresenterAction, rhs: QuizPresenter.PresenterAction) -> Bool {
+            <#code#>
+        }
+        
+        case startQuiz([Question])
+        case presentQuestion
+        case presentAnswer
+        case noResponse
+        case presentMic
+        case dismissMic
         case presentOptions
-        case routeSession
+        case routeSession(QuizContext)
+        case pausePlay
+        case goToNextQuestion
+        case repeatQuestion
+        case repeatOptions
+        case presentReview
+        case startQuizPrompt
+        case correctAnswerFeedback
+        case incorrectAnswerFeedback
+        case awaitingResponse
+        case quit
     }
     
-    @Published var questions: [Question]
     @Published var currentQuestionIndex: Int = 0
+    @Published var currentQuestion: Question?
+    @Published var currentQuestionId: UUID?
+    @Published var currentQuestionText: String = ""
+    @Published var hasMoreQuestions: Bool = false
+    @Published var nowPresentingMic: Bool = false
+    
+    @Published var isNowPlaying: Bool = false {
+        didSet {
+            if isPaused {
+                isNowPlaying = false
+            }
+        }
+    }
+    
+    @Published var isPaused: Bool = false {
+        didSet {
+            if isNowPlaying {
+                isPaused = false
+            }
+        }
+    }
+    
+    @Published var stagedNextState: QuizState?
     
     var context: QuizContext?
     var observers: [StateObserver] = []
     var action: PresenterAction?
     let router = QuizSessionRouter()
-
-    init(action: PresenterAction? = nil, questions: [Question] = []) {
+    var nextAction: PresenterAction?
+    
+    var isPresentingMic: Bool?
+    var isCheckingAnswer: Bool?
+    var isPlayingFeedback: Bool?
+    var willPlayCorrectAnswerFeedback: Bool?
+    var willPlayInCorrectAnswerFeedback: Bool?
+    var willPlayNoResponseFeedback: Bool?
+    
+    init(action: PresenterAction? = nil, questions: [Question]) {
         self.action = action
         self.questions = questions
     }
     
+    
+    init(action: PresenterAction? = nil) {
+        self.action = action
+        self.questions = []
+    }
+    
     func handleState(context: QuizContext) {
-        print("QuestionPlayer handleState called")
+        print("Presenter handleState called")
         
         if let action = self.action {
             performAction(action, context: context)
         }
     }
     
-    func performAction(_ action: PresenterAction, context: QuizContext) {
+    func startNewQuiz(_ action: PresenterAction, context: QuizContext) {
+        self.performAction(action, context: context)
+    }
+    
+    func performAction(_ action: PresenterAction, context: QuizContext? = nil) {
         
         switch action {
             
-        case .presentQuestion(let question):
-            context.quizContextPlayer.performAudioAction(.playQuestion(url: questions[currentQuestionIndex].correctOption))
+        case .startQuiz(let questions):
+            guard let context = context else { return }
+            loadQuestions(questions: questions)
+            context.presenter.performAction(.presentQuestion, context: context)
             
-        case .presentAnswer(let string):
-            context.quizContextPlayer.performAudioAction(.playQuestion(url: questions[currentQuestionIndex].audioUrl))
+        case .presentQuestion:
             
-        case .presentMic(let beeper):
-            context.quizContextPlayer.performAudioAction(.playMicBeeper(.micOn))
-        
-        case .routeSession:
+            presentQuestion()
+           
+        case .presentAnswer:
+            presentAnswer()
+            
+        case .noResponse:
+            manageNoResponseFeedback()
+            
+        case .presentMic:
+            manageListenerMicpresentation()
+            
+        case .routeSession(let context):
             self.router.reRouteQuizSession(context: context)
             
-        case .dismissMic(_):
-            context.quizContextPlayer.performAudioAction(.playMicBeeper(.micOff))
+        case .dismissMic:
+            manageListenerMicDismissal()
+            
+        case .pausePlay:
+            pausePlayback()
+            
+        case .goToNextQuestion:
+            nextQuestion()
+            
+        case .correctAnswerFeedback:
+            manageCorrectAnswerFeedback()
+            
+        case .incorrectAnswerFeedback:
+            manageIncorrectAnswerFeedback()
+            
+        case .presentReview:
+            presentRevision()
+            
+        case .awaitingResponse:
+            presentOptions()
             
         default:
             break
         }
+    }
+    
+    private func loadQuestions(questions: [Question]) {
+        guard !questions.isEmpty else { return }
+        self.questions = questions
+    }
+    
+    private var questions: [Question] {
+        didSet {
+            if let context = context {
+                if !context.questions.isEmpty {
+                    self.questions = context.questions
+                    print("Presenter updated with \(self.questions.count) Questions")
+                }
+            }
+        }
+    }
+    
+    func presentOptions() {
+        
+    }
+    
+    
+    private func presentQuestion() {
+        guard let context = self.context else { return }
+        
+        let question = questions[currentQuestionIndex]
+        let audioUrl = question.audioUrl
+        self.currentQuestion = question
+        self.currentQuestionText = question.content // Modify with TextFormatter
+        self.currentQuestionId = question.id
+        
+        updateHasMoreQuestions()
+        
+        isNowPlaying = true
+        
+        context.setState(context.presenter)
+        context.quizContextPlayer.performAudioAction(.playQuestion(url: audioUrl))
+        nextAction = .presentMic
+        
+    }
+    
+    private func manageListenerMicpresentation() {
+        guard let context = self.context else { return }
+        self.nowPresentingMic = true
+        self.isPresentingMic = true
+        
+        context.setState(context.presenter)
+        context.quizContextPlayer.performAudioAction(.playMicBeeper(.micOn))
+        
+    }
+    
+    private func manageListenerMicDismissal() {
+        guard let context = self.context else { return }
+        
+        self.nowPresentingMic = false
+        self.isPresentingMic = false
+        self.isCheckingAnswer = true
+        
+        context.setState(context.presenter)
+        context.quizContextPlayer.performAudioAction(.playMicBeeper(.micOff))
+    }
+    
+    
+    private func nextQuestion() {
+        guard let context = self.context else { return }
+        
+        if hasMoreQuestions {
+            
+            self.currentQuestionIndex += 1
+            
+            presentQuestion()
+            
+        } else {
+            
+            self.performAction(.presentReview, context: context)
+        }
+    }
+    
+    private func pausePlayback() {
+        guard let context = self.context else { return }
+        
+        self.isPaused = true
+        context.quizContextPlayer.performAudioAction(.pausePlay)
+    }
+    
+    private func updateHasMoreQuestions() {
+        self.hasMoreQuestions = currentQuestionIndex < questions.count - 1
+    }
+    
+    private func presentAnswer() {
+        guard let context = self.context else { return }
+        
+        //MARK: Yet to be defined
+        guard !questions.isEmpty else {
+            //Undefined action
+            performAction(.startQuizPrompt, context: context)
+            return
+        }
+        
+        let question = questions[currentQuestionIndex]
+        let answerUrl = question.correctionScriptUrl
+        
+        isNowPlaying = true
+        context.setState(context.presenter)
+        context.quizContextPlayer.performAudioAction(.playAnswer(url: answerUrl))
+    }
+    
+    private func manageIncorrectAnswerFeedback() {
+        isNowPlaying = true
+        playFeedbackMessage(action: .incorrectAnswer)
+    }
+    
+    private func manageNoResponseFeedback() {
+        isNowPlaying = true
+        playFeedbackMessage(action: .noResponse)
+    }
+        
+  
+    private func manageCorrectAnswerFeedback() {
+        self.willPlayCorrectAnswerFeedback = true
+        playFeedbackMessage(action: .correctAnswer)
+    }
+    
+    private func presentRevision() {
+        guard let context = self.context else { return }
+        
+        isNowPlaying = true
+        context.setState(context.reviewer)
+        context.reviewer.performAction(.reviewing, context: context)
+    }
+    
+    private func playFeedbackMessage(action: FeedbackAction) {
+        guard let context = self.context else { return }
+        
+        isNowPlaying = true
+        context.setState(context.feedbackMessenger)
+        context.feedbackMessenger.performAction(action, context: context)
+    }
+    
+    func stageNextState(state: QuizState) {
+        self.stagedNextState = context
     }
 }
 
@@ -82,32 +307,106 @@ class QuizPresenter: QuizState, StateObserver {
 class QuizSessionRouter {
     func reRouteQuizSession(context: QuizContext) {
         
-        if context.state is QuizModerator {
-            print("Presenter is transferring state back to Moderator")
+        if context.state is QuizPresenter {
+            print("Presenter is Re-Routing")
+            print("Presenter is in active Quiz: \(context.activeQuiz)")
+            context.presenter.isNowPlaying = false
             
-            context.quizModerator.performAction(.proceedWithQuiz, context: context)
+            
+            if context.activeQuiz {
+                if context.presenter.isPresentingMic ?? false {
+                    
+                    context.setState(context.listener)
+                    context.listener.performAction(.prepareMicrophone, context: context)
+                    
+                } else if context.presenter.isCheckingAnswer ?? false {
+                    
+                    context.setState(context.questionPlayer)
+                    context.quizModerator.performAction(.validateSpokenResponse, context: context)
+                    
+                } else if context.presenter.willPlayCorrectAnswerFeedback ?? false {
+                    
+                }
+                
+                print("Presenter next action: \(String(describing: context.presenter.nextAction))")
+                /// Presenter will take next immediate action if any else pass to nextState
+                if let nextAction = context.presenter.nextAction {
+                    context.setState(context.presenter)
+                    context.presenter.performAction(nextAction)
+                    print("Performing: \(nextAction) action")
+                    
+                } else if let stagedState = context.presenter.stagedNextState {
+                    
+                    if stagedState is ListeningState {
+                        print("Current state: \(stagedState)")
+                        context.setState(context.listener)
+                        context.listener.performAction(.prepareMicrophone, context: context)
+                        context.presenter.stageNextState(state: context.quizModerator)
+                        print("Ready for next state: \(String(describing: context.presenter.stagedNextState))")
+                    } else {
+                        
+                        print("Assigned state was: \(stagedState))")
+                    }
+                    
+                } else {
+                    
+                    print("Assigned NO state was)")
+                }
+                
+
+                
+                
+                
+            }
+            
+            //Return from MicBeep context player DidFinishPlaying method
+//            if context.presenter.nowPresentingMic {
+//                
+//            } else {
+//                context.setState(context.quizModerator)
+//                context.quizModerator.performAction(.validateSpokenResponse, context: context)
+//            }
+//            
+//            if context.activeQuiz {
+//                if context.presenter.hasMoreQuestions {
+//                    context.presenter.performAction(.goToNextQuestion, context: context)
+//                } else {
+//                    context.presenter.performAction(.presentMic, context: context)
+//                    context.activeQuiz = false
+//                }
+//            } else {
+//                context.presenter.performAction(.presentReview, context: context)
+//            }
         }
         
         if context.state is FeedbackMessageState {
-            print("Presenter is transferring state back to Feedback Messenger")
+            print("Presenter is transferring state to Feedback Messenger")
             
-            context.feedbackMessenger.performAction(.proceedWithQuiz, context: context)
+            if context.activeQuiz && context.presenter.hasMoreQuestions  {
+                
+                context.setState(context.presenter)
+                
+                context.presenter.performAction(.goToNextQuestion, context: context)
+                
+            } else {
+                
+                context.presenter.performAction(.presentReview, context: context)
+            }
         }
         
         if context.state is ReviewState {
             print("Presenter is transferring state back to Reviewer")
             
-            context.reviewer.performAction(.reviewing, context: context)
+            context.reviewer.performAction(.doneReviewing, context: context)
         }
         
         if context.state is ListeningState {
-            print("Presenter is transferring state back to Listening State")
             
-            if context.isListening {
-                context.listener.performAction(.prepareMicrophone, context: context)
-            } else {
-                context.listener.performAction(.proceedWithQuiz, context: context)
-            }
+            context.quizModerator.performAction(.validateSpokenResponse, context: context)
         }
     }
+}
+
+class PresentationTextFormatter {
+    
 }
