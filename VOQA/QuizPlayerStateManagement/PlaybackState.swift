@@ -13,13 +13,16 @@ class PlaybackState: BaseState {
         case start
         case pause
         case resume
-        case stop
+        case pausedForResponse
+        case intermissionAndReview
+        case pausedForAd
     }
     
     var action: PlaybackAction
     
     init(action: PlaybackAction) {
         self.action = action
+        print("PlaybackState initialized")
     }
     
     override func handleState(context: QuizContext) {
@@ -29,21 +32,46 @@ class PlaybackState: BaseState {
         case .pause:
             print("Playback paused")
         case .resume:
-            print("Playback resumed")
-        case .stop:
-            print("Playback protocol state is: \(action)")
-            if let audioPlayer = context.audioPlayer {
-                DispatchQueue.main.async {
-                    audioPlayer.stopAndResetPlayer()
-                    audioPlayer.currentQuestionIndex += 1
-                }
-                print("Simulating waiting for answer protocol")
-                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                    print("Simulating continuation protocol")
-                    audioPlayer.playCurrentQuestion()
-                }
-            }
+            handleResume(context: context)
+        case .pausedForResponse:
+            handlePausedForResponse(context: context)
+        default:
+            break
         }
         notifyObservers()
     }
+    
+    private func handleResume(context: QuizContext) {
+        print("Playback resumed")
+//        if let audioPlayer = context.audioPlayer {
+//            DispatchQueue.main.async {
+//                audioPlayer.stopAndResetPlayer()
+//                audioPlayer.updateHasNextQuestion()
+//                print("Audio player has more questions: \(audioPlayer.hasNextQuestion)")
+//               
+//                if audioPlayer.hasNextQuestion {
+//                    audioPlayer.currentQuestionIndex += 1
+//                    audioPlayer.playCurrentQuestion()
+//                } else {
+//                    let reviewState = ReviewState(action: .reviewing)
+//                    reviewState.handleState(context: context)
+//                }
+//            }
+//        }
+    }
+    
+    private func handlePausedForResponse(context: QuizContext) {
+        print("Playback protocol state is: \(action)")
+//        if let audioPlayer = context.audioPlayer {
+//            audioPlayer.updateHasNextQuestion()
+//        }
+        
+        context.prepareMicrophone()
+        
+        // Add a delay before setting to ListeningState
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            context.setState(ListeningState())
+        }
+    }
 }
+

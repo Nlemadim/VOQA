@@ -77,3 +77,17 @@ struct AudioPlayerError: AppError {
     }
 }
 
+struct NetworkError: AppError {
+    var id = UUID()
+    var title: String?
+    var message: String?
+    var errorType: ErrorType?
+    
+    init(title: String? = "Network Error", message: String? = "Oops! Something went wrong.", errorType: DatabaseErrorType? = .downloadError) {
+        self.title = title
+        self.message = message
+        self.errorType = errorType.map { .databaseError($0) }
+    }
+}
+
+
