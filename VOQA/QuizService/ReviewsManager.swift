@@ -1,14 +1,14 @@
 //
-//  ReviewState.swift
+//  ReviewsManager.swift
 //  VOQA
 //
-//  Created by Tony Nlemadim on 6/22/24.
+//  Created by Tony Nlemadim on 7/4/24.
 //
 
 import Foundation
 
 /// State representing the review state of the quiz.
-class ReviewState: StateObserver, QuizState {
+class ReviewsManager: SessionObserver, QuizServices {
     
     enum ReviewAction {
         case reviewing
@@ -30,43 +30,44 @@ class ReviewState: StateObserver, QuizState {
     }
     
     var action: ReviewAction?
-    var context: QuizContext?
-    var observers: [StateObserver] = []
+    var context: QuizSession?
+    var observers: [SessionObserver] = []
     
     init(action: ReviewAction? = nil) {
         print("ReviewState handleState called")
         self.action = action
     }
     
-    func handleState(context: QuizContext) {
+    func handleState(context: QuizSession) {
         if let action = self.action {
             performAction(action, context: context)
         }
     }
     
-    func performAction(_ action: ReviewAction, context: QuizContext) {
+    func performAction(_ action: ReviewAction, context: QuizSession) {
         switch action {
         case .reviewing:
             print("Reviewer reviewing action triggered")
             
             context.currentQuestionText = "Reviewing"
             
-            context.quizContextPlayer.performAudioAction(.reviewing)
+            context.sessionAudioPlayer.performAudioAction(.reviewing)
             
         case .doneReviewing:
             print("Reviewer doneReviewing action triggered")
             
-            context.setState(EndedQuizState())
+            context.setState(context.sessionCloser)
+            //context.sessionCloser.performAction(SessionCloseAction, context: <#T##QuizSession#>)
         }
     }
     
     // StateObserver
-    func stateDidChange(to newState: QuizState) {
+    func stateDidChange(to newState: QuizServices) {
         // Handle state changes if needed
     }
 
     // QuizState
-    func addObserver(_ observer: StateObserver) {
+    func addObserver(_ observer: SessionObserver) {
         observers.append(observer)
     }
 

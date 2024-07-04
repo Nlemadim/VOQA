@@ -1,101 +1,104 @@
 //
-//  QuizContext.swift
+//  QuizSession.swift
 //  VOQA
 //
-//  Created by Tony Nlemadim on 6/21/24.
+//  Created by Tony Nlemadim on 7/4/24.
 //
 
 import Foundation
 import Combine
 import AVFoundation
 
-class QuizContext: ObservableObject,  QuizState {
-    lazy var quizContextPlayer: QuizContextPlayer = {
-        return QuizContextPlayer(context: self)
-    }()
-    
-    @Published var state: QuizState {
+class QuizSession: ObservableObject, QuizServices {
+    //Session General Utility Property
+    @Published var state: QuizServices {
         didSet {
             notifyObservers()
         }
     }
-
-    var observers: [StateObserver] = []
-    var questionPlayer: QuestionPlayer
-    var quizModerator: QuizModerator
-    var reviewer: ReviewState
-    var listener: ListeningState
-    var feedbackMessenger: FeedbackMessageState
-    var presenter: QuizPresenter
-    //var feedbackMessagState: FeedbackMessageState
     
     @Published var activeQuiz: Bool = false
     @Published var countdownTime: TimeInterval = 5.0 // Default countdown time
     @Published var responseTime: TimeInterval = 6.0 // Default response time
-    @Published var isListening: Bool = false
-    @Published var questionCounter: String = ""
-    @Published var isDownloading: Bool = false
+    
+    //Session QuestionPlayer Specific Properties
+    @Published var currentQuestion: Question?
+    @Published var currentQuestionId: UUID?
+    @Published var currentQuestionText: String = ""
     @Published var hasMoreQuestions: Bool = false
     @Published var isLastQuestion: Bool = false
+    
+    //Session Awaiting Response And Validation Specific Properties
+    @Published var isAwaitingResponse: Bool = false
+    @Published var spokenAnswerOption: String = ""
+    @Published var buttonSelected: String = ""
+    @Published var hasResponded: Bool = false
+    
+    //Session Audio Specific Properties
+    @Published var isNowPlaying: Bool = false
+    
+    
+    lazy var sessionAudioPlayer: SessionAudioPlayer = {
+        return SessionAudioPlayer(context: self)
+    }()
+
+    var observers: [SessionObserver] = []
+    var questionPlayer: QuestionPlayer
+    var responsePresenter: ResponsePresenter
+    var responseValidator: ResponseValidationManager
+    var reviewer: ReviewsManager
+    var sessionCoordinator: SessionCoordinator
+    var sessionCloser: SessionCloser
+    
+    //UI Feedback and Status
+    @Published var questionCounter: String = ""
     @Published var quizTitleImage: String = ""
     @Published var quizTitle: String = "VOQA"
     @Published var totalQuestionCount: Int = 0
-    @Published var currentQuestionText: String = ""
-    @Published var hasQuestions: Bool = false
-    @Published var isPlaying: Bool = false
-    @Published var buttonSelected: String = ""
-    @Published var currentQuestionId: UUID?
-    @Published var currentQuestion: Question?
-    @Published var spokenAnswerOption: String = ""
     
     var questions: [Question] = []
     
     private var timer: Timer?
     
-    init(state: QuizState, questionPlayer: QuestionPlayer, quizModerator: QuizModerator, reviewer: ReviewState, feedbackMessenger: FeedbackMessageState, listener: ListeningState, presenter: QuizPresenter) {
+    init(state: QuizServices, questionPlayer: QuestionPlayer, responsePresenter: ResponsePresenter, responseValidator: ResponseValidationManager, reviewer: ReviewsManager, sessionCoOrdinator: SessionCoordinator, sessionCloser: SessionCloser) {
         
         self.state = state
         self.questionPlayer = questionPlayer
-        self.quizModerator = quizModerator
+        self.responsePresenter = responsePresenter
+        self.responseValidator = responseValidator
         self.reviewer = reviewer
-        self.listener = listener
-        self.feedbackMessenger = feedbackMessenger
-        self.presenter = presenter
-        self.questionPlayer.context = self
-        self.quizModerator.context = self
+        self.sessionCoordinator = sessionCoOrdinator
+        self.sessionCloser = sessionCloser
+        self.questionPlayer.session = self
+        self.responseValidator.session = self
         self.reviewer.context = self
-        self.feedbackMessenger.context = self
-        self.listener.context = self
-        self.presenter.context = self
+        self.sessionCoordinator.session = self
+        self.sessionCloser.context = self
         setupObservers()
     }
     
-    static func create(state: QuizState) -> QuizContext {
+    static func create(state: QuizServices) -> QuizSession {
         let questionPlayer = QuestionPlayer()
-        let moderator = QuizModerator()
-        let reviewer = ReviewState()
-        let listener = ListeningState()
-        let feedbackMessaenger = FeedbackMessageState()
-        let presenter = QuizPresenter()
-        let context = QuizContext(state: state, questionPlayer: questionPlayer, quizModerator: moderator, reviewer: reviewer, feedbackMessenger: feedbackMessaenger, listener: listener, presenter: presenter)
+        let responsePresenter = ResponsePresenter()
+        let responseValidator = ResponseValidationManager()
+        let reviewer = ReviewsManager()
+        let presenter = SessionCoordinator()
+        let sessionCloser = SessionCloser()
+        let context = QuizSession(state: state, questionPlayer: questionPlayer, responsePresenter: responsePresenter, responseValidator: responseValidator, reviewer: reviewer, sessionCoOrdinator: presenter, sessionCloser: sessionCloser)
         
         return context
     }
     
-    func setState(_ state: QuizState) {
+    func setState(_ state: QuizServices) {
         print("Setting state to \(type(of: state))")
         self.state = state
-        
-        if let audioAction = AudioFileSorter.getAudioAction(for: state, context: self) {
-            quizContextPlayer.performAudioAction(audioAction)
-        } else {
-            self.state.handleState(context: self)
-        }
+        self.state.handleState(context: self)
   
         notifyObservers()
     }
     
-    func handleState(context: QuizContext) {
+    func handleState(context: QuizSession) {
+        
     }
 
     func startQuiz() {
@@ -113,13 +116,21 @@ class QuizContext: ObservableObject,  QuizState {
         }
     }
     
-    func pauseQuiz() {
-        self.questionPlayer.pausePlayback()
+    private func playFirstQuestion() {
+        DispatchQueue.main.async {
+            self.questionPlayer.performAction(.loadNewSessionQuestions, session: self)
+        }
     }
     
-    func updateDownloadStatus() {
-        self.isDownloading = false
+    func selectAnswer(selectedOption: String) {
+        self.buttonSelected = selectedOption
+        self.responsePresenter.performAction(.dismissResponsePresentation, session: self)
     }
+    
+    func pauseQuiz() {
+       // self.questionPlayer.pausePlayback()
+    }
+    
     
     func updateQuestionCounter(questionIndex: Int, count: Int) {
         DispatchQueue.main.async {
@@ -144,18 +155,11 @@ class QuizContext: ObservableObject,  QuizState {
         }
     }
     
-    
     func stopCountdown() {
         timer?.invalidate()
     }
-    
-    func prepareMicrophone() {
-        if let listeningState = self.state as? ListeningState {
-            listeningState.speechRecognizer.prepareMicrophone()
-        }
-    }
-    
-    func addObserver(_ observer: StateObserver) {
+
+    func addObserver(_ observer: SessionObserver) {
         observers.append(observer)
     }
     
@@ -166,27 +170,30 @@ class QuizContext: ObservableObject,  QuizState {
     }
 
     private func setupObservers() {
-        presenter.$isNowPlaying
+        //MARK: Observing Question Player Propeperties
+        questionPlayer.$isPlayingQuestion
             .receive(on: DispatchQueue.main)
-            .assign(to: &$isPlaying)
+            .assign(to: &$isNowPlaying)
         
-        presenter.$hasMoreQuestions
+        questionPlayer.$hasMoreQuestions
             .receive(on: DispatchQueue.main)
             .assign(to: &$hasMoreQuestions)
         
-        presenter.$currentQuestionId
-            .map { $0 }
+        questionPlayer.$currentQuestionId
             .receive(on: DispatchQueue.main)
             .assign(to: &$currentQuestionId)
         
-        presenter.$currentQuestion
-            .map { $0 }
+        questionPlayer.$currentQuestion
             .receive(on: DispatchQueue.main)
             .assign(to: &$currentQuestion)
         
         
         print("current question ID: \(String(describing: currentQuestionId ?? nil))")
     }
+    
+    
+    
+    
     
     private func startCountdown() {
         print("Starting countdown")
@@ -203,12 +210,5 @@ class QuizContext: ObservableObject,  QuizState {
             }
         }
     }
-    
-    private func playFirstQuestion() {
-        DispatchQueue.main.async {
-            self.presenter.performAction(.startQuiz(self.questions), context: self)
-            //self.questionPlayer.playQuestions(self.questions, in: self)
-        }
-    }
-    
 }
+

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct QuizContextModuleTest: View {
     @State private var isPlaying = false
-    @StateObject private var quizContext: QuizContext = QuizContext.create(state: IdleState())
+    @StateObject private var quizContext: QuizSession = QuizSession.create(state: IdleSession())
     
     var body: some View {
         VStack {
@@ -78,50 +78,7 @@ struct QuizContextModuleTest: View {
     
     func injectTestQuestions() -> [Question] {
         
-        let questions = [
-        
-            Question(
-                topicId: UUID(),
-                content: "What is the capital of France?",
-                options: ["Paris", "London", "Berlin", "Madrid"],
-                correctOption: "A",
-                audioScript: "New Question! What is the capital of France?",
-                audioUrl: "TheDoerVoSfx",
-                correctionScript: "Thats not right. The correct answer is France",
-                correctionScriptUrl: "LightWork-Vosfx",
-                replayQuestionAudioScript: "Absolutely! The question is: What is the capital of France?",
-                replayOptionAudioScript: "Ok, The options are; Paris, London, Berlin, Madrid",
-                topicCategory: TopicCategory.advanced
-            ),
-            
-            Question(
-                topicId: UUID(),
-                content: "What is the capital of France?",
-                options: ["Paris", "London", "Berlin", "Madrid"],
-                correctOption: "B",
-                audioScript: "New Question! What is the capital of France?",
-                audioUrl: "TheDoerVoSfx",
-                correctionScript: "Thats not right. The correct answer is France",
-                correctionScriptUrl: "LightWork-Vosfx",
-                replayQuestionAudioScript: "Absolutely! The question is: What is the capital of France?",
-                replayOptionAudioScript: "Ok, The options are; Paris, London, Berlin, Madrid",
-                topicCategory: TopicCategory.advanced
-            ),
-            
-            Question(
-                topicId: UUID(),
-                content: "What is the capital of France?",
-                options: ["Paris", "London", "Berlin", "Madrid"],
-                correctOption: "A",
-                audioScript: "New Question! What is the capital of France?",
-                audioUrl: "TheDoerVoiceOver",
-                correctionScript: "Thats not right. The correct answer is France",
-                correctionScriptUrl: "smallVoiceOver",
-                replayQuestionAudioScript: "Absolutely! The question is: What is the capital of France?",
-                replayOptionAudioScript: "Ok, The options are; Paris, London, Berlin, Madrid",
-                topicCategory: TopicCategory.advanced
-            )
-        ]
+        let questions: [Question] = []
         
         return questions
     }

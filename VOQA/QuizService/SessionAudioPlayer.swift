@@ -1,8 +1,8 @@
 //
-//  QuizContextPlayer.swift
+//  SessionAudioPlayer.swift
 //  VOQA
 //
-//  Created by Tony Nlemadim on 6/29/24.
+//  Created by Tony Nlemadim on 7/4/24.
 //
 
 import Foundation
@@ -12,9 +12,11 @@ enum AudioAction {
     case playCorrectAnswerCallout
     case playWrongAnswerCallout
     case playNoResponseCallout
-    case playMicBeeper(Beeper)
+    case waitingFoprResponse
+    case recievedResponse
     case playQuestion(url: String)
     case playAnswer(url: String)
+    case playFeedBackMessage(url: String)
     case nextQuestion
     case reviewing
     case pausePlay
@@ -23,55 +25,18 @@ enum AudioAction {
 }
 
 
-class QuizContextPlayer: NSObject, AVAudioPlayerDelegate {
+class SessionAudioPlayer: NSObject, AVAudioPlayerDelegate {
     
     var audioPlayer: AVAudioPlayer?
-    var context: QuizContext
+    var context: QuizSession
     
-    init(context: QuizContext) {
+    init(context: QuizSession) {
         self.context = context
     }
     
-    func handleState(context: QuizContext) {
-        if context.state is QuizPresenter {
-            if context.presenter.nowPresentingMic {
-                
-                context.quizContextPlayer.performAudioAction(.playMicBeeper(.micOn))
-                
-            }
-            
-            
-
-        }
-        
-//        if context.state is FeedbackMessageState {
-//            print("ContextPlayer is transferring state back to Feedback Messenger")
-//            
-//            context.feedbackMessenger.performAction(.proceedWithQuiz, context: context)
-//        }
-//        
-//        if context.state is ReviewState {
-//            print("ContextPlayer is transferring state back to Reviewer")
-//            
-//            context.reviewer.performAction(.reviewing, context: context)
-//        }
-//        
-//        if context.state is QuestionPlayer {
-//            print("ContextPlayer is transferring state back to Question Player")
-//            
-//            context.questionPlayer.performAction(.playNextQuestion, context: context)
-//        }
-//        
-//        if context.state is ListeningState {
-//            print("ContextPlayer is transferring state back to Listening State")
-//            
-//            if context.isListening {
-//                context.listener.performAction(.prepareMicrophone, context: context)
-//            } else {
-//                context.listener.performAction(.proceedWithQuiz, context: context)
-//            }
-//            
-//        }
+    func handleState(context: QuizSession) {
+        context.setState(context.sessionCoordinator)
+        context.sessionCoordinator.performAction(.reRouteAndSynchronize, session: context)
     }
     
     func performAudioAction(_ action: AudioAction) {
@@ -82,8 +47,10 @@ class QuizContextPlayer: NSObject, AVAudioPlayerDelegate {
             playWrongAnswerCallout()
         case .playNoResponseCallout:
             playNoResponseCallout()
-        case .playMicBeeper(let beeper):
-            playMicBeeper(beeper: beeper)
+        case .waitingFoprResponse:
+            playRespondBeep()
+        case .recievedResponse:
+            playHasRespondedBeep()
         case .nextQuestion:
             playNextQuestionWave()
         case .reviewing:
@@ -97,11 +64,17 @@ class QuizContextPlayer: NSObject, AVAudioPlayerDelegate {
         case .reset:
             audioPlayer?.stop()
             audioPlayer = nil
+        case .playFeedBackMessage(url: let url):
+            playFeedbackMessage(messageUrl: url)
         }
     }
     
     private func playAudioQuestion(question url: String) {
         startPlaybackFromBundle(fileName: url)
+    }
+    
+    private func playFeedbackMessage(messageUrl: String) {
+        startPlaybackFromBundle(fileName: messageUrl)
     }
     
     private func playQuestionAnswer(answer url: String) {
@@ -128,16 +101,17 @@ class QuizContextPlayer: NSObject, AVAudioPlayerDelegate {
         playLocalSFX(fileName: "VoqaBgm", fileType: "mp3")
     }
     
-    private func playMicBeeper(beeper: Beeper) {
-        print("Mic Beeper!")
-        switch beeper {
-        case .micOn:
-            playLocalSFX(fileName: "showResponderBell", fileType: "wav")
-        case .micOff:
-            print("Mic Closer!")
-            playLocalSFX(fileName: "dismissResponderBell", fileType: "wav")
-        }
+    private func playRespondBeep() {
+        print("Respond Beep")
+        playLocalSFX(fileName: "showResponderBell", fileType: "wav")
     }
+    
+    private func playHasRespondedBeep() {
+        print("Recieved Response Beep")
+        playLocalSFX(fileName: "dismissResponderBell", fileType: "wav")
+    }
+    
+   
     
     private func pausePlayback() {
         audioPlayer?.pause()

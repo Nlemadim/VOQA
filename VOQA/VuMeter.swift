@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct VUMeterView: View {
-    @ObservedObject var quizContext: QuizContext
+    @ObservedObject var quizContext: QuizSession
     @State private var randomScales: [CGFloat] = Array(repeating: 0.01, count: 6)
     private let timer = Timer.publish(every: 0.3, on: .main, in: .common).autoconnect()
 

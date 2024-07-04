@@ -12,15 +12,11 @@ struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
 
     var body: some View {
-        BaseView {
-            LaunchView()
-                .padding()
-        }
+       Text("Hello VOQA")
     }
 }
 
 #Preview {
     ContentView()
         .preferredColorScheme(.dark)
-    
 }

@@ -26,7 +26,7 @@ struct LaunchView: View {
                 .tag(2)
                 .tabItem { EmptyView() }
 
-            VoqaWebView()
+           Text("Welcome to VOQA!")
                 .tag(3)
                 .tabItem { EmptyView() }
         }

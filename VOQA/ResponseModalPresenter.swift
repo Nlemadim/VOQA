@@ -8,40 +8,29 @@
 import SwiftUI
 
 struct ResponseModalPresenter: View {
-    @ObservedObject var context: QuizContext
+    @ObservedObject var context: QuizSession
     @Binding var selectedOption: String?
     
     @State private var mainColor: Color = .black
     @State private var subColor: Color = .gray
-    @StateObject private var generator = ColorGenerator()
+   
     
     var body: some View {
         VStack {
             Spacer()
-            if context.state is ListeningState {
-                MicModalView(context: context, mainColor: mainColor, subColor: subColor)
-            } else if context.state is AwaitingResponseState {
-                OptionButtonsModalView(selectedOption: $selectedOption, mainThemeColor: mainColor, selectionThemeColor: subColor)
-            }
+//            if context.state is ResponsePresenter {
+//                MicModalView(context: context, mainColor: mainColor, subColor: subColor)
+//            } else if context.state is AwaitingResponseState {
+//                OptionButtonsModalView(selectedOption: $selectedOption, mainThemeColor: mainColor, selectionThemeColor: subColor)
+//            }
         }
         .frame(maxWidth: .infinity)
         .background(mainColor)
-        .onAppear {
-            DispatchQueue.main.async {
-                updateViewColors()
-            }
-        }
-    }
-    
-    func updateViewColors() {
-        generator.updateAllColors(fromImageNamed: "IconImage")
-        self.mainColor = generator.dominantBackgroundColor
-        self.subColor = generator.dominantLightToneColor
     }
 }
 
 struct MicModalView: View {
-    @ObservedObject var context: QuizContext
+    @ObservedObject var context: QuizSession
     @State private var timerCountdown: Int = 5
     @State private var isTimerActive: Bool = true
     var mainColor: Color
@@ -50,7 +39,7 @@ struct MicModalView: View {
     var body: some View {
         VStack(alignment: .center) {
             HStack {
-                MicButtonWithProgressRing(showProgressRing: context.isListening)
+                MicButtonWithProgressRing(showProgressRing: context.isAwaitingResponse)
                     .padding()
             }
             .padding(20)

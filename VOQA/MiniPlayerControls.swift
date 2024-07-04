@@ -15,7 +15,7 @@ struct MiniPlayerControls: View {
     
     @State private var tappedPlay: Bool = false
     
-    @State private var isUsingMic: Bool = UserDefaultsManager.isHandfreeEnabled()
+    @State private var isUsingMic: Bool = false
     
     let imageSize: CGFloat = 18
     
@@ -46,19 +46,16 @@ struct MiniPlayerControls: View {
             }) {
                 Image(systemName: "stop.fill")
                     .font(.title)
-                    
             }
         }
         .foregroundStyle(.white)
         .padding(.horizontal)
     }
     
-    
     private func provideHapticFeedback() {
         let generator = UIImpactFeedbackGenerator(style: .medium)
         generator.impactOccurred()
     }
-    
 }
 
 #Preview {

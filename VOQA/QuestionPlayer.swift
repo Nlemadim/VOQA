@@ -9,22 +9,28 @@ import Foundation
 import AVFoundation
 import Combine
 
-class QuestionPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate, StateObserver, QuizState {
+
+class QuestionPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate, SessionObserver, QuizServices {
     
     enum QuestionPlayerAction {
-        case playNextQuestion
+        case loadNewSessionQuestions
+        case playCurrentQuestion(Question)
+        case readyToPlayNextQuestion
+        case noQuestions
     }
+    
+    
 
     @Published var isPlayingQuestion: Bool = false
     @Published var hasMoreQuestions: Bool = false
     @Published var currentQuestionIndex: Int = 0
     @Published var currentQuestionId: UUID?
-    @Published var questions: [Question] = []
-
-    private var audioPlayer: AVAudioPlayer?
+    @Published var currentQuestion: Question?
     
-    var context: QuizContext?
-    var observers: [StateObserver] = []
+    var questions: [Question] = []
+    
+    var session: QuizSession?
+    var observers: [SessionObserver] = []
     var action: QuestionPlayerAction?
 
     init(action: QuestionPlayerAction? = nil) {
@@ -32,130 +38,82 @@ class QuestionPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate, StateOb
         super.init()
     }
     
-    func handleState(context: QuizContext) {
+    func handleState(context: QuizSession) {
         print("QuestionPlayer handleState called")
         
         if let action = self.action {
-            performAction(action, context: context)
+            performAction(action, session: context)
         }
     }
-
-    private func updateHasNextQuestion() {
-        hasMoreQuestions = currentQuestionIndex < questions.count - 1
-//        if !hasMoreQuestions {
-//            let nextQuestionId = questions[currentQuestionIndex + 1].id
-//            context?.updateCurrentQuestionId(nextQuestionId)
-//        }
-        print("Updated hasMoreQuestions: \(hasMoreQuestions), next question ID: \(String(describing: context?.currentQuestionId))")
-    }
-
-    func pausePlayback() {
-        audioPlayer?.pause()
-    }
-
-    func playQuestions(_ questions: [Question], in context: QuizContext) {
-        self.questions = questions
-        self.context = context
-        updateHasNextQuestion()
-        playQuestion(questions[currentQuestionIndex])
-    }
     
-    private func playQuestion(_ question: Question) {
-        isPlayingQuestion = true
-        currentQuestionId = question.id
-        context?.updateCurrentQuestionId(question.id)
-        print("Playing question with ID: \(question.id)")
-        startPlaybackFromBundle(fileName: question.audioUrl)
-    }
-
-    func performAction(_ action: QuestionPlayerAction, context: QuizContext) {
+    func performAction(_ action: QuestionPlayerAction, session: QuizSession) {
         print("QuestionPlayer performAction called with action: \(action)")
         print("Current Question Index: \(currentQuestionIndex)")
         print("Total Questions: \(questions.count)")
         
         switch action {
-        case .playNextQuestion:
-            guard currentQuestionIndex < questions.count else {
-                print("No more questions to play, resetting player")
-                transitAndResetPlayer()
-                return
-            }
             
-            let question = questions[currentQuestionIndex]
-            print("Playing question at index \(currentQuestionIndex): \(question)")
-            playQuestion(question)
+        case .loadNewSessionQuestions:
+            loadQuestions(session: session)
+            
+        case .playCurrentQuestion:
+            playQuestion()
+            
+        case .readyToPlayNextQuestion:
+            prepareNextQuestion(session: session)
+            
+        case .noQuestions:
+            session.sessionAudioPlayer.performAudioAction(.playNoResponseCallout)
+            print("Error No Questios available")
         }
     }
     
-    internal func startPlaybackFromBundle(fileName: String, fileType: String = "mp3") {
-        do {
-            let audioSession = AVAudioSession.sharedInstance()
-            if audioSession.category != .playback {
-                try audioSession.setCategory(.playback, mode: .default)
-                try audioSession.setActive(true)
-            }
-
-            if let path = Bundle.main.path(forResource: fileName, ofType: fileType) {
-                let url = URL(fileURLWithPath: path)
-                audioPlayer = try AVAudioPlayer(contentsOf: url)
-                audioPlayer?.delegate = self
-                audioPlayer?.play()
-            } else {
-                print("Audio file not found: \(fileName).\(fileType)")
-            }
-        } catch {
-            print("Failed to play audio: \(error.localizedDescription)")
+    private func loadQuestions(session: QuizSession) {
+        guard !session.questions.isEmpty else {
+            performAction(.noQuestions, session: session)
+            return
         }
+        
+        self.questions = session.questions
+        let currentIndex = self.currentQuestionIndex
+        let currentQuestion = self.questions[currentIndex]
+        
+        session.updateQuestionCounter(questionIndex: currentIndex, count: questions.count)
+        
+        performAction(.playCurrentQuestion(currentQuestion), session: session)
+    }
+    
+    private func playQuestion() {
+        guard let session = session else { return }
+        
+        let question = questions[currentQuestionIndex]
+        self.currentQuestion = question
+        self.currentQuestionId = question.id
+        updateHasNextQuestion()
+        
+        session.sessionAudioPlayer.performAudioAction(.playQuestion(url: question.audioUrl))
+    
+        print("Question Player Presenting question with ID: \(question.id)")
+        print("Question Player has More Questions: \(self.hasMoreQuestions)")
+    }
+
+    private func updateHasNextQuestion() {
+        hasMoreQuestions = currentQuestionIndex < questions.count - 1
+    }
+    
+    private func prepareNextQuestion(session: QuizSession) {
+        self.currentQuestionIndex += 1
+        let currentIndex = self.currentQuestionIndex
+        let currentQuestion = self.questions[currentIndex]
+        performAction(.playCurrentQuestion(currentQuestion), session: session)
     }
 
     private func proceedToNextQuestion() {
-        guard isPlayingQuestion else { return }
-        isPlayingQuestion = false
-        updateHasNextQuestion()
-
-        if hasMoreQuestions {
-            transitionToListeningState()
-        } else {
-            transitAndResetPlayer()
-        }
+        guard let session = session else { return }
+        self.performAction(.readyToPlayNextQuestion, session: session)
     }
 
-    private func transitAndResetPlayer() {
-        guard let context = context else { return }
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            context.setState(ListeningState(action: .prepareToTranscribe))
-        }
-    
-        audioPlayer = nil
-        context.hasMoreQuestions = false
-        //currentQuestionIndex = 0
-        //UserDefaults.standard.set(currentQuestionIndex, forKey: "currentQuestionIndex")
-        hasMoreQuestions = false
-    }
-
-    private func transitionToListeningState() {
-        guard let context = context else { return }
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            context.setState(ListeningState(action: .prepareToTranscribe))
-        }
-    }
-
-    // AVAudioPlayerDelegate
-    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
-        DispatchQueue.main.async {
-            if player == self.audioPlayer {
-                if self.context?.activeQuiz == true {
-                    self.proceedToNextQuestion()
-                }
-            } else {
-                print("Unknown player finished")
-            }
-        }
-    }
-    
-    func addObserver(_ observer: StateObserver) {
+    func addObserver(_ observer: SessionObserver) {
         observers.append(observer)
     }
     
@@ -166,7 +124,7 @@ class QuestionPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate, StateOb
     }
     
     // StateObserver
-    func stateDidChange(to newState: QuizState) {
+    func stateDidChange(to newState: QuizServices) {
         print("Question Player state did change to \(type(of: newState))")
         // Handle state changes if needed
     }

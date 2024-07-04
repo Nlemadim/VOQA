@@ -9,7 +9,7 @@ import SwiftUI
 import Combine
 
 struct VoqaWaveView: View {
-    @ObservedObject var quizContext: QuizContext
+    @ObservedObject var quizContext: QuizSession
     @State private var voqaWave: VoqaWave
     @State private var power: Double = 0.0
     @State private var timer: Timer.TimerPublisher = Timer.publish(every: 0.3, on: .main, in: .common)
@@ -18,7 +18,7 @@ struct VoqaWaveView: View {
     var colors: [Color]
     var supportLineColor: Color
     
-    init(colors: [Color], supportLineColor: Color = .white, quizContext: QuizContext) {
+    init(colors: [Color], supportLineColor: Color = .white, quizContext: QuizSession) {
         self._voqaWave = State(initialValue: VoqaWave(numWaves: colors.count, power: 0.0))
         self.colors = colors
         self.supportLineColor = supportLineColor
@@ -40,7 +40,7 @@ struct VoqaWaveView: View {
             .blendMode(.lighten)
             .drawingGroup()
         }
-        .onChange(of: quizContext.isPlaying) {_, _ in
+        .onChange(of: quizContext.isNowPlaying) {_, _ in
             voqaWave = VoqaWave(numWaves: colors.count, power: power)
             toggleTimerBasedOnAudioPlayerState()
         }
@@ -53,7 +53,7 @@ struct VoqaWaveView: View {
     }
     
     private func toggleTimerBasedOnAudioPlayerState() {
-        if quizContext.isPlaying == true {
+        if quizContext.isNowPlaying == true {
             // Start or continue the timer
             if timerCancellable == nil {
                 timerCancellable = timer.connect()

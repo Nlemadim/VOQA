@@ -8,13 +8,7 @@
 import SwiftUI
 
 struct MiniPlayer: View {
-    @Environment(\.modelContext) var modelContext
-    @ObservedObject var generator = ColorGenerator()
-    
-    @State var isQandA: Bool = UserDefaultsManager.isQandAEnabled()
-    @State var defaultQuestionCount: Int = UserDefaultsManager.numberOfTestQuestions()
-    @State var quizName: String = UserDefaultsManager.quizName()
-    
+   
     @Binding var refreshQuiz: Bool
     @State var selectedOptionButton: String? = nil
    
@@ -52,9 +46,6 @@ struct MiniPlayer: View {
                 presentMiniModal = false
             }
         }
-        .onAppear {
-            setThemeColors()
-        }
     }
     
     private var playerThumbnail: some View {
@@ -89,11 +80,6 @@ struct MiniPlayer: View {
             .font(.footnote)
             .foregroundStyle(.secondary)
             .frame(maxWidth: .infinity, alignment: .leading)
-    }
-    
-    private func setThemeColors() {
-        generator.updateAllColors(fromImageNamed: "IconImage")
-        
     }
 }
 
