@@ -27,12 +27,6 @@
 		0B31C40C2C223286006FB5D1 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B31C4092C223286006FB5D1 /* AVFoundation.framework */; };
 		0B31C40D2C223286006FB5D1 /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B31C40A2C223286006FB5D1 /* AVKit.framework */; };
 		0B31C40E2C223286006FB5D1 /* AVFAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B31C40B2C223286006FB5D1 /* AVFAudio.framework */; };
-		0B36668E2C2664640034C0EE /* correctAnswerBell.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0B36668D2C2664640034C0EE /* correctAnswerBell.wav */; };
-		0B3666922C26649E0034C0EE /* NextQuestionWave.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0B3666912C26649E0034C0EE /* NextQuestionWave.wav */; };
-		0B3666942C2664AC0034C0EE /* showResponderBell.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0B3666932C2664AC0034C0EE /* showResponderBell.wav */; };
-		0B3666962C2664B70034C0EE /* dismissResponderBell.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0B3666952C2664B70034C0EE /* dismissResponderBell.wav */; };
-		0B3666982C2664C20034C0EE /* wrongAnswerBell.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0B3666972C2664C20034C0EE /* wrongAnswerBell.wav */; };
-		0B36669C2C2665140034C0EE /* errorBell.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0B36669B2C2665140034C0EE /* errorBell.wav */; };
 		0B7321F52C2253B600D7DED2 /* LaunchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B7321F42C2253B600D7DED2 /* LaunchView.swift */; };
 		0B7321F72C2253F100D7DED2 /* TermsAndConditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B7321F62C2253F100D7DED2 /* TermsAndConditions.swift */; };
 		0B7321F92C22543D00D7DED2 /* PrivacyPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B7321F82C22543D00D7DED2 /* PrivacyPolicy.swift */; };
@@ -46,6 +40,12 @@
 		0BC091E02C1D4463005FB223 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BC091DF2C1D4463005FB223 /* ContentView.swift */; };
 		0BC091E42C1D4465005FB223 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0BC091E32C1D4465005FB223 /* Assets.xcassets */; };
 		0BC091E82C1D4465005FB223 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0BC091E72C1D4465005FB223 /* Preview Assets.xcassets */; };
+		0BC98C6B2C375B0D001F993D /* correctAnswerBell.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0BC98C6A2C375B0D001F993D /* correctAnswerBell.wav */; };
+		0BC98C6D2C375B14001F993D /* errorBell.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0BC98C6C2C375B14001F993D /* errorBell.wav */; };
+		0BC98C6F2C375B1C001F993D /* NextQuestionWave.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0BC98C6E2C375B1C001F993D /* NextQuestionWave.wav */; };
+		0BC98C712C375B24001F993D /* showResponderBell.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0BC98C702C375B24001F993D /* showResponderBell.wav */; };
+		0BC98C732C375B2B001F993D /* dismissResponderBell.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0BC98C722C375B2B001F993D /* dismissResponderBell.wav */; };
+		0BC98C752C375B34001F993D /* wrongAnswerBell.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0BC98C742C375B34001F993D /* wrongAnswerBell.wav */; };
 		0BEA5A682C2751FE0091D612 /* BackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BEA5A672C2751FE0091D612 /* BackgroundView.swift */; };
 		0BEA5A7A2C2753470091D612 /* Colo+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BEA5A792C2753470091D612 /* Colo+Extensions.swift */; };
 		0BEA5A7C2C2753BC0091D612 /* UiImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BEA5A7B2C2753BC0091D612 /* UiImage+Extensions.swift */; };
@@ -102,12 +102,6 @@
 		0B31C4092C223286006FB5D1 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS17.4.sdk/System/Library/Frameworks/AVFoundation.framework; sourceTree = DEVELOPER_DIR; };
 		0B31C40A2C223286006FB5D1 /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS17.4.sdk/System/Library/Frameworks/AVKit.framework; sourceTree = DEVELOPER_DIR; };
 		0B31C40B2C223286006FB5D1 /* AVFAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFAudio.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS17.4.sdk/System/Library/Frameworks/AVFAudio.framework; sourceTree = DEVELOPER_DIR; };
-		0B36668D2C2664640034C0EE /* correctAnswerBell.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = correctAnswerBell.wav; path = ../correctAnswerBell.wav; sourceTree = "<group>"; };
-		0B3666912C26649E0034C0EE /* NextQuestionWave.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = NextQuestionWave.wav; path = ../NextQuestionWave.wav; sourceTree = "<group>"; };
-		0B3666932C2664AC0034C0EE /* showResponderBell.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = showResponderBell.wav; path = ../showResponderBell.wav; sourceTree = "<group>"; };
-		0B3666952C2664B70034C0EE /* dismissResponderBell.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = dismissResponderBell.wav; path = ../dismissResponderBell.wav; sourceTree = "<group>"; };
-		0B3666972C2664C20034C0EE /* wrongAnswerBell.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = wrongAnswerBell.wav; path = ../wrongAnswerBell.wav; sourceTree = "<group>"; };
-		0B36669B2C2665140034C0EE /* errorBell.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = errorBell.wav; path = ../errorBell.wav; sourceTree = "<group>"; };
 		0B7321F42C2253B600D7DED2 /* LaunchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchView.swift; sourceTree = "<group>"; };
 		0B7321F62C2253F100D7DED2 /* TermsAndConditions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsAndConditions.swift; sourceTree = "<group>"; };
 		0B7321F82C22543D00D7DED2 /* PrivacyPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyPolicy.swift; sourceTree = "<group>"; };
@@ -125,6 +119,12 @@
 		0BC091E72C1D4465005FB223 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		0BC091ED2C1D4466005FB223 /* VOQATests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VOQATests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0BC091F72C1D4466005FB223 /* VOQAUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VOQAUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		0BC98C6A2C375B0D001F993D /* correctAnswerBell.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = correctAnswerBell.wav; sourceTree = "<group>"; };
+		0BC98C6C2C375B14001F993D /* errorBell.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = errorBell.wav; sourceTree = "<group>"; };
+		0BC98C6E2C375B1C001F993D /* NextQuestionWave.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = NextQuestionWave.wav; sourceTree = "<group>"; };
+		0BC98C702C375B24001F993D /* showResponderBell.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = showResponderBell.wav; sourceTree = "<group>"; };
+		0BC98C722C375B2B001F993D /* dismissResponderBell.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = dismissResponderBell.wav; sourceTree = "<group>"; };
+		0BC98C742C375B34001F993D /* wrongAnswerBell.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = wrongAnswerBell.wav; sourceTree = "<group>"; };
 		0BEA5A672C2751FE0091D612 /* BackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundView.swift; sourceTree = "<group>"; };
 		0BEA5A792C2753470091D612 /* Colo+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Colo+Extensions.swift"; sourceTree = "<group>"; };
 		0BEA5A7B2C2753BC0091D612 /* UiImage+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UiImage+Extensions.swift"; sourceTree = "<group>"; };
@@ -269,20 +269,6 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		0B36669A2C2664EA0034C0EE /* SFX */ = {
-			isa = PBXGroup;
-			children = (
-				0B36668D2C2664640034C0EE /* correctAnswerBell.wav */,
-				0B36669B2C2665140034C0EE /* errorBell.wav */,
-				0B3666932C2664AC0034C0EE /* showResponderBell.wav */,
-				0B3666912C26649E0034C0EE /* NextQuestionWave.wav */,
-				0B3666972C2664C20034C0EE /* wrongAnswerBell.wav */,
-				0B3666952C2664B70034C0EE /* dismissResponderBell.wav */,
-			);
-			name = SFX;
-			path = BaseView;
-			sourceTree = "<group>";
-		};
 		0B7321F32C22538C00D7DED2 /* PreLaunchStartUp */ = {
 			isa = PBXGroup;
 			children = (
@@ -321,11 +307,11 @@
 			children = (
 				0BC091DD2C1D4463005FB223 /* VOQAApp.swift */,
 				0BC091DF2C1D4463005FB223 /* ContentView.swift */,
-				0B36669A2C2664EA0034C0EE /* SFX */,
 				0B31C3FF2C221C35006FB5D1 /* AppConfigurations */,
 				0B25E0DE2C24ECB600ACD552 /* Extensions */,
 				0B142DDE2C36DB1B001F98B0 /* QuizService */,
 				0BEA5AAB2C279BB60091D612 /* Views */,
+				0BC98C692C375AAF001F993D /* SoundEffects */,
 				0BC091E32C1D4465005FB223 /* Assets.xcassets */,
 				0BC091E52C1D4465005FB223 /* VOQA.entitlements */,
 				0B31C4002C222A8D006FB5D1 /* Info.plist */,
@@ -340,6 +326,19 @@
 				0BC091E72C1D4465005FB223 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		0BC98C692C375AAF001F993D /* SoundEffects */ = {
+			isa = PBXGroup;
+			children = (
+				0BC98C6A2C375B0D001F993D /* correctAnswerBell.wav */,
+				0BC98C6C2C375B14001F993D /* errorBell.wav */,
+				0BC98C6E2C375B1C001F993D /* NextQuestionWave.wav */,
+				0BC98C702C375B24001F993D /* showResponderBell.wav */,
+				0BC98C742C375B34001F993D /* wrongAnswerBell.wav */,
+				0BC98C722C375B2B001F993D /* dismissResponderBell.wav */,
+			);
+			path = SoundEffects;
 			sourceTree = "<group>";
 		};
 		0BEA5A662C2751D00091D612 /* ComponentViews */ = {
@@ -478,13 +477,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				0BC091E82C1D4465005FB223 /* Preview Assets.xcassets in Resources */,
-				0B36669C2C2665140034C0EE /* errorBell.wav in Resources */,
-				0B3666922C26649E0034C0EE /* NextQuestionWave.wav in Resources */,
-				0B3666962C2664B70034C0EE /* dismissResponderBell.wav in Resources */,
-				0B3666942C2664AC0034C0EE /* showResponderBell.wav in Resources */,
-				0B36668E2C2664640034C0EE /* correctAnswerBell.wav in Resources */,
+				0BC98C712C375B24001F993D /* showResponderBell.wav in Resources */,
 				0BC091E42C1D4465005FB223 /* Assets.xcassets in Resources */,
-				0B3666982C2664C20034C0EE /* wrongAnswerBell.wav in Resources */,
+				0BC98C752C375B34001F993D /* wrongAnswerBell.wav in Resources */,
+				0BC98C732C375B2B001F993D /* dismissResponderBell.wav in Resources */,
+				0BC98C6F2C375B1C001F993D /* NextQuestionWave.wav in Resources */,
+				0BC98C6D2C375B14001F993D /* errorBell.wav in Resources */,
+				0BC98C6B2C375B0D001F993D /* correctAnswerBell.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -713,6 +712,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = VOQA/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = VOQA;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "VOQA needs permission to access the microphone";
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "VOQA needs permission to use Speech Recognition";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
@@ -723,8 +724,7 @@
 				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
@@ -754,6 +754,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = VOQA/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = VOQA;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "VOQA needs permission to access the microphone";
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "VOQA needs permission to use Speech Recognition";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
@@ -764,8 +766,7 @@
 				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
