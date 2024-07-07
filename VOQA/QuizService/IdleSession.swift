@@ -11,7 +11,7 @@ class IdleSession: QuizServices {
     
     var observers = [SessionObserver]()
 
-    func handleState(context: QuizSession) {
+    func handleState(session: QuizSession) {
         // Handle idle state logic
         notifyObservers()
     }

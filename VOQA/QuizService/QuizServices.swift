@@ -12,7 +12,7 @@ protocol QuizServices {
     var observers: [SessionObserver] { get set }
     
     /// Handles the logic associated with this state.
-    func handleState(context: QuizSession)
+    func handleState(session: QuizSession)
     
     /// Adds an observer to the state.
     func addObserver(_ observer: SessionObserver)

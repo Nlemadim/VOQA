@@ -33,31 +33,26 @@ class ReviewsManager: SessionObserver, QuizServices {
     var context: QuizSession?
     var observers: [SessionObserver] = []
     
-    init(action: ReviewAction? = nil) {
-        print("ReviewState handleState called")
-        self.action = action
-    }
-    
-    func handleState(context: QuizSession) {
+    func handleState(session: QuizSession) {
         if let action = self.action {
-            performAction(action, context: context)
+            performAction(action, session: session)
         }
     }
     
-    func performAction(_ action: ReviewAction, context: QuizSession) {
+    func performAction(_ action: ReviewAction, session: QuizSession) {
         switch action {
         case .reviewing:
             print("Reviewer reviewing action triggered")
             
-            context.currentQuestionText = "Reviewing"
+            session.currentQuestionText = "Reviewing"
             
-            context.sessionAudioPlayer.performAudioAction(.reviewing)
+            session.sessionAudioPlayer.performAudioAction(.reviewing)
             
         case .doneReviewing:
             print("Reviewer doneReviewing action triggered")
             
-            context.setState(context.sessionCloser)
-            //context.sessionCloser.performAction(SessionCloseAction, context: <#T##QuizSession#>)
+            session.setState(session.sessionCloser)
+            session.sessionCloser.performAction(.quitAndReset, session: session)
         }
     }
     

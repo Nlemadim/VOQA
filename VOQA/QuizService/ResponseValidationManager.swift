@@ -36,68 +36,85 @@ class ResponseValidationManager: SessionObserver, QuizServices {
         self.action = action
     }
     
-    func handleState(context: QuizSession) {
-        if let action = self.action {
-            if let currentQuestionId = context.currentQuestionId {
-                performAction(action: .validateResponse, session: context)
+    func handleState(session: QuizSession) {
+        performAction(action: .validateResponse, session: session)
+    }
+    
+    private func performValidationAction() {
+        guard let session = session else { return }
+        guard let question = session.currentQuestion else { return }
+        
+        let response = session.buttonSelected
+        
+        if response.isEmptyOrWhiteSpace {
+            
+            performValidationFeedbackAction(feedbackType: .noResponse, session: session)
+            
+        } else if response.lowercased() == question.correctOption.lowercased() {
+
+            performValidationFeedbackAction(feedbackType: .correctAnswer, session: session)
+         
+        } else {
+
+            performValidationFeedbackAction(feedbackType: .inCorrectAnswer, session: session)
+        
+        }
+    }
+    
+    private func performValidationFeedbackAction(feedbackType: ResponseValidationFeedback, session: QuizSession) {
+        
+        switch feedbackType {
+        case .noResponse:
+            print("Now Playing Validation no response Feedback")
+            session.sessionAudioPlayer.performAudioAction(.playNoResponseCallout)
+            
+//            DispatchQueue.main.asyncAfter(deadline: .now() + 2){
+//                self.performAction(action: .validated, session: session)
+//            }
+
+        case .inCorrectAnswer:
+            print("Now Playing Validation no incorrect answer Feedback")
+            session.sessionAudioPlayer.performAudioAction(.playWrongAnswerCallout)
+            
+            session.setState(session.questionPlayer)
+            session.questionPlayer.performAction(.readyToPlayNextQuestion, session: session)
+            
+        case .correctAnswer:
+            print("Now Playing Validation no correct answer Feedback")
+            session.sessionAudioPlayer.performAudioAction(.playCorrectAnswerCallout)
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5){
+                self.resumeSession(session: session)
             }
+            
+        case .invalidResponse:
+            print("Now Playing Validation no response Feedback")
+            session.sessionAudioPlayer.performAudioAction(.playNoResponseCallout)
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5){
+                self.resumeSession(session: session)
+            }
+            
+        case .noFeedback:
+            print("Validation:- no Feedback")
+            session.sessionAudioPlayer.performAudioAction(.nextQuestion)
         }
     }
     
     func performAction(action: ValidationAction, session: QuizSession) {
         switch action {
         case .validateResponse:
-            print("Validating Response")
             performValidationAction()
+            
+            print("Validating Response")
+        }
+    }
+    
+    func resumeSession(session: QuizSession) {
+        print("Ready to resume session")
+        session.sessionAudioPlayer.performAudioAction(.nextQuestion)
        
-        }
-    }
-    
-    private func performValidationAction() {
-        guard let session = session else { return }
-        guard let question = session.currentQuestion else { return }
-        let response = session.buttonSelected
         
-
-        if response.isEmptyOrWhiteSpace {
-            
-            //MARK TODO: Add a property to Question that checks if was presented and number of times presented
-            
-            performValidationFeedbackAction(feedbackType: .noResponse, session: session)
-            //Transfer Session to Coordinator
-            
-        } else if response.lowercased() == question.correctOption.lowercased() {
-//            question.selectedOption = response
-//            question.isAnswered = true
-//            question.isAnsweredCorrectly = true
-            
-            performValidationFeedbackAction(feedbackType: .correctAnswer, session: session)
-            //Transfers Session to Coordinator
-            
-        } else {
-//            question.selectedOption = response
-//            question.isAnswered = true
-//            question.isAnsweredCorrectly = false
-            
-            performValidationFeedbackAction(feedbackType: .inCorrectAnswer, session: session)
-            //Transfers Session to Coordinator from Player
-        }
-    }
-    
-    private func performValidationFeedbackAction(feedbackType: ResponseValidationFeedback, session: QuizSession) {
-        print("Now Playing Validation Feedback")
-        switch feedbackType {
-        case .noResponse:
-            session.sessionAudioPlayer.performAudioAction(.playNoResponseCallout)
-        case .inCorrectAnswer:
-            session.sessionAudioPlayer.performAudioAction(.playWrongAnswerCallout)
-        case .correctAnswer:
-            session.sessionAudioPlayer.performAudioAction(.playCorrectAnswerCallout)
-        case .invalidResponse:
-            session.sessionAudioPlayer.performAudioAction(.playNoResponseCallout)
-        case .noFeedback:
-            session.sessionAudioPlayer.performAudioAction(.nextQuestion)
-        }
     }
     
     // StateObserver

@@ -10,7 +10,7 @@ import Combine
 import AVFoundation
 
 class QuizSession: ObservableObject, QuizServices {
-    //Session General Utility Property
+    // Session General Utility Properties
     @Published var state: QuizServices {
         didSet {
             notifyObservers()
@@ -21,36 +21,34 @@ class QuizSession: ObservableObject, QuizServices {
     @Published var countdownTime: TimeInterval = 5.0 // Default countdown time
     @Published var responseTime: TimeInterval = 6.0 // Default response time
     
-    //Session QuestionPlayer Specific Properties
+    // Session QuestionPlayer Specific Properties
     @Published var currentQuestion: Question?
     @Published var currentQuestionId: UUID?
     @Published var currentQuestionText: String = ""
-    @Published var hasMoreQuestions: Bool = false
+    @Published var hasAskedLastQuestion: Bool = false
     @Published var isLastQuestion: Bool = false
     
-    //Session Awaiting Response And Validation Specific Properties
+    // Session Awaiting Response And Validation Specific Properties
     @Published var isAwaitingResponse: Bool = false
     @Published var spokenAnswerOption: String = ""
     @Published var buttonSelected: String = ""
     @Published var hasResponded: Bool = false
+    @Published var isReadyForNextQuestion: Bool = false
     
-    //Session Audio Specific Properties
+    // Session Audio Specific Properties
     @Published var isNowPlaying: Bool = false
     
-    
+    // Lazy initialization of sessionAudioPlayer
     lazy var sessionAudioPlayer: SessionAudioPlayer = {
         return SessionAudioPlayer(context: self)
     }()
-
+    
     var observers: [SessionObserver] = []
     var questionPlayer: QuestionPlayer
-    var responsePresenter: ResponsePresenter
-    var responseValidator: ResponseValidationManager
     var reviewer: ReviewsManager
-    var sessionCoordinator: SessionCoordinator
     var sessionCloser: SessionCloser
     
-    //UI Feedback and Status
+    // UI Feedback and Status
     @Published var questionCounter: String = ""
     @Published var quizTitleImage: String = ""
     @Published var quizTitle: String = "VOQA"
@@ -60,31 +58,24 @@ class QuizSession: ObservableObject, QuizServices {
     
     private var timer: Timer?
     
-    init(state: QuizServices, questionPlayer: QuestionPlayer, responsePresenter: ResponsePresenter, responseValidator: ResponseValidationManager, reviewer: ReviewsManager, sessionCoOrdinator: SessionCoordinator, sessionCloser: SessionCloser) {
-        
+    init(state: QuizServices, questionPlayer: QuestionPlayer, reviewer: ReviewsManager, sessionCloser: SessionCloser) {
         self.state = state
         self.questionPlayer = questionPlayer
-        self.responsePresenter = responsePresenter
-        self.responseValidator = responseValidator
         self.reviewer = reviewer
-        self.sessionCoordinator = sessionCoOrdinator
         self.sessionCloser = sessionCloser
+        
+        
         self.questionPlayer.session = self
-        self.responseValidator.session = self
         self.reviewer.context = self
-        self.sessionCoordinator.session = self
         self.sessionCloser.context = self
+        
         setupObservers()
     }
-    
     static func create(state: QuizServices) -> QuizSession {
         let questionPlayer = QuestionPlayer()
-        let responsePresenter = ResponsePresenter()
-        let responseValidator = ResponseValidationManager()
         let reviewer = ReviewsManager()
-        let presenter = SessionCoordinator()
         let sessionCloser = SessionCloser()
-        let context = QuizSession(state: state, questionPlayer: questionPlayer, responsePresenter: responsePresenter, responseValidator: responseValidator, reviewer: reviewer, sessionCoOrdinator: presenter, sessionCloser: sessionCloser)
+        let context = QuizSession(state: state, questionPlayer: questionPlayer, reviewer: reviewer, sessionCloser: sessionCloser)
         
         return context
     }
@@ -92,21 +83,18 @@ class QuizSession: ObservableObject, QuizServices {
     func setState(_ state: QuizServices) {
         print("Setting state to \(type(of: state))")
         self.state = state
-        self.state.handleState(context: self)
+        self.state.handleState(session: self)
   
         notifyObservers()
     }
     
-    func handleState(context: QuizSession) {
+    func handleState(session: QuizSession) {
         
     }
 
-    func startQuiz() {
+    func startNewQuizSession(questions: [Question]) {
         print("Context Player Hit")
-        guard !self.questions.isEmpty else {
-            print("Questions unavailable")
-            return
-        }
+        self.questions = questions
         
         DispatchQueue.main.async {
             print("Ready to play \(self.questions.count) questions")
@@ -118,19 +106,52 @@ class QuizSession: ObservableObject, QuizServices {
     
     private func playFirstQuestion() {
         DispatchQueue.main.async {
-            self.questionPlayer.performAction(.loadNewSessionQuestions, session: self)
+            self.questionPlayer.performAction(.setSessionQuestions, session: self)
         }
     }
     
+    func beepAwaitingResponse() {
+        self.setState(self)
+        self.isAwaitingResponse = true
+        self.sessionAudioPlayer.performAudioAction(.waitingForResponse)
+    }
+    
+    private func beepRecievedResponse() {
+        self.setState(self)
+        self.currentQuestionText = "Checking..."
+        self.isAwaitingResponse = false
+        self.sessionAudioPlayer.performAudioAction(.receivedResponse)
+    }
+    
+    func prepareToEndSession() {
+        self.setState(self.sessionCloser)
+        self.sessionCloser.performAction(.quitAndReset, session: self)
+    }
+    
+    private func resumeQuiz() {
+        self.setState(self.questionPlayer)
+        self.questionPlayer.performAction(.readyToPlayNextQuestion, session: self)
+    }
+    
     func selectAnswer(selectedOption: String) {
-        self.buttonSelected = selectedOption
-        self.responsePresenter.performAction(.dismissResponsePresentation, session: self)
+        DispatchQueue.main.async {
+            self.buttonSelected = selectedOption
+
+            print("Selected Answer is \(self.buttonSelected)")
+            print("Answer selected")
+            self.currentQuestionText = "Checking Answer"
+            self.beepRecievedResponse()
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1){
+                self.sessionAudioPlayer.performAudioAction(.nextQuestion)
+                self.resumeQuiz()
+            }
+        }
     }
     
     func pauseQuiz() {
        // self.questionPlayer.pausePlayback()
     }
-    
     
     func updateQuestionCounter(questionIndex: Int, count: Int) {
         DispatchQueue.main.async {
@@ -177,7 +198,7 @@ class QuizSession: ObservableObject, QuizServices {
         
         questionPlayer.$hasMoreQuestions
             .receive(on: DispatchQueue.main)
-            .assign(to: &$hasMoreQuestions)
+            .assign(to: &$hasAskedLastQuestion)
         
         questionPlayer.$currentQuestionId
             .receive(on: DispatchQueue.main)
@@ -190,10 +211,6 @@ class QuizSession: ObservableObject, QuizServices {
         
         print("current question ID: \(String(describing: currentQuestionId ?? nil))")
     }
-    
-    
-    
-    
     
     private func startCountdown() {
         print("Starting countdown")

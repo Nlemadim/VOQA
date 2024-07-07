@@ -12,19 +12,34 @@ import Combine
 /// State representing the started quiz state of the quiz.
 class SessionCloser: SessionObserver, QuizServices {
     
-    enum CloseSessionAction {
+    enum EndSessionActions {
         case quitAndReset
         case refreshQuestions
         case downloadNewQuestions
         case downloaded
     }
     
-    var action: CloseSessionAction?
+    var action: EndSessionActions?
     var context: QuizSession?
     var observers: [SessionObserver] = []
     
-    init(action: CloseSessionAction? = nil) {
+    init(action: EndSessionActions? = nil) {
         self.action = action
+    }
+    
+    func performAction(_ action: EndSessionActions, session: QuizSession) {
+        switch action {
+        case .quitAndReset:
+            resetSession(session: session)
+        default:
+            break
+        }
+    }
+    
+    func resetSession(session: QuizSession) {
+        session.questionPlayer.currentQuestionIndex = 0
+        session.activeQuiz = false
+        session.setState(IdleSession())
     }
     
     
@@ -32,8 +47,8 @@ class SessionCloser: SessionObserver, QuizServices {
     
     func notifyObservers() {}
         
-    func handleState(context: QuizSession) {
-        context.activeQuiz = false
+    func handleState(session: QuizSession) {
+        session.activeQuiz = false
         // Handle any additional logic for ending the quiz, such as reloading questions for future implementation
         notifyObservers()
     }

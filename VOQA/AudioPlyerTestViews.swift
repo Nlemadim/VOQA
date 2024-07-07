@@ -9,8 +9,6 @@ import SwiftUI
 
 struct BaseMainView: View {
     @State private var currentView: String = "Home"
-    @State private var showProfile = false
-    @State private var showSettings = false
 
     var body: some View {
         NavigationView {
@@ -155,6 +153,11 @@ struct BaseMainView: View {
         }
     }
 }
+
+#Preview {
+    BaseMainView()
+}
+
 
 //struct ContentView_Previews: PreviewProvider {
 //    static var previews: some View {

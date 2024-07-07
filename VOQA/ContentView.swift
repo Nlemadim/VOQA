@@ -12,7 +12,8 @@ struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
 
     var body: some View {
-       Text("Hello VOQA")
+        QuizContextModuleTest()
+        //BaseMainView()
     }
 }
 
