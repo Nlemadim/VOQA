@@ -28,6 +28,10 @@
 		0B31C40E2C223286006FB5D1 /* AVFAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B31C40B2C223286006FB5D1 /* AVFAudio.framework */; };
 		0B4B46EC2C3C2C1700EEE2A2 /* QuizSessionConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B4B46EB2C3C2C1700EEE2A2 /* QuizSessionConfig.swift */; };
 		0B4B46EE2C3C3ABC00EEE2A2 /* SessionConfig.Json in Resources */ = {isa = PBXBuildFile; fileRef = 0B4B46ED2C3C3ABC00EEE2A2 /* SessionConfig.Json */; };
+		0B4B46F02C3C427600EEE2A2 /* ConfigurationUrls.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B4B46EF2C3C427600EEE2A2 /* ConfigurationUrls.swift */; };
+		0B4B46F22C3C727800EEE2A2 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B4B46F12C3C727800EEE2A2 /* NetworkService.swift */; };
+		0B4B46F42C3C72BA00EEE2A2 /* QuizConfigManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B4B46F32C3C72BA00EEE2A2 /* QuizConfigManager.swift */; };
+		0B4B46F62C3C8FF300EEE2A2 /* TestConfigurationBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B4B46F52C3C8FF300EEE2A2 /* TestConfigurationBuilder.swift */; };
 		0B7548772C34BB8A00756633 /* QuizContextModuleTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B7548762C34BB8A00756633 /* QuizContextModuleTest.swift */; };
 		0B77C8552C29E58A00CA4522 /* VoiceFeedbackMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B77C8542C29E58A00CA4522 /* VoiceFeedbackMessages.swift */; };
 		0B77C8612C2A15EB00CA4522 /* UUID+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B77C8602C2A15EB00CA4522 /* UUID+Extension.swift */; };
@@ -109,6 +113,10 @@
 		0B31C40B2C223286006FB5D1 /* AVFAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFAudio.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS17.4.sdk/System/Library/Frameworks/AVFAudio.framework; sourceTree = DEVELOPER_DIR; };
 		0B4B46EB2C3C2C1700EEE2A2 /* QuizSessionConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizSessionConfig.swift; sourceTree = "<group>"; };
 		0B4B46ED2C3C3ABC00EEE2A2 /* SessionConfig.Json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = SessionConfig.Json; sourceTree = "<group>"; };
+		0B4B46EF2C3C427600EEE2A2 /* ConfigurationUrls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationUrls.swift; sourceTree = "<group>"; };
+		0B4B46F12C3C727800EEE2A2 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
+		0B4B46F32C3C72BA00EEE2A2 /* QuizConfigManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizConfigManager.swift; sourceTree = "<group>"; };
+		0B4B46F52C3C8FF300EEE2A2 /* TestConfigurationBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestConfigurationBuilder.swift; sourceTree = "<group>"; };
 		0B7548762C34BB8A00756633 /* QuizContextModuleTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = QuizContextModuleTest.swift; path = ../QuizContextModuleTest.swift; sourceTree = "<group>"; };
 		0B77C8542C29E58A00CA4522 /* VoiceFeedbackMessages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = VoiceFeedbackMessages.swift; path = ../DataModels/VoiceFeedbackMessages.swift; sourceTree = "<group>"; };
 		0B77C8602C2A15EB00CA4522 /* UUID+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UUID+Extension.swift"; sourceTree = "<group>"; };
@@ -205,7 +213,6 @@
 		0B142DF82C3754C1001F98B0 /* SessionManagement */ = {
 			isa = PBXGroup;
 			children = (
-				0B4B46EA2C3C2BE600EEE2A2 /* QuizSessionConfig */,
 				0B845E2F2C3A212100EC1CEE /* SessionManagers */,
 				0B845E202C3A05C900EC1CEE /* AudioService */,
 				0BEFE74C2C2CB95200E931F7 /* QuestionPlayer.swift */,
@@ -281,21 +288,41 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		0B4B46E92C3C2BCE00EEE2A2 /* New Group */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "New Group";
-			sourceTree = "<group>";
-		};
 		0B4B46EA2C3C2BE600EEE2A2 /* QuizSessionConfig */ = {
 			isa = PBXGroup;
 			children = (
-				0B4B46EB2C3C2C1700EEE2A2 /* QuizSessionConfig.swift */,
-				0B4B46ED2C3C3ABC00EEE2A2 /* SessionConfig.Json */,
+				0B4B46F72C3C95A500EEE2A2 /* ConfigurationManagement */,
+				0B4B46F82C3C95E700EEE2A2 /* ConfigurationDataService */,
+				0B4B46F92C3C961900EEE2A2 /* DefaultConfigurations */,
 			);
 			name = QuizSessionConfig;
-			path = ..;
+			sourceTree = "<group>";
+		};
+		0B4B46F72C3C95A500EEE2A2 /* ConfigurationManagement */ = {
+			isa = PBXGroup;
+			children = (
+				0B4B46F52C3C8FF300EEE2A2 /* TestConfigurationBuilder.swift */,
+				0B4B46F32C3C72BA00EEE2A2 /* QuizConfigManager.swift */,
+			);
+			name = ConfigurationManagement;
+			sourceTree = "<group>";
+		};
+		0B4B46F82C3C95E700EEE2A2 /* ConfigurationDataService */ = {
+			isa = PBXGroup;
+			children = (
+				0B4B46EB2C3C2C1700EEE2A2 /* QuizSessionConfig.swift */,
+				0B4B46F12C3C727800EEE2A2 /* NetworkService.swift */,
+				0B4B46EF2C3C427600EEE2A2 /* ConfigurationUrls.swift */,
+			);
+			name = ConfigurationDataService;
+			sourceTree = "<group>";
+		};
+		0B4B46F92C3C961900EEE2A2 /* DefaultConfigurations */ = {
+			isa = PBXGroup;
+			children = (
+				0B4B46ED2C3C3ABC00EEE2A2 /* SessionConfig.Json */,
+			);
+			name = DefaultConfigurations;
 			sourceTree = "<group>";
 		};
 		0B845E202C3A05C900EC1CEE /* AudioService */ = {
@@ -354,11 +381,11 @@
 		0BC091DC2C1D4463005FB223 /* VOQA */ = {
 			isa = PBXGroup;
 			children = (
-				0B4B46E92C3C2BCE00EEE2A2 /* New Group */,
 				0BC091DD2C1D4463005FB223 /* VOQAApp.swift */,
 				0BC091DF2C1D4463005FB223 /* ContentView.swift */,
 				0B31C3FF2C221C35006FB5D1 /* AppConfigurations */,
 				0B25E0DE2C24ECB600ACD552 /* Extensions */,
+				0B4B46EA2C3C2BE600EEE2A2 /* QuizSessionConfig */,
 				0B142DDE2C36DB1B001F98B0 /* QuizService */,
 				0BEA5AAB2C279BB60091D612 /* Views */,
 				0BB19C352C3796F100DAAD0E /* TestUrls */,
@@ -582,6 +609,8 @@
 				0BEA5A7C2C2753BC0091D612 /* UiImage+Extensions.swift in Sources */,
 				0B1A5B6E2C2A6D5300D29CA1 /* MiniPlayerControls.swift in Sources */,
 				0B142DE22C36DE23001F98B0 /* QuizServices.swift in Sources */,
+				0B4B46F42C3C72BA00EEE2A2 /* QuizConfigManager.swift in Sources */,
+				0B4B46F02C3C427600EEE2A2 /* ConfigurationUrls.swift in Sources */,
 				0B1A5B6C2C2A6C7C00D29CA1 /* MiniPlayer.swift in Sources */,
 				0BEA5A9F2C2776CE0091D612 /* WaveGeometry.swift in Sources */,
 				0B142DF52C37547E001F98B0 /* Question.swift in Sources */,
@@ -595,6 +624,7 @@
 				0B0622582C3A2F95002386D7 /* ButtonsGridView.swift in Sources */,
 				0B77C8552C29E58A00CA4522 /* VoiceFeedbackMessages.swift in Sources */,
 				0BEA5A932C2774BA0091D612 /* VuMeter.swift in Sources */,
+				0B4B46F62C3C8FF300EEE2A2 /* TestConfigurationBuilder.swift in Sources */,
 				0B142DE82C36FA9E001F98B0 /* IdleSession.swift in Sources */,
 				0BEFE74D2C2CB95200E931F7 /* QuestionPlayer.swift in Sources */,
 				0B8AFB962C2FD4C3005B7D0F /* Array+Extension.swift in Sources */,
@@ -605,6 +635,7 @@
 				0B4B46EC2C3C2C1700EEE2A2 /* QuizSessionConfig.swift in Sources */,
 				0B31C3FE2C2211AD006FB5D1 /* NetworkMonitor.swift in Sources */,
 				0BEA5A7A2C2753470091D612 /* Colo+Extensions.swift in Sources */,
+				0B4B46F22C3C727800EEE2A2 /* NetworkService.swift in Sources */,
 				0B31C4032C222B9F006FB5D1 /* AcceptButton.swift in Sources */,
 				0B845E332C3A230500EC1CEE /* PrototypeMainView.swift in Sources */,
 				0B31C3FC2C220F06006FB5D1 /* Errors.swift in Sources */,

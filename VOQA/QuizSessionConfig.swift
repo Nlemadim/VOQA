@@ -9,7 +9,7 @@ import Foundation
 
 protocol VoicedFeedback: Codable {
     var title: String { get }
-    var audioUrls: [FeedbackSfx] { get }
+    var audioUrls: [FeedbackSfx] { get set }
 }
 
 struct FeedbackSfx: Codable {
@@ -39,11 +39,11 @@ struct QuizSessionConfig: Codable {
     var sessionTitle: String
     var sessionVoice: String
     var sessionQuestion: [Question]
-    var alerts: [FeedbackSfx]
+    var alerts: [AlertSfx]
     var controlFeedback: ControlsFeedback
     var quizFeedback: QuizFeedback
     var sessionMusic: [BgmSfx]
-    
+
     enum CodingKeys: String, CodingKey {
         case seesionId
         case sessionTitle
@@ -53,6 +53,30 @@ struct QuizSessionConfig: Codable {
         case controlFeedback
         case quizFeedback
         case sessionMusic
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        seesionId = (try? container.decode(UUID.self, forKey: .seesionId)) ?? UUID()
+        sessionTitle = try container.decode(String.self, forKey: .sessionTitle)
+        sessionVoice = try container.decode(String.self, forKey: .sessionVoice)
+        sessionQuestion = try container.decode([Question].self, forKey: .sessionQuestion)
+        alerts = try container.decode([AlertSfx].self, forKey: .alerts)
+        controlFeedback = try container.decode(ControlsFeedback.self, forKey: .controlFeedback)
+        quizFeedback = try container.decode(QuizFeedback.self, forKey: .quizFeedback)
+        sessionMusic = try container.decode([BgmSfx].self, forKey: .sessionMusic)
+    }
+}
+
+struct AlertSfx: Codable {
+    var title: String
+    var urlScript: String
+    var audioUrl: String
+
+    enum CodingKeys: String, CodingKey {
+        case title
+        case urlScript
+        case audioUrl
     }
 }
 
