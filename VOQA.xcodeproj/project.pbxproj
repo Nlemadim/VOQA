@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0B0622582C3A2F95002386D7 /* ButtonsGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0622572C3A2F95002386D7 /* ButtonsGridView.swift */; };
 		0B142DE22C36DE23001F98B0 /* QuizServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B142DE12C36DE23001F98B0 /* QuizServices.swift */; };
 		0B142DE42C36DF04001F98B0 /* QuizSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B142DE32C36DF04001F98B0 /* QuizSession.swift */; };
 		0B142DE62C36E7BB001F98B0 /* SessionCloser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B142DE52C36E7BB001F98B0 /* SessionCloser.swift */; };
@@ -25,6 +26,8 @@
 		0B31C40C2C223286006FB5D1 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B31C4092C223286006FB5D1 /* AVFoundation.framework */; };
 		0B31C40D2C223286006FB5D1 /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B31C40A2C223286006FB5D1 /* AVKit.framework */; };
 		0B31C40E2C223286006FB5D1 /* AVFAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B31C40B2C223286006FB5D1 /* AVFAudio.framework */; };
+		0B4B46EC2C3C2C1700EEE2A2 /* QuizSessionConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B4B46EB2C3C2C1700EEE2A2 /* QuizSessionConfig.swift */; };
+		0B4B46EE2C3C3ABC00EEE2A2 /* SessionConfig.Json in Resources */ = {isa = PBXBuildFile; fileRef = 0B4B46ED2C3C3ABC00EEE2A2 /* SessionConfig.Json */; };
 		0B7548772C34BB8A00756633 /* QuizContextModuleTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B7548762C34BB8A00756633 /* QuizContextModuleTest.swift */; };
 		0B77C8552C29E58A00CA4522 /* VoiceFeedbackMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B77C8542C29E58A00CA4522 /* VoiceFeedbackMessages.swift */; };
 		0B77C8612C2A15EB00CA4522 /* UUID+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B77C8602C2A15EB00CA4522 /* UUID+Extension.swift */; };
@@ -84,6 +87,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0B0622572C3A2F95002386D7 /* ButtonsGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonsGridView.swift; sourceTree = "<group>"; };
 		0B142DE12C36DE23001F98B0 /* QuizServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizServices.swift; sourceTree = "<group>"; };
 		0B142DE32C36DF04001F98B0 /* QuizSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = QuizSession.swift; path = QuizService/QuizSession.swift; sourceTree = "<group>"; };
 		0B142DE52C36E7BB001F98B0 /* SessionCloser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionCloser.swift; sourceTree = "<group>"; };
@@ -103,6 +107,8 @@
 		0B31C4092C223286006FB5D1 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS17.4.sdk/System/Library/Frameworks/AVFoundation.framework; sourceTree = DEVELOPER_DIR; };
 		0B31C40A2C223286006FB5D1 /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS17.4.sdk/System/Library/Frameworks/AVKit.framework; sourceTree = DEVELOPER_DIR; };
 		0B31C40B2C223286006FB5D1 /* AVFAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFAudio.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS17.4.sdk/System/Library/Frameworks/AVFAudio.framework; sourceTree = DEVELOPER_DIR; };
+		0B4B46EB2C3C2C1700EEE2A2 /* QuizSessionConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizSessionConfig.swift; sourceTree = "<group>"; };
+		0B4B46ED2C3C3ABC00EEE2A2 /* SessionConfig.Json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = SessionConfig.Json; sourceTree = "<group>"; };
 		0B7548762C34BB8A00756633 /* QuizContextModuleTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = QuizContextModuleTest.swift; path = ../QuizContextModuleTest.swift; sourceTree = "<group>"; };
 		0B77C8542C29E58A00CA4522 /* VoiceFeedbackMessages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = VoiceFeedbackMessages.swift; path = ../DataModels/VoiceFeedbackMessages.swift; sourceTree = "<group>"; };
 		0B77C8602C2A15EB00CA4522 /* UUID+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UUID+Extension.swift"; sourceTree = "<group>"; };
@@ -199,6 +205,7 @@
 		0B142DF82C3754C1001F98B0 /* SessionManagement */ = {
 			isa = PBXGroup;
 			children = (
+				0B4B46EA2C3C2BE600EEE2A2 /* QuizSessionConfig */,
 				0B845E2F2C3A212100EC1CEE /* SessionManagers */,
 				0B845E202C3A05C900EC1CEE /* AudioService */,
 				0BEFE74C2C2CB95200E931F7 /* QuestionPlayer.swift */,
@@ -223,6 +230,7 @@
 				0B1A33152C248A6100740205 /* AudioPlyerTestViews.swift */,
 				0B7548762C34BB8A00756633 /* QuizContextModuleTest.swift */,
 				0B845E322C3A230500EC1CEE /* PrototypeMainView.swift */,
+				0B0622572C3A2F95002386D7 /* ButtonsGridView.swift */,
 			);
 			name = ServiceTestViews;
 			sourceTree = "<group>";
@@ -271,6 +279,23 @@
 				0B31C40A2C223286006FB5D1 /* AVKit.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		0B4B46E92C3C2BCE00EEE2A2 /* New Group */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "New Group";
+			sourceTree = "<group>";
+		};
+		0B4B46EA2C3C2BE600EEE2A2 /* QuizSessionConfig */ = {
+			isa = PBXGroup;
+			children = (
+				0B4B46EB2C3C2C1700EEE2A2 /* QuizSessionConfig.swift */,
+				0B4B46ED2C3C3ABC00EEE2A2 /* SessionConfig.Json */,
+			);
+			name = QuizSessionConfig;
+			path = ..;
 			sourceTree = "<group>";
 		};
 		0B845E202C3A05C900EC1CEE /* AudioService */ = {
@@ -329,6 +354,7 @@
 		0BC091DC2C1D4463005FB223 /* VOQA */ = {
 			isa = PBXGroup;
 			children = (
+				0B4B46E92C3C2BCE00EEE2A2 /* New Group */,
 				0BC091DD2C1D4463005FB223 /* VOQAApp.swift */,
 				0BC091DF2C1D4463005FB223 /* ContentView.swift */,
 				0B31C3FF2C221C35006FB5D1 /* AppConfigurations */,
@@ -508,6 +534,7 @@
 				0BB19C392C37977F00DAAD0E /* smallVoiceOver.mp3 in Resources */,
 				0BC98C752C375B34001F993D /* wrongAnswerBell.wav in Resources */,
 				0BB19C3F2C37982200DAAD0E /* TheSeeker-VoFx.mp3 in Resources */,
+				0B4B46EE2C3C3ABC00EEE2A2 /* SessionConfig.Json in Resources */,
 				0BC98C732C375B2B001F993D /* dismissResponderBell.wav in Resources */,
 				0BB19C372C37976300DAAD0E /* smallVoiceOver2.mp3 in Resources */,
 				0BC98C6F2C375B1C001F993D /* NextQuestionWave.wav in Resources */,
@@ -565,6 +592,7 @@
 				0B142DF02C372408001F98B0 /* SessionAudioPlayer.swift in Sources */,
 				0B142DE62C36E7BB001F98B0 /* SessionCloser.swift in Sources */,
 				0BEA5A802C27546C0091D612 /* CGFloat+Extensions.swift in Sources */,
+				0B0622582C3A2F95002386D7 /* ButtonsGridView.swift in Sources */,
 				0B77C8552C29E58A00CA4522 /* VoiceFeedbackMessages.swift in Sources */,
 				0BEA5A932C2774BA0091D612 /* VuMeter.swift in Sources */,
 				0B142DE82C36FA9E001F98B0 /* IdleSession.swift in Sources */,
@@ -574,6 +602,7 @@
 				0B142DE42C36DF04001F98B0 /* QuizSession.swift in Sources */,
 				0BEA5A7E2C2754200091D612 /* View+Extensions.swift in Sources */,
 				0BEA5AA52C2780F60091D612 /* CircularPlayButton.swift in Sources */,
+				0B4B46EC2C3C2C1700EEE2A2 /* QuizSessionConfig.swift in Sources */,
 				0B31C3FE2C2211AD006FB5D1 /* NetworkMonitor.swift in Sources */,
 				0BEA5A7A2C2753470091D612 /* Colo+Extensions.swift in Sources */,
 				0B31C4032C222B9F006FB5D1 /* AcceptButton.swift in Sources */,

@@ -71,6 +71,7 @@ class QuizSession: ObservableObject, QuizServices {
         
         setupObservers()
     }
+    
     static func create(state: QuizServices) -> QuizSession {
         let questionPlayer = QuestionPlayer()
         let reviewer = ReviewsManager()

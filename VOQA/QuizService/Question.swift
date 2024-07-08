@@ -7,15 +7,4 @@
 
 import Foundation
 
-struct Question {
-    var id: UUID
-    var content: String
-    var options: [String]
-    var correctOption: String
-    var selectedOption: String
-    var isAnswered: Bool = false
-    var isAnsweredCorrectly: Bool
-    var numberOfPresentations: Int
-    var audioScript: String
-    var audioUrl: String
-}
+

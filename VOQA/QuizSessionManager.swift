@@ -9,11 +9,16 @@ import Foundation
 import SwiftUI
 import Combine
 
+import SwiftUI
+import Combine
+
 class QuizSessionManager: ObservableObject {
-    @Published private var quizSession: QuizSession
+    @Published var quizSession: QuizSession
+    private var cancellables: Set<AnyCancellable> = []
 
     init(state: QuizServices) {
         self.quizSession = QuizSession.create(state: state)
+        observeQuestionPlayerAction()
     }
     
     // Expose necessary properties
@@ -45,7 +50,14 @@ class QuizSessionManager: ObservableObject {
         quizSession.startNewQuizSession(questions: questions)
     }
     
-    func registerScore(for question: Question, withAnswer answer: String) {
-        // Implement score registration logic here
+    private func observeQuestionPlayerAction() {
+//        quizSession.$questionPlayer.action
+//            .sink { [weak self] action in
+//                guard let self = self else { return }
+//                if action == .readyForNextQuestion {
+//                    self.nextQuestion()
+//                }
+//            }
+//            .store(in: &cancellables)
     }
 }

@@ -28,7 +28,7 @@ struct PrototypeMainView: View {
                 VStack {
                     RoundedRectangle(cornerRadius: 25.0, style: .continuous)
                         .fill(Material.ultraThin)
-                        .frame(width: 350, height: 600)
+                        .frame(width: 350, height: 550)
                         .padding(.bottom, 50)
                         .transition(.move(edge: .bottom))
                         .overlay {
@@ -39,6 +39,9 @@ struct PrototypeMainView: View {
                                 // Any other content related to the question
                             }
                         }
+                    
+                    // Add ButtonGridView here
+                    ButtonsGridView(quizSessionManager: quizSessionManager)
                 }
                 .font(.title)
                 .padding()
@@ -46,28 +49,6 @@ struct PrototypeMainView: View {
             }
             .navigationTitle(quizSessionManager.questionCounter)
             .navigationBarTitleDisplayMode(.large)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button(action: {
-                        withAnimation {
-                            quizSessionManager.nextQuestion()
-                        }
-                    }) {
-                        Image(systemName: "person.crop.circle")
-                            .imageScale(.large)
-                    }
-                }
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: {
-                        withAnimation {
-                            quizSessionManager.nextQuestion()
-                        }
-                    }) {
-                        Image(systemName: "gearshape")
-                            .imageScale(.large)
-                    }
-                }
-            }
         }
     }
     
@@ -83,6 +64,8 @@ struct PrototypeMainView: View {
         return offsets.randomElement() ?? .zero
     }
 }
+
+
 #Preview {
     PrototypeMainView()
 }

@@ -1,0 +1,197 @@
+
+
+
+{
+  "seesionId": "",
+  "sessionTitle": "Sample Quiz Session",
+  "sessionVoice": "English",
+  "alerts": [
+    {
+      "title": "Correct Answer Bell",
+      "urlScript": "Correct",
+      "audioUrl": "correctAnswerBell"
+    },
+    {
+      "title": "Error Bell",
+      "urlScript": "Error",
+      "audioUrl": "errorBell"
+    },
+    {
+      "title": "Next Question Wave",
+      "urlScript": "Next Question",
+      "audioUrl": "NextQuestionWave"
+    },
+    {
+      "title": "Show Responder Bell",
+      "urlScript": "Responder",
+      "audioUrl": "showResponderBell"
+    },
+    {
+      "title": "Wrong Answer Bell",
+      "urlScript": "Incorrect",
+      "audioUrl": "wrongAnswerBell"
+    },
+    {
+      "title": "Dismiss Responder Bell",
+      "urlScript": "Dismiss Responder",
+      "audioUrl": "dismissResponderBell"
+    }
+  ],
+  "controlFeedback": {
+    "startQuiz": {
+      "title": "Start Quiz",
+      "audioUrls": [
+        {
+          "title": "start1",
+          "urlScript": "Let's get started!",
+          "audioUrl": "Let's get started!"
+        },
+        {
+          "title": "start2",
+          "urlScript": "Ready to begin? Let's go!",
+          "audioUrl": "Ready to begin? Let's go!"
+        },
+        {
+          "title": "start3",
+          "urlScript": "Here we go, good luck!",
+          "audioUrl": "Here we go, good luck!"
+        }
+      ]
+    },
+    "quit": {
+      "title": "Quit Quiz",
+      "audioUrls": [
+        {
+          "title": "quit1",
+          "urlScript": "The quiz will now end.",
+          "audioUrl": "The quiz will now end."
+        },
+        {
+          "title": "quit2",
+          "urlScript": "You have chosen to quit the quiz.",
+          "audioUrl": "You have chosen to quit the quiz."
+        },
+        {
+          "title": "quit3",
+          "urlScript": "Review will follow.",
+          "audioUrl": "Review will follow."
+        }
+      ]
+    },
+    "nextQuestion": {
+      "title": "Next Question",
+      "audioUrls": [
+        {
+          "title": "next1",
+          "urlScript": "Let's move to the next question.",
+          "audioUrl": "Let's move to the next question."
+        },
+        {
+          "title": "next2",
+          "urlScript": "Next up, please.",
+          "audioUrl": "Next up, please."
+        },
+        {
+          "title": "next3",
+          "urlScript": "On to the next one!",
+          "audioUrl": "On to the next one!"
+        }
+      ]
+    },
+    "repeatQuestioon": {
+      "title": "Repeat Question",
+      "audioUrls": [
+        {
+          "title": "repeat1",
+          "urlScript": "I'll repeat the question.",
+          "audioUrl": "I'll repeat the question."
+        },
+        {
+          "title": "repeat2",
+          "urlScript": "Let's hear that question again.",
+          "audioUrl": "Let's hear that question again."
+        },
+        {
+          "title": "repeat3",
+          "urlScript": "One more time, here it is.",
+          "audioUrl": "One more time, here it is."
+        }
+      ]
+    }
+  },
+  "quizFeedback": {
+    "incorrectAnswer": {
+      "title": "Incorrect Answer",
+      "audioUrls": [
+        {
+          "title": "incorrect1",
+          "urlScript": "Sorry, that's not correct.",
+          "audioUrl": "Sorry, that's not correct."
+        },
+        {
+          "title": "incorrect2",
+          "urlScript": "That's not right, try again.",
+          "audioUrl": "That's not right, try again."
+        },
+        {
+          "title": "incorrect3",
+          "urlScript": "Oops, that's not it.",
+          "audioUrl": "Oops, that's not it."
+        }
+      ]
+    },
+    "correctAnswer": {
+      "title": "Correct Answer",
+      "audioUrls": [
+        {
+          "title": "correct1",
+          "urlScript": "Nice! That's the right answer!",
+          "audioUrl": "Nice! That's the right answer!"
+        },
+        {
+          "title": "correct2",
+          "urlScript": "That is correct!",
+          "audioUrl": "That is correct!"
+        },
+        {
+          "title": "correct3",
+          "urlScript": "Well done, that's right!",
+          "audioUrl": "Well done, that's right!"
+        }
+      ]
+    },
+    "noResponse": {
+      "title": "No Response",
+      "audioUrls": [
+        {
+          "title": "noResponse1",
+          "urlScript": "It seems you didn't respond.",
+          "audioUrl": "It seems you didn't respond."
+        },
+        {
+          "title": "noResponse2",
+          "urlScript": "No answer detected, please try.",
+          "audioUrl": "No answer detected, please try."
+        },
+        {
+          "title": "noResponse3",
+          "urlScript": "Please give an answer next time.",
+          "audioUrl": "Please give an answer next time."
+        }
+      ]
+    }
+  },
+  "sessionMusic": [
+    {
+      "title": "Background Music 1",
+      "urlScript": "Soft instrumental music playing.",
+      "audioUrl": "Soft instrumental music playing."
+    },
+    {
+      "title": "Background Music 2",
+      "urlScript": "Upbeat background music.",
+      "audioUrl": "Upbeat background music."
+    }
+  ],
+  "sessionQuestion": []
+}
