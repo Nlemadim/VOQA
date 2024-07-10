@@ -22,8 +22,8 @@ struct ButtonsGridView: View {
             }
             .buttonStyle(PlainButtonStyle())
             .font(.title)
-            .foregroundStyle(quizSessionManager.quizSession.isAwaitingResponse ? .green : quizSessionManager.quizSession.isNowPlaying ? .clear : .gray)
-            .opacity(quizSessionManager.quizSession.activeQuiz ? 1 : 0)
+            .foregroundStyle(quizSessionManager.quizSession?.isAwaitingResponse ?? false ? .green : quizSessionManager.quizSession?.isNowPlaying ?? false ? .clear : .gray)
+            .opacity(quizSessionManager.quizSession?.activeQuiz ?? false ? 1 : 0)
             
             // MARK: B Button
             Button(action: {
@@ -34,8 +34,8 @@ struct ButtonsGridView: View {
             }
             .buttonStyle(PlainButtonStyle())
             .font(.title)
-            .foregroundStyle(quizSessionManager.quizSession.isAwaitingResponse ? .green : quizSessionManager.quizSession.isNowPlaying ? .clear : .gray)
-            .opacity(quizSessionManager.quizSession.activeQuiz ? 1 : 0)
+            .foregroundStyle(quizSessionManager.quizSession?.isAwaitingResponse ?? false ? .green : quizSessionManager.quizSession?.isNowPlaying ?? false ? .clear : .gray)
+            .opacity(quizSessionManager.quizSession?.activeQuiz ?? false ? 1 : 0)
             
             // MARK: Play Button
             Button(action: {
@@ -59,8 +59,8 @@ struct ButtonsGridView: View {
             }
             .buttonStyle(PlainButtonStyle())
             .font(.title)
-            .foregroundStyle(quizSessionManager.quizSession.isAwaitingResponse ? .green : quizSessionManager.quizSession.isNowPlaying ? .clear : .gray)
-            .opacity(quizSessionManager.quizSession.activeQuiz ? 1 : 0)
+            .foregroundStyle(quizSessionManager.quizSession?.isAwaitingResponse ?? false ? .green : quizSessionManager.quizSession?.isNowPlaying ?? false ? .clear : .gray)
+            .opacity(quizSessionManager.quizSession?.activeQuiz ?? false ? 1 : 0)
             
             // MARK: D Button
             Button(action: {
@@ -71,8 +71,8 @@ struct ButtonsGridView: View {
             }
             .buttonStyle(PlainButtonStyle())
             .font(.title)
-            .foregroundStyle(quizSessionManager.quizSession.isAwaitingResponse ? .green : quizSessionManager.quizSession.isNowPlaying ? .clear : .gray)
-            .opacity(quizSessionManager.quizSession.activeQuiz ? 1 : 0)
+            .foregroundStyle(quizSessionManager.quizSession?.isAwaitingResponse ?? false ? .green : quizSessionManager.quizSession?.isNowPlaying ?? false ? .clear : .gray)
+            .opacity(quizSessionManager.quizSession?.activeQuiz ?? false ? 1 : 0)
         }
     }
 }
@@ -80,7 +80,7 @@ struct ButtonsGridView: View {
 func injectTestQuestions() -> [Question] {
     // Mock implementation for test questions
     return [
-        Question(id: UUID(), content: "What is the capital of France?", options: ["A", "B", "C", "D"], correctOption: "A", selectedOption: "", isAnswered: false, isAnsweredCorrectly: false, numberOfPresentations: 0, audioScript: "", audioUrl: "")
+        Question(id: UUID(), content: "What is the capital of France?", options: ["A", "B", "C", "D"], correctOption: "A", selectedOption: "", overview: "", isAnswered: false, isAnsweredCorrectly: false, numberOfPresentations: 0, audioScript: "", audioUrl: "", overviewUrl: "")
     ]
 }
 

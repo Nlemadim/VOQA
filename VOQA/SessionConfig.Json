@@ -96,7 +96,7 @@
         }
       ]
     },
-    "repeatQuestioon": {
+    "repeatQuestion": {
       "title": "Repeat Question",
       "audioUrls": [
         {
@@ -123,17 +123,17 @@
       "audioUrls": [
         {
           "title": "incorrect1",
-          "urlScript": "Sorry, that's not correct.",
+          "urlScript": "Sorry, that's not correct",
           "audioUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/Sorry, that's not correct.mp3"
         },
         {
           "title": "incorrect2",
-          "urlScript": "That's not right, try again.",
+          "urlScript": "That's not right, try again",
           "audioUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/That's not right, try again.mp3"
         },
         {
           "title": "incorrect3",
-          "urlScript": "Oops, that's not it.",
+          "urlScript": "Oops, that's not it",
           "audioUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/Oops, that's not it.mp3"
         }
       ]
@@ -143,17 +143,17 @@
       "audioUrls": [
         {
           "title": "correct1",
-          "urlScript": "Nice! That's the right answer!",
+          "urlScript": "Nice! That's the right answer",
           "audioUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/Nice! That's the right answer!.mp3"
         },
         {
           "title": "correct2",
-          "urlScript": "That is correct!",
+          "urlScript": "That is correct",
           "audioUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/That is correct!.mp3"
         },
         {
           "title": "correct3",
-          "urlScript": "Well done, that's right!",
+          "urlScript": "Well done, that's right",
           "audioUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/Well done, that's right!.mp3"
         }
       ]
@@ -163,17 +163,17 @@
       "audioUrls": [
         {
           "title": "noResponse1",
-          "urlScript": "It seems you didn't respond.",
+          "urlScript": "It seems you didn't respond",
           "audioUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/It seems you didn't respond..mp3"
         },
         {
           "title": "noResponse2",
-          "urlScript": "No answer detected, please try.",
+          "urlScript": "No answer detected, please try",
           "audioUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/No answer detected, please try..mp3"
         },
         {
           "title": "noResponse3",
-          "urlScript": "Please give an answer next time.",
+          "urlScript": "Please give an answer next time",
           "audioUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/Please give an answer next time..mp3"
         }
       ]
@@ -182,13 +182,13 @@
   "sessionMusic": [
     {
       "title": "Background Music 1",
-      "urlScript": "Soft instrumental music playing.",
+      "urlScript": "Soft instrumental music playing",
       "audioUrl": "Soft instrumental music playing."
     },
     {
       "title": "Background Music 2",
-      "urlScript": "Upbeat background music.",
-      "audioUrl": "Upbeat background music."
+      "urlScript": "Upbeat background music",
+      "audioUrl": "Upbeat background music"
     }
   ],
   "sessionQuestion": []

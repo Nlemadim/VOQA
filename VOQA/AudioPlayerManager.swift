@@ -8,7 +8,6 @@
 import Foundation
 import AVFoundation
 
-
 class AudioPlayerManager: NSObject {
     var player: AVAudioPlayer?
     weak var delegate: AVAudioPlayerDelegate?
@@ -27,7 +26,7 @@ class AudioPlayerManager: NSObject {
         if let url = URL(string: urlString), url.scheme != nil {
             // Handle remote URL
             print("Playing audio from remote URL string: \(urlString)")
-            playAudioFromURL(url: url)
+            downloadAndPlayAudio(from: url)
         } else if let path = Bundle.main.path(forResource: urlString, ofType: "mp3") {
             // Handle local file in bundle
             let url = URL(fileURLWithPath: path)
@@ -38,14 +37,39 @@ class AudioPlayerManager: NSObject {
         }
     }
 
+    private func downloadAndPlayAudio(from url: URL) {
+        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+            if let error = error {
+                print("Failed to download audio data: \(error.localizedDescription)")
+                return
+            }
+            guard let data = data else {
+                print("No data received from URL: \(url.absoluteString)")
+                return
+            }
+            do {
+                self.player = try AVAudioPlayer(data: data)
+                self.player?.delegate = self.delegate
+                self.player?.play()
+            } catch {
+                print("Failed to play audio from data: \(error.localizedDescription)")
+            }
+        }
+        task.resume()
+    }
+
     func playAudioFromURL(url: URL) {
         AudioSessionManager.activateAudioSession()
-        do {
-            player = try AVAudioPlayer(contentsOf: url)
-            player?.delegate = delegate
-            player?.play()
-        } catch {
-            print("Failed to play audio from URL: \(url.absoluteString). Error: \(error.localizedDescription)")
+        if url.isFileURL {
+            do {
+                player = try AVAudioPlayer(contentsOf: url)
+                player?.delegate = delegate
+                player?.play()
+            } catch {
+                print("Failed to play audio from URL: \(url.absoluteString). Error: \(error.localizedDescription)")
+            }
+        } else {
+            downloadAndPlayAudio(from: url)
         }
     }
 

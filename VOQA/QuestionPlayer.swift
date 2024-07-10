@@ -110,30 +110,6 @@ class QuestionPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate, Session
         print("Question Player currentIndex: \(self.currentQuestionIndex)")
     }
 
-    
-//    private func playQuestion() {
-//        guard let session = session else { return }
-//        
-//        guard self.currentQuestionIndex <= self.questions.count - 1 else {
-//            session.setState(session.reviewer)
-//            session.reviewer.performAction(.reviewing, session: session)
-//            return
-//        }
-//        
-//        let question = questions[currentQuestionIndex]
-//        session.currentQuestionText = question.content
-//        
-//        self.currentQuestion = question
-//        self.currentQuestionId = question.id
-//        updateHasNextQuestion()
-//        
-//        session.sessionAudioPlayer.performAudioAction(.playQuestionAudioUrl(url: question.audioUrl))
-//    
-//        print("Question Player Presenting question with ID: \(question.id)")
-//        print("Question Player has More Questions: \(self.hasMoreQuestions)")
-//        print("Question Player currentIndex: \(self.currentQuestionIndex)")
-//    }
-
     private func updateHasNextQuestion() {
         hasMoreQuestions = currentQuestionIndex < questions.count - 1
         if let session = session {

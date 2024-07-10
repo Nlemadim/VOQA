@@ -6,58 +6,50 @@
 //
 
 import Foundation
-import SwiftUI
-import Combine
-
-import SwiftUI
 import Combine
 
 class QuizSessionManager: ObservableObject {
-    @Published var quizSession: QuizSession
+    @Published var quizSession: QuizSession?
     private var cancellables: Set<AnyCancellable> = []
 
-    init(state: QuizServices) {
-        self.quizSession = QuizSession.create(state: state)
-        observeQuestionPlayerAction()
+    init() {}
+
+    func initializeSession(with config: QuizSessionConfig) {
+        print("QuizSessionManager initialized")
+        let sessionInitializer = SessionInitializer(config: config)
+        let sessionInfo = sessionInitializer.initializeSession()
+        let audioFileSorter = AudioFileSorter(randomGenerator: SystemRandomNumberGenerator())
+        audioFileSorter.configure(with: config)
+
+        self.quizSession = QuizSession(
+            state: IdleSession(), // Assuming IdleSession is a valid state
+            questionPlayer: QuestionPlayer(),
+            reviewer: ReviewsManager(),
+            sessionCloser: SessionCloser(),
+            audioFileSorter: audioFileSorter,
+            sessionInfo: sessionInfo
+        )
     }
-    
-    // Expose necessary properties
-    var currentQuestionText: String {
-        return quizSession.currentQuestionText
-    }
-    
-    var questionCounter: String {
-        return quizSession.questionCounter
-    }
-    
+
     // Expose necessary methods
     func nextQuestion() {
+        guard let quizSession = quizSession else { return }
         quizSession.questionPlayer.performAction(.readyToPlayNextQuestion, session: quizSession)
         updateQuestionCounter()
     }
-    
+
     private func updateQuestionCounter() {
+        guard let quizSession = quizSession else { return }
         let questionIndex = quizSession.questionPlayer.currentQuestionIndex
         let totalCount = quizSession.questions.count
         quizSession.updateQuestionCounter(questionIndex: questionIndex, count: totalCount)
     }
-    
+
     func selectAnswer(selectedOption: String) {
-        quizSession.selectAnswer(selectedOption: selectedOption)
+        quizSession?.selectAnswer(selectedOption: selectedOption)
     }
-    
+
     func startNewQuizSession(questions: [Question]) {
-        quizSession.startNewQuizSession(questions: questions)
-    }
-    
-    private func observeQuestionPlayerAction() {
-//        quizSession.$questionPlayer.action
-//            .sink { [weak self] action in
-//                guard let self = self else { return }
-//                if action == .readyForNextQuestion {
-//                    self.nextQuestion()
-//                }
-//            }
-//            .store(in: &cancellables)
+        quizSession?.startNewQuizSession(questions: questions)
     }
 }

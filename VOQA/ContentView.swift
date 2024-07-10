@@ -6,61 +6,72 @@
 //
 
 import SwiftUI
-import SwiftData
+
+import SwiftUI
 
 struct ContentView: View {
-    @Environment(\.modelContext) private var modelContext
-    
+    @State private var config: QuizSessionConfig?
+    @State private var showTestView = false
+
     var body: some View {
-        PrototypeMainView()
-            .task {
-                await getQuizConfiguration()
+        VStack {
+            Text("Hello VOQA")
+                .font(.largeTitle)
+                .padding()
+
+            Button(action: {
+                Task {
+                    await downloadQuizConfiguration()
+                }
+            }) {
+                Text("Download Configuration")
+                    .padding()
+                    .background(Color.blue)
+                    .foregroundColor(.white)
+                    .cornerRadius(8)
             }
-        //QuizContextModuleTest()
-        //BaseMainView()
+
+            if let config = config, showTestView {
+                TestConfigView(config: config)
+            }
+        }
+        .onAppear {
+            loadLocalConfiguration()
+        }
     }
-    
-    func getQuizConfiguration() async {
+
+    private func loadLocalConfiguration() {
         let configManager = QuizConfigManager()
-        
+
         do {
-            let config = try await configManager.downloadConfiguration()
-            configManager.printUrls(for: config.controlFeedback)
-            configManager.printUrls(for: config.quizFeedback)
+            let localConfig = try configManager.loadLocalConfiguration()
+            self.config = localConfig
+            self.showTestView = true
+            print("Local configuration loaded successfully")
+        } catch {
+            print("Failed to load local configuration: \(error)")
+        }
+    }
+
+    private func downloadQuizConfiguration() async {
+        let configManager = QuizConfigManager()
+
+        do {
+            let downloadedConfig = try await configManager.downloadConfiguration()
+            DispatchQueue.main.async {
+                self.config = downloadedConfig
+                self.showTestView = true
+            }
         } catch {
             print("Failed to download configuration: \(error)")
         }
-        
-        // You can now use the downloaded configuration
     }
-    
-    
-//    func fetchFeedbackConfig() async {
-//        let configManager = ConfigurationManager()
-//        
-//        var controlFeedback = configManager.createControlFeedbackModels()
-//        var quizFeedback = configManager.createQuizFeedbackModels()
-//        
-//        do {
-//            controlFeedback.startQuiz = try await configManager.populateAudioUrls(for: controlFeedback.startQuiz)
-//            controlFeedback.quit = try await configManager.populateAudioUrls(for: controlFeedback.quit)
-//            controlFeedback.nextQuestion = try await configManager.populateAudioUrls(for: controlFeedback.nextQuestion)
-//            controlFeedback.repeatQuestioon = try await configManager.populateAudioUrls(for: controlFeedback.repeatQuestioon)
-//            
-//            configManager.printUrls(for: controlFeedback)
-//            
-//            quizFeedback.incorrectAnswer = try await configManager.populateAudioUrls(for: quizFeedback.incorrectAnswer)
-//            quizFeedback.correctAnswer = try await configManager.populateAudioUrls(for: quizFeedback.correctAnswer)
-//            quizFeedback.noResponse = try await configManager.populateAudioUrls(for: quizFeedback.noResponse)
-//            
-//            configManager.printUrls(for: quizFeedback)
-//        } catch {
-//            print("Failed to populate audio URLs: \(error)")
-//        }
-//    }
 }
+
+
 
 #Preview {
     ContentView()
         .preferredColorScheme(.dark)
 }
+
