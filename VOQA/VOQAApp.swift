@@ -10,45 +10,12 @@ import SwiftData
 
 @main
 struct VOQAApp: App {
-    var sharedModelContainer: ModelContainer = {
-        // Define the schema for the current version (version 1)
-        let schemaV1 = Schema([
-            StandardQuizPackage.self,
-            CustomQuizPackage.self,
-            Topic.self,
-            Question.self,
-            AudioQuiz.self,
-            Performance.self
-        ])
-        
-        // Current app version
-        let currentAppVersion = 1
-        
-        // Get stored app version from UserDefaults
-        let storedAppVersion = AppVersion.current
-        
-        // Migration logic (placeholder for future use)
-        if storedAppVersion < currentAppVersion {
-            migrateData(from: storedAppVersion, to: currentAppVersion)
-            AppVersion.current = currentAppVersion
-        }
-        
-        // Use the schema for version 1
-        let modelConfiguration = ModelConfiguration(schema: schemaV1, isStoredInMemoryOnly: false)
-
-        // Initialize the ModelContainer
-        do {
-            return try ModelContainer(for: schemaV1, configurations: [modelConfiguration])
-        } catch {
-            fatalError("Could not create ModelContainer: \(error)")
-        }
-    }()
+   
 
     var body: some Scene {
         WindowGroup {
             ContentView()
         }
-        .modelContainer(sharedModelContainer)
     }
 }
 

@@ -10,11 +10,38 @@ import SwiftData
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
+    @State private var config: QuizSessionConfig?
 
     var body: some View {
         BaseView {
-            LaunchView()
-                .padding()
+            VoqaMain()
+        }
+    }
+    
+    func printBundleResources() {
+        if let resourcePath = Bundle.main.resourcePath {
+            do {
+                let resourceContents = try FileManager.default.contentsOfDirectory(atPath: resourcePath)
+                print("Bundle Resources:")
+                for resource in resourceContents {
+                    print(resource)
+                }
+            } catch {
+                print("Error accessing bundle resources: \(error)")
+            }
+        }
+    }
+    
+    private func loadLocalConfiguration() {
+        let configManager = QuizConfigManager()
+
+        do {
+            let localConfig = try configManager.loadLocalConfiguration()
+            self.config = localConfig
+            
+            print("Local configuration loaded successfully")
+        } catch {
+            print("Failed to load local configuration: \(error)")
         }
     }
 }

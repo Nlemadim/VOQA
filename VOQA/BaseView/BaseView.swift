@@ -14,42 +14,34 @@ struct BaseView<Content: View>: View {
     @StateObject private var databaseManager = DatabaseManager.shared
     @StateObject private var networkMonitor = NetworkMonitor.shared
 
-    // Define all queries
-    @Query var standardQuizPackages: [StandardQuizPackage]
-    @Query var customQuizPackages: [CustomQuizPackage]
-    @Query var topics: [Topic]
-    @Query var questions: [Question]
-    @Query var audioQuizzes: [AudioQuiz]
-    @Query var performances: [Performance]
-
+ 
     let content: () -> Content
 
     var body: some View {
-        NavigationView {
-            content()
-                .environment(\.modelContext, modelContext)
-                .preferredColorScheme(.dark)
-                .onAppear {
-                    setupDataLayer()
-                }
-                .alert(item: $databaseManager.currentError) { error in
-                    Alert(
-                        title: Text(error.title ?? "Error"),
-                        message: Text(error.message ?? "An unknown error occurred."),
-                        dismissButton: .default(Text("OK"))
-                    )
-                }
-                .alert(item: $networkMonitor.connectionError) { error in
-                    Alert(
-                        title: Text(error.title ?? "Network Error"),
-                        message: Text(error.message ?? "An unknown network error occurred."),
-                        dismissButton: .default(Text("OK"))
-                    )
-                }
-                .overlay(
-                    databaseManager.showFullPageError ? fullPageErrorView : nil
+        
+        content()
+            .preferredColorScheme(.dark)
+            .onAppear {
+                setupDataLayer()
+            }
+            .alert(item: $databaseManager.currentError) { error in
+                Alert(
+                    title: Text(error.title ?? "Error"),
+                    message: Text(error.message ?? "An unknown error occurred."),
+                    dismissButton: .default(Text("OK"))
                 )
-        }
+            }
+            .alert(item: $networkMonitor.connectionError) { error in
+                Alert(
+                    title: Text(error.title ?? "Network Error"),
+                    message: Text(error.message ?? "An unknown network error occurred."),
+                    dismissButton: .default(Text("OK"))
+                )
+            }
+            .overlay(
+                databaseManager.showFullPageError ? fullPageErrorView : nil
+            )
+        
     }
 
     private func setupDataLayer() {
