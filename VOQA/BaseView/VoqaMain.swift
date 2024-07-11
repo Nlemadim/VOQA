@@ -144,30 +144,6 @@ struct VoqaBackground: View {
     }
 }
 
-
-//struct BackgroundView: View {
-//    var backgroundImage: String
-//    var color: Color
-//    
-//    var body: some View {
-//        Rectangle()
-//            .fill(.clear)
-//            .frame(height: 300)
-//            .background(
-//                LinearGradient(gradient: Gradient(colors: [color, .black]), startPoint: .top, endPoint: .bottom)
-//            )
-//            .overlay {
-//                Image(backgroundImage)
-//                    .resizable()
-//                    .aspectRatio(contentMode: .fill)
-//                    .clipped()
-//            }
-//            .frame(height: 300)
-//            .blur(radius: 100)
-//    }
-//}
-
-
 struct ImageAndTitleView: View {
     var title: String
     var titleImage: String
@@ -189,7 +165,6 @@ struct ImageAndTitleView: View {
                     .lineLimit(2)
                     .multilineTextAlignment(.leading)
                     .fontWeight(.bold)
-            
                 
                 if let users = quiz.users {
                     Text("\(users) users")
@@ -209,7 +184,6 @@ struct ImageAndTitleView: View {
                                 Image(systemName: "star")
                                     .imageScale(.small)
                                     .foregroundColor(.gray)
-                                    
                             }
                         }
                     }
@@ -218,10 +192,13 @@ struct ImageAndTitleView: View {
             }
             .padding(.horizontal, 8)
             .frame(maxWidth: .infinity, alignment: .leading)
-            
         }
-        
-        .background(RoundedRectangle(cornerRadius: 15.0).fill(Material.ultraThin).tint(.white).activeGlow(.white, radius: 2))
+        .background(
+            RoundedRectangle(cornerRadius: 15.0)
+                .fill(Material.ultraThin)
+                .tint(.white)
+                .activeGlow(.white, radius: 2)
+        )
         .padding(10)
         .padding(.bottom, 20)
         .onTapGesture {

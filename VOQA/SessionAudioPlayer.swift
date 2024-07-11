@@ -42,6 +42,14 @@ class SessionAudioPlayer: NSObject, AVAudioPlayerDelegate {
     func performAudioAction(_ action: AudioAction) {
         enqueueAction(action)
     }
+    
+    func pausePlayer() {
+        self.audioPlayerManager.pausePlayback()
+    }
+    
+    func stopPlayback() {
+        self.audioPlayerManager.stopPlayback()
+    }
 
     private func processNextAction() {
         guard !isProcessingAction, !actionQueue.isEmpty else {

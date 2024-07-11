@@ -47,7 +47,6 @@ class QuizSession: ObservableObject, QuizServices {
     var questionPlayer: QuestionPlayer
     var reviewer: ReviewsManager
     var sessionCloser: SessionCloser
-    
     var audioFileSorter: AudioFileSorter
     var sessionInfo: QuizSessionInfoProtocol
     
@@ -86,6 +85,7 @@ class QuizSession: ObservableObject, QuizServices {
         let sessionCloser = SessionCloser()
         let sessionInitializer = SessionInitializer(config: config)
         
+        
         let sessionInfo = sessionInitializer.initializeSession()
         let audioFileSorter = AudioFileSorter(randomGenerator: SystemRandomNumberGenerator())
         audioFileSorter.configure(with: config)
@@ -121,6 +121,27 @@ class QuizSession: ObservableObject, QuizServices {
         DispatchQueue.main.async {
             self.questionPlayer.performAction(.setSessionQuestions, session: self)
         }
+    }
+    
+    func pauseQuiz() {
+        self.sessionAudioPlayer.pausePlayer()
+    }
+    
+    func stopQuiz() {
+        self.sessionAudioPlayer.stopPlayback()
+    }
+    
+    func nextQuestion() {
+        self.questionPlayer.performAction(.readyToPlayNextQuestion, session: self)
+        self.updateQuestionCounter(questionIndex: self.questionPlayer.currentQuestionIndex, count: self.totalQuestionCount)
+    }
+    
+    func replayQuestion() {
+        let questionPlayer = self.questionPlayer
+        if let currentQuestion = self.currentQuestion {
+            questionPlayer.performAction(.playCurrentQuestion(currentQuestion), session: self)
+        }
+       
     }
     
     func beepAwaitingResponse() {
@@ -162,9 +183,6 @@ class QuizSession: ObservableObject, QuizServices {
         }
     }
     
-    func pauseQuiz() {
-       // self.questionPlayer.pausePlayback()
-    }
     
     func updateQuestionCounter(questionIndex: Int, count: Int) {
         DispatchQueue.main.async {
@@ -240,17 +258,6 @@ class QuizSession: ObservableObject, QuizServices {
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
 
 
 
