@@ -77,3 +77,11 @@ struct AudioPlayerError: AppError {
     }
 }
 
+
+struct IdentifiableError: Identifiable {
+    var id: UUID = UUID()
+    var message: String
+}
+
+
+

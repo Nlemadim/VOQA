@@ -35,4 +35,13 @@ class NetworkService {
         
         return audioUrl
     }
+    
+    func downloadData(from urlString: String) async throws -> Data {
+        guard let url = URL(string: urlString) else {
+            throw NSError(domain: "", code: 400, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])
+        }
+        
+        let (data, _) = try await URLSession.shared.data(from: url)
+        return data
+    }
 }

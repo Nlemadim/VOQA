@@ -14,6 +14,3 @@ struct ConfigurationUrls  {
     static let questionsRequestUrl = ""
 }
 
-
-
-

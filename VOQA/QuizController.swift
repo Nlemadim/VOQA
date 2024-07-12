@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-class QuizController: QuizControlInterface {
+class QuizController: ObservableObject, QuizControlInterface {
     var session: QuizSession
     var sessionConfiguration: QuizSessionConfig
     
@@ -62,7 +62,7 @@ class QuizController: QuizControlInterface {
         session.nextQuestion()
     }
     
-    private static func initializeSession(with config: QuizSessionConfig) -> QuizSession {
+    static func initializeSession(with config: QuizSessionConfig) -> QuizSession {
         print("QuizController initialized Session")
         
         let sessionInitializer = SessionInitializer(config: config)
