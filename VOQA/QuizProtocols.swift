@@ -49,7 +49,7 @@ protocol QuizControlInterface {
     var currentQuestionText: String { get }
     var isAwaitingResponse: Bool { get }
     func downloadQuiz()
-    func startQuiz()
+    func startQuiz(questions: [Question])
     func pauseQuiz()
     func stopQuiz()
     func repeatQuestion()

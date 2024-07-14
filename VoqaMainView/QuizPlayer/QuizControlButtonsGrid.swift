@@ -9,13 +9,7 @@ import Foundation
 import SwiftUI
 
 struct QuizControlButtonsGrid: View {
-    @State private var awaitingResponse: Bool = false {
-        didSet {
-            if awaitingResponse {
-                generateUniqueColors()
-            }
-        }
-    }
+    @Binding var awaitingResponse: Bool
     @State private var hasStarted: Bool = false
     @State private var selectedOption: String? = nil
     var selectButton: (String) -> Void
@@ -42,6 +36,11 @@ struct QuizControlButtonsGrid: View {
             MultiChoiceButton(label: "D", selectedOption: $selectedOption, isSelectionMade: .constant(false), awaitingResponse: $awaitingResponse, timerCountdown: .constant(5), color: buttonColors[3])
 
         }
+        .onChange(of: self.awaitingResponse, { _, isAwaiting in
+            if isAwaiting {
+                generateUniqueColors()
+            }
+        })
         .padding()
     }
     

@@ -9,6 +9,35 @@ import Foundation
 import SwiftUI
 
 class QuizController: ObservableObject, QuizControlInterface {
+    @Published var sessionTitle: String = ""
+    @Published var questionText: String = "" {
+        didSet {
+            self.questionText = session.currentQuestionText
+        }
+    }
+    @Published var isPlayingAudio: Bool = false {
+        didSet {
+            if session.isNowPlaying {
+                self.isPlayingAudio = true
+            }
+        }
+    }
+    @Published var sessionActive: Bool = false{
+        didSet {
+            if session.activeQuiz {
+                self.sessionActive = true
+            }
+        }
+    }
+    
+    @Published var awaitingResponse: Bool = false {
+        didSet {
+            if session.isAwaitingResponse {
+                self.awaitingResponse = true
+            }
+        }
+    }
+    
     var session: QuizSession
     var sessionConfiguration: QuizSessionConfig
     
@@ -17,7 +46,15 @@ class QuizController: ObservableObject, QuizControlInterface {
         self.session = QuizController.initializeSession(with: sessionConfig)
     }
     
-    var quizTitle: String { sessionConfiguration.sessionTitle }
+    var quizTitle: String {
+        sessionConfiguration.sessionTitle
+    }
+    
+    func getTitle(){
+        self.sessionTitle = sessionConfiguration.sessionTitle
+    }
+    
+    
     
     var quizImageUrl: String { return "" } // TODO: DESIGN SUITABLE IMAGE SOURCE
     
@@ -37,13 +74,14 @@ class QuizController: ObservableObject, QuizControlInterface {
         // Implementation for downloading quiz
     }
     
-    func startQuiz() {
-        session.startNewQuizSession(questions: getQuestions())
+    func startQuiz(questions: [Question]) {
+        session.startNewQuizSession(questions: questions)
     }
     
     func getQuestions() -> [Question] {
+        let questions = DatabaseManager.shared.questions
         // Fetch questions here
-        return []
+        return questions
     }
     
     func pauseQuiz() {
@@ -83,5 +121,12 @@ class QuizController: ObservableObject, QuizControlInterface {
     private func fetchConfigQuestions() async -> [Question] {
         // Implementation for fetching questions asynchronously
         return []
+    }
+    
+    func printQuestionDetails(question: Question) {
+        print("Question Content: \(question.content)")
+        print("Question Script: \(question.audioScript)")
+        print("Audio URL: \(question.audioUrl)")
+        print("Overview URL: \(question.overviewUrl)")
     }
 }

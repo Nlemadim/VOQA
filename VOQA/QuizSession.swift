@@ -147,14 +147,16 @@ class QuizSession: ObservableObject, QuizServices {
     func beepAwaitingResponse() {
         self.setState(self)
         self.isAwaitingResponse = true
-        self.sessionAudioPlayer.performAudioAction(.waitingForResponse)
+        //self.sessionAudioPlayer.performAudioAction(.waitingForResponse)
+        print("Awaiting response?: \(isAwaitingResponse)")
     }
     
     private func beepRecievedResponse() {
         self.setState(self)
         self.currentQuestionText = "Checking..."
         self.isAwaitingResponse = false
-        self.sessionAudioPlayer.performAudioAction(.receivedResponse)
+        print("Awaiting response?: \(isAwaitingResponse)")
+       // self.sessionAudioPlayer.performAudioAction(.receivedResponse)
     }
     
     func prepareToEndSession() {

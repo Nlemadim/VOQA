@@ -6,13 +6,15 @@
 //
 
 import Foundation
-import SwiftUI
+import Combine
 
 class DatabaseManager: ObservableObject {
     static let shared = DatabaseManager()
-
+    
     @Published var currentError: DatabaseError?
     @Published var showFullPageError: Bool = false
+    @Published var questions: [Question] = []
+    private var networkService = NetworkService()
 
     private init() {}
 
@@ -33,7 +35,21 @@ class DatabaseManager: ObservableObject {
                 
             default:
                 break
-            } 
+            }
+        }
+    }
+    
+    func fetchQuestions() async {
+        print("Database fetching Questions")
+        do {
+            let downloadedQuestions = try await networkService.fetchQuestions()
+            //networkService.printQuestionUrls(questions: questions)
+            DispatchQueue.main.async {
+                self.questions = downloadedQuestions
+            }
+            print("Questions fetched successfully: \(questions.count) questions.")
+        } catch {
+            print("Error fetching questions: \(error)")
         }
     }
 }

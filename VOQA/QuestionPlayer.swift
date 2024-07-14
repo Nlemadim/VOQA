@@ -92,7 +92,8 @@ class QuestionPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate, Session
         }
 
         let question = questions[currentQuestionIndex]
-        session.currentQuestionText = question.content
+        session.currentQuestionText = question.audioScript
+        print("Current question script\(question.audioScript)")
 
         self.currentQuestion = question
         self.currentQuestionId = question.id

@@ -7,10 +7,16 @@
 
 import SwiftUI
 
+import SwiftUI
+
 struct QuizInfoView: View {
     let selectedVoqa: Voqa
     @Environment(\.dismiss) private var dismiss
-    
+    @Environment(\.quizSessionConfig) private var config: QuizSessionConfig?
+    @StateObject private var databaseManager = DatabaseManager.shared
+    @State private var questionsLoaded: Bool = false
+    @State private var isDownloading: Bool = false
+
     var body: some View {
         VStack(spacing: 10) {
             HStack {
@@ -84,17 +90,26 @@ struct QuizInfoView: View {
             Spacer()
             
             Button(action: {
-                // Action for starting the quiz
+                isDownloading = true
+                Task {
+                    await getQuestions()
+                    isDownloading = false
+                }
             }) {
-                Text("Start Assessment Quiz")
-                    .fontWeight(.black)
-                    .foregroundColor(.black)
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .background(Color.yellow)
-                    .cornerRadius(5)
-                    .padding(.horizontal, 20)
+                if isDownloading {
+                    Text("Downloading...")
+                } else {
+                    Text("Start Assessment Quiz")
+                }
             }
+            .fontWeight(.black)
+            .foregroundColor(.black)
+            .padding()
+            .background(Color.yellow)
+            .cornerRadius(10)
+            .padding(.horizontal, 20)
+            .disabled(isDownloading)
+            
             .frame(maxWidth: .infinity, alignment: .bottom)
             .padding(.bottom, 20)
         }
@@ -143,8 +158,25 @@ struct QuizInfoView: View {
                     }
             }
         }
+        .alert(item: $databaseManager.currentError) { error in
+            Alert(title: Text("Error"), message: Text(error.message ?? ""), dismissButton: .default(Text("OK")))
+        }
+        .fullScreenCover(isPresented: $questionsLoaded) {
+            if let config = config {
+                QuizPlayerView(config: config, selectedVoqa: selectedVoqa)
+                    .environment(\.questions, databaseManager.questions)
+            }
+        }
+    }
+    
+    func getQuestions() async {
+        await databaseManager.fetchQuestions()
+        if !databaseManager.questions.isEmpty {
+            questionsLoaded = true
+        }
     }
 }
+
 
 #Preview {
     QuizInfoView(selectedVoqa: Voqa(id: UUID(), name: "Sample Quiz", acronym: "SQ", about: "A sample quiz", imageUrl: "", rating: 3, curator: "John Doe", users: 1000))

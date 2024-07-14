@@ -13,7 +13,17 @@ struct QuizPlayerView: View {
     @Environment(\.dismiss) private var dismiss
     @State var currentRating: Int? = 3
     @State var isActiveQuiz: Bool = false
+    @State var isAwaitingResponse: Bool = false {
+        didSet {
+            if controller.session.isAwaitingResponse {
+                DispatchQueue.main.async {
+                    self.isAwaitingResponse = true
+                }
+            }
+        }
+    }
     var selectedVoqa: Voqa
+    @Environment(\.questions) private var questions
 
     init(config: QuizSessionConfig, selectedVoqa: Voqa) {
         _controller = StateObject(wrappedValue: QuizController(sessionConfig: config))
@@ -22,46 +32,53 @@ struct QuizPlayerView: View {
 
     var body: some View {
         Group {
-            if controller.session.questions.isEmpty {
-                
-               quizInfoView()
-                
+            if questions.isEmpty {
+                quizInfoView()
             } else {
-                
                 VStack(alignment: .leading, spacing: 10) {
-                    
-                    
                     // SESSION INTERACTION VIEW
                     sessionInteractionView()
-                       
-                    
+
                     // CURRENT CONTENT VIEW
                     currentContentView()
-                    
+
                     // Buttons Grid View
                     Divider()
                         .activeGlow(.white, radius: 0.5)
-                    
-                    
+
                     // InteractionButtons Grid
-                    QuizControlButtonsGrid(selectButton: { _ in }, centralAction: {})
-                        .hAlign(.center)
-                       
+                    quizControlButtons()
+                    
                 }
                 .padding()
                 .background {
                     QuizPlayerBackground(backgroundImageResource: selectedVoqa.imageUrl)
-                        
+                }
+                .onAppear {
+                    if !questions.isEmpty {
+                        print("QuizPlayer has loaded \(questions.count) Questions")
+                        if let firstQuestion = questions.first {
+                            print("Question Content: \(firstQuestion.content)")
+                            print("Question Script: \(firstQuestion.audioScript)")
+                            print("Audio URL: \(firstQuestion.audioUrl)")
+                            print("Overview URL: \(firstQuestion.overviewUrl)")
+                        }
+                        controller.startQuiz(questions: questions)
+                    }
                 }
             }
         }
     }
     
+    private func quizControlButtons() -> some View {
+        QuizControlButtonsGrid(awaitingResponse: $controller.awaitingResponse, selectButton: {_ in }, centralAction: {})
+    }
+
     @ViewBuilder
     private func quizInfoView() -> some View {
         QuizInfoView(selectedVoqa: selectedVoqa)
     }
-    
+
     @ViewBuilder
     private func sessionInteractionView() -> some View {
         VStack(spacing: 10) {
@@ -105,13 +122,13 @@ struct QuizPlayerView: View {
                         .foregroundStyle(.primary)
                         .padding(.top, 2)
                         .hAlign(.leading)
-                    
+
                     Text("Audio Quiz")
                         .font(.subheadline)
                         .padding(.top, 2)
                         .foregroundStyle(.primary)
                         .hAlign(.leading)
-                    
+
                     ZStack {
                         Text(controller.currentQuestionText)
                             .font(.subheadline)
@@ -123,7 +140,7 @@ struct QuizPlayerView: View {
                 .kerning(-0.2)
                 .fontWeight(.semibold)
                 .frame(height: 100)
-                
+
                 StopQuizButton(
                     stopAction: {
                         dismiss()
@@ -134,19 +151,19 @@ struct QuizPlayerView: View {
             }
             .padding(.horizontal)
             .padding(.top)
-            
+
             ZStack {
-                VoqaSpeechVisualizer(colors: [.mint, .purple, .teal], supportLineColor: .teal, switchOn: .constant(controller.isActiveQuiz))
+                VoqaSpeechVisualizer(colors: [.mint, .purple, .teal], supportLineColor: .teal, switchOn: $controller.isPlayingAudio)
                     .frame(height: 25)
                     .padding()
             }
         }
     }
-    
+
     @ViewBuilder
     private func currentContentView() -> some View {
         VStack(alignment: .center) {
-            FormattedQuestionContentView(questionTranscript: controller.currentQuestionText)
+            FormattedQuestionContentView(questionTranscript: controller.questionText)
             Spacer()
             RatingsView(
                 maxRating: 4,
@@ -159,6 +176,8 @@ struct QuizPlayerView: View {
         .frame(maxHeight: .infinity)
     }
 }
+
+
 
 //
 //#Preview {

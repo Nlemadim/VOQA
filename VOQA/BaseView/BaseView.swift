@@ -33,13 +33,13 @@ struct BaseView<Content: View>: View {
                     dismissButton: .default(Text("OK"))
                 )
             }
-//            .alert(item: $networkMonitor.connectionError) { error in
-//                Alert(
-//                    title: Text(error.title ?? "Network Error"),
-//                    message: Text(error.message ?? "An unknown network error occurred."),
-//                    dismissButton: .default(Text("OK"))
-//                )
-//            }
+            .alert(item: $networkMonitor.connectionError) { error in
+                Alert(
+                    title: Text(error.title ?? "Network Error"),
+                    message: Text(error.message ?? "An unknown network error occurred."),
+                    dismissButton: .default(Text("OK"))
+                )
+            }
             .overlay(
                 databaseManager.showFullPageError ? fullPageErrorView : nil
             )
@@ -91,15 +91,4 @@ struct BaseView<Content: View>: View {
     }
 }
 
-
-struct QuizSessionConfigKey: EnvironmentKey {
-    static let defaultValue: QuizSessionConfig? = nil
-}
-
-extension EnvironmentValues {
-    var quizSessionConfig: QuizSessionConfig? {
-        get { self[QuizSessionConfigKey.self] }
-        set { self[QuizSessionConfigKey.self] = newValue }
-    }
-}
 

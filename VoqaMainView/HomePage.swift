@@ -9,12 +9,12 @@ import SwiftUI
 
 struct HomePage: View {
     @StateObject private var configManager = VoqaConfigManager()
+    @StateObject private var databaseManager = DatabaseManager.shared
     @State private var selectedTab = 0
     @State private var collections: [VoqaCollection] = []
     @State private var errorMessage: IdentifiableError?
     @State private var selectedVoqa: Voqa?
-    @Environment(\.quizSessionConfig) private var config: QuizSessionConfig?
-    
+
     var body: some View {
         TabView(selection: $selectedTab) {
             NavigationStack {
@@ -64,12 +64,7 @@ struct HomePage: View {
                     Alert(title: Text("Error"), message: Text(error.message), dismissButton: .default(Text("OK")))
                 }
                 .fullScreenCover(item: $selectedVoqa) { voqa in
-                    if let config = config {
-                        QuizPlayerView(config: config, selectedVoqa: voqa)
-                    } else {
-                        //TODO Error View- Config Failure
-                        Text("Loading...")
-                    }
+                    QuizInfoView(selectedVoqa: voqa)
                 }
             }
             .tabItem {
@@ -99,8 +94,6 @@ struct HomePage: View {
     HomePage()
         .preferredColorScheme(.dark)
 }
-
-
 
 
 struct PerformanceView: View {

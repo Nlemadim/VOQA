@@ -1,0 +1,99 @@
+[
+  {
+    "id": "00000000-0000-0000-0000-000000000001",
+    "content": "In the context of software engineering, what is the primary purpose of the Agile methodology?",
+    "options": [
+      "A: To ensure that the development team works overtime to meet deadlines.",
+      "B: To improve flexibility and customer satisfaction by delivering small, incremental updates.",
+      "C: To create comprehensive documentation before any development begins.",
+      "D: To strictly follow a fixed development process regardless of changing requirements."
+    ],
+    "correctOption": "B",
+    "selectedOption": "",
+    "overview": "The Agile methodology aims to improve flexibility and customer satisfaction by delivering small, incremental updates. This approach allows teams to adapt to changing requirements and feedback quickly, leading to a more iterative and collaborative development process.",
+    "isAnswered": false,
+    "isAnsweredCorrectly": false,
+    "numberOfPresentations": 0,
+    "audioScript": "",
+    "audioUrl": "",
+    "overviewUrl": ""
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000002",
+    "content": "Which of the following best describes the process of photosynthesis in plants?",
+    "options": [
+      "A: The process by which plants convert carbon dioxide and water into oxygen and glucose using sunlight.",
+      "B: The process of breaking down glucose into energy in the presence of oxygen.",
+      "C: The process by which plants absorb nutrients from the soil through their roots.",
+      "D: The process of converting glucose and oxygen into carbon dioxide, water, and energy."
+    ],
+    "correctOption": "A",
+    "selectedOption": "",
+    "overview": "Photosynthesis is the process by which plants convert carbon dioxide and water into oxygen and glucose using sunlight. This process occurs in the chloroplasts of plant cells and is essential for the production of energy and growth in plants.",
+    "isAnswered": false,
+    "isAnsweredCorrectly": false,
+    "numberOfPresentations": 0,
+    "audioScript": "",
+    "audioUrl": "",
+    "overviewUrl": ""
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000003",
+    "content": "What was the primary cause of the decline of the Roman Empire?",
+    "options": [
+      "A: The invasion by Germanic tribes and internal political instability.",
+      "B: The spread of Christianity and the abandonment of traditional Roman values.",
+      "C: The overexpansion of the empire and economic difficulties.",
+      "D: The decline in Roman military power and the loss of territories."
+    ],
+    "correctOption": "A",
+    "selectedOption": "",
+    "overview": "The primary cause of the decline of the Roman Empire was the invasion by Germanic tribes and internal political instability. The empire faced continuous pressure from external forces, combined with internal corruption, weak leadership, and economic troubles, leading to its eventual downfall.",
+    "isAnswered": false,
+    "isAnsweredCorrectly": false,
+    "numberOfPresentations": 0,
+    "audioScript": "",
+    "audioUrl": "",
+    "overviewUrl": ""
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000004",
+    "content": "In the context of computer science, what is the significance of Big O notation?",
+    "options": [
+      "A: To describe the accuracy of a sorting algorithm.",
+      "B: To measure the performance and efficiency of an algorithm.",
+      "C: To define the syntax of a programming language.",
+      "D: To determine the security level of a software system."
+    ],
+    "correctOption": "B",
+    "selectedOption": "",
+    "overview": "Big O notation is used to measure the performance and efficiency of an algorithm. It provides a high-level understanding of the algorithm's time and space complexity, helping developers analyze how the algorithm scales with the size of the input data.",
+    "isAnswered": false,
+    "isAnsweredCorrectly": false,
+    "numberOfPresentations": 0,
+    "audioScript": "",
+    "audioUrl": "",
+    "overviewUrl": ""
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000005",
+    "content": "Which of the following best describes the principle of supply and demand in economics?",
+    "options": [
+      "A: The higher the supply of a good, the higher its price will be.",
+      "B: The lower the demand for a good, the higher its price will be.",
+      "C: The price of a good is determined by the interaction of supply and demand.",
+      "D: The price of a good remains constant regardless of changes in supply or demand."
+    ],
+    "correctOption": "C",
+    "selectedOption": "",
+    "overview": "The principle of supply and demand states that the price of a good is determined by the interaction of supply and demand. When demand for a good increases and supply remains constant, prices tend to rise. Conversely, when supply increases and demand remains constant, prices tend to fall.",
+    "isAnswered": false,
+    "isAnsweredCorrectly": false,
+    "numberOfPresentations": 0,
+    "audioScript": "",
+    "audioUrl": "",
+    "overviewUrl": ""
+  }
+]
+
+
