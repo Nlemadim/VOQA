@@ -38,6 +38,11 @@ class QuizSession: ObservableObject, QuizServices {
     // Session Audio Specific Properties
     @Published var isNowPlaying: Bool = false
     
+    // UI Feedback and Status
+    @Published var questionCounter: String = ""
+    @Published var quizTitle: String = "VOQA"
+    @Published var totalQuestionCount: Int = 0
+    
     // Lazy initialization of sessionAudioPlayer
     lazy var sessionAudioPlayer: SessionAudioPlayer = {
         return SessionAudioPlayer(context: self, audioFileSorter: audioFileSorter)
@@ -49,11 +54,6 @@ class QuizSession: ObservableObject, QuizServices {
     var sessionCloser: SessionCloser
     var audioFileSorter: AudioFileSorter
     var sessionInfo: QuizSessionInfoProtocol
-    
-    // UI Feedback and Status
-    @Published var questionCounter: String = ""
-    @Published var quizTitle: String = "VOQA"
-    @Published var totalQuestionCount: Int = 0
     
     var questions: [Question] = []
     
@@ -75,7 +75,6 @@ class QuizSession: ObservableObject, QuizServices {
         self.quizTitle = sessionInfo.sessionTitle
         self.questions = sessionInfo.sessionQuestions
         self.totalQuestionCount = sessionInfo.sessionQuestions.count
-        
         setupObservers()
     }
     
@@ -111,7 +110,7 @@ class QuizSession: ObservableObject, QuizServices {
         
         DispatchQueue.main.async {
             print("Ready to play \(self.questions.count) questions")
-            self.updateQuestionCounter(questionIndex: self.questionPlayer.currentQuestionIndex, count: self.questions.count)
+            self.updateQuestionCounter(questionIndex: 0, count: self.questions.count)
             self.activeQuiz = true
             self.startCountdown()
         }
@@ -141,17 +140,15 @@ class QuizSession: ObservableObject, QuizServices {
         if let currentQuestion = self.currentQuestion {
             questionPlayer.performAction(.playCurrentQuestion(currentQuestion), session: self)
         }
-       
     }
     
-    func beepAwaitingResponse() {
+    func awaitingResponse() {
         self.setState(self)
         self.isAwaitingResponse = true
-        //self.sessionAudioPlayer.performAudioAction(.waitingForResponse)
         print("Awaiting response?: \(isAwaitingResponse)")
     }
     
-    private func beepRecievedResponse() {
+    private func recievedResponse() {
         self.setState(self)
         self.currentQuestionText = "Checking..."
         self.isAwaitingResponse = false
@@ -164,25 +161,26 @@ class QuizSession: ObservableObject, QuizServices {
         self.sessionCloser.performAction(.quitAndReset, session: self)
     }
     
-    private func resumeQuiz() {
-        self.setState(self.questionPlayer)
-        self.questionPlayer.performAction(.readyToPlayNextQuestion, session: self)
-    }
-    
     func selectAnswer(selectedOption: String) {
         DispatchQueue.main.async {
             self.buttonSelected = selectedOption
+            self.isAwaitingResponse = false
+            self.currentQuestionText = "Checking Answer"
 
             print("Selected Answer is \(self.buttonSelected)")
             print("Answer selected")
-            self.currentQuestionText = "Checking Answer"
-            self.beepRecievedResponse()
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1){
-                self.sessionAudioPlayer.performAudioAction(.nextQuestion)
+            print("Awaiting response?: \(self.isAwaitingResponse)")
+         
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+               // self.sessionAudioPlayer.performAudioAction(.nextQuestion)
                 self.resumeQuiz()
             }
         }
+    }
+    
+    private func resumeQuiz() {
+        self.setState(self.questionPlayer)
+        self.questionPlayer.performAction(.readyToPlayNextQuestion, session: self)
     }
     
     
@@ -205,6 +203,16 @@ class QuizSession: ObservableObject, QuizServices {
         DispatchQueue.main.async {
             self.quizTitle = ""
             self.totalQuestionCount = 0
+        }
+    }
+    
+    func formatCurrentQuestionText() {
+        if let currentQuestion = self.currentQuestion {
+            let formattedText = QuestionFormatter.formatQuestionText(question: currentQuestion)
+            DispatchQueue.main.async {
+                self.currentQuestionText = formattedText
+                print(formattedText)
+            }
         }
     }
     

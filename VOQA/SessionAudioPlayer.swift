@@ -62,6 +62,11 @@ class SessionAudioPlayer: NSObject, AVAudioPlayerDelegate {
 
     private func executeAudioAction(_ action: AudioAction) {
         lastAction = action
+        
+        if let context = context {
+            context.isNowPlaying = true
+        }
+        
         if let audioUrl = audioFileSorter.getAudioFile(for: action) {
             audioPlayerManager.playAudioFromURL(url: audioUrl)
         } else {
@@ -77,7 +82,13 @@ class SessionAudioPlayer: NSObject, AVAudioPlayerDelegate {
     }
 
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+        
         handleAudioFinish()
+        
+        if let context = context {
+            context.isNowPlaying = false
+        }
+        
     }
 
     private func handleAudioFinish() {
@@ -85,10 +96,13 @@ class SessionAudioPlayer: NSObject, AVAudioPlayerDelegate {
             completeCurrentAction()
             return
         }
+        
 
         if context.state is QuestionPlayer {
+            context.isNowPlaying = false
+            context.awaitingResponse()
             if lastAction != .waitingForResponse {
-                context.beepAwaitingResponse()
+//                context.awaitingResponse()
             }
         } else if context.state is ReviewsManager {
             context.prepareToEndSession()

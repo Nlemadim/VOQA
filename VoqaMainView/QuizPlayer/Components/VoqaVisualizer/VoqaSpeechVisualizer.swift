@@ -45,9 +45,10 @@ struct VoqaSpeechVisualizer: View {
         }
         .onAppear {
             voqaWave = VoqaWave(numWaves: colors.count, power: power)
-            toggleTimerBasedOnSwitch()
+            //toggleTimerBasedOnSwitch()
         }
         .onChange(of: switchOn) {_, _ in
+            print("Visualizer is on: \(switchOn)")
             toggleTimerBasedOnSwitch()
         }
         .onReceive(timer) { _ in

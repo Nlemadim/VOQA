@@ -15,8 +15,9 @@ struct FormattedQuestionContentView: View {
             .fontWeight(.semibold)
             .multilineTextAlignment(.center)
             .minimumScaleFactor(0.5)
-            .kerning(1.5)
+            //.kerning(1.5)
             .frame(maxWidth: .infinity, alignment: .center)
             .padding()
+            .padding(.horizontal)
     }
 }

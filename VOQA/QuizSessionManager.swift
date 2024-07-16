@@ -29,6 +29,23 @@ class QuizSessionManager: ObservableObject {
             audioFileSorter: audioFileSorter,
             sessionInfo: sessionInfo
         )
+
+        // Bind properties from QuizSession to trigger updates
+        quizSession?.$currentQuestionText
+            .sink { [weak self] _ in self?.objectWillChange.send() }
+            .store(in: &cancellables)
+
+        quizSession?.$questionCounter
+            .sink { [weak self] _ in self?.objectWillChange.send() }
+            .store(in: &cancellables)
+
+        quizSession?.$isNowPlaying
+            .sink { [weak self] _ in self?.objectWillChange.send() }
+            .store(in: &cancellables)
+
+        quizSession?.$isAwaitingResponse
+            .sink { [weak self] _ in self?.objectWillChange.send() }
+            .store(in: &cancellables)
     }
 
     // Expose necessary methods
@@ -53,3 +70,4 @@ class QuizSessionManager: ObservableObject {
         quizSession?.startNewQuizSession(questions: questions)
     }
 }
+

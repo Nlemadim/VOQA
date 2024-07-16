@@ -38,7 +38,7 @@ class QuizController: ObservableObject, QuizControlInterface {
         }
     }
     
-    var session: QuizSession
+    @Published var session: QuizSession
     var sessionConfiguration: QuizSessionConfig
     
     init(sessionConfig: QuizSessionConfig) {

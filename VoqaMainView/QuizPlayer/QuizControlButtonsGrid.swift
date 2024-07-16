@@ -19,32 +19,36 @@ struct QuizControlButtonsGrid: View {
 
     var body: some View {
         HStack {
-            MultiChoiceButton(label: "A", selectedOption: $selectedOption, isSelectionMade: .constant(false), awaitingResponse: $awaitingResponse, timerCountdown: .constant(5), color: buttonColors[0])
-                //.transition(.move(edge: .leading))
+            MultiChoiceButton(label: "A", selectedOption: $selectedOption, awaitingResponse: $awaitingResponse, color: buttonColors[0], action: {
+                selectButton("A")
+            })
             
-            MultiChoiceButton(label: "B", selectedOption: $selectedOption, isSelectionMade: .constant(false), awaitingResponse: $awaitingResponse, timerCountdown: .constant(5), color: buttonColors[1])
-                //.transition(.move(edge: .leading))
+            MultiChoiceButton(label: "B", selectedOption: $selectedOption, awaitingResponse: $awaitingResponse, color: buttonColors[1], action: {
+                selectButton("B")
+            })
             
             CircularPlayButton(isDownloading: .constant(false), isNowPlaying: false, color: .white, playAction: {
                 awaitingResponse = true
                 centralAction()
             })
             
-            MultiChoiceButton(label: "C", selectedOption: $selectedOption, isSelectionMade: .constant(false), awaitingResponse: $awaitingResponse, timerCountdown: .constant(5), color: buttonColors[2])
-                //.transition(.move(edge: .trailing))
+            MultiChoiceButton(label: "C", selectedOption: $selectedOption, awaitingResponse: $awaitingResponse, color: buttonColors[2], action: {
+                selectButton("C")
+            })
             
-            MultiChoiceButton(label: "D", selectedOption: $selectedOption, isSelectionMade: .constant(false), awaitingResponse: $awaitingResponse, timerCountdown: .constant(5), color: buttonColors[3])
-
+            MultiChoiceButton(label: "D", selectedOption: $selectedOption, awaitingResponse: $awaitingResponse, color: buttonColors[3], action: {
+                selectButton("D")
+            })
         }
-        .onChange(of: self.awaitingResponse, { _, isAwaiting in
+        .onChange(of: self.awaitingResponse) { _, isAwaiting in
             if isAwaiting {
                 generateUniqueColors()
+            } else {
+                self.selectedOption = nil
             }
-        })
+        }
         .padding()
     }
-    
-    
     
     private func generateUniqueColors() {
         var newColors: [Color] = []
@@ -85,10 +89,9 @@ struct StopQuizButton: View {
 struct MultiChoiceButton: View {
     let label: String
     @Binding var selectedOption: String?
-    @Binding var isSelectionMade: Bool
     @Binding var awaitingResponse: Bool
-    @Binding var timerCountdown: Int
     var color: Color
+    var action: () -> Void
     
     @State private var fillAmount: CGFloat = 0.0
     @State private var showProgressRing: Bool = false
@@ -98,7 +101,7 @@ struct MultiChoiceButton: View {
             self.startFilling()
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                 self.selectOption()
-                self.awaitingResponse = false
+
             }
         }) {
             ZStack {
@@ -127,11 +130,11 @@ struct MultiChoiceButton: View {
             .padding(10)
         }
         .buttonStyle(PlainButtonStyle())
-        .disabled(!awaitingResponse || isSelectionMade)
+        .disabled(!awaitingResponse)
     }
     
     private func startFilling() {
-        if !awaitingResponse || isSelectionMade { return }
+        if !awaitingResponse || selectedOption != nil { return }
         
         fillAmount = 0.0
         showProgressRing = true
@@ -144,9 +147,8 @@ struct MultiChoiceButton: View {
     private func selectOption() {
         if fillAmount >= 1.0 {
             selectedOption = label
-            isSelectionMade = true
             awaitingResponse = false
-            timerCountdown = 0 // Invalidate the timer immediately
+            action()
             provideHapticFeedback()
         }
         resetButton()
@@ -162,6 +164,7 @@ struct MultiChoiceButton: View {
         generator.impactOccurred()
     }
 }
+
 
 struct CircularPlayButton: View {
     @Binding var isDownloading: Bool

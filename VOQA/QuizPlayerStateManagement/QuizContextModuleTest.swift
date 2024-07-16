@@ -135,7 +135,7 @@ struct TestConfigView: View {
     private func initializeSession() {
         let audioFileSorter = AudioFileSorter(randomGenerator: SystemRandomNumberGenerator())
         audioFileSorter.configure(with: config)
-        audioPlayer = SessionAudioPlayer(context: viewModel.quizSessionManager.quizSession, audioFileSorter: audioFileSorter)
+        //audioPlayer = SessionAudioPlayer(context: viewModel.quizSessionManager.quizSession, audioFileSorter: audioFileSorter)
     }
 
     private func playAudioAction(_ action: AudioAction) {

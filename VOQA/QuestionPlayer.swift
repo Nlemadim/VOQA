@@ -76,7 +76,7 @@ class QuestionPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate, Session
         let currentIndex = self.currentQuestionIndex
         let currentQuestion = self.questions[currentIndex]
         
-        session.updateQuestionCounter(questionIndex: currentIndex, count: questions.count)
+        //session.updateQuestionCounter(questionIndex: currentIndex, count: questions.count)
         
         performAction(.playCurrentQuestion(currentQuestion), session: session)
     }
@@ -92,8 +92,10 @@ class QuestionPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate, Session
         }
 
         let question = questions[currentQuestionIndex]
-        session.currentQuestionText = question.audioScript
-        print("Current question script\(question.audioScript)")
+        session.currentQuestion = question
+        session.updateQuestionCounter(questionIndex: currentQuestionIndex, count: questions.count)
+        session.formatCurrentQuestionText()
+        print("Current question script\(session.currentQuestionText)")
 
         self.currentQuestion = question
         self.currentQuestionId = question.id
@@ -104,7 +106,8 @@ class QuestionPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate, Session
         
         // Perform the audio action and set the state to QuestionPlayer
         session.sessionAudioPlayer.performAudioAction(.playQuestionAudioUrl(url: question.audioUrl))
-        session.setState(self)
+       
+        session.setState(session.questionPlayer)
         
         print("Question Player Presenting question with ID: \(question.id)")
         print("Question Player has More Questions: \(self.hasMoreQuestions)")
@@ -127,6 +130,7 @@ class QuestionPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate, Session
         session.currentQuestionText = "Next Question"
         self.currentQuestionIndex += 1
         let currentQuestion = self.questions[currentIndex]
+        
         performAction(.playCurrentQuestion(currentQuestion), session: session)
         
     }

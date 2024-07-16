@@ -9,14 +9,17 @@ import Foundation
 import Combine
 
 class QuizViewModel: ObservableObject, QuizViewModelProtocol {
+
     @Published var currentQuestionText: String = ""
+    @Published var sessionQuestionCounterText: String = ""
     @Published var questionCounter: String = ""
+    @Published var sessionNowplayingAudio: Bool = false
+    @Published var sessionAwaitingResponse: Bool = false
     @Published var seesionId: UUID = UUID()
     @Published var sessionTitle: String = ""
     @Published var sessionVoice: String = ""
-    @Published var sessionQuestions: [Question] = []
 
-    var quizSessionManager: QuizSessionManager
+    private var quizSessionManager: QuizSessionManager
     private var quizConfigManager: QuizConfigManager
     private var cancellables: Set<AnyCancellable> = []
 
@@ -29,10 +32,26 @@ class QuizViewModel: ObservableObject, QuizViewModelProtocol {
             .compactMap { $0 }
             .sink { [weak self] session in
                 guard let self = self else { return }
-                self.currentQuestionText = session.currentQuestionText
-                self.questionCounter = session.questionCounter
+                self.bindSession(session)
             }
             .store(in: &cancellables)
+    }
+
+    private func bindSession(_ session: QuizSession) {
+        session.$currentQuestionText
+            .assign(to: &$currentQuestionText)
+        
+        session.$questionCounter
+            .assign(to: &$questionCounter)
+        
+        session.$isNowPlaying
+            .assign(to: &$sessionNowplayingAudio)
+        
+        session.$isAwaitingResponse
+            .assign(to: &$sessionAwaitingResponse)
+        
+        session.$questionCounter
+            .assign(to: &$sessionQuestionCounterText)
     }
 
     func nextQuestion() {
@@ -43,8 +62,8 @@ class QuizViewModel: ObservableObject, QuizViewModelProtocol {
         quizSessionManager.selectAnswer(selectedOption: selectedOption)
     }
 
-    func startNewQuizSession() {
-        quizSessionManager.startNewQuizSession(questions: sessionQuestions)
+    func startNewQuizSession(questions: [Question]) {
+        quizSessionManager.startNewQuizSession(questions: questions)
     }
 
     func stopQuiz() {
@@ -59,27 +78,13 @@ class QuizViewModel: ObservableObject, QuizViewModelProtocol {
         // Implement quit logic
     }
 
-    func downloadQuestions() async {
-        do {
-            let questions = try await quizConfigManager.downloadQuestions()
-            DispatchQueue.main.async {
-                self.sessionQuestions = questions
-                self.quizSessionManager.startNewQuizSession(questions: questions)
-            }
-        } catch {
-            print("Failed to download questions: \(error)")
-        }
-    }
-
     func initializeSession(with config: QuizSessionConfig) {
+        print("Quiz Player viewModel has initialized a session")
         seesionId = config.sessionId
         sessionTitle = config.sessionTitle
         sessionVoice = config.sessionVoice
-        sessionQuestions = config.sessionQuestion
-
         quizSessionManager.initializeSession(with: config)
     }
+    
 }
-
-
 
