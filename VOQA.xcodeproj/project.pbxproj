@@ -15,7 +15,6 @@
 		0B31C3FC2C220F06006FB5D1 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B31C3FB2C220F06006FB5D1 /* Errors.swift */; };
 		0B31C3FE2C2211AD006FB5D1 /* NetworkMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B31C3FD2C2211AD006FB5D1 /* NetworkMonitor.swift */; };
 		0B31C4032C222B9F006FB5D1 /* AcceptButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B31C4022C222B9F006FB5D1 /* AcceptButton.swift */; };
-		0B31C4072C223237006FB5D1 /* Sleeping Dreams.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 0B31C4062C223237006FB5D1 /* Sleeping Dreams.mp3 */; };
 		0B31C40C2C223286006FB5D1 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B31C4092C223286006FB5D1 /* AVFoundation.framework */; };
 		0B31C40D2C223286006FB5D1 /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B31C40A2C223286006FB5D1 /* AVKit.framework */; };
 		0B31C40E2C223286006FB5D1 /* AVFAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B31C40B2C223286006FB5D1 /* AVFAudio.framework */; };
@@ -69,11 +68,6 @@
 		0B6561792C3E50ED0013663B /* SessionCloser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B6561782C3E50ED0013663B /* SessionCloser.swift */; };
 		0B65617B2C3E51060013663B /* AudioSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B65617A2C3E51060013663B /* AudioSessionManager.swift */; };
 		0B65617D2C3E54B10013663B /* QuizViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B65617C2C3E54B10013663B /* QuizViewModel.swift */; };
-		0B7321F52C2253B600D7DED2 /* LaunchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B7321F42C2253B600D7DED2 /* LaunchView.swift */; };
-		0B7321F72C2253F100D7DED2 /* TermsAndConditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B7321F62C2253F100D7DED2 /* TermsAndConditions.swift */; };
-		0B7321F92C22543D00D7DED2 /* PrivacyPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B7321F82C22543D00D7DED2 /* PrivacyPolicy.swift */; };
-		0B7321FB2C22547900D7DED2 /* VoqaWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B7321FA2C22547900D7DED2 /* VoqaWebView.swift */; };
-		0B7321FD2C22559C00D7DED2 /* LogoFlashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B7321FC2C22559C00D7DED2 /* LogoFlashView.swift */; };
 		0B7B17BA2C4804D600B11974 /* ScoreRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B7B17B92C4804D600B11974 /* ScoreRegistry.swift */; };
 		0B890C6F2C411C8700453159 /* HomePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B890C672C411ABB00453159 /* HomePage.swift */; };
 		0B890C702C411CB700453159 /* HomepageConfigProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B890C532C411ABB00453159 /* HomepageConfigProtocols.swift */; };
@@ -87,9 +81,6 @@
 		0BC091E02C1D4463005FB223 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BC091DF2C1D4463005FB223 /* ContentView.swift */; };
 		0BC091E42C1D4465005FB223 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0BC091E32C1D4465005FB223 /* Assets.xcassets */; };
 		0BC091E82C1D4465005FB223 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0BC091E72C1D4465005FB223 /* Preview Assets.xcassets */; };
-		0BC091F22C1D4466005FB223 /* VOQATests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BC091F12C1D4466005FB223 /* VOQATests.swift */; };
-		0BC091FC2C1D4466005FB223 /* VOQAUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BC091FB2C1D4466005FB223 /* VOQAUITests.swift */; };
-		0BC091FE2C1D4466005FB223 /* VOQAUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BC091FD2C1D4466005FB223 /* VOQAUITestsLaunchTests.swift */; };
 		0BCA0E662C417F83007E1863 /* VoqaCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BCA0E652C417F83007E1863 /* VoqaCollectionView.swift */; };
 		0BCA0E682C417FDD007E1863 /* ImageAndTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BCA0E672C417FDD007E1863 /* ImageAndTitleView.swift */; };
 		0BCA0E6D2C418062007E1863 /* HomepageBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BCA0E6C2C418062007E1863 /* HomepageBackground.swift */; };
@@ -124,8 +115,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0B24B9A02C472D9B004A63F5 /* VOQATests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VOQATests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		0B24B9A12C472D9B004A63F5 /* VOQAUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VOQAUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		0B24B9A02C472D9B004A63F5 /* VOQATests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = VOQATests.xctest; path = "/Users/tonynlemadim/Documents/VOQA-Beta/build/Debug/VOQATests.xctest"; sourceTree = "<absolute>"; };
+		0B24B9A12C472D9B004A63F5 /* VOQAUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = VOQAUITests.xctest; path = "/Users/tonynlemadim/Documents/VOQA-Beta/build/Debug/VOQAUITests-Runner.app/Contents/PlugIns/VOQAUITests.xctest"; sourceTree = "<absolute>"; };
 		0B24B9A22C47614B004A63F5 /* SfxPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SfxPlayer.swift; sourceTree = "<group>"; };
 		0B24B9A42C4777BD004A63F5 /* Performance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Performance.swift; sourceTree = "<group>"; };
 		0B25E0DF2C24ECD000ACD552 /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
@@ -135,7 +126,6 @@
 		0B31C3FD2C2211AD006FB5D1 /* NetworkMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMonitor.swift; sourceTree = "<group>"; };
 		0B31C4002C222A8D006FB5D1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		0B31C4022C222B9F006FB5D1 /* AcceptButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AcceptButton.swift; path = ../../../VOQA/ComponentModels/AcceptButton.swift; sourceTree = "<group>"; };
-		0B31C4062C223237006FB5D1 /* Sleeping Dreams.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Sleeping Dreams.mp3"; sourceTree = "<group>"; };
 		0B31C4092C223286006FB5D1 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS17.4.sdk/System/Library/Frameworks/AVFoundation.framework; sourceTree = DEVELOPER_DIR; };
 		0B31C40A2C223286006FB5D1 /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS17.4.sdk/System/Library/Frameworks/AVKit.framework; sourceTree = DEVELOPER_DIR; };
 		0B31C40B2C223286006FB5D1 /* AVFAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFAudio.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS17.4.sdk/System/Library/Frameworks/AVFAudio.framework; sourceTree = DEVELOPER_DIR; };
@@ -171,11 +161,6 @@
 		0B6561782C3E50ED0013663B /* SessionCloser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionCloser.swift; sourceTree = "<group>"; };
 		0B65617A2C3E51060013663B /* AudioSessionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioSessionManager.swift; sourceTree = "<group>"; };
 		0B65617C2C3E54B10013663B /* QuizViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = QuizViewModel.swift; path = ../../VOQA/QuizViewModel.swift; sourceTree = "<group>"; };
-		0B7321F42C2253B600D7DED2 /* LaunchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchView.swift; sourceTree = "<group>"; };
-		0B7321F62C2253F100D7DED2 /* TermsAndConditions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsAndConditions.swift; sourceTree = "<group>"; };
-		0B7321F82C22543D00D7DED2 /* PrivacyPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyPolicy.swift; sourceTree = "<group>"; };
-		0B7321FA2C22547900D7DED2 /* VoqaWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoqaWebView.swift; sourceTree = "<group>"; };
-		0B7321FC2C22559C00D7DED2 /* LogoFlashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoFlashView.swift; sourceTree = "<group>"; };
 		0B7B17B92C4804D600B11974 /* ScoreRegistry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreRegistry.swift; sourceTree = "<group>"; };
 		0B890C472C411ABB00453159 /* VoqaConfigManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = VoqaConfigManager.swift; path = ../Configuration/VoqaConfigManager.swift; sourceTree = "<group>"; };
 		0B890C532C411ABB00453159 /* HomepageConfigProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = HomepageConfigProtocols.swift; path = ../Protocols/HomepageConfigProtocols.swift; sourceTree = "<group>"; };
@@ -188,9 +173,6 @@
 		0BC091E32C1D4465005FB223 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0BC091E52C1D4465005FB223 /* VOQA.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = VOQA.entitlements; sourceTree = "<group>"; };
 		0BC091E72C1D4465005FB223 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		0BC091F12C1D4466005FB223 /* VOQATests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VOQATests.swift; sourceTree = "<group>"; };
-		0BC091FB2C1D4466005FB223 /* VOQAUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VOQAUITests.swift; sourceTree = "<group>"; };
-		0BC091FD2C1D4466005FB223 /* VOQAUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VOQAUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		0BCA0E622C417F44007E1863 /* VOQA.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VOQA.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0BCA0E652C417F83007E1863 /* VoqaCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = VoqaCollectionView.swift; path = ../Models/VoqaCollectionView.swift; sourceTree = "<group>"; };
 		0BCA0E672C417FDD007E1863 /* ImageAndTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ImageAndTitleView.swift; path = ../Models/ImageAndTitleView.swift; sourceTree = "<group>"; };
@@ -287,18 +269,6 @@
 			name = EnvironmentVariables;
 			sourceTree = "<group>";
 		};
-		0B7321F32C22538C00D7DED2 /* PreLaunchStartUp */ = {
-			isa = PBXGroup;
-			children = (
-				0B7321F42C2253B600D7DED2 /* LaunchView.swift */,
-				0B7321F62C2253F100D7DED2 /* TermsAndConditions.swift */,
-				0B7321F82C22543D00D7DED2 /* PrivacyPolicy.swift */,
-				0B7321FA2C22547900D7DED2 /* VoqaWebView.swift */,
-				0B7321FC2C22559C00D7DED2 /* LogoFlashView.swift */,
-			);
-			name = PreLaunchStartUp;
-			sourceTree = "<group>";
-		};
 		0B7B17B82C48048E00B11974 /* Performance */ = {
 			isa = PBXGroup;
 			children = (
@@ -314,7 +284,6 @@
 				0B6561632C3E50260013663B /* NextQuestionWave.wav */,
 				0B6561602C3E500B0013663B /* showResponderBell.wav */,
 				0B6561662C3E50340013663B /* dismissResponderBell.wav */,
-				0B31C4062C223237006FB5D1 /* Sleeping Dreams.mp3 */,
 			);
 			name = SFX;
 			sourceTree = "<group>";
@@ -454,12 +423,8 @@
 			isa = PBXGroup;
 			children = (
 				0BC091DC2C1D4463005FB223 /* VOQA */,
-				0BC091F02C1D4466005FB223 /* VOQATests */,
-				0BC091FA2C1D4466005FB223 /* VOQAUITests */,
 				0B31C4082C223286006FB5D1 /* Frameworks */,
 				0BCA0E622C417F44007E1863 /* VOQA.app */,
-				0B24B9A02C472D9B004A63F5 /* VOQATests.xctest */,
-				0B24B9A12C472D9B004A63F5 /* VOQAUITests.xctest */,
 			);
 			sourceTree = "<group>";
 		};
@@ -470,7 +435,6 @@
 				0BC091DF2C1D4463005FB223 /* ContentView.swift */,
 				0B90E50B2C3E655A00903FB0 /* SessionConfigData2.json */,
 				0B7B17BF2C4806D000B11974 /* ConfigData */,
-				0B7321F32C22538C00D7DED2 /* PreLaunchStartUp */,
 				0B25E0DE2C24ECB600ACD552 /* Extensions */,
 				0B31C3FF2C221C35006FB5D1 /* AppConfigurations */,
 				0BA62FBB2C405D360053F7C2 /* QuizSessionModule */,
@@ -491,23 +455,6 @@
 				0BC091E72C1D4465005FB223 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
-			sourceTree = "<group>";
-		};
-		0BC091F02C1D4466005FB223 /* VOQATests */ = {
-			isa = PBXGroup;
-			children = (
-				0BC091F12C1D4466005FB223 /* VOQATests.swift */,
-			);
-			path = VOQATests;
-			sourceTree = "<group>";
-		};
-		0BC091FA2C1D4466005FB223 /* VOQAUITests */ = {
-			isa = PBXGroup;
-			children = (
-				0BC091FB2C1D4466005FB223 /* VOQAUITests.swift */,
-				0BC091FD2C1D4466005FB223 /* VOQAUITestsLaunchTests.swift */,
-			);
-			path = VOQAUITests;
 			sourceTree = "<group>";
 		};
 		0BCA0E5F2C417B0B007E1863 /* FormattedViews */ = {
@@ -705,7 +652,6 @@
 				0B6561642C3E50260013663B /* NextQuestionWave.wav in Resources */,
 				0B6561672C3E50340013663B /* dismissResponderBell.wav in Resources */,
 				0B6561612C3E500B0013663B /* showResponderBell.wav in Resources */,
-				0B31C4072C223237006FB5D1 /* Sleeping Dreams.mp3 in Resources */,
 				0B90E50C2C3E655A00903FB0 /* SessionConfigData2.json in Resources */,
 				0BC091E42C1D4465005FB223 /* Assets.xcassets in Resources */,
 				0BA62FDA2C40C6C00053F7C2 /* HomepageConfig.json in Resources */,
@@ -738,7 +684,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				0B6561792C3E50ED0013663B /* SessionCloser.swift in Sources */,
-				0B7321F52C2253B600D7DED2 /* LaunchView.swift in Sources */,
 				0B6561192C3E4E950013663B /* Colo+Extensions.swift in Sources */,
 				0BCA0E7F2C418359007E1863 /* VoqaSpeechVisualizer.swift in Sources */,
 				0BCA0E6F2C418124007E1863 /* TabIcons.swift in Sources */,
@@ -748,7 +693,6 @@
 				0B25E0E02C24ECD000ACD552 /* String+Extensions.swift in Sources */,
 				0B6561732C3E50770013663B /* VuMeter.swift in Sources */,
 				0B5161A72C431BEB00BEC8D5 /* QuestionFormatter.swift in Sources */,
-				0B7321F92C22543D00D7DED2 /* PrivacyPolicy.swift in Sources */,
 				0B65613A2C3E4F440013663B /* AudioPlayerManager.swift in Sources */,
 				0B6561162C3E4E7E0013663B /* QuizProtocols.swift in Sources */,
 				0B53810E2C4374E3002EBCBB /* EnvironmentVariables.swift in Sources */,
@@ -764,7 +708,6 @@
 				0BCA0E662C417F83007E1863 /* VoqaCollectionView.swift in Sources */,
 				0B6561402C3E4F540013663B /* AudioFileSorter.swift in Sources */,
 				0B6561552C3E4FA40013663B /* QuizConfigManager.swift in Sources */,
-				0B7321FD2C22559C00D7DED2 /* LogoFlashView.swift in Sources */,
 				0BCA0E772C41829A007E1863 /* QuizPlayerBackground.swift in Sources */,
 				0B6561312C3E4F080013663B /* QuizSessionManager.swift in Sources */,
 				0BC091DE2C1D4463005FB223 /* VOQAApp.swift in Sources */,
@@ -775,7 +718,6 @@
 				0BCA0E732C4181D9007E1863 /* RatingsView.swift in Sources */,
 				0B65614F2C3E4F940013663B /* QuizDataModels.swift in Sources */,
 				0B65615B2C3E4FB80013663B /* ConfigurationUrls.swift in Sources */,
-				0B7321F72C2253F100D7DED2 /* TermsAndConditions.swift in Sources */,
 				0B24B9A32C47614B004A63F5 /* SfxPlayer.swift in Sources */,
 				0BCA0E812C418428007E1863 /* QuizControlButtonsGrid.swift in Sources */,
 				0B6561492C3E4F640013663B /* ReviewsManager.swift in Sources */,
@@ -783,7 +725,6 @@
 				0B65612B2C3E4EEA0013663B /* Array+Extension.swift in Sources */,
 				0BCA0E7B2C41831B007E1863 /* WaveGeometry.swift in Sources */,
 				0B6561462C3E4F5F0013663B /* IdleSession.swift in Sources */,
-				0B7321FB2C22547900D7DED2 /* VoqaWebView.swift in Sources */,
 				0B31C4032C222B9F006FB5D1 /* AcceptButton.swift in Sources */,
 				0B890C732C411D8900453159 /* VoqaCollection.swift in Sources */,
 				0B24B9A52C4777BD004A63F5 /* Performance.swift in Sources */,
@@ -806,7 +747,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0BC091F22C1D4466005FB223 /* VOQATests.swift in Sources */,
 				0B65612F2C3E4F020013663B /* QuizSession.swift in Sources */,
 				0B6561232C3E4EDB0013663B /* CGFloat+Extensions.swift in Sources */,
 				0B65614A2C3E4F640013663B /* ReviewsManager.swift in Sources */,
@@ -831,8 +771,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0BC091FC2C1D4466005FB223 /* VOQAUITests.swift in Sources */,
-				0BC091FE2C1D4466005FB223 /* VOQAUITestsLaunchTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
