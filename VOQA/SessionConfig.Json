@@ -1,0 +1,195 @@
+
+
+{
+  "sessionTitle": "Sample Quiz Session",
+  "sessionVoice": "English",
+  "alerts": [
+    {
+      "title": "Correct Answer Bell",
+      "urlScript": "Correct",
+      "audioUrl": "correctAnswerBell"
+    },
+    {
+      "title": "Error Bell",
+      "urlScript": "Error",
+      "audioUrl": "errorBell"
+    },
+    {
+      "title": "Next Question Wave",
+      "urlScript": "Next Question",
+      "audioUrl": "NextQuestionWave"
+    },
+    {
+      "title": "Show Responder Bell",
+      "urlScript": "Responder",
+      "audioUrl": "showResponderBell"
+    },
+    {
+      "title": "Wrong Answer Bell",
+      "urlScript": "Incorrect",
+      "audioUrl": "wrongAnswerBell"
+    },
+    {
+      "title": "Dismiss Responder Bell",
+      "urlScript": "Dismiss Responder",
+      "audioUrl": "dismissResponderBell"
+    }
+  ],
+  "controlFeedback": {
+    "startQuiz": {
+      "title": "Start Quiz",
+      "audioUrls": [
+        {
+          "title": "start1",
+          "urlScript": "Let's get started",
+          "audioUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/Let's get started.mp3"
+        },
+        {
+          "title": "start2",
+          "urlScript": "Ready to begin? Let's go",
+          "audioUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/Ready to begin? Let's go.mp3"
+        },
+        {
+          "title": "start3",
+          "urlScript": "Here we go, good luck",
+          "audioUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/Here we go, good luck.mp3"
+        }
+      ]
+    },
+    "quit": {
+      "title": "Quit Quiz",
+      "audioUrls": [
+        {
+          "title": "quit1",
+          "urlScript": "The quiz will now end",
+          "audioUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/The quiz will now end.mp3"
+        },
+        {
+          "title": "quit2",
+          "urlScript": "You have chosen to quit the quiz",
+          "audioUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/You have chosen to quit the quiz.mp3"
+        },
+        {
+          "title": "quit3",
+          "urlScript": "Review will follow",
+          "audioUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/Review will follow.mp3"
+        }
+      ]
+    },
+    "nextQuestion": {
+      "title": "Next Question",
+      "audioUrls": [
+        {
+          "title": "next1",
+          "urlScript": "Let's move to the next question",
+          "audioUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/Let's move to the next question.mp3"
+        },
+        {
+          "title": "next2",
+          "urlScript": "Next up, please",
+          "audioUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/Next up, please.mp3"
+        },
+        {
+          "title": "next3",
+          "urlScript": "On to the next one",
+          "audioUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/On to the next one.mp3"
+        }
+      ]
+    },
+    "repeatQuestion": {
+      "title": "Repeat Question",
+      "audioUrls": [
+        {
+          "title": "repeat1",
+          "urlScript": "I'll repeat the question",
+          "audioUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/I'll repeat the question.mp3"
+        },
+        {
+          "title": "repeat2",
+          "urlScript": "Let's hear that question again",
+          "audioUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/Let's hear that question again.mp3"
+        },
+        {
+          "title": "repeat3",
+          "urlScript": "One more time, here it is",
+          "audioUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/One more time, here it is.mp3"
+        }
+      ]
+    }
+  },
+  "quizFeedback": {
+    "incorrectAnswer": {
+      "title": "Incorrect Answer",
+      "audioUrls": [
+        {
+          "title": "incorrect1",
+          "urlScript": "Sorry, that's not correct",
+          "audioUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/Sorry, that's not correct.mp3"
+        },
+        {
+          "title": "incorrect2",
+          "urlScript": "That's not right, try again",
+          "audioUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/That's not right, try again.mp3"
+        },
+        {
+          "title": "incorrect3",
+          "urlScript": "Oops, that's not it",
+          "audioUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/Oops, that's not it.mp3"
+        }
+      ]
+    },
+    "correctAnswer": {
+      "title": "Correct Answer",
+      "audioUrls": [
+        {
+          "title": "correct1",
+          "urlScript": "Nice! That's the right answer",
+          "audioUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/Nice! That's the right answer!.mp3"
+        },
+        {
+          "title": "correct2",
+          "urlScript": "That is correct",
+          "audioUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/That is correct!.mp3"
+        },
+        {
+          "title": "correct3",
+          "urlScript": "Well done, that's right",
+          "audioUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/Well done, that's right!.mp3"
+        }
+      ]
+    },
+    "noResponse": {
+      "title": "No Response",
+      "audioUrls": [
+        {
+          "title": "noResponse1",
+          "urlScript": "It seems you didn't respond",
+          "audioUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/It seems you didn't respond..mp3"
+        },
+        {
+          "title": "noResponse2",
+          "urlScript": "No answer detected, please try",
+          "audioUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/No answer detected, please try..mp3"
+        },
+        {
+          "title": "noResponse3",
+          "urlScript": "Please give an answer next time",
+          "audioUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/Please give an answer next time..mp3"
+        }
+      ]
+    }
+  },
+  "sessionMusic": [
+    {
+      "title": "Background Music 1",
+      "urlScript": "Soft instrumental music playing",
+      "audioUrl": "Soft instrumental music playing."
+    },
+    {
+      "title": "Background Music 2",
+      "urlScript": "Upbeat background music",
+      "audioUrl": "Upbeat background music"
+    }
+  ],
+  "sessionQuestion": []
+}
