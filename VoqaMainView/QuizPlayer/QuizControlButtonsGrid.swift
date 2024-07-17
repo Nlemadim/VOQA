@@ -47,7 +47,7 @@ struct QuizControlButtonsGrid: View {
                 self.selectedOption = nil
             }
         }
-        .padding()
+        .padding(.horizontal)
     }
     
     private func generateUniqueColors() {
@@ -101,7 +101,6 @@ struct MultiChoiceButton: View {
             self.startFilling()
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                 self.selectOption()
-
             }
         }) {
             ZStack {
@@ -127,7 +126,7 @@ struct MultiChoiceButton: View {
                     .fontWeight(.black)
                     .foregroundColor(.white)
             }
-            .padding(10)
+            .padding(5)
         }
         .buttonStyle(PlainButtonStyle())
         .disabled(!awaitingResponse)

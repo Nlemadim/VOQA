@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 import Combine
 
 class QuizViewModel: ObservableObject, QuizViewModelProtocol {
@@ -18,7 +19,11 @@ class QuizViewModel: ObservableObject, QuizViewModelProtocol {
     @Published var seesionId: UUID = UUID()
     @Published var sessionTitle: String = ""
     @Published var sessionVoice: String = ""
-
+    @Published var sessionCountdownTime: TimeInterval = 5.0
+    @Published var currentQuestionIndex: Int = 0
+    @Published var sessionInReview: Bool = false
+    
+    private var sfxPlayer = SfxPlayer()
     private var quizSessionManager: QuizSessionManager
     private var quizConfigManager: QuizConfigManager
     private var cancellables: Set<AnyCancellable> = []
@@ -52,20 +57,39 @@ class QuizViewModel: ObservableObject, QuizViewModelProtocol {
         
         session.$questionCounter
             .assign(to: &$sessionQuestionCounterText)
+        
+        session.$countdownTime
+            .assign(to: &$sessionCountdownTime)
+        
+        session.$isReviewing
+            .assign(to: &$sessionInReview)
+        
+        session.$currentQuestionIndex
+            .assign(to: &$currentQuestionIndex)
+            
     }
-
-    func nextQuestion() {
-        quizSessionManager.nextQuestion()
+    
+    func currentSession() -> QuizSession? {
+        guard let session = quizSessionManager.quizSession else { return nil }
+        return session
     }
-
-    func selectAnswer(selectedOption: String) {
-        quizSessionManager.selectAnswer(selectedOption: selectedOption)
-    }
-
+    
     func startNewQuizSession(questions: [Question]) {
         quizSessionManager.startNewQuizSession(questions: questions)
     }
 
+
+    func nextQuestion() {
+        quizSessionManager.nextQuestion()
+        sfxPlayer.play(.nextQuestion)
+    }
+
+    func selectAnswer(selectedOption: String) {
+        quizSessionManager.selectAnswer(selectedOption: selectedOption)
+        sfxPlayer.play(.hasReceivedResponse)
+    }
+
+    
     func stopQuiz() {
         // Implement stop logic
     }
@@ -85,6 +109,24 @@ class QuizViewModel: ObservableObject, QuizViewModelProtocol {
         sessionVoice = config.sessionVoice
         quizSessionManager.initializeSession(with: config)
     }
+    
+    func playNextQuestionSfx() {
+        sfxPlayer.play(.nextQuestion)
+    }
+    
+    func playAwaitingResponseSfx() {
+        sfxPlayer.play(.awaitResponse)
+    }
+    
+    func playRecievedResponseSfx() {
+        sfxPlayer.play(.hasReceivedResponse)
+    }
+    
+    func playbackVisualizer() -> any View {
+        guard let session = quizSessionManager.quizSession  else { return EmptyView() }
+        return  VUMeterView(quizContext: session)
+    }
+    
     
 }
 

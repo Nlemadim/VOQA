@@ -97,17 +97,31 @@ class SessionAudioPlayer: NSObject, AVAudioPlayerDelegate {
             return
         }
         
-
-        if context.state is QuestionPlayer {
-            context.isNowPlaying = false
-            context.awaitingResponse()
-            if lastAction != .waitingForResponse {
-//                context.awaitingResponse()
+        print("Audio player finished playing on state: \(context.state)")
+        
+        context.isNowPlaying = false
+        
+        if context.state is QuizSession {
+            if lastAction == .playAnswer(url: context.currentQuestion?.overviewUrl ?? "") {
+                context.resumeQuiz()
             }
-        } else if context.state is ReviewsManager {
+            
+            if lastAction == .playCorrectAnswerCallout {
+                context.resumeQuiz()
+            }
+        }
+        
+        if context.state is QuestionPlayer {
+            if lastAction == .playQuestionAudioUrl(url: context.currentQuestion?.audioUrl ?? "") {
+                context.awaitResponse()
+            }
+        }
+        
+        if context.state is ReviewsManager {
             context.prepareToEndSession()
             enqueueAction(.reset)
         }
+        
         completeCurrentAction()
     }
 }

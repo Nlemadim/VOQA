@@ -40,26 +40,16 @@ struct QuestionFormatter {
         var formattedQuestion =
         
         """
-        New Question\n
-
+        New Question!\n
         \(question.content)\n
 
         Options:\n
-        
-        Option \(question.options[0])\n
-        
-        Option \(question.options[1])\n
-        
-        Option \(question.options[2])\n
-        
-        Option \(question.options[3])\n
+        \(question.options[0])\n
+        \(question.options[1])\n
+        \(question.options[2])\n
+        \(question.options[3])\n
         
         """
-
-        // Remove or replace disallowed characters
-        formattedQuestion = formattedQuestion.replacingOccurrences(of: "\n", with: " ")
-        formattedQuestion = formattedQuestion.replacingOccurrences(of: "\r", with: " ")
-        formattedQuestion = formattedQuestion.replacingOccurrences(of: "\"", with: "'")
 
         return formattedQuestion
     }

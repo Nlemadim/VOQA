@@ -15,7 +15,8 @@ struct QuizPlayerView: View {
     
     @StateObject private var viewModel: QuizViewModel
     
-    @State var currentRating: Int? = 3
+    @State var currentRating: Int? = 1
+    @State var isNowPlaying: Bool = false
     @State private var audioPlayer: SessionAudioPlayer?
     @State private var cancellables: Set<AnyCancellable> = []
     
@@ -44,7 +45,7 @@ struct QuizPlayerView: View {
 
                     // Buttons Grid View
                     Divider()
-                        .activeGlow(.white, radius: 0.5)
+                        .activeGlow(.teal, radius: 0.5)
 
                     // InteractionButtons Grid
                     quizControlButtons()
@@ -54,13 +55,34 @@ struct QuizPlayerView: View {
                 .background {
                     QuizPlayerBackground(backgroundImageResource: selectedVoqa.imageUrl)
                 }
-                .onChange(of: viewModel.sessionAwaitingResponse, { _, newValue in
-                    print("Awaiting response? New value \(newValue)")
+                .onReceive(viewModel.$sessionNowplayingAudio, perform: { nowPlaying in
+                    DispatchQueue.main.async {
+                        self.isNowPlaying = nowPlaying
+                    }
+                })
+                .onChange(of: viewModel.sessionNowplayingAudio, { _, nowPlaying in
+                    DispatchQueue.main.async {
+                        if nowPlaying {
+                            self.isNowPlaying = true
+                        } else {
+                            self.isNowPlaying = false
+                        }
+                    }
+                })
+                .onChange(of: viewModel.currentQuestionIndex, { _, _ in
+                    viewModel.playNextQuestionSfx()
+                })
+                .onChange(of: viewModel.sessionAwaitingResponse, { _, awaitingResponse in
+                    if awaitingResponse {
+                        viewModel.playAwaitingResponseSfx()
+                    } else {
+                        viewModel.playRecievedResponseSfx()
+                    }
                 })
                 .onAppear {
                     viewModel.initializeSession(with: self.config)
-                    print("QuizPlayer has: \(questions.count) questions")
                     viewModel.startNewQuizSession(questions: questions)
+                    print("QuizPlayer has: \(questions.count) questions")
                 }
             }
         }
@@ -72,12 +94,17 @@ struct QuizPlayerView: View {
             selectButton: { option in
                 viewModel.selectAnswer(selectedOption: option)
             },
-            centralAction: {})
+            centralAction: { viewModel.playRecievedResponseSfx()})
     }
 
     @ViewBuilder
     private func quizInfoView() -> some View {
         QuizInfoView(selectedVoqa: selectedVoqa)
+    }
+    
+
+    private func playbackVisualizer() -> any View {
+        viewModel.playbackVisualizer()
     }
 
     @ViewBuilder
@@ -117,30 +144,26 @@ struct QuizPlayerView: View {
                         .foregroundColor(.red)
                 }
 
-                VStack {
-                    Text(selectedVoqa.name)
+                VStack(spacing: 4) {
+                    Text(selectedVoqa.acronym)
                         .font(.footnote)
-                        .foregroundStyle(.primary)
-                        .padding(.top, 2)
-                        .hAlign(.leading)
-
-                    Text("Audio Quiz")
-                        .font(.footnote)
-                        .padding(.top, 2)
+                        .fontWeight(.semibold)
                         .foregroundStyle(.primary)
                         .hAlign(.leading)
-
-                    ZStack {
-                        Text(viewModel.sessionQuestionCounterText)
-                            .font(.footnote)
+                    
+                    Text(viewModel.sessionQuestionCounterText)
+                        .font(.footnote)
+                        .foregroundStyle(.primary)
+                        .hAlign(.leading)
+                    
+                    if let session = viewModel.currentSession() {
+                        VUMeterView(quizContext: session)
                             .padding(.top, 2)
-                            .foregroundStyle(.primary)
                             .hAlign(.leading)
                     }
                 }
                 .kerning(-0.2)
-                .fontWeight(.semibold)
-                .frame(height: 100)
+                .frame(height: 80)
 
                 StopQuizButton(
                     stopAction: {
@@ -152,30 +175,33 @@ struct QuizPlayerView: View {
             }
             .padding(.horizontal)
             .padding(.top)
-
-            ZStack {
-                VoqaSpeechVisualizer(colors: [.mint, .purple, .teal], supportLineColor: .teal, switchOn: .constant(viewModel.sessionNowplayingAudio))
-                    .frame(height: 25)
-                    .padding()
-            }
+            
+            Divider()
+                .activeGlow(.teal, radius: 0.5)
+        }
+    }
+    
+    private func animateVisualizer(nowPlaying: Bool)  {
+        if nowPlaying == true {
+            self.isNowPlaying = true
+        } else {
+            self.isNowPlaying = false
         }
     }
 
     @ViewBuilder
     private func currentContentView() -> some View {
         VStack(alignment: .center) {
-            FormattedQuestionContentView(questionTranscript: viewModel.currentQuestionText)
-            Spacer()
-            Text("Rate This Question")
-                .font(.system(size: 8))
-                .foregroundStyle(.secondary)
-            RatingsView(
-                maxRating: 4,
-                currentRating: $currentRating,
-                width: 30,
-                color: .systemTeal,
-                sfSymbol: "star"
-            )
+            ZStack {
+                FormattedQuestionContentView(questionTranscript: viewModel.currentQuestionText)
+                    .opacity(viewModel.sessionCountdownTime > 0 ? 0 : 1)
+                
+                FormattedCountDownTextView(countdownTimer: "\(viewModel.sessionCountdownTime)")
+                    .opacity(viewModel.sessionCountdownTime > 0 ? 1 : 0)
+                
+                RateQuizView(currentRating: $currentRating)
+                    .opacity(viewModel.sessionInReview ? 1 : 0)
+            }
         }
         .frame(maxHeight: .infinity)
     }

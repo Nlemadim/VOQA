@@ -16,16 +16,26 @@ struct QuestionsKey: EnvironmentKey {
     static let defaultValue: [Question] = []
 }
 
+struct PerformanceKey: EnvironmentKey {
+    static let defaultValue: [Performance] = []
+}
+
 extension EnvironmentValues {
     var questions: [Question] {
         get { self[QuestionsKey.self] }
         set { self[QuestionsKey.self] = newValue }
     }
-}
-
-extension EnvironmentValues {
+    
     var quizSessionConfig: QuizSessionConfig? {
         get { self[QuizSessionConfigKey.self] }
         set { self[QuizSessionConfigKey.self] = newValue }
     }
+    
+    var userPerformance: [Performance] {
+        get { self[PerformanceKey.self] }
+        set { self[PerformanceKey.self] = newValue }
+    }
 }
+
+
+

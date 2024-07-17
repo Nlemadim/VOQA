@@ -20,6 +20,7 @@ enum AudioAction: Equatable {
     case reviewing
     case pausePlay
     case reset
+    case playBGM
 
     static func ==(lhs: AudioAction, rhs: AudioAction) -> Bool {
         switch (lhs, rhs) {
@@ -68,6 +69,25 @@ enum AudioAction: Equatable {
             return "Pause Play"
         case .reset:
             return "Reset"
+        case .playBGM:
+            return "Background Music"
+        }
+    }
+}
+
+enum MusicStyle {
+    case intro
+    case outro
+    case winningStreak
+    
+    var duration: TimeInterval {
+        switch self {
+        case .intro:
+            return 25.0
+        case .outro:
+            return 30.0
+        case .winningStreak:
+            return 15.0
         }
     }
 }

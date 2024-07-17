@@ -58,12 +58,13 @@ struct VoqaSpeechVisualizer: View {
     
     private func toggleTimerBasedOnSwitch() {
         if switchOn {
-            // Start or continue the timer
             if timerCancellable == nil {
                 timerCancellable = timer.connect()
+               
             }
         } else {
             // Stop the timer when switch is off
+            power = 0.0
             timerCancellable?.cancel()
             timerCancellable = nil
         }

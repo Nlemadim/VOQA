@@ -18,6 +18,7 @@ class QuizSessionManager: ObservableObject {
         print("QuizSessionManager initialized")
         let sessionInitializer = SessionInitializer(config: config)
         let sessionInfo = sessionInitializer.initializeSession()
+        let scoreRegistry = ScoreRegistry()
         let audioFileSorter = AudioFileSorter(randomGenerator: SystemRandomNumberGenerator())
         audioFileSorter.configure(with: config)
 
@@ -27,7 +28,7 @@ class QuizSessionManager: ObservableObject {
             reviewer: ReviewsManager(),
             sessionCloser: SessionCloser(),
             audioFileSorter: audioFileSorter,
-            sessionInfo: sessionInfo
+            sessionInfo: sessionInfo, scoreRegistry: scoreRegistry
         )
 
         // Bind properties from QuizSession to trigger updates

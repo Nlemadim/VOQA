@@ -23,6 +23,7 @@ class QuizSession: ObservableObject, QuizServices {
     
     // Session QuestionPlayer Specific Properties
     @Published var currentQuestion: Question?
+    @Published var currentQuestionIndex: Int = 0
     @Published var currentQuestionId: UUID?
     @Published var currentQuestionText: String = ""
     @Published var hasAskedLastQuestion: Bool = false
@@ -43,6 +44,9 @@ class QuizSession: ObservableObject, QuizServices {
     @Published var quizTitle: String = "VOQA"
     @Published var totalQuestionCount: Int = 0
     
+    //Review Specific property
+    @Published var isReviewing: Bool = false
+    
     // Lazy initialization of sessionAudioPlayer
     lazy var sessionAudioPlayer: SessionAudioPlayer = {
         return SessionAudioPlayer(context: self, audioFileSorter: audioFileSorter)
@@ -54,18 +58,20 @@ class QuizSession: ObservableObject, QuizServices {
     var sessionCloser: SessionCloser
     var audioFileSorter: AudioFileSorter
     var sessionInfo: QuizSessionInfoProtocol
+    var scoreRegistry: ScoreRegistry
     
     var questions: [Question] = []
     
     private var timer: Timer?
     
-    init(state: QuizServices, questionPlayer: QuestionPlayer, reviewer: ReviewsManager, sessionCloser: SessionCloser, audioFileSorter: AudioFileSorter, sessionInfo: QuizSessionInfoProtocol) {
+    init(state: QuizServices, questionPlayer: QuestionPlayer, reviewer: ReviewsManager, sessionCloser: SessionCloser, audioFileSorter: AudioFileSorter, sessionInfo: QuizSessionInfoProtocol, scoreRegistry: ScoreRegistry) {
         self.state = state
         self.questionPlayer = questionPlayer
         self.reviewer = reviewer
         self.sessionCloser = sessionCloser
         self.audioFileSorter = audioFileSorter
         self.sessionInfo = sessionInfo
+        self.scoreRegistry = scoreRegistry
         
         self.questionPlayer.session = self
         self.reviewer.context = self
@@ -84,12 +90,13 @@ class QuizSession: ObservableObject, QuizServices {
         let sessionCloser = SessionCloser()
         let sessionInitializer = SessionInitializer(config: config)
         
-        
         let sessionInfo = sessionInitializer.initializeSession()
         let audioFileSorter = AudioFileSorter(randomGenerator: SystemRandomNumberGenerator())
         audioFileSorter.configure(with: config)
         
-        return QuizSession(state: state, questionPlayer: questionPlayer, reviewer: reviewer, sessionCloser: sessionCloser, audioFileSorter: audioFileSorter, sessionInfo: sessionInfo)
+        let scoreRegistry = ScoreRegistry()
+        
+        return QuizSession(state: state, questionPlayer: questionPlayer, reviewer: reviewer, sessionCloser: sessionCloser, audioFileSorter: audioFileSorter, sessionInfo: sessionInfo, scoreRegistry: scoreRegistry)
     }
     
     func setState(_ state: QuizServices) {
@@ -142,7 +149,7 @@ class QuizSession: ObservableObject, QuizServices {
         }
     }
     
-    func awaitingResponse() {
+    func awaitResponse() {
         self.setState(self)
         self.isAwaitingResponse = true
         print("Awaiting response?: \(isAwaitingResponse)")
@@ -150,7 +157,7 @@ class QuizSession: ObservableObject, QuizServices {
     
     private func recievedResponse() {
         self.setState(self)
-        self.currentQuestionText = "Checking..."
+        self.currentQuestionText = "Registering your score"
         self.isAwaitingResponse = false
         print("Awaiting response?: \(isAwaitingResponse)")
        // self.sessionAudioPlayer.performAudioAction(.receivedResponse)
@@ -162,27 +169,33 @@ class QuizSession: ObservableObject, QuizServices {
     }
     
     func selectAnswer(selectedOption: String) {
+        guard let currentQuestion = currentQuestion else { return }
+        
         DispatchQueue.main.async {
             self.buttonSelected = selectedOption
             self.isAwaitingResponse = false
             self.currentQuestionText = "Checking Answer"
-
-            print("Selected Answer is \(self.buttonSelected)")
-            print("Answer selected")
-            print("Awaiting response?: \(self.isAwaitingResponse)")
-         
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-               // self.sessionAudioPlayer.performAudioAction(.nextQuestion)
-                self.resumeQuiz()
+            
+            // Use Registry to check answer here
+            self.scoreRegistry.checkAnswer(question: currentQuestion, selectedOption: selectedOption) { isCorrect in
+                if isCorrect {
+                    print("Correct Answer!")
+                    self.currentQuestionText = currentQuestion.correctOption + " is Correct!"
+                    self.sessionAudioPlayer.performAudioAction(.playCorrectAnswerCallout)
+                } else {
+                    print("Wrong Answer!")
+                    self.currentQuestionText = "Incorrect!\n\n" + currentQuestion.overview
+                    self.sessionAudioPlayer.performAudioAction(.playWrongAnswerCallout)
+                    self.sessionAudioPlayer.performAudioAction(.playAnswer(url: currentQuestion.overviewUrl))
+                }
             }
         }
     }
     
-    private func resumeQuiz() {
+    func resumeQuiz() {
         self.setState(self.questionPlayer)
         self.questionPlayer.performAction(.readyToPlayNextQuestion, session: self)
     }
-    
     
     func updateQuestionCounter(questionIndex: Int, count: Int) {
         DispatchQueue.main.async {
@@ -248,6 +261,9 @@ class QuizSession: ObservableObject, QuizServices {
             .receive(on: DispatchQueue.main)
             .assign(to: &$currentQuestion)
         
+        questionPlayer.$currentQuestionIndex
+            .receive(on: DispatchQueue.main)
+            .assign(to: &$currentQuestionIndex)
         
         print("current question ID: \(String(describing: currentQuestionId ?? nil))")
     }
@@ -268,7 +284,6 @@ class QuizSession: ObservableObject, QuizServices {
         }
     }
 }
-
 
 
 

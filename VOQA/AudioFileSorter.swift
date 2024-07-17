@@ -55,6 +55,9 @@ class AudioFileSorter {
         case .pausePlay, .reset:
             print("Action: \(action), No URL needed")
             return nil
+        case .playBGM:
+            audioUrls = config.sessionMusic.compactMap { $0.audioUrl }
+            return nil
         }
         
         guard !audioUrls.isEmpty else {
