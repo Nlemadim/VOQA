@@ -89,29 +89,11 @@ struct QuizInfoView: View {
             
             Spacer()
             
-            Button(action: {
-                isDownloading = true
-                Task {
-                    await getQuestions()
-                    isDownloading = false
-                }
-            }) {
-                if isDownloading {
-                    Text("Downloading...")
-                } else {
-                    Text("Start Assessment Quiz")
-                }
+            DownloadButton(label: "Start Assessment Quiz") {
+                await getQuestions()
             }
-            .fontWeight(.black)
-            .foregroundColor(.black)
             .padding()
-            .background(Color.yellow)
-            .cornerRadius(10)
-            .padding(.horizontal, 20)
-            .disabled(isDownloading)
-            
-            .frame(maxWidth: .infinity, alignment: .bottom)
-            .padding(.bottom, 20)
+            .padding(.horizontal)
         }
         .frame(maxHeight: .infinity)
         .background {

@@ -72,6 +72,8 @@
 		0B65617B2C3E51060013663B /* AudioSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B65617A2C3E51060013663B /* AudioSessionManager.swift */; };
 		0B65617D2C3E54B10013663B /* QuizViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B65617C2C3E54B10013663B /* QuizViewModel.swift */; };
 		0B7B17BA2C4804D600B11974 /* ScoreRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B7B17B92C4804D600B11974 /* ScoreRegistry.swift */; };
+		0B7DFD092C4964290036E3FC /* VoqaCollectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B7DFD082C4964290036E3FC /* VoqaCollectionHeaderView.swift */; };
+		0B7DFD0B2C496D6A0036E3FC /* DownloadButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B7DFD0A2C496D6A0036E3FC /* DownloadButton.swift */; };
 		0B890C6F2C411C8700453159 /* HomePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B890C672C411ABB00453159 /* HomePage.swift */; };
 		0B890C702C411CB700453159 /* HomepageConfigProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B890C532C411ABB00453159 /* HomepageConfigProtocols.swift */; };
 		0B890C712C411CC700453159 /* VoqaConfigManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B890C472C411ABB00453159 /* VoqaConfigManager.swift */; };
@@ -168,6 +170,8 @@
 		0B65617A2C3E51060013663B /* AudioSessionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioSessionManager.swift; sourceTree = "<group>"; };
 		0B65617C2C3E54B10013663B /* QuizViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = QuizViewModel.swift; path = ../../VOQA/QuizViewModel.swift; sourceTree = "<group>"; };
 		0B7B17B92C4804D600B11974 /* ScoreRegistry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreRegistry.swift; sourceTree = "<group>"; };
+		0B7DFD082C4964290036E3FC /* VoqaCollectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoqaCollectionHeaderView.swift; sourceTree = "<group>"; };
+		0B7DFD0A2C496D6A0036E3FC /* DownloadButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadButton.swift; sourceTree = "<group>"; };
 		0B890C472C411ABB00453159 /* VoqaConfigManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = VoqaConfigManager.swift; path = ../Configuration/VoqaConfigManager.swift; sourceTree = "<group>"; };
 		0B890C532C411ABB00453159 /* HomepageConfigProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = HomepageConfigProtocols.swift; path = ../Protocols/HomepageConfigProtocols.swift; sourceTree = "<group>"; };
 		0B890C672C411ABB00453159 /* HomePage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = HomePage.swift; path = ../HomePage.swift; sourceTree = "<group>"; };
@@ -503,6 +507,7 @@
 				0BCA0E802C418428007E1863 /* QuizControlButtonsGrid.swift */,
 				0B09BDB52C491BE100DD6452 /* FullTitleScrollView.swift */,
 				0B09BDB72C491C2C00DD6452 /* FullTitleView.swift */,
+				0B7DFD082C4964290036E3FC /* VoqaCollectionHeaderView.swift */,
 			);
 			name = Subviews;
 			sourceTree = "<group>";
@@ -522,6 +527,7 @@
 			children = (
 				0B31C4022C222B9F006FB5D1 /* AcceptButton.swift */,
 				0BCA0E6E2C418124007E1863 /* TabIcons.swift */,
+				0B7DFD0A2C496D6A0036E3FC /* DownloadButton.swift */,
 			);
 			name = Buttons;
 			sourceTree = "<group>";
@@ -696,6 +702,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0B6561792C3E50ED0013663B /* SessionCloser.swift in Sources */,
+				0B7DFD0B2C496D6A0036E3FC /* DownloadButton.swift in Sources */,
 				0B6561192C3E4E950013663B /* Colo+Extensions.swift in Sources */,
 				0BCA0E7F2C418359007E1863 /* VoqaSpeechVisualizer.swift in Sources */,
 				0BCA0E6F2C418124007E1863 /* TabIcons.swift in Sources */,
@@ -735,6 +742,7 @@
 				0BCA0E812C418428007E1863 /* QuizControlButtonsGrid.swift in Sources */,
 				0B6561492C3E4F640013663B /* ReviewsManager.swift in Sources */,
 				0B31C3FE2C2211AD006FB5D1 /* NetworkMonitor.swift in Sources */,
+				0B7DFD092C4964290036E3FC /* VoqaCollectionHeaderView.swift in Sources */,
 				0B65612B2C3E4EEA0013663B /* Array+Extension.swift in Sources */,
 				0BCA0E7B2C41831B007E1863 /* WaveGeometry.swift in Sources */,
 				0B6561462C3E4F5F0013663B /* IdleSession.swift in Sources */,

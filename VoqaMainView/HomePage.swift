@@ -14,40 +14,31 @@ struct HomePage: View {
     @State private var collections: [VoqaCollection] = []
     @State private var errorMessage: IdentifiableError?
     @State private var selectedVoqa: Voqa?
+    @State private var currentCategory: String = "VOQA"
 
     var body: some View {
         TabView(selection: $selectedTab) {
             NavigationStack {
-                ScrollView(showsIndicators: false) {
-                    VStack(alignment: .leading, spacing: 0) {
-                        ForEach(collections) { collection in
-                            VoqaCollectionView(
-                                category: collection.category,
-                                subtitle: collection.subtitle,
-                                quizzes: collection.quizzes,
-                                tapAction: { quiz in
-                                    selectedVoqa = quiz
-                                }
-                            )
-                        }
-                        
-                        // Leave Rectangle
-                        Rectangle()
-                            .fill(.clear)
-                            .frame(height: 100)
-                    }
-                }
-                .background {
-                    HomePageBackground()
-                }
+                FullTitlesScrollViewV1(collections: collections, tapAction: { quiz in
+                    selectedVoqa = quiz
+                }, selectedVoqa: $selectedVoqa, currentCategory: $currentCategory)
                 .zIndex(1)
                 .toolbar {
-                    ToolbarItemGroup(placement: .navigationBarTrailing) {
-                        Text("VOQA")
-                            .font(.title)
-                            .fontWeight(.black)
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        Text(currentCategory)
+                            .font(.subheadline)
+                            .fontWeight(.semibold)
                             .kerning(-0.5)
-                            .primaryTextStyleForeground()
+                            .foregroundStyle(.primary)
+                    }
+                    
+                    ToolbarItemGroup(placement: .navigationBarTrailing) {
+                        NavigationLink(destination: Text("Search")) {
+                            Image(systemName: "magnifyingglass")
+                                .font(.subheadline)
+                                .fontWeight(.semibold)
+                                .foregroundStyle(.primary)
+                        }
                     }
                 }
                 .onAppear {

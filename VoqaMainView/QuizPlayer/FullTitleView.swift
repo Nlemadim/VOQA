@@ -10,18 +10,19 @@ import SwiftUI
 
 struct FullTitleView: View {
     var quiz: Voqa
-    let tapAction: (Voqa) -> Void
+    let tapAction: () -> Void
     var body: some View {
         VStack {
             AsyncImage(url: URL(string: quiz.imageUrl)) { phase in
                 switch phase {
                 case .empty:
                     ProgressView()
-                       // .frame(width: 320, height: 360)
+                        .frame(width: 320, height: 360)
                 case .success(let image):
                     image
                         .resizable()
                         .aspectRatio(contentMode: .fill)
+                        .frame(width: 320, height: 360)
                         
                 case .failure:
                     VStack{
@@ -42,8 +43,11 @@ struct FullTitleView: View {
                 NamePlateView(quiz: quiz)
             }
         }
+        .onTapGesture {
+           tapAction()
+        }
         .cornerRadius(10.0)
-        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16, style: .continuous)).tint(.white).activeGlow(.white, radius: 2)
         
     }
 }
@@ -110,6 +114,8 @@ struct NamePlateView: View {
         
     }
 }
+
+
 
 
 let aboutText = "In this captivating audiobook, join Alex, a young programmer navigating the complex world of software development. As he embarks on his journey, he encounters seasoned mentors, cryptic bugs, and the elusive “Elegant Algorithm.” Through their guidance, Alex learns that software engineering is more than just writing code"

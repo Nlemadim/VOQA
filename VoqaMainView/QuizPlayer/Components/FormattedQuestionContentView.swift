@@ -28,13 +28,13 @@ struct FormattedCountDownTextView: View {
     var body: some View {
         VStack(spacing: 12) {
             Text(countdownTimerText)
+                .font(.largeTitle)
                 .fontWeight(.black)
-                .frame(width: 100, height: 100, alignment: .center)
                 .padding()
                 .padding(.horizontal)
                 .padding(.bottom)
-            
-            Text("Get Ready!\nYour quiz is starting soon.")
+            Spacer()
+            Text("Get Ready!")
                 .fontWeight(.light)
                 .frame(alignment: .center)
                 .padding()
