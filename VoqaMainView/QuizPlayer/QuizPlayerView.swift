@@ -81,6 +81,7 @@ struct QuizPlayerView: View {
                 })
                 .onAppear {
                     viewModel.initializeSession(with: self.config)
+                    viewModel.initializeVoqaExperience(questions: questions)
                     viewModel.startNewQuizSession(questions: questions)
                     print("QuizPlayer has: \(questions.count) questions")
                 }
@@ -196,7 +197,7 @@ struct QuizPlayerView: View {
                 FormattedQuestionContentView(questionTranscript: viewModel.currentQuestionText)
                     .opacity(viewModel.sessionCountdownTime > 0 ? 0 : 1)
                 
-                FormattedCountDownTextView(countdownTimer: "\(viewModel.sessionCountdownTime)")
+                FormattedCountDownTextView(countdownTimerText: viewModel.countdownTimerText)
                     .opacity(viewModel.sessionCountdownTime > 0 ? 1 : 0)
                 
                 RateQuizView(currentRating: $currentRating)

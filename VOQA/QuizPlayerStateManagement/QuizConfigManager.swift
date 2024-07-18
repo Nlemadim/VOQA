@@ -55,7 +55,8 @@ class QuizConfigManager {
         return QuizFeedback(
             incorrectAnswer: try await populateAudioUrls(for: quizFeedback.incorrectAnswer),
             correctAnswer: try await populateAudioUrls(for: quizFeedback.correctAnswer),
-            noResponse: try await populateAudioUrls(for: quizFeedback.noResponse)
+            noResponse: try await populateAudioUrls(for: quizFeedback.noResponse),
+            giveScore:  try await populateAudioUrls(for: quizFeedback.giveScore)
         )
     }
     

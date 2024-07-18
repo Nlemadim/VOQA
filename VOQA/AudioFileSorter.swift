@@ -58,6 +58,10 @@ class AudioFileSorter {
         case .playBGM:
             audioUrls = config.sessionMusic.compactMap { $0.audioUrl }
             return nil
+       
+        case .giveScore(score: let score):
+            let url = getScorePlaybackUrl(score: score, config: config)
+            audioUrls.append(url)
         }
         
         guard !audioUrls.isEmpty else {
@@ -70,4 +74,27 @@ class AudioFileSorter {
         print("Selected URL for action \(action): \(selectedUrl)")
         return URL(string: selectedUrl.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")
     }
+    
+    func getScorePlaybackUrl(score: Int, config: QuizSessionConfig) -> String {
+        var currentScoreUrl: String = ""
+        let scoreUrls = config.quizFeedback.giveScore.audioUrls
+
+        // Iterate over the scoreUrls
+        for scoreUrl in scoreUrls {
+            // Extract the integer value from the title of the scoreUrl
+            if let titleScore = Int(scoreUrl.title) {
+                // Check if the titleScore matches the provided score
+                if titleScore == score {
+                    // If it matches, assign the scoreUrl to currentScoreUrl
+                    currentScoreUrl = scoreUrl.audioUrl
+                    break
+                }
+            }
+        }
+
+        // Return the currentScoreUrl
+        return currentScoreUrl
+    }
+
+    
 }

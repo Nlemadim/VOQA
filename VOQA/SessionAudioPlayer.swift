@@ -55,6 +55,7 @@ class SessionAudioPlayer: NSObject, AVAudioPlayerDelegate {
         guard !isProcessingAction, !actionQueue.isEmpty else {
             return
         }
+        
         isProcessingAction = true
         let nextAction = actionQueue.removeFirst()
         executeAudioAction(nextAction)
@@ -118,8 +119,10 @@ class SessionAudioPlayer: NSObject, AVAudioPlayerDelegate {
         }
         
         if context.state is ReviewsManager {
-            context.prepareToEndSession()
-            enqueueAction(.reset)
+            if lastAction == .reviewing {
+                context.prepareToEndSession()
+                enqueueAction(.reset)
+            }
         }
         
         completeCurrentAction()

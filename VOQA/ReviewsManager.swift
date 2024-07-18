@@ -13,6 +13,7 @@ class ReviewsManager: SessionObserver, QuizServices {
     enum ReviewAction {
         case reviewing
         case doneReviewing
+        case giveScore
     }
     
     enum ScoreFeedback {
@@ -30,7 +31,7 @@ class ReviewsManager: SessionObserver, QuizServices {
     }
     
     var action: ReviewAction?
-    var context: QuizSession?
+    var session: QuizSession?
     var observers: [SessionObserver] = []
     
     func handleState(session: QuizSession) {
@@ -45,7 +46,6 @@ class ReviewsManager: SessionObserver, QuizServices {
             print("Reviewer reviewing action triggered")
             
             session.currentQuestionText = "Reviewing"
-            
             session.sessionAudioPlayer.performAudioAction(.reviewing)
             
         case .doneReviewing:
@@ -53,6 +53,10 @@ class ReviewsManager: SessionObserver, QuizServices {
             
             session.setState(session.sessionCloser)
             session.sessionCloser.performAction(.quitAndReset, session: session)
+        case .giveScore:
+            print("Reviewer give score action triggered")
+            
+            session.sessionAudioPlayer.performAudioAction(.giveScore(score: session.finalScore))
         }
     }
     

@@ -12,6 +12,7 @@ enum PlaySfx {
     case awaitResponse
     case hasReceivedResponse
     case nextQuestion
+    case introMusic
 
     var fileName: String {
         switch self {
@@ -21,6 +22,8 @@ enum PlaySfx {
             return "dismissResponderBell"
         case .nextQuestion:
             return "NextQuestionWave"
+        case .introMusic:
+            return ""
         }
     }
 

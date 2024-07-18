@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0B09BDB42C4919FF00DD6452 /* Creative Beat.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 0B09BDB32C4919FF00DD6452 /* Creative Beat.mp3 */; };
+		0B09BDB62C491BE100DD6452 /* FullTitleScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B09BDB52C491BE100DD6452 /* FullTitleScrollView.swift */; };
+		0B09BDB82C491C2C00DD6452 /* FullTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B09BDB72C491C2C00DD6452 /* FullTitleView.swift */; };
 		0B24B9A32C47614B004A63F5 /* SfxPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B24B9A22C47614B004A63F5 /* SfxPlayer.swift */; };
 		0B24B9A52C4777BD004A63F5 /* Performance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B24B9A42C4777BD004A63F5 /* Performance.swift */; };
 		0B25E0E02C24ECD000ACD552 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B25E0DF2C24ECD000ACD552 /* String+Extensions.swift */; };
@@ -115,8 +118,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0B24B9A02C472D9B004A63F5 /* VOQATests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = VOQATests.xctest; path = "/Users/tonynlemadim/Documents/VOQA-Beta/build/Debug/VOQATests.xctest"; sourceTree = "<absolute>"; };
-		0B24B9A12C472D9B004A63F5 /* VOQAUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = VOQAUITests.xctest; path = "/Users/tonynlemadim/Documents/VOQA-Beta/build/Debug/VOQAUITests-Runner.app/Contents/PlugIns/VOQAUITests.xctest"; sourceTree = "<absolute>"; };
+		0B09BDB12C4909D600DD6452 /* VOQATests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VOQATests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		0B09BDB22C4909D600DD6452 /* VOQAUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VOQAUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		0B09BDB32C4919FF00DD6452 /* Creative Beat.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Creative Beat.mp3"; sourceTree = "<group>"; };
+		0B09BDB52C491BE100DD6452 /* FullTitleScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullTitleScrollView.swift; sourceTree = "<group>"; };
+		0B09BDB72C491C2C00DD6452 /* FullTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullTitleView.swift; sourceTree = "<group>"; };
 		0B24B9A22C47614B004A63F5 /* SfxPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SfxPlayer.swift; sourceTree = "<group>"; };
 		0B24B9A42C4777BD004A63F5 /* Performance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Performance.swift; sourceTree = "<group>"; };
 		0B25E0DF2C24ECD000ACD552 /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
@@ -282,6 +288,7 @@
 			isa = PBXGroup;
 			children = (
 				0B6561632C3E50260013663B /* NextQuestionWave.wav */,
+				0B09BDB32C4919FF00DD6452 /* Creative Beat.mp3 */,
 				0B6561602C3E500B0013663B /* showResponderBell.wav */,
 				0B6561662C3E50340013663B /* dismissResponderBell.wav */,
 			);
@@ -425,6 +432,8 @@
 				0BC091DC2C1D4463005FB223 /* VOQA */,
 				0B31C4082C223286006FB5D1 /* Frameworks */,
 				0BCA0E622C417F44007E1863 /* VOQA.app */,
+				0B09BDB12C4909D600DD6452 /* VOQATests.xctest */,
+				0B09BDB22C4909D600DD6452 /* VOQAUITests.xctest */,
 			);
 			sourceTree = "<group>";
 		};
@@ -492,6 +501,8 @@
 				0BCA0E6C2C418062007E1863 /* HomepageBackground.swift */,
 				0BCA0E762C41829A007E1863 /* QuizPlayerBackground.swift */,
 				0BCA0E802C418428007E1863 /* QuizControlButtonsGrid.swift */,
+				0B09BDB52C491BE100DD6452 /* FullTitleScrollView.swift */,
+				0B09BDB72C491C2C00DD6452 /* FullTitleView.swift */,
 			);
 			name = Subviews;
 			sourceTree = "<group>";
@@ -580,7 +591,7 @@
 			);
 			name = VOQATests;
 			productName = VOQATests;
-			productReference = 0B24B9A02C472D9B004A63F5 /* VOQATests.xctest */;
+			productReference = 0B09BDB12C4909D600DD6452 /* VOQATests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		0BC091F62C1D4466005FB223 /* VOQAUITests */ = {
@@ -598,7 +609,7 @@
 			);
 			name = VOQAUITests;
 			productName = VOQAUITests;
-			productReference = 0B24B9A12C472D9B004A63F5 /* VOQAUITests.xctest */;
+			productReference = 0B09BDB22C4909D600DD6452 /* VOQAUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -654,6 +665,7 @@
 				0B6561612C3E500B0013663B /* showResponderBell.wav in Resources */,
 				0B90E50C2C3E655A00903FB0 /* SessionConfigData2.json in Resources */,
 				0BC091E42C1D4465005FB223 /* Assets.xcassets in Resources */,
+				0B09BDB42C4919FF00DD6452 /* Creative Beat.mp3 in Resources */,
 				0BA62FDA2C40C6C00053F7C2 /* HomepageConfig.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -694,6 +706,7 @@
 				0B6561732C3E50770013663B /* VuMeter.swift in Sources */,
 				0B5161A72C431BEB00BEC8D5 /* QuestionFormatter.swift in Sources */,
 				0B65613A2C3E4F440013663B /* AudioPlayerManager.swift in Sources */,
+				0B09BDB62C491BE100DD6452 /* FullTitleScrollView.swift in Sources */,
 				0B6561162C3E4E7E0013663B /* QuizProtocols.swift in Sources */,
 				0B53810E2C4374E3002EBCBB /* EnvironmentVariables.swift in Sources */,
 				0BCA0E682C417FDD007E1863 /* ImageAndTitleView.swift in Sources */,
@@ -728,6 +741,7 @@
 				0B31C4032C222B9F006FB5D1 /* AcceptButton.swift in Sources */,
 				0B890C732C411D8900453159 /* VoqaCollection.swift in Sources */,
 				0B24B9A52C4777BD004A63F5 /* Performance.swift in Sources */,
+				0B09BDB82C491C2C00DD6452 /* FullTitleView.swift in Sources */,
 				0B31C3FC2C220F06006FB5D1 /* Errors.swift in Sources */,
 				0B7B17BA2C4804D600B11974 /* ScoreRegistry.swift in Sources */,
 				0B890C702C411CB700453159 /* HomepageConfigProtocols.swift in Sources */,

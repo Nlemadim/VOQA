@@ -16,7 +16,6 @@ class QuestionPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate, Session
         case setSessionQuestions
         case playCurrentQuestion(Question)
         case readyToPlayNextQuestion
-        case noQuestions
     }
 
     @Published var isPlayingQuestion: Bool = false
@@ -60,15 +59,12 @@ class QuestionPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate, Session
         case .readyToPlayNextQuestion:
             prepareNextQuestion(session: session)
             
-        case .noQuestions:
-            print("Error No Questios available")
-            session.sessionAudioPlayer.performAudioAction(.playNoResponseCallout)
         }
     }
     
     private func loadQuestions(session: QuizSession) {
         guard !session.questions.isEmpty else {
-            performAction(.noQuestions, session: session)
+            print("Questions Unavailable")
             return
         }
         
@@ -76,42 +72,35 @@ class QuestionPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate, Session
         let currentIndex = self.currentQuestionIndex
         let currentQuestion = self.questions[currentIndex]
         
-        //session.updateQuestionCounter(questionIndex: currentIndex, count: questions.count)
-        
         performAction(.playCurrentQuestion(currentQuestion), session: session)
     }
     
     private func playQuestion() {
         guard let session = session else { return }
 
-        // Ensure currentQuestionIndex is within the bounds of the questions array
-        guard self.currentQuestionIndex <= self.questions.count - 1 else {
-            session.setState(session.reviewer)
-            session.reviewer.performAction(.reviewing, session: session)
-            return
-        }
+//        guard self.currentQuestionIndex <= self.questions.count - 1 else {
+//            session.setState(session.reviewer)
+//            session.reviewer.performAction(.reviewing, session: session)
+//            return
+//        }
 
+        setUpCurrentQuestion(session: session)
+        updateHasNextQuestion()
+
+        startPlayback(session: session)
+    
+    }
+    
+    
+    
+    private func setUpCurrentQuestion(session: QuizSession) {
         let question = questions[currentQuestionIndex]
         session.currentQuestion = question
         session.updateQuestionCounter(questionIndex: currentQuestionIndex, count: questions.count)
         session.formatCurrentQuestionText()
-        print("Current question script\(session.currentQuestionText)")
 
         self.currentQuestion = question
         self.currentQuestionId = question.id
-        updateHasNextQuestion()
-
-        // Ensure sessionAudioPlayer has the correct context
-        session.sessionAudioPlayer.setContext(session)
-        
-        // Perform the audio action and set the state to QuestionPlayer
-        session.sessionAudioPlayer.performAudioAction(.playQuestionAudioUrl(url: question.audioUrl))
-       
-        session.setState(session.questionPlayer)
-        
-        print("Question Player Presenting question with ID: \(question.id)")
-        print("Question Player has More Questions: \(self.hasMoreQuestions)")
-        print("Question Player currentIndex: \(self.currentQuestionIndex)")
     }
 
     private func updateHasNextQuestion() {
@@ -123,6 +112,14 @@ class QuestionPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate, Session
                 }
             }
         }
+    }
+    
+    private func startPlayback(session: QuizSession) {
+        let question = questions[currentQuestionIndex]
+       
+        session.sessionAudioPlayer.setContext(session)
+        session.sessionAudioPlayer.performAudioAction(.playQuestionAudioUrl(url: question.audioUrl))
+        session.setState(session.questionPlayer)
     }
     
     private func prepareNextQuestion(session: QuizSession) {

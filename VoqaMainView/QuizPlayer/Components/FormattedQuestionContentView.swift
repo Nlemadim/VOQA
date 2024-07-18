@@ -14,11 +14,9 @@ struct FormattedQuestionContentView: View {
         VStack {
             Text(questionTranscript)
                 .font(.footnote)
-                //.fontWeight(.light)
                 .multilineTextAlignment(.center)
                 .kerning(0.5)
                 .frame(maxWidth: .infinity, alignment: .center)
-                
         }
         .padding()
         .padding(.horizontal)
@@ -26,18 +24,17 @@ struct FormattedQuestionContentView: View {
 }
 
 struct FormattedCountDownTextView: View {
-    var countdownTimer: String
+    var countdownTimerText: String
     var body: some View {
-        VStack(spacing: 8) {
-            Text(countdownTimer)
-                .font(.largeTitle)
+        VStack(spacing: 12) {
+            Text(countdownTimerText)
                 .fontWeight(.black)
-                .frame(alignment: .center)
+                .frame(width: 100, height: 100, alignment: .center)
                 .padding()
                 .padding(.horizontal)
                 .padding(.bottom)
             
-            Text("Get Ready!")
+            Text("Get Ready!\nYour quiz is starting soon.")
                 .fontWeight(.light)
                 .frame(alignment: .center)
                 .padding()

@@ -127,6 +127,13 @@ class QuizViewModel: ObservableObject, QuizViewModelProtocol {
         return  VUMeterView(quizContext: session)
     }
     
+    var countdownTimerText: String {
+        let time = Int(sessionCountdownTime)
+        return "\(time)"
+    }
     
+    func initializeVoqaExperience(questions: [Question]) {
+        //sfxPlayer.playIntroMusic()
+    }
 }
 
