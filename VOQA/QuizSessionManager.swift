@@ -70,6 +70,10 @@ class QuizSessionManager: ObservableObject {
     func startNewQuizSession(questions: [Question]) {
         quizSession?.startNewQuizSession(questions: questions)
     }
+    
+    func stopQuiz() {
+        quizSession?.stopQuiz()
+    }
 }
 
 

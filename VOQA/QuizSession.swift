@@ -190,28 +190,6 @@ class QuizSession: ObservableObject, QuizServices {
         }
     }
     
-    //TODO: Refactor Controls out of QuizSession
-    func pauseQuiz() {
-        self.sessionAudioPlayer.pausePlayer()
-    }
-    
-    func stopQuiz() {
-        self.sessionAudioPlayer.stopPlayback()
-    }
-    
-    func nextQuestion() {
-        self.questionPlayer.performAction(.readyToPlayNextQuestion, session: self)
-        self.updateQuestionCounter(questionIndex: self.questionPlayer.currentQuestionIndex, count: self.totalQuestionCount)
-    }
-    
-    func replayQuestion() {
-        let questionPlayer = self.questionPlayer
-        if let currentQuestion = self.currentQuestion {
-            questionPlayer.performAction(.playCurrentQuestion(currentQuestion), session: self)
-        }
-    }
-    
-    
     private func recievedResponse() {
         self.setState(self)
         self.currentQuestionText = "Registering your score"
@@ -225,34 +203,34 @@ class QuizSession: ObservableObject, QuizServices {
         self.sessionCloser.performAction(.quitAndReset, session: self)
     }
     
-    
     func resumeQuiz() {
         guard self.questionPlayer.hasMoreQuestions else {
             self.setState(self.reviewer)
             self.reviewer.performAction(.giveScore, session: self)
             return
         }
-//        guard self.currentQuestionIndex <= self.questions.count - 1 else {
-//            self.setState(self.reviewer)
-//            self.reviewer.performAction(.reviewing, session: self)
-//            return
-//        }
+
         self.setState(self.questionPlayer)
         self.questionPlayer.performAction(.readyToPlayNextQuestion, session: self)
     }
     
-    
+    func sessionReset() {
+        self.activeQuiz = false
+        self.countdownTime = 5.0
+        self.currentQuestion = nil
+        self.currentQuestionText = "Ended"
+        self.questionCounter = "_:_"
+        self.totalQuestionCount = 0
+        self.finalScore = 0
+        self.scoreRegistry.currentScore = 0
+        self.questions = []
+        self.questionPlayer.questions = []
+        self.questionPlayer.currentQuestionIndex = 0
+    }
     
     func updateCurrentQuestionId(_ questionId: UUID) {
         self.currentQuestionId = questionId
         print("Updated currentQuestionId to \(questionId)")
-    }
-    
-    func updateQuizDetails() {
-        DispatchQueue.main.async {
-            self.quizTitle = ""
-            self.totalQuestionCount = 0
-        }
     }
     
     func formatCurrentQuestionText() {
@@ -265,7 +243,7 @@ class QuizSession: ObservableObject, QuizServices {
         }
     }
     
-    func stopCountdown() {
+    private func stopCountdown() {
         timer?.invalidate()
     }
 
@@ -305,5 +283,25 @@ class QuizSession: ObservableObject, QuizServices {
     }
     
     func handleState(session: QuizSession) {}
-      
+    
+    //TODO: Refactor Controls out of QuizSession
+    func pauseQuiz() {
+        self.sessionAudioPlayer.pausePlayer()
+    }
+    
+    func stopQuiz() {
+        self.sessionAudioPlayer.stopPlayback()
+    }
+    
+    func nextQuestion() {
+        self.questionPlayer.performAction(.readyToPlayNextQuestion, session: self)
+        self.updateQuestionCounter(questionIndex: self.questionPlayer.currentQuestionIndex, count: self.totalQuestionCount)
+    }
+    
+    func replayQuestion() {
+        let questionPlayer = self.questionPlayer
+        if let currentQuestion = self.currentQuestion {
+            questionPlayer.performAction(.playCurrentQuestion(currentQuestion), session: self)
+        }
+    }
 }

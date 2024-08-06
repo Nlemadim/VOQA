@@ -19,8 +19,17 @@ protocol VoqaItem: Decodable {
     var acronym: String { get }
     var about: String { get }
     var imageUrl: String { get }
-    var rating: Int? { get }
-    var curator: String? { get }
-    var users: Int? { get }
+    var rating: Int { get }
+    var curator: String { get }
+    var users: Int { get }
+    var title: String { get }
+    var titleImage: String { get }
+    var description: String { get }
+    var categories: [String] { get }
+    var colors: Colors { get }
+    var ratings: Int { get }
 }
+
+
+
 

@@ -36,8 +36,7 @@ class SessionCloser: SessionObserver, QuizServices {
     }
     
     func resetSession(session: QuizSession) {
-        session.questionPlayer.currentQuestionIndex = 0
-        session.activeQuiz = false
+        session.sessionReset()
         session.setState(IdleSession())
     }
     

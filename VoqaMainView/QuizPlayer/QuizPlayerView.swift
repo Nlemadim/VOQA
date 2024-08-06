@@ -168,8 +168,10 @@ struct QuizPlayerView: View {
 
                 StopQuizButton(
                     stopAction: {
-                        dismiss()
                         viewModel.stopQuiz()
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                            dismiss()
+                        }
                     }
                 )
                 .padding(.horizontal)

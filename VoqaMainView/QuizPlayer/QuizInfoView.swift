@@ -147,6 +147,7 @@ struct QuizInfoView: View {
             if let config = config {
                 QuizPlayerView(config: config, selectedVoqa: selectedVoqa)
                     .environment(\.questions, databaseManager.questions)
+                    .onDisappear { dismiss() }
             }
         }
     }
@@ -160,7 +161,7 @@ struct QuizInfoView: View {
 }
 
 
-#Preview {
-    QuizInfoView(selectedVoqa: Voqa(id: UUID(), name: "Sample Quiz", acronym: "SQ", about: "A sample quiz", imageUrl: "", rating: 3, curator: "John Doe", users: 1000))
-        .preferredColorScheme(.dark)
-}
+//#Preview {
+//    QuizInfoView(selectedVoqa: Voqa(id: UUID(), name: "Sample Quiz", acronym: "SQ", about: "A sample quiz", imageUrl: "", rating: 3, curator: "John Doe", users: 1000))
+//        .preferredColorScheme(.dark)
+//}

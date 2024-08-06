@@ -91,7 +91,7 @@ class QuizViewModel: ObservableObject, QuizViewModelProtocol {
 
     
     func stopQuiz() {
-        // Implement stop logic
+        quizSessionManager.stopQuiz()
     }
 
     func repeatQuestion() {

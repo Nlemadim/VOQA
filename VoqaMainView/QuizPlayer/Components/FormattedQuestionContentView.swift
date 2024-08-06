@@ -27,6 +27,7 @@ struct FormattedCountDownTextView: View {
     var countdownTimerText: String
     var body: some View {
         VStack(spacing: 12) {
+            Spacer()
             Text(countdownTimerText)
                 .font(.largeTitle)
                 .fontWeight(.black)

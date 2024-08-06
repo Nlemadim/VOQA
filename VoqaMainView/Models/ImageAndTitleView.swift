@@ -57,17 +57,14 @@ struct ImageAndTitleView: View {
                     .multilineTextAlignment(.leading)
                     .fontWeight(.bold)
             
-                if let users = quiz.users {
-                    Text("\(users) users")
+                    Text("\(quiz.users) users")
                         .font(.caption)
                         .foregroundColor(.primary)
                         .fontWeight(.semibold)
-                }
                 
-                if let rating = quiz.rating {
                     HStack(spacing: 2) {
                         ForEach(1...5, id: \.self) { index in
-                            if index <= rating {
+                            if index <= quiz.rating {
                                 Image(systemName: "star.fill")
                                     .imageScale(.small)
                                     .foregroundColor(.yellow)
@@ -79,7 +76,7 @@ struct ImageAndTitleView: View {
                         }
                     }
                     .padding(.bottom)
-                }
+                
             }
             .padding(.horizontal, 8)
             .frame(maxWidth: .infinity, alignment: .leading)

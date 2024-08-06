@@ -65,10 +65,14 @@ class AudioPlayerManager: NSObject {
     }
 
     func pausePlayback() {
+        let duration = 1.0
+        player?.setVolume(0, fadeDuration: duration)
         player?.pause()
     }
 
     func stopPlayback() {
+        let duration = 1.0
+        player?.setVolume(0, fadeDuration: duration)
         player?.stop()
         player = nil
     }
