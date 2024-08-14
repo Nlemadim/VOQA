@@ -22,8 +22,6 @@ struct ImageAndTitleView: View {
                     case .empty:
                         ProgressView()
                             .frame(width: 170, height: 200)
-                            .cornerRadius(10.0)
-                            .clipped()
                     case .success(let image):
                         image
                             .resizable()
@@ -32,32 +30,35 @@ struct ImageAndTitleView: View {
                             .cornerRadius(10.0)
                             .clipped()
                     case .failure:
-                        ProgressView()
-                            .frame(width: 170, height: 200)
+                        Image(systemName: "exclamationmark.triangle")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 170, height: 220)
                             .cornerRadius(10.0)
                             .clipped()
+                            .foregroundColor(.red)
                     @unknown default:
-                        ProgressView()
-                            .frame(width: 170, height: 200)
-                            .cornerRadius(10.0)
-                            .clipped()
+                        EmptyView()
                     }
                 }
             } else {
-                ProgressView()
-                    .frame(width: 170, height: 200)
+                Image(systemName: "exclamationmark.triangle")
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: 170, height: 220)
                     .cornerRadius(10.0)
                     .clipped()
+                    .foregroundColor(.red)
             }
-
-            VStack(alignment: .leading, spacing: 4) {
+            
+            VStack(alignment: .leading, spacing: 8) {
                 Text(title)
                     .font(.system(size: 13))
                     .lineLimit(2)
                     .multilineTextAlignment(.leading)
                     .fontWeight(.bold)
             
-                    Text("\(quiz.users) users")
+                    Text("\(quiz.users) Ratings")
                         .font(.caption)
                         .foregroundColor(.primary)
                         .fontWeight(.semibold)
@@ -71,7 +72,7 @@ struct ImageAndTitleView: View {
                             } else {
                                 Image(systemName: "star")
                                     .imageScale(.small)
-                                    .foregroundColor(.gray)
+                                    .foregroundColor(.yellow)
                             }
                         }
                     }
@@ -81,7 +82,7 @@ struct ImageAndTitleView: View {
             .padding(.horizontal, 8)
             .frame(maxWidth: .infinity, alignment: .leading)
         }
-        .background(RoundedRectangle(cornerRadius: 15.0).fill(Material.ultraThin).tint(.white).activeGlow(.white, radius: 2))
+        .background(RoundedRectangle(cornerRadius: 15.0).fill(Material.ultraThick).tint(.white).activeGlow(.white, radius: 2))
         .padding(10)
         .padding(.bottom, 20)
         .onTapGesture {
@@ -89,5 +90,3 @@ struct ImageAndTitleView: View {
         }
     }
 }
-
-

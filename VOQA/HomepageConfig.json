@@ -1,5 +1,4 @@
 
-
 {
   "voqaCollection": [
     {
@@ -10,7 +9,7 @@
           "name": "AWS Services",
           "acronym": "AWS",
           "about": "Dive into the essentials of AWS Services, exploring cloud computing fundamentals and advanced service configurations.",
-          "imageUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/VoqaCollection/Aws_Services/AWS.png",
+          "imageUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/VoqaCollection/Aws_Services/Aws_Services.png",
           "rating": 0,
           "curator": "",
           "users": 0,
@@ -25,15 +24,15 @@
           "name": "MCAT",
           "acronym": "MCAT",
           "about": "Prepare for the MCAT with quizzes covering biology, chemistry, physics, and critical reasoning skills essential for medical school entry.",
-          "imageUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/VoqaCollection/mcat/MCAT.png",
+          "imageUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/VoqaCollection/mcat/Mcat_Chem.png",
           "rating": 0,
           "curator": "",
           "users": 0,
           "categories": ["Medical", "Biology", "Chemistry", "Physics"],
           "colors": {
-            "main": "#2C3E50",
-            "sub": "#2980B9",
-            "third": "#3498DB"
+            "main": "#497E90",
+            "sub": "#6DA2AE",
+            "third": "#2C5872"
           }
         },
         {
@@ -46,24 +45,24 @@
           "users": 0,
           "categories": ["Nursing", "Medical", "Professional"],
           "colors": {
-            "main": "#2980B9",
-            "sub": "#2C3E50",
-            "third": "#34495E"
+            "main": "#B9C2BC",
+            "sub": "#691407",
+            "third": "#88D824"
           }
         },
         {
           "name": "US Constitution",
           "acronym": "USC",
           "about": "Understand the foundations of the United States with this quiz on the Constitution and its amendments.",
-          "imageUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/VoqaCollection/UsHistory/American History.png",
+          "imageUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/VoqaCollection/usConstitution/US Constitution.png",
           "rating": 0,
           "curator": "",
           "users": 0,
-          "categories": ["History", "Government"],
+          "categories": ["Legal", "Government"],
           "colors": {
-            "main": "#000080",
-            "sub": "#FFD700",
-            "third": "#FF6347"
+            "main": "#EDB15C",
+            "sub": "#D89320",
+            "third": "#D89320"
           }
         },
         {
@@ -136,7 +135,7 @@
           "name": "CompTIA Security+",
           "acronym": "Security+",
           "about": "Test your knowledge on cybersecurity fundamentals with CompTIA Security+, covering threat management and cryptography.",
-          "imageUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/VoqaCollection/cyberSecurity/Cybersecurity Essentials.png",
+          "imageUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/VoqaCollection/compTIA-Security/Comptia_Security Medium.png",
           "rating": 0,
           "curator": "",
           "users": 0,
@@ -223,15 +222,15 @@
           "name": "American History",
           "acronym": "American History",
           "about": "Explore key events, figures, and periods in American history with this comprehensive quiz.",
-          "imageUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/VoqaCollection/UsHistory/American History.png",
+          "imageUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/VoqaCollection/UsHistory/American-History.png",
           "rating": 0,
           "curator": "",
           "users": 0,
           "categories": ["History", "American", "Humanities"],
           "colors": {
-            "main": "#DDC7A0",
-            "sub": "#D9C192",
-            "third": "#EED7B2"
+            "main": "#345973",
+            "sub": "#C5947E",
+            "third": " #577794"
           }
         },
         {
@@ -310,15 +309,15 @@
           "name": "Black American History",
           "acronym": "Black History",
           "about": "Delve into the rich and complex history of Black Americans, their struggles, achievements, and cultural impact.",
-          "imageUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/VoqaCollection/UsHistory/American History.png",
+          "imageUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/VoqaCollection/blackAmericanHistory/Black American History.png",
           "rating": 0,
           "curator": "",
           "users": 0,
           "categories": ["History", "American", "Cultural Studies"],
           "colors": {
-            "main": "#E74C3C",
-            "sub": "#C0392B",
-            "third": "#D35400"
+            "main": "#EAE4CF",
+            "sub": "#DA951D",
+            "third": "#111011"
           }
         },
         {
@@ -337,7 +336,7 @@
           }
         },
         {
-          "name": "MLB GOATS",
+          "name": "MLB G.O.A.T",
           "acronym": "MLB",
           "about": "Test your knowledge on the greatest of all time in Major League Baseball history.",
           "imageUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/VoqaCollection/advancedPlacement/AdvancedPlacementExam.png",
@@ -352,7 +351,7 @@
           }
         },
         {
-          "name": "NBA GOATS",
+          "name": "NBA G.O.A.T",
           "acronym": "NBA",
           "about": "Discover the legendary players in NBA history with quizzes on the greatest of all time.",
           "imageUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/VoqaCollection/advancedPlacement/AdvancedPlacementExam.png",
@@ -370,15 +369,15 @@
           "name": "ACT",
           "acronym": "ACT",
           "about": "Prepare for the ACT with quizzes on English, Math, Reading, and Science reasoning skills.",
-          "imageUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/VoqaCollection/sat/SAT.png",
+          "imageUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/VoqaCollection/act/ACT-Test.png",
           "rating": 0,
           "curator": "",
           "users": 0,
           "categories": ["Education", "College Prep", "Standardized Test"],
           "colors": {
-            "main": "#3498DB",
-            "sub": "#1ABC9C",
-            "third": "#16A085"
+            "main": "#FAF8D9",
+            "sub": "#FCB007",
+            "third": "#040F41"
           }
         },
         {
