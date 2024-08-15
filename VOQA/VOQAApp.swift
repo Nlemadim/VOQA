@@ -6,43 +6,17 @@
 //
 
 import SwiftUI
-import SwiftData
+import Firebase
 
 @main
 struct VOQAApp: App {
-    @State private var isContentReady: Bool = false
-    @State private var isUserSignedIn: Bool = false
+    init() {
+        FirebaseApp.configure()
+    }
+    
     var body: some Scene {
         WindowGroup {
-            if isUserSignedIn {
-                
-                ContentView()
-                
-            } else {
-                
-                AppLaunch(isUserSignedIn: $isUserSignedIn)
-            }
-        }
-    }
-    
-    func prepareContent() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-            isUserSignedIn = UserDefaults.standard.bool(forKey: "isUserSignedIn")
-            isContentReady = true
-        }
-    }
-    
-    func printBundleResources() {
-        if let resourcePath = Bundle.main.resourcePath {
-            do {
-                let resourceContents = try FileManager.default.contentsOfDirectory(atPath: resourcePath)
-                print("Bundle Resources:")
-                for resource in resourceContents {
-                    print(resource)
-                }
-            } catch {
-                print("Error accessing bundle resources: \(error)")
-            }
+            ContentView()
         }
     }
 }
