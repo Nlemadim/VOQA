@@ -10,32 +10,49 @@ import SwiftData
 
 @main
 struct VOQAApp: App {
-   
-
+    @State private var isContentReady: Bool = false
+    @State private var isUserSignedIn: Bool = false
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            if isUserSignedIn {
+                
+                ContentView()
+                
+            } else {
+                
+                AppLaunch(isUserSignedIn: $isUserSignedIn)
+            }
+        }
+    }
+    
+    func prepareContent() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            isUserSignedIn = UserDefaults.standard.bool(forKey: "isUserSignedIn")
+            isContentReady = true
+        }
+    }
+    
+    func printBundleResources() {
+        if let resourcePath = Bundle.main.resourcePath {
+            do {
+                let resourceContents = try FileManager.default.contentsOfDirectory(atPath: resourcePath)
+                print("Bundle Resources:")
+                for resource in resourceContents {
+                    print(resource)
+                }
+            } catch {
+                print("Error accessing bundle resources: \(error)")
+            }
         }
     }
 }
 
-func migrateData(from oldVersion: Int, to newVersion: Int) {
-    // Placeholder for future migration logic
-    // For example, if oldVersion == 1 and newVersion == 2, perform necessary data migrations
-    if oldVersion < 2 && newVersion >= 2 {
-        // Perform migration logic here
-    }
+#Preview {
+    ContentView()
+        .preferredColorScheme(.dark)
 }
 
-// AppVersion struct to manage the app version stored in UserDefaults
-struct AppVersion {
-    static var current: Int {
-        get {
-            return UserDefaults.standard.integer(forKey: "appVersion")
-        }
-        set {
-            UserDefaults.standard.set(newValue, forKey: "appVersion")
-        }
-    }
-}
+
+
+
 
