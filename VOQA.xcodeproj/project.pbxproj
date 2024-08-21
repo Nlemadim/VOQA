@@ -10,6 +10,10 @@
 		0B09BDB42C4919FF00DD6452 /* Creative Beat.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 0B09BDB32C4919FF00DD6452 /* Creative Beat.mp3 */; };
 		0B09BDB62C491BE100DD6452 /* FullTitleScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B09BDB52C491BE100DD6452 /* FullTitleScrollView.swift */; };
 		0B09BDB82C491C2C00DD6452 /* FullTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B09BDB72C491C2C00DD6452 /* FullTitleView.swift */; };
+		0B1258892C72F83000C02394 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 0B1258882C72F83000C02394 /* FirebaseCrashlytics */; };
+		0B12588B2C72F83000C02394 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 0B12588A2C72F83000C02394 /* FirebaseDatabase */; };
+		0B12588D2C72F83000C02394 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 0B12588C2C72F83000C02394 /* FirebaseFirestore */; };
+		0B12588F2C72F83000C02394 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 0B12588E2C72F83000C02394 /* FirebaseStorage */; };
 		0B24B9A32C47614B004A63F5 /* SfxPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B24B9A22C47614B004A63F5 /* SfxPlayer.swift */; };
 		0B24B9A52C4777BD004A63F5 /* Performance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B24B9A42C4777BD004A63F5 /* Performance.swift */; };
 		0B25E0E02C24ECD000ACD552 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B25E0DF2C24ECD000ACD552 /* String+Extensions.swift */; };
@@ -21,10 +25,12 @@
 		0B31C40C2C223286006FB5D1 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B31C4092C223286006FB5D1 /* AVFoundation.framework */; };
 		0B31C40D2C223286006FB5D1 /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B31C40A2C223286006FB5D1 /* AVKit.framework */; };
 		0B31C40E2C223286006FB5D1 /* AVFAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B31C40B2C223286006FB5D1 /* AVFAudio.framework */; };
+		0B4BD9392C752FD3006A043D /* QuizData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B4BD9382C752FD3006A043D /* QuizData.swift */; };
 		0B4FE0CE2C6E46740086B43F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0B4FE0CD2C6E46740086B43F /* GoogleService-Info.plist */; };
 		0B4FE0D12C6E473D0086B43F /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 0B4FE0D02C6E473D0086B43F /* FirebaseAuth */; };
 		0B5161A72C431BEB00BEC8D5 /* QuestionFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B5161A62C431BEB00BEC8D5 /* QuestionFormatter.swift */; };
 		0B53810E2C4374E3002EBCBB /* EnvironmentVariables.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B53810D2C4374E3002EBCBB /* EnvironmentVariables.swift */; };
+		0B62742C2C75BFFC00F12827 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 0B62742B2C75BFFC00F12827 /* FirebaseAnalytics */; };
 		0B6561162C3E4E7E0013663B /* QuizProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B6561152C3E4E7E0013663B /* QuizProtocols.swift */; };
 		0B6561172C3E4E7E0013663B /* QuizProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B6561152C3E4E7E0013663B /* QuizProtocols.swift */; };
 		0B6561192C3E4E950013663B /* Colo+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B6561182C3E4E950013663B /* Colo+Extensions.swift */; };
@@ -89,6 +95,7 @@
 		0BA62FDB2C40C6C00053F7C2 /* HomepageConfig.json in Resources */ = {isa = PBXBuildFile; fileRef = 0BA62FD92C40C6C00053F7C2 /* HomepageConfig.json */; };
 		0BA8A0652C6DB14B0008494E /* AppLaunch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BA8A0642C6DB14B0008494E /* AppLaunch.swift */; };
 		0BA8A0672C6DB1AB0008494E /* CustomSpinnerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BA8A0662C6DB1AB0008494E /* CustomSpinnerView.swift */; };
+		0BB871C62C7560AA00B41BA7 /* HomepageViewmodel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BB871C52C7560AA00B41BA7 /* HomepageViewmodel.swift */; };
 		0BC091DE2C1D4463005FB223 /* VOQAApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BC091DD2C1D4463005FB223 /* VOQAApp.swift */; };
 		0BC091E02C1D4463005FB223 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BC091DF2C1D4463005FB223 /* ContentView.swift */; };
 		0BC091E42C1D4465005FB223 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0BC091E32C1D4465005FB223 /* Assets.xcassets */; };
@@ -148,6 +155,7 @@
 		0B31C4092C223286006FB5D1 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS17.4.sdk/System/Library/Frameworks/AVFoundation.framework; sourceTree = DEVELOPER_DIR; };
 		0B31C40A2C223286006FB5D1 /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS17.4.sdk/System/Library/Frameworks/AVKit.framework; sourceTree = DEVELOPER_DIR; };
 		0B31C40B2C223286006FB5D1 /* AVFAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFAudio.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS17.4.sdk/System/Library/Frameworks/AVFAudio.framework; sourceTree = DEVELOPER_DIR; };
+		0B4BD9382C752FD3006A043D /* QuizData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizData.swift; sourceTree = "<group>"; };
 		0B4FE0CD2C6E46740086B43F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0B5161A62C431BEB00BEC8D5 /* QuestionFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionFormatter.swift; sourceTree = "<group>"; };
 		0B53810D2C4374E3002EBCBB /* EnvironmentVariables.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentVariables.swift; sourceTree = "<group>"; };
@@ -195,6 +203,7 @@
 		0BA62FD92C40C6C00053F7C2 /* HomepageConfig.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = HomepageConfig.json; sourceTree = "<group>"; };
 		0BA8A0642C6DB14B0008494E /* AppLaunch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLaunch.swift; sourceTree = "<group>"; };
 		0BA8A0662C6DB1AB0008494E /* CustomSpinnerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSpinnerView.swift; sourceTree = "<group>"; };
+		0BB871C52C7560AA00B41BA7 /* HomepageViewmodel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomepageViewmodel.swift; sourceTree = "<group>"; };
 		0BC091DD2C1D4463005FB223 /* VOQAApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VOQAApp.swift; sourceTree = "<group>"; };
 		0BC091DF2C1D4463005FB223 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		0BC091E32C1D4465005FB223 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -226,10 +235,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0B12588B2C72F83000C02394 /* FirebaseDatabase in Frameworks */,
 				0B31C40E2C223286006FB5D1 /* AVFAudio.framework in Frameworks */,
 				0B31C40D2C223286006FB5D1 /* AVKit.framework in Frameworks */,
+				0B1258892C72F83000C02394 /* FirebaseCrashlytics in Frameworks */,
 				0B31C40C2C223286006FB5D1 /* AVFoundation.framework in Frameworks */,
+				0B12588F2C72F83000C02394 /* FirebaseStorage in Frameworks */,
 				0B4FE0D12C6E473D0086B43F /* FirebaseAuth in Frameworks */,
+				0B12588D2C72F83000C02394 /* FirebaseFirestore in Frameworks */,
+				0B62742C2C75BFFC00F12827 /* FirebaseAnalytics in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -284,6 +298,14 @@
 				0B31C40A2C223286006FB5D1 /* AVKit.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		0B4BD9372C752FBC006A043D /* SwiftData */ = {
+			isa = PBXGroup;
+			children = (
+				0B4BD9382C752FD3006A043D /* QuizData.swift */,
+			);
+			path = SwiftData;
 			sourceTree = "<group>";
 		};
 		0B5161A52C431BD200BEC8D5 /* Helpers */ = {
@@ -475,6 +497,7 @@
 		0BC091DC2C1D4463005FB223 /* VOQA */ = {
 			isa = PBXGroup;
 			children = (
+				0B4BD9372C752FBC006A043D /* SwiftData */,
 				0B4FE0CD2C6E46740086B43F /* GoogleService-Info.plist */,
 				0BC091DD2C1D4463005FB223 /* VOQAApp.swift */,
 				0BC091DF2C1D4463005FB223 /* ContentView.swift */,
@@ -578,6 +601,7 @@
 				0B890C532C411ABB00453159 /* HomepageConfigProtocols.swift */,
 				0B890C472C411ABB00453159 /* VoqaConfigManager.swift */,
 				0B854D332C6330CF0025C2E1 /* QuizDetailPage.swift */,
+				0BB871C52C7560AA00B41BA7 /* HomepageViewmodel.swift */,
 			);
 			name = Home;
 			sourceTree = "<group>";
@@ -628,6 +652,11 @@
 			name = VOQA;
 			packageProductDependencies = (
 				0B4FE0D02C6E473D0086B43F /* FirebaseAuth */,
+				0B1258882C72F83000C02394 /* FirebaseCrashlytics */,
+				0B12588A2C72F83000C02394 /* FirebaseDatabase */,
+				0B12588C2C72F83000C02394 /* FirebaseFirestore */,
+				0B12588E2C72F83000C02394 /* FirebaseStorage */,
+				0B62742B2C75BFFC00F12827 /* FirebaseAnalytics */,
 			);
 			productName = VOQA;
 			productReference = 0BCA0E622C417F44007E1863 /* VOQA.app */;
@@ -808,6 +837,7 @@
 				0B31C4032C222B9F006FB5D1 /* AcceptButton.swift in Sources */,
 				0BE6E2812C4B8F6700BEBE10 /* PerformanceTrackerBar.swift in Sources */,
 				0B890C732C411D8900453159 /* VoqaCollection.swift in Sources */,
+				0BB871C62C7560AA00B41BA7 /* HomepageViewmodel.swift in Sources */,
 				0BE6E2862C4B903800BEBE10 /* PerformanceView.swift in Sources */,
 				0B854D342C6330CF0025C2E1 /* QuizDetailPage.swift in Sources */,
 				0B24B9A52C4777BD004A63F5 /* Performance.swift in Sources */,
@@ -822,6 +852,7 @@
 				0BCA0E792C4182EF007E1863 /* SupportLine.swift in Sources */,
 				0B65613D2C3E4F4D0013663B /* AudioActions.swift in Sources */,
 				0B31C3F82C220E8E006FB5D1 /* BaseView.swift in Sources */,
+				0B4BD9392C752FD3006A043D /* QuizData.swift in Sources */,
 				0B65617B2C3E51060013663B /* AudioSessionManager.swift in Sources */,
 				0BCA0E832C41849B007E1863 /* FormattedQuestionContentView.swift in Sources */,
 				0B6561582C3E4FAF0013663B /* NetworkService.swift in Sources */,
@@ -1209,10 +1240,35 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		0B1258882C72F83000C02394 /* FirebaseCrashlytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0B4FE0CF2C6E473D0086B43F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCrashlytics;
+		};
+		0B12588A2C72F83000C02394 /* FirebaseDatabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0B4FE0CF2C6E473D0086B43F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseDatabase;
+		};
+		0B12588C2C72F83000C02394 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0B4FE0CF2C6E473D0086B43F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		0B12588E2C72F83000C02394 /* FirebaseStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0B4FE0CF2C6E473D0086B43F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseStorage;
+		};
 		0B4FE0D02C6E473D0086B43F /* FirebaseAuth */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 0B4FE0CF2C6E473D0086B43F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseAuth;
+		};
+		0B62742B2C75BFFC00F12827 /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0B4FE0CF2C6E473D0086B43F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

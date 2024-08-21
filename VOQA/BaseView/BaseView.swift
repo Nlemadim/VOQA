@@ -7,12 +7,12 @@
 
 import Foundation
 import SwiftUI
-import SwiftData
 
 struct BaseView<Content: View>: View {
-    @Environment(\.modelContext) private var modelContext
-    @StateObject private var databaseManager = DatabaseManager.shared
-    @StateObject private var networkMonitor = NetworkMonitor.shared
+    @EnvironmentObject var networkMonitor: NetworkMonitor
+    @EnvironmentObject var databaseManager: DatabaseManager
+    var configManager = QuizConfigManager()
+    
     @State private var config: QuizSessionConfig?
     
     let content: () -> Content
@@ -46,8 +46,6 @@ struct BaseView<Content: View>: View {
     }
 
     private func setupQuizSessionConfig() async {
-        let configManager = QuizConfigManager()
-
         do {
             let localConfig = try configManager.loadLocalConfiguration()
             self.config = localConfig

@@ -10,6 +10,9 @@ import Firebase
 
 @main
 struct VOQAApp: App {
+    @StateObject private var databaseManager = DatabaseManager.shared
+    @StateObject private var networkMonitor = NetworkMonitor.shared
+    
     init() {
         FirebaseApp.configure()
     }
@@ -17,13 +20,19 @@ struct VOQAApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(databaseManager)
+                .environmentObject(networkMonitor)
         }
     }
 }
 
 #Preview {
-    ContentView()
+    let monitor = NetworkMonitor.shared
+    let databaseManager = DatabaseManager.shared
+    return ContentView()
         .preferredColorScheme(.dark)
+        .environmentObject(monitor)
+        .environmentObject(databaseManager)
 }
 
 

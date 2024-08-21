@@ -51,7 +51,7 @@ struct QuizDetailPage: View {
                                 .frame(width: 250, height: 250)
                         }
                         
-                        Text(audioQuiz.name)
+                        Text(audioQuiz.quizTitle)
                             .lineLimit(4, reservesSpace: false)
                             .multilineTextAlignment(.center)
                             .fontWeight(.bold)
@@ -59,7 +59,7 @@ struct QuizDetailPage: View {
                             .frame(maxWidth: .infinity)
                             .hAlign(.center)
                         
-                        Text(audioQuiz.description)
+                        Text(audioQuiz.about)
                             .font(.caption)
                             .foregroundStyle(.secondary)
                             .hAlign(.center)

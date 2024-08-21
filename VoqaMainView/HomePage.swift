@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct HomePage: View {
-    @StateObject private var configManager = VoqaConfigManager()
+    private var configManager = VoqaConfigManager()
     @State private var selectedTab = 0
     @State private var collections: [VoqaCollection] = []
     @State private var errorMessage: IdentifiableError?
@@ -78,6 +78,7 @@ struct HomePage: View {
                 }
                 .onAppear {
                     Task {
+                        //try await configManager.createTestDocument()
                         do {
                             collections = try await configManager.loadFromBundle(bundleFileName: "HomepageConfig")
                             assignCollections() // Assign collections based on category
@@ -206,11 +207,33 @@ struct HomePage: View {
 
 
 struct ProfileView: View {
+    @StateObject private var viewModel = HomePageViewModel()
+    @State private var voqaItem: Voqa?
+    @State private var path = NavigationPath()
+    @State private var currentQuiz = [Voqa]()
     var body: some View {
-        Text("Placeholder Profile View")
-            .font(.largeTitle)
-            .fontWeight(.bold)
-            .padding()
+        NavigationStack(path: $path) {
+            VStack {
+                Text("Placeholder Profile View")
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                    .padding()
+                
+//                HorizontalQuizListView(quizzes: currentQuiz, title: "STEM Subjects", tapAction: { quiz in
+//                    path.append(quiz)
+//                })
+            }
+            .onAppear {
+                getCatalogue()
+            }
+        }
+    }
+    
+    func getCatalogue()  {
+        Task {
+            viewModel.updateVoqaCatalogue()
+            
+        }
     }
 }
 
@@ -255,7 +278,7 @@ struct QuizCarouselView: View {
                             }
                         }
                         
-                        Text(quiz.name)
+                        Text(quiz.quizTitle)
                             .font(.callout)
                             .fontWeight(.black)
                             .lineLimit(3, reservesSpace: false)

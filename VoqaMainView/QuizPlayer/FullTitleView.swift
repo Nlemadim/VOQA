@@ -74,7 +74,7 @@ struct NamePlateView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text(quiz.name.uppercased())
+            Text(quiz.quizTitle.uppercased())
                 .font(.system(size: 13))
                 .lineLimit(2)
                 .multilineTextAlignment(.leading)

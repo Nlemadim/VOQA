@@ -10,6 +10,8 @@ import SwiftData
 
 struct ContentView: View {
     @AppStorage("log_Status") private var logStatus: Bool = false
+    @EnvironmentObject var networkMonitor: NetworkMonitor
+    @EnvironmentObject var databaseManager: DatabaseManager
     
     var body: some View {
         if logStatus {
@@ -37,6 +39,10 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+    let dbMgr = DatabaseManager.shared
+    let ntwConn = NetworkMonitor.shared
+    return ContentView()
         .preferredColorScheme(.dark)
+        .environmentObject(dbMgr)
+        .environmentObject(ntwConn)
 }

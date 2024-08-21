@@ -167,6 +167,7 @@ struct AppLaunch: View {
             
         })
         .onAppear {
+            startLoading = true
             DispatchQueue.main.asyncAfter(deadline: .now() + 9) {
                 withAnimation {
                     showName = true
@@ -198,41 +199,6 @@ struct AppLaunch: View {
                 }
             }
         }
-        .sheet(isPresented: $showModal) {
-            // Modal content
-            VStack {
-                Button("Continue") {
-                    showModal = false // Dismiss the modal
-                    withAnimation(.easeInOut(duration: 1)) {
-                        showSignInButton = false // Move the button back down
-                    }
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                        withAnimation(.easeInOut(duration: 2)) {
-                            zoomInProgress = false // Zoom back out
-                        }
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
-                            withAnimation(.easeInOut(duration: 1)) {
-                                fadeToBlack = true // Fade to black
-                            }
-                        }
-                    }
-                }
-                .padding()
-            }
-            .presentationDetents([.fraction(0.4)])
-        }
-    }
-    
-    /// Loading Screen
-    @ViewBuilder
-    func LoadingScreen() -> some View {
-        ZStack {
-            Rectangle()
-                .fill(.ultraThinMaterial)
-            
-            CustomSpinnerView()
-                .frame(width: 45, height: 45)
-        }
     }
     
     
@@ -262,6 +228,10 @@ struct AppLaunch: View {
             let credential = OAuthProvider.appleCredential(withIDToken: idTokenString,
                                                            rawNonce: nonce,
                                                            fullName: appleIDCredential.fullName)
+            
+            //MARK: TODO - Expose createLibrary api from buildship
+            // request body {userID: String, username: String, email: String}
+            
             // Sign in with Firebase.
             Auth.auth().signIn(with: credential) { (authResult, error) in
                 if let error {
@@ -292,6 +262,7 @@ struct AppLaunch: View {
             }
         }
     }
+    
     
     private func randomNonceString(length: Int = 32) -> String {
         precondition(length > 0)

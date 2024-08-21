@@ -69,7 +69,7 @@ struct QuizInfoView: View {
             .padding(.top, 20)
             
             VStack(alignment: .center) {
-                Text(selectedVoqa.name)
+                Text(selectedVoqa.quizTitle)
                     .multilineTextAlignment(.center)
                     .font(.headline)
                     .minimumScaleFactor(0.5)

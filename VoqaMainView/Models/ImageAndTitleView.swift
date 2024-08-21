@@ -16,6 +16,7 @@ struct ImageAndTitleView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
+            // Make a container cache to store url keys in memory
             if let url = URL(string: titleImage.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "") {
                 AsyncImage(url: url) { phase in
                     switch phase {
@@ -90,3 +91,10 @@ struct ImageAndTitleView: View {
         }
     }
 }
+
+
+/**
+ 
+ private var dict: [Url: Data] -> Url
+ 
+ */
