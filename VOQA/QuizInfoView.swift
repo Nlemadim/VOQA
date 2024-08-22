@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-import SwiftUI
-
 struct QuizInfoView: View {
     let selectedVoqa: Voqa
     @Environment(\.dismiss) private var dismiss

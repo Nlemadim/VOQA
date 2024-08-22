@@ -9,15 +9,18 @@ import Foundation
 import Combine
 
 class DatabaseManager: ObservableObject {
+    @Published var currentError: DatabaseError?
+    @Published var questions: [Question] = []
+    @Published var quizCatalogue: [QuizCatalogueData] = []
+    @Published var quizCollection: [QuizDataStruct] = []
+    @Published var showFullPageError: Bool = false
+    
     static let shared = DatabaseManager()
     
-    @Published var currentError: DatabaseError?
-    @Published var showFullPageError: Bool = false
-    @Published var questions: [Question] = []
+    private let firebaseManager = FirebaseManager.shared
     private var networkService = NetworkService()
-
     private init() {}
-
+    
     func handleError(_ error: DatabaseError) {
         self.currentError = error
         if let errorType = error.errorType {
@@ -50,6 +53,36 @@ class DatabaseManager: ObservableObject {
             print("Questions fetched successfully: \(questions.count) questions.")
         } catch {
             print("Error fetching questions: \(error)")
+        }
+    }
+    
+    func fetchQuizCatalogue() async {
+        do {
+            let catalogue = try await firebaseManager.fetchQuizCatalogue()
+            DispatchQueue.main.async {
+                self.quizCatalogue = catalogue
+            }
+        } catch {
+            print("Error fetching quiz catalogue: \(error)")
+        }
+    }
+    
+    func fetchQuizCollection() async {
+        do {
+            let collection = try await firebaseManager.fetchQuizCollection()
+            DispatchQueue.main.async {
+                self.quizCollection = collection
+            }
+        } catch {
+            print("Error fetching quiz collection: \(error.localizedDescription)")
+        }
+    }
+    
+    func uploadQuiz(quiz: QuizDataStruct) async {
+        do {
+            try await firebaseManager.uploadQuizDocumentToFirebase(quiz: quiz)
+        } catch {
+            print("Error uploading quiz: \(error)")
         }
     }
 }

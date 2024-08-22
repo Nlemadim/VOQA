@@ -8,6 +8,12 @@
 import Foundation
 import SwiftUI
 
+struct ThemeColors: Decodable {
+    var main: String
+    var sub: String
+    var third: String
+}
+
 struct QuizDataStruct: Decodable {
     var id: String
     var coreTopics: [String]
@@ -15,21 +21,15 @@ struct QuizDataStruct: Decodable {
     var generalTopics: [String]
     var quizTitle: String
     var imageUrl: String
-    var colors: Colors
+    var colors: ThemeColors
     var curator: String?
     var ratings: Int
     var users: Int
     var catalogueGroup: String?
     var acronym: String?
-
-    struct Colors: Decodable {
-        var main: String
-        var sub: String
-        var third: String
-    }
     
     // Custom initializer for manual instantiation
-    init(id: String, coreTopics: [String], about: String, generalTopics: [String], quizTitle: String, imageUrl: String, colors: Colors, curator: String?, ratings: Int, users: Int, catalogueGroup: String?, acronym: String?) {
+    init(id: String, coreTopics: [String], about: String, generalTopics: [String], quizTitle: String, imageUrl: String, colors: ThemeColors, curator: String?, ratings: Int, users: Int, catalogueGroup: String?, acronym: String?) {
         self.id = id
         self.coreTopics = coreTopics
         self.about = about
@@ -52,7 +52,7 @@ struct QuizDataStruct: Decodable {
         self.about = try container.decode(String.self, forKey: .about)
         self.quizTitle = try container.decode(String.self, forKey: .quizTitle)
         self.imageUrl = try container.decode(String.self, forKey: .imageUrl)
-        self.colors = try container.decode(Colors.self, forKey: .colors)
+        self.colors = try container.decode(ThemeColors.self, forKey: .colors)
         self.curator = try container.decodeIfPresent(String.self, forKey: .curator)
         self.ratings = try container.decodeIfPresent(Int.self, forKey: .ratings) ?? 0
         self.users = try container.decodeIfPresent(Int.self, forKey: .users) ?? 0
@@ -72,8 +72,3 @@ struct QuizDataStruct: Decodable {
     }
 }
 
-
-struct QuizCatalogueData {
-    var categoryName: String
-    var quizzes: [QuizDataStruct]
-}

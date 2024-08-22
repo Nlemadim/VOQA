@@ -10,6 +10,7 @@ import Foundation
 import Combine
 
 struct QuizPlayerView: View {
+    
     @Environment(\.dismiss) private var dismiss
     @Environment(\.questions) private var questions
     
@@ -197,13 +198,13 @@ struct QuizPlayerView: View {
         VStack(alignment: .center) {
             ZStack {
                 FormattedQuestionContentView(questionTranscript: viewModel.currentQuestionText)
-                    .opacity(viewModel.sessionCountdownTime > 0 ? 0 : 1)
+                   // .opacity(viewModel.sessionCountdownTime > 0 ? 0 : 1)
                 
-                FormattedCountDownTextView(countdownTimerText: viewModel.countdownTimerText)
-                    .opacity(viewModel.sessionCountdownTime > 0 ? 1 : 0)
+                FormattedCountDownTextView(countdownTimerText: "viewModel.countdownTimerText")
+                   // .opacity(viewModel.sessionCountdownTime > 0 ? 1 : 0)
                 
                 RateQuizView(currentRating: $currentRating)
-                    .opacity(viewModel.sessionInReview ? 1 : 0)
+                   // .opacity(viewModel.sessionInReview ? 1 : 0)
             }
         }
         .frame(maxHeight: .infinity)

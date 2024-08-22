@@ -9,6 +9,20 @@ import Foundation
 import SwiftUI
 import Combine
 
+
+protocol QuizViewModelProtocol {
+    var seesionId: UUID { get }
+    var sessionTitle: String { get }
+    var sessionVoice: String { get }
+    var currentQuestionText: String { get }
+    var questionCounter: String { get }
+    func nextQuestion()
+    func selectAnswer(selectedOption: String)
+    func stopQuiz()
+    func repeatQuestion()
+    func quitQuiz()
+}
+
 class QuizViewModel: ObservableObject, QuizViewModelProtocol {
 
     @Published var currentQuestionText: String = ""

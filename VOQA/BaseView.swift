@@ -8,22 +8,36 @@
 import Foundation
 import SwiftUI
 
-struct BaseView<Content: View>: View {
+struct BaseView: View {
     @EnvironmentObject var networkMonitor: NetworkMonitor
     @EnvironmentObject var databaseManager: DatabaseManager
-    var configManager = QuizConfigManager()
-    
+    @State private var path = NavigationPath()
     @State private var config: QuizSessionConfig?
-    
-    let content: () -> Content
+    @State var logStatus: Bool
+    var configManager = QuizConfigManager()
+
+    // New state variable to hold the converted quiz catalogue
+    @State private var quizCatalogue: [QuizCatalogue] = []
 
     var body: some View {
-        content()
+        NavigationStack(path: $path) {
+            VStack {
+                if logStatus {
+                    if !quizCatalogue.isEmpty {
+                       // HomePage(quizCatalogue: quizCatalogue)
+                    } else {
+                        Text("Loading quizzes...")
+                    }
+                } else {
+                    Text("App Sign In placeHolder")
+                }
+            }
             .environment(\.quizSessionConfig, config)
             .preferredColorScheme(.dark)
             .onAppear {
                 Task {
                     await setupQuizSessionConfig()
+                    await loadQuizData()
                 }
             }
             .alert(item: $databaseManager.currentError) { error in
@@ -43,6 +57,7 @@ struct BaseView<Content: View>: View {
             .overlay(
                 databaseManager.showFullPageError ? fullPageErrorView : nil
             )
+        }
     }
 
     private func setupQuizSessionConfig() async {
@@ -64,6 +79,18 @@ struct BaseView<Content: View>: View {
         }
     }
 
+    private func loadQuizData() async {
+       Task {
+            await databaseManager.fetchQuizCatalogue()
+            await databaseManager.fetchQuizCollection()
+            
+            // Convert fetched QuizCatalogueData to QuizCatalogue
+            let convertedCatalogue = databaseManager.quizCatalogue.map { QuizCatalogue(from: $0) }
+            DispatchQueue.main.async {
+                self.quizCatalogue = convertedCatalogue
+            }
+        }
+    }
     
     var fullPageErrorView: some View {
         VStack {

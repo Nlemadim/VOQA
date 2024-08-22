@@ -14,27 +14,7 @@ struct ContentView: View {
     @EnvironmentObject var databaseManager: DatabaseManager
     
     var body: some View {
-        if logStatus {
-            BaseView {
-                HomePage()
-            }
-        } else {
-            AppLaunch()
-        }
-    }
-    
-    func printBundleResources() {
-        if let resourcePath = Bundle.main.resourcePath {
-            do {
-                let resourceContents = try FileManager.default.contentsOfDirectory(atPath: resourcePath)
-                print("Bundle Resources:")
-                for resource in resourceContents {
-                    print(resource)
-                }
-            } catch {
-                print("Error accessing bundle resources: \(error)")
-            }
-        }
+        BaseView(logStatus: logStatus)
     }
 }
 
@@ -46,3 +26,14 @@ struct ContentView: View {
         .environmentObject(dbMgr)
         .environmentObject(ntwConn)
 }
+
+/**
+ 
+ if logStatus {
+     BaseView {
+         HomePage()
+     }
+ } else {
+     AppLaunch()
+ }
+ */

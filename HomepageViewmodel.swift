@@ -8,9 +8,6 @@
 import SwiftUI
 import FirebaseFirestore
 
-import SwiftUI
-import FirebaseFirestore
-
 class HomePageViewModel: ObservableObject {
     // MARK: - Published Properties
     @Published var quizCatalogue: [VoqaCollection] = []
@@ -112,7 +109,7 @@ class HomePageViewModel: ObservableObject {
                             generalTopics: [],
                             quizTitle: quizTitle,
                             imageUrl: "",
-                            colors: QuizDataStruct.Colors(main: "", sub: "", third: ""),
+                            colors: ThemeColors(main: "", sub: "", third: ""),
                             curator: nil,
                             ratings: 0,
                             users: 0,

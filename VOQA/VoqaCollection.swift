@@ -41,7 +41,7 @@ struct Voqa: VoqaItem, Identifiable, Hashable, Decodable {
     var title: String
     var titleImage: String
     var categories: [String]
-    var colors: Colors
+    var colors: ThemeColors
     var ratings: Int
     
     private enum CodingKeys: String, CodingKey {
@@ -61,7 +61,7 @@ struct Voqa: VoqaItem, Identifiable, Hashable, Decodable {
         self.title = try container.decodeIfPresent(String.self, forKey: .title) ?? ""
         self.titleImage = try container.decodeIfPresent(String.self, forKey: .titleImage) ?? ""
         self.categories = try container.decodeIfPresent([String].self, forKey: .categories) ?? []
-        self.colors = try container.decodeIfPresent(Colors.self, forKey: .colors) ?? Colors(main: "", sub: "", third: "")
+        self.colors = try container.decodeIfPresent(ThemeColors.self, forKey: .colors) ?? ThemeColors(main: "", sub: "", third: "")
         self.ratings = try container.decodeIfPresent(Int.self, forKey: .ratings) ?? 0
     }
     
@@ -77,7 +77,7 @@ struct Voqa: VoqaItem, Identifiable, Hashable, Decodable {
         title: String = "",
         titleImage: String = "",
         categories: [String] = [],
-        colors: Colors = Colors(main: "", sub: "", third: ""),
+        colors: ThemeColors = ThemeColors(main: "", sub: "", third: ""),
         ratings: Int = 0
     ) {
         self.id = id
@@ -95,6 +95,23 @@ struct Voqa: VoqaItem, Identifiable, Hashable, Decodable {
         self.ratings = ratings
     }
     
+    // Initializer from QuizDataStruct
+       init(from quizData: QuizDataStruct) {
+           self.id = quizData.id
+           self.quizTitle = quizData.quizTitle
+           self.acronym = quizData.acronym ?? ""
+           self.about = quizData.about
+           self.imageUrl = quizData.imageUrl
+           self.rating = quizData.ratings
+           self.curator = quizData.curator ?? ""
+           self.users = quizData.users
+           self.title = quizData.quizTitle // Assuming the title is the same as the quizTitle
+           self.titleImage = quizData.imageUrl // Assuming the imageUrl is used as the titleImage
+           self.categories = [] // QuizDataStruct doesn't have categories, so keeping this empty
+           self.colors = quizData.colors
+           self.ratings = quizData.ratings
+       }
+    
     // Conforming to Hashable protocol
     static func == (lhs: Voqa, rhs: Voqa) -> Bool {
         return lhs.id == rhs.id
@@ -102,5 +119,16 @@ struct Voqa: VoqaItem, Identifiable, Hashable, Decodable {
     
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
+    }
+}
+
+struct QuizCatalogue {
+    var categoryName: String
+    var quizzes: [Voqa]
+    
+    // Initializer from QuizCatalogueData
+    init(from quizCatalogueData: QuizCatalogueData) {
+        self.categoryName = quizCatalogueData.categoryName
+        self.quizzes = quizCatalogueData.quizzes.map { Voqa(from: $0) }
     }
 }

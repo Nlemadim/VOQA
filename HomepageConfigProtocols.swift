@@ -25,7 +25,7 @@ protocol VoqaItem: Decodable {
     var title: String { get }
     var titleImage: String { get }
     var categories: [String] { get }
-    var colors: Colors { get }
+    var colors: ThemeColors { get }
     var ratings: Int { get }
 }
 

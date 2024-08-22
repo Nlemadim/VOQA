@@ -90,7 +90,7 @@ class VoqaConfigManager: ObservableObject {
                         
                         // Handling colors
                         let colorsData = data["colors"] as? [String: String] ?? [:]
-                        let colors = Colors(
+                        let colors = ThemeColors(
                             main: colorsData["main"] ?? "",
                             sub: colorsData["sub"] ?? "",
                             third: colorsData["third"] ?? ""

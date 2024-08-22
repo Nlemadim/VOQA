@@ -57,16 +57,3 @@ protocol QuizControlInterface {
 }
 
 
-protocol QuizViewModelProtocol {
-    var seesionId: UUID { get }
-    var sessionTitle: String { get }
-    var sessionVoice: String { get }
-    var currentQuestionText: String { get }
-    var questionCounter: String { get }
-    func nextQuestion()
-    func selectAnswer(selectedOption: String)
-    func startNewQuizSession(questions: [Question])
-    func stopQuiz()
-    func repeatQuestion()
-    func quitQuiz()
-}

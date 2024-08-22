@@ -27,10 +27,10 @@ struct QuizControlButtonsGrid: View {
                 selectButton("B")
             })
             
-            CircularPlayButton(isDownloading: .constant(false), isNowPlaying: false, color: .white, playAction: {
-                awaitingResponse = true
-                centralAction()
-            })
+//            CircularPlayButton(quizContext: <#QuizSession#>, isDownloading: .constant(false), color: .white, playAction: {
+//                awaitingResponse = true
+//                centralAction()
+//            })
             
             MultiChoiceButton(label: "C", selectedOption: $selectedOption, awaitingResponse: $awaitingResponse, color: buttonColors[2], action: {
                 selectButton("C")

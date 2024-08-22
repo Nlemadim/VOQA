@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0B0988AB2C76E550002C5116 /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0988AA2C76E550002C5116 /* FirebaseManager.swift */; };
 		0B09BDB42C4919FF00DD6452 /* Creative Beat.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 0B09BDB32C4919FF00DD6452 /* Creative Beat.mp3 */; };
 		0B24B9A52C4777BD004A63F5 /* Performance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B24B9A42C4777BD004A63F5 /* Performance.swift */; };
 		0B25E0E02C24ECD000ACD552 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B25E0DF2C24ECD000ACD552 /* String+Extensions.swift */; };
@@ -30,65 +31,46 @@
 		0B5BA5B02C76445E00E1155A /* BaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B5BA5AD2C76445E00E1155A /* BaseView.swift */; };
 		0B5BA5B12C76445E00E1155A /* CircularPlayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B5BA5AE2C76445E00E1155A /* CircularPlayButton.swift */; };
 		0B5BA5B22C76445E00E1155A /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B5BA5AF2C76445E00E1155A /* DatabaseManager.swift */; };
-		0B5BA5B52C76466E00E1155A /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 0B5BA5B42C76466E00E1155A /* FirebaseAnalytics */; };
-		0B5BA5B72C76466E00E1155A /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 0B5BA5B62C76466E00E1155A /* FirebaseAuth */; };
-		0B5BA5B92C76466E00E1155A /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 0B5BA5B82C76466E00E1155A /* FirebaseCrashlytics */; };
-		0B5BA5BB2C76466E00E1155A /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 0B5BA5BA2C76466E00E1155A /* FirebaseDatabase */; };
-		0B5BA5BD2C76466E00E1155A /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 0B5BA5BC2C76466E00E1155A /* FirebaseFirestore */; };
-		0B5BA5BF2C76466E00E1155A /* FirebasePerformance in Frameworks */ = {isa = PBXBuildFile; productRef = 0B5BA5BE2C76466E00E1155A /* FirebasePerformance */; };
-		0B5BA5C12C76466E00E1155A /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 0B5BA5C02C76466E00E1155A /* FirebaseStorage */; };
+		0B5BA5C32C76499C00E1155A /* DownloadButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B5BA5C22C76499C00E1155A /* DownloadButton.swift */; };
+		0B5BA5C52C764B1200E1155A /* QuizViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B5BA5C42C764B1200E1155A /* QuizViewModel.swift */; };
+		0B5BA5CB2C7651B500E1155A /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 0B5BA5CA2C7651B500E1155A /* FirebaseAnalytics */; };
+		0B5BA5CD2C7651B500E1155A /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 0B5BA5CC2C7651B500E1155A /* FirebaseAuth */; };
+		0B5BA5CF2C7651B500E1155A /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 0B5BA5CE2C7651B500E1155A /* FirebaseCrashlytics */; };
+		0B5BA5D12C7651B500E1155A /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 0B5BA5D02C7651B500E1155A /* FirebaseDatabase */; };
+		0B5BA5D32C7651B500E1155A /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 0B5BA5D22C7651B500E1155A /* FirebaseFirestore */; };
+		0B5BA5D52C7651B500E1155A /* FirebasePerformance in Frameworks */ = {isa = PBXBuildFile; productRef = 0B5BA5D42C7651B500E1155A /* FirebasePerformance */; };
+		0B5BA5D72C7651B500E1155A /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 0B5BA5D62C7651B500E1155A /* FirebaseStorage */; };
 		0B6561162C3E4E7E0013663B /* QuizProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B6561152C3E4E7E0013663B /* QuizProtocols.swift */; };
-		0B6561172C3E4E7E0013663B /* QuizProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B6561152C3E4E7E0013663B /* QuizProtocols.swift */; };
 		0B6561192C3E4E950013663B /* Colo+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B6561182C3E4E950013663B /* Colo+Extensions.swift */; };
-		0B65611A2C3E4E950013663B /* Colo+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B6561182C3E4E950013663B /* Colo+Extensions.swift */; };
 		0B65611C2C3E4E9F0013663B /* UiImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B65611B2C3E4E9E0013663B /* UiImage+Extensions.swift */; };
-		0B65611D2C3E4E9F0013663B /* UiImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B65611B2C3E4E9E0013663B /* UiImage+Extensions.swift */; };
 		0B65611F2C3E4ED60013663B /* View+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B65611E2C3E4ED60013663B /* View+Extensions.swift */; };
-		0B6561202C3E4ED60013663B /* View+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B65611E2C3E4ED60013663B /* View+Extensions.swift */; };
 		0B6561222C3E4EDB0013663B /* CGFloat+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B6561212C3E4EDB0013663B /* CGFloat+Extensions.swift */; };
-		0B6561232C3E4EDB0013663B /* CGFloat+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B6561212C3E4EDB0013663B /* CGFloat+Extensions.swift */; };
 		0B6561252C3E4EE10013663B /* UIScreen+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B6561242C3E4EE10013663B /* UIScreen+Extensions.swift */; };
-		0B6561262C3E4EE10013663B /* UIScreen+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B6561242C3E4EE10013663B /* UIScreen+Extensions.swift */; };
 		0B6561282C3E4EE50013663B /* UUID+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B6561272C3E4EE50013663B /* UUID+Extension.swift */; };
-		0B6561292C3E4EE50013663B /* UUID+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B6561272C3E4EE50013663B /* UUID+Extension.swift */; };
 		0B65612B2C3E4EEA0013663B /* Array+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B65612A2C3E4EEA0013663B /* Array+Extension.swift */; };
-		0B65612C2C3E4EEA0013663B /* Array+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B65612A2C3E4EEA0013663B /* Array+Extension.swift */; };
 		0B65612E2C3E4F020013663B /* QuizSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B65612D2C3E4F020013663B /* QuizSession.swift */; };
-		0B65612F2C3E4F020013663B /* QuizSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B65612D2C3E4F020013663B /* QuizSession.swift */; };
 		0B6561312C3E4F080013663B /* QuizSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B6561302C3E4F080013663B /* QuizSessionManager.swift */; };
-		0B6561322C3E4F080013663B /* QuizSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B6561302C3E4F080013663B /* QuizSessionManager.swift */; };
 		0B6561342C3E4F100013663B /* SessionInitializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B6561332C3E4F100013663B /* SessionInitializer.swift */; };
-		0B6561352C3E4F100013663B /* SessionInitializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B6561332C3E4F100013663B /* SessionInitializer.swift */; };
 		0B6561372C3E4F3C0013663B /* SessionAudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B6561362C3E4F3C0013663B /* SessionAudioPlayer.swift */; };
 		0B65613A2C3E4F440013663B /* AudioPlayerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B6561392C3E4F440013663B /* AudioPlayerManager.swift */; };
 		0B65613D2C3E4F4D0013663B /* AudioActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B65613C2C3E4F4D0013663B /* AudioActions.swift */; };
 		0B6561402C3E4F540013663B /* AudioFileSorter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B65613F2C3E4F540013663B /* AudioFileSorter.swift */; };
 		0B6561432C3E4F5A0013663B /* QuestionPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B6561422C3E4F5A0013663B /* QuestionPlayer.swift */; };
-		0B6561442C3E4F5A0013663B /* QuestionPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B6561422C3E4F5A0013663B /* QuestionPlayer.swift */; };
 		0B6561462C3E4F5F0013663B /* IdleSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B6561452C3E4F5F0013663B /* IdleSession.swift */; };
-		0B6561472C3E4F5F0013663B /* IdleSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B6561452C3E4F5F0013663B /* IdleSession.swift */; };
 		0B6561492C3E4F640013663B /* ReviewsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B6561482C3E4F640013663B /* ReviewsManager.swift */; };
-		0B65614A2C3E4F640013663B /* ReviewsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B6561482C3E4F640013663B /* ReviewsManager.swift */; };
 		0B65614F2C3E4F940013663B /* QuizDataModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B65614E2C3E4F940013663B /* QuizDataModels.swift */; };
-		0B6561502C3E4F940013663B /* QuizDataModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B65614E2C3E4F940013663B /* QuizDataModels.swift */; };
 		0B6561552C3E4FA40013663B /* QuizConfigManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B6561542C3E4FA40013663B /* QuizConfigManager.swift */; };
-		0B6561562C3E4FA40013663B /* QuizConfigManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B6561542C3E4FA40013663B /* QuizConfigManager.swift */; };
 		0B6561582C3E4FAF0013663B /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B6561572C3E4FAF0013663B /* NetworkService.swift */; };
 		0B65615B2C3E4FB80013663B /* ConfigurationUrls.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B65615A2C3E4FB80013663B /* ConfigurationUrls.swift */; };
 		0B6561612C3E500B0013663B /* showResponderBell.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0B6561602C3E500B0013663B /* showResponderBell.wav */; };
-		0B6561622C3E500B0013663B /* showResponderBell.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0B6561602C3E500B0013663B /* showResponderBell.wav */; };
 		0B6561642C3E50260013663B /* NextQuestionWave.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0B6561632C3E50260013663B /* NextQuestionWave.wav */; };
-		0B6561652C3E50260013663B /* NextQuestionWave.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0B6561632C3E50260013663B /* NextQuestionWave.wav */; };
 		0B6561672C3E50340013663B /* dismissResponderBell.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0B6561662C3E50340013663B /* dismissResponderBell.wav */; };
-		0B6561682C3E50340013663B /* dismissResponderBell.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0B6561662C3E50340013663B /* dismissResponderBell.wav */; };
 		0B6561792C3E50ED0013663B /* SessionCloser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B6561782C3E50ED0013663B /* SessionCloser.swift */; };
 		0B65617B2C3E51060013663B /* AudioSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B65617A2C3E51060013663B /* AudioSessionManager.swift */; };
 		0B7B17BA2C4804D600B11974 /* ScoreRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B7B17B92C4804D600B11974 /* ScoreRegistry.swift */; };
 		0B854D322C632AAE0025C2E1 /* Collection+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B854D312C632AAE0025C2E1 /* Collection+Extension.swift */; };
 		0B90E50C2C3E655A00903FB0 /* SessionConfigData2.json in Resources */ = {isa = PBXBuildFile; fileRef = 0B90E50B2C3E655A00903FB0 /* SessionConfigData2.json */; };
-		0BA62FC32C4067450053F7C2 /* SessionCloser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B6561782C3E50ED0013663B /* SessionCloser.swift */; };
 		0BA62FDA2C40C6C00053F7C2 /* HomepageConfig.json in Resources */ = {isa = PBXBuildFile; fileRef = 0BA62FD92C40C6C00053F7C2 /* HomepageConfig.json */; };
-		0BA62FDB2C40C6C00053F7C2 /* HomepageConfig.json in Resources */ = {isa = PBXBuildFile; fileRef = 0BA62FD92C40C6C00053F7C2 /* HomepageConfig.json */; };
 		0BA63B3C2C76274200AE5048 /* HomepageConfigProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BA63B3B2C76274200AE5048 /* HomepageConfigProtocols.swift */; };
 		0BA63B3E2C76276100AE5048 /* VoqaConfigManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BA63B3D2C76276100AE5048 /* VoqaConfigManager.swift */; };
 		0BA63B422C7627CD00AE5048 /* HomePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BA63B412C7627CD00AE5048 /* HomePage.swift */; };
@@ -111,26 +93,14 @@
 		0BC091E02C1D4463005FB223 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BC091DF2C1D4463005FB223 /* ContentView.swift */; };
 		0BC091E42C1D4465005FB223 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0BC091E32C1D4465005FB223 /* Assets.xcassets */; };
 		0BC091E82C1D4465005FB223 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0BC091E72C1D4465005FB223 /* Preview Assets.xcassets */; };
+		0BFAEA9A2C76A5F000B1CF83 /* RatingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BFAEA992C76A5F000B1CF83 /* RatingsView.swift */; };
+		0BFAEA9C2C76A62D00B1CF83 /* QuizCarouselView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BFAEA9B2C76A62D00B1CF83 /* QuizCarouselView.swift */; };
+		0BFAEA9E2C76A65D00B1CF83 /* HorizontalQuizListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BFAEA9D2C76A65D00B1CF83 /* HorizontalQuizListView.swift */; };
+		0BFAEAA02C76A6E900B1CF83 /* HomePageBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BFAEA9F2C76A6E900B1CF83 /* HomePageBackgroundView.swift */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		0BC091EE2C1D4466005FB223 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0BC091D22C1D4463005FB223 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 0BC091D92C1D4463005FB223;
-			remoteInfo = VOQA;
-		};
-		0BC091F82C1D4466005FB223 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0BC091D22C1D4463005FB223 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 0BC091D92C1D4463005FB223;
-			remoteInfo = VOQA;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
+		0B0988AA2C76E550002C5116 /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
 		0B09BDB32C4919FF00DD6452 /* Creative Beat.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Creative Beat.mp3"; sourceTree = "<group>"; };
 		0B24B9A42C4777BD004A63F5 /* Performance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Performance.swift; sourceTree = "<group>"; };
 		0B25E0DF2C24ECD000ACD552 /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
@@ -142,8 +112,6 @@
 		0B31C40B2C223286006FB5D1 /* AVFAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFAudio.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS17.4.sdk/System/Library/Frameworks/AVFAudio.framework; sourceTree = DEVELOPER_DIR; };
 		0B4BD9382C752FD3006A043D /* QuizData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizData.swift; sourceTree = "<group>"; };
 		0B4FE0CD2C6E46740086B43F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		0B511D022C76325200D02CE6 /* VOQATests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = VOQATests.xctest; path = "/Users/tonynlemadim/Documents/VOQA-Beta/build/Debug/VOQATests.xctest"; sourceTree = "<absolute>"; };
-		0B511D032C76325200D02CE6 /* VOQAUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = VOQAUITests.xctest; path = "/Users/tonynlemadim/Documents/VOQA-Beta/build/Debug/VOQAUITests-Runner.app/Contents/PlugIns/VOQAUITests.xctest"; sourceTree = "<absolute>"; };
 		0B511D042C7632F300D02CE6 /* AllRecordsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AllRecordsView.swift; sourceTree = "<group>"; };
 		0B511D0A2C76335E00D02CE6 /* CustomSpinnerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomSpinnerView.swift; sourceTree = "<group>"; };
 		0B511D0C2C76338E00D02CE6 /* FormattedQuestionContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormattedQuestionContentView.swift; sourceTree = "<group>"; };
@@ -158,6 +126,9 @@
 		0B5BA5AD2C76445E00E1155A /* BaseView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseView.swift; sourceTree = "<group>"; };
 		0B5BA5AE2C76445E00E1155A /* CircularPlayButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircularPlayButton.swift; sourceTree = "<group>"; };
 		0B5BA5AF2C76445E00E1155A /* DatabaseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
+		0B5BA5C22C76499C00E1155A /* DownloadButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadButton.swift; sourceTree = "<group>"; };
+		0B5BA5C42C764B1200E1155A /* QuizViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizViewModel.swift; sourceTree = "<group>"; };
+		0B5BA5C62C764FE000E1155A /* VOQA.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VOQA.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0B6561152C3E4E7E0013663B /* QuizProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuizProtocols.swift; sourceTree = "<group>"; };
 		0B6561182C3E4E950013663B /* Colo+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Colo+Extensions.swift"; sourceTree = "<group>"; };
 		0B65611B2C3E4E9E0013663B /* UiImage+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UiImage+Extensions.swift"; sourceTree = "<group>"; };
@@ -212,7 +183,10 @@
 		0BC091E32C1D4465005FB223 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0BC091E52C1D4465005FB223 /* VOQA.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = VOQA.entitlements; sourceTree = "<group>"; };
 		0BC091E72C1D4465005FB223 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		0BCA0E622C417F44007E1863 /* VOQA.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = VOQA.app; path = "/Users/tonynlemadim/Documents/VOQA-Beta/build/Debug/VOQA.app"; sourceTree = "<absolute>"; };
+		0BFAEA992C76A5F000B1CF83 /* RatingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingsView.swift; sourceTree = "<group>"; };
+		0BFAEA9B2C76A62D00B1CF83 /* QuizCarouselView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizCarouselView.swift; sourceTree = "<group>"; };
+		0BFAEA9D2C76A65D00B1CF83 /* HorizontalQuizListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorizontalQuizListView.swift; sourceTree = "<group>"; };
+		0BFAEA9F2C76A6E900B1CF83 /* HomePageBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePageBackgroundView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -221,35 +195,29 @@
 			buildActionMask = 2147483647;
 			files = (
 				0B31C40E2C223286006FB5D1 /* AVFAudio.framework in Frameworks */,
-				0B5BA5B72C76466E00E1155A /* FirebaseAuth in Frameworks */,
-				0B5BA5BF2C76466E00E1155A /* FirebasePerformance in Frameworks */,
-				0B5BA5C12C76466E00E1155A /* FirebaseStorage in Frameworks */,
+				0B5BA5CD2C7651B500E1155A /* FirebaseAuth in Frameworks */,
+				0B5BA5D52C7651B500E1155A /* FirebasePerformance in Frameworks */,
+				0B5BA5D72C7651B500E1155A /* FirebaseStorage in Frameworks */,
 				0B31C40D2C223286006FB5D1 /* AVKit.framework in Frameworks */,
-				0B5BA5B92C76466E00E1155A /* FirebaseCrashlytics in Frameworks */,
-				0B5BA5B52C76466E00E1155A /* FirebaseAnalytics in Frameworks */,
-				0B5BA5BD2C76466E00E1155A /* FirebaseFirestore in Frameworks */,
-				0B5BA5BB2C76466E00E1155A /* FirebaseDatabase in Frameworks */,
+				0B5BA5CF2C7651B500E1155A /* FirebaseCrashlytics in Frameworks */,
+				0B5BA5CB2C7651B500E1155A /* FirebaseAnalytics in Frameworks */,
+				0B5BA5D32C7651B500E1155A /* FirebaseFirestore in Frameworks */,
+				0B5BA5D12C7651B500E1155A /* FirebaseDatabase in Frameworks */,
 				0B31C40C2C223286006FB5D1 /* AVFoundation.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		0BC091EA2C1D4466005FB223 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		0BC091F42C1D4466005FB223 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0B0988A92C76E52E002C5116 /* Firebase */ = {
+			isa = PBXGroup;
+			children = (
+				0B0988AA2C76E550002C5116 /* FirebaseManager.swift */,
+			);
+			name = Firebase;
+			sourceTree = "<group>";
+		};
 		0B25E0DE2C24ECB600ACD552 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -311,6 +279,7 @@
 				0B5BA5AE2C76445E00E1155A /* CircularPlayButton.swift */,
 				0B5BA5A72C76419900E1155A /* AcceptButton.swift */,
 				0B5BA5A52C76413D00E1155A /* TabIcons.swift */,
+				0B5BA5C22C76499C00E1155A /* DownloadButton.swift */,
 			);
 			name = Buttons;
 			sourceTree = "<group>";
@@ -318,6 +287,7 @@
 		0B511D082C76333500D02CE6 /* Ratings */ = {
 			isa = PBXGroup;
 			children = (
+				0BFAEA992C76A5F000B1CF83 /* RatingsView.swift */,
 			);
 			name = Ratings;
 			sourceTree = "<group>";
@@ -513,6 +483,7 @@
 				0BA63B522C762A1700AE5048 /* QuizInfoView.swift */,
 				0BA63B542C762A2400AE5048 /* QuizPlayerView.swift */,
 				0BA63B562C762A8E00AE5048 /* SfxPlayer.swift */,
+				0B5BA5C42C764B1200E1155A /* QuizViewModel.swift */,
 			);
 			name = Quiz;
 			sourceTree = "<group>";
@@ -556,6 +527,9 @@
 				0BA63B6C2C762D0E00AE5048 /* QuizControlButtonsGrid.swift */,
 				0B511D042C7632F300D02CE6 /* AllRecordsView.swift */,
 				0BA63B622C762CA100AE5048 /* ImageAndTitleView.swift */,
+				0BFAEA9B2C76A62D00B1CF83 /* QuizCarouselView.swift */,
+				0BFAEA9D2C76A65D00B1CF83 /* HorizontalQuizListView.swift */,
+				0BFAEA9F2C76A6E900B1CF83 /* HomePageBackgroundView.swift */,
 			);
 			name = Subviews;
 			sourceTree = "<group>";
@@ -565,6 +539,7 @@
 			children = (
 				0BC091DC2C1D4463005FB223 /* VOQA */,
 				0B31C4082C223286006FB5D1 /* Frameworks */,
+				0B5BA5C62C764FE000E1155A /* VOQA.app */,
 			);
 			sourceTree = "<group>";
 		};
@@ -576,6 +551,7 @@
 				0BC091DF2C1D4463005FB223 /* ContentView.swift */,
 				0B90E50B2C3E655A00903FB0 /* SessionConfigData2.json */,
 				0B31C3FF2C221C35006FB5D1 /* AppConfigurations */,
+				0B0988A92C76E52E002C5116 /* Firebase */,
 				0B7B17BF2C4806D000B11974 /* ConfigData */,
 				0B4BD9372C752FBC006A043D /* SwiftData */,
 				0B25E0DE2C24ECB600ACD552 /* Extensions */,
@@ -616,53 +592,17 @@
 			);
 			name = VOQA;
 			packageProductDependencies = (
-				0B5BA5B42C76466E00E1155A /* FirebaseAnalytics */,
-				0B5BA5B62C76466E00E1155A /* FirebaseAuth */,
-				0B5BA5B82C76466E00E1155A /* FirebaseCrashlytics */,
-				0B5BA5BA2C76466E00E1155A /* FirebaseDatabase */,
-				0B5BA5BC2C76466E00E1155A /* FirebaseFirestore */,
-				0B5BA5BE2C76466E00E1155A /* FirebasePerformance */,
-				0B5BA5C02C76466E00E1155A /* FirebaseStorage */,
+				0B5BA5CA2C7651B500E1155A /* FirebaseAnalytics */,
+				0B5BA5CC2C7651B500E1155A /* FirebaseAuth */,
+				0B5BA5CE2C7651B500E1155A /* FirebaseCrashlytics */,
+				0B5BA5D02C7651B500E1155A /* FirebaseDatabase */,
+				0B5BA5D22C7651B500E1155A /* FirebaseFirestore */,
+				0B5BA5D42C7651B500E1155A /* FirebasePerformance */,
+				0B5BA5D62C7651B500E1155A /* FirebaseStorage */,
 			);
 			productName = VOQA;
-			productReference = 0BCA0E622C417F44007E1863 /* VOQA.app */;
+			productReference = 0B5BA5C62C764FE000E1155A /* VOQA.app */;
 			productType = "com.apple.product-type.application";
-		};
-		0BC091EC2C1D4466005FB223 /* VOQATests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 0BC092042C1D4466005FB223 /* Build configuration list for PBXNativeTarget "VOQATests" */;
-			buildPhases = (
-				0BC091E92C1D4466005FB223 /* Sources */,
-				0BC091EA2C1D4466005FB223 /* Frameworks */,
-				0BC091EB2C1D4466005FB223 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				0BC091EF2C1D4466005FB223 /* PBXTargetDependency */,
-			);
-			name = VOQATests;
-			productName = VOQATests;
-			productReference = 0B511D022C76325200D02CE6 /* VOQATests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
-		0BC091F62C1D4466005FB223 /* VOQAUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 0BC092072C1D4466005FB223 /* Build configuration list for PBXNativeTarget "VOQAUITests" */;
-			buildPhases = (
-				0BC091F32C1D4466005FB223 /* Sources */,
-				0BC091F42C1D4466005FB223 /* Frameworks */,
-				0BC091F52C1D4466005FB223 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				0BC091F92C1D4466005FB223 /* PBXTargetDependency */,
-			);
-			name = VOQAUITests;
-			productName = VOQAUITests;
-			productReference = 0B511D032C76325200D02CE6 /* VOQAUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
 
@@ -677,13 +617,6 @@
 					0BC091D92C1D4463005FB223 = {
 						CreatedOnToolsVersion = 15.3;
 					};
-					0BC091EC2C1D4466005FB223 = {
-						CreatedOnToolsVersion = 15.3;
-					};
-					0BC091F62C1D4466005FB223 = {
-						CreatedOnToolsVersion = 15.3;
-						TestTargetID = 0BC091D92C1D4463005FB223;
-					};
 				};
 			};
 			buildConfigurationList = 0BC091D52C1D4463005FB223 /* Build configuration list for PBXProject "VOQA" */;
@@ -696,15 +629,13 @@
 			);
 			mainGroup = 0BC091D12C1D4463005FB223;
 			packageReferences = (
-				0B5BA5B32C76466E00E1155A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				0B5BA5C92C7651B500E1155A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			productRefGroup = 0BC091D12C1D4463005FB223;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
 				0BC091D92C1D4463005FB223 /* VOQA */,
-				0BC091EC2C1D4466005FB223 /* VOQATests */,
-				0BC091F62C1D4466005FB223 /* VOQAUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -726,24 +657,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		0BC091EB2C1D4466005FB223 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				0B6561682C3E50340013663B /* dismissResponderBell.wav in Resources */,
-				0B6561622C3E500B0013663B /* showResponderBell.wav in Resources */,
-				0B6561652C3E50260013663B /* NextQuestionWave.wav in Resources */,
-				0BA62FDB2C40C6C00053F7C2 /* HomepageConfig.json in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		0BC091F52C1D4466005FB223 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -754,6 +667,7 @@
 				0B6561792C3E50ED0013663B /* SessionCloser.swift in Sources */,
 				0B6561192C3E4E950013663B /* Colo+Extensions.swift in Sources */,
 				0B5BA5B22C76445E00E1155A /* DatabaseManager.swift in Sources */,
+				0BFAEA9C2C76A62D00B1CF83 /* QuizCarouselView.swift in Sources */,
 				0BC091E02C1D4463005FB223 /* ContentView.swift in Sources */,
 				0B25E0E02C24ECD000ACD552 /* String+Extensions.swift in Sources */,
 				0B5161A72C431BEB00BEC8D5 /* QuestionFormatter.swift in Sources */,
@@ -770,12 +684,14 @@
 				0BA63B5A2C762AF600AE5048 /* PerformanceView.swift in Sources */,
 				0BA63B6B2C762CF900AE5048 /* QuizPlayerBackground.swift in Sources */,
 				0B5BA5A62C76413D00E1155A /* TabIcons.swift in Sources */,
+				0B0988AB2C76E550002C5116 /* FirebaseManager.swift in Sources */,
 				0B6561222C3E4EDB0013663B /* CGFloat+Extensions.swift in Sources */,
 				0B6561252C3E4EE10013663B /* UIScreen+Extensions.swift in Sources */,
 				0B65612E2C3E4F020013663B /* QuizSession.swift in Sources */,
 				0B6561402C3E4F540013663B /* AudioFileSorter.swift in Sources */,
 				0B511D112C76342200D02CE6 /* AddToLibraryButton.swift in Sources */,
 				0B6561552C3E4FA40013663B /* QuizConfigManager.swift in Sources */,
+				0BFAEA9A2C76A5F000B1CF83 /* RatingsView.swift in Sources */,
 				0B6561312C3E4F080013663B /* QuizSessionManager.swift in Sources */,
 				0BC091DE2C1D4463005FB223 /* VOQAApp.swift in Sources */,
 				0B5BA5AC2C7642FC00E1155A /* VoqaCollection.swift in Sources */,
@@ -790,6 +706,7 @@
 				0B65614F2C3E4F940013663B /* QuizDataModels.swift in Sources */,
 				0B65615B2C3E4FB80013663B /* ConfigurationUrls.swift in Sources */,
 				0BA63B532C762A1700AE5048 /* QuizInfoView.swift in Sources */,
+				0B5BA5C52C764B1200E1155A /* QuizViewModel.swift in Sources */,
 				0BA63B652C762CAE00AE5048 /* HomepageBackground.swift in Sources */,
 				0B6561492C3E4F640013663B /* ReviewsManager.swift in Sources */,
 				0B31C3FE2C2211AD006FB5D1 /* NetworkMonitor.swift in Sources */,
@@ -798,6 +715,7 @@
 				0BA63B4B2C7628AD00AE5048 /* AppLaunch.swift in Sources */,
 				0BA63B462C76280C00AE5048 /* HomepageViewmodel.swift in Sources */,
 				0BA63B422C7627CD00AE5048 /* HomePage.swift in Sources */,
+				0BFAEAA02C76A6E900B1CF83 /* HomePageBackgroundView.swift in Sources */,
 				0B24B9A52C4777BD004A63F5 /* Performance.swift in Sources */,
 				0B31C3FC2C220F06006FB5D1 /* Errors.swift in Sources */,
 				0B7B17BA2C4804D600B11974 /* ScoreRegistry.swift in Sources */,
@@ -805,6 +723,7 @@
 				0B511D052C7632F300D02CE6 /* AllRecordsView.swift in Sources */,
 				0B511D0B2C76335F00D02CE6 /* CustomSpinnerView.swift in Sources */,
 				0B511D0D2C76338E00D02CE6 /* FormattedQuestionContentView.swift in Sources */,
+				0B5BA5C32C76499C00E1155A /* DownloadButton.swift in Sources */,
 				0B65613D2C3E4F4D0013663B /* AudioActions.swift in Sources */,
 				0BA63B3C2C76274200AE5048 /* HomepageConfigProtocols.swift in Sources */,
 				0B4BD9392C752FD3006A043D /* QuizData.swift in Sources */,
@@ -813,56 +732,13 @@
 				0BA63B572C762A8E00AE5048 /* SfxPlayer.swift in Sources */,
 				0B65617B2C3E51060013663B /* AudioSessionManager.swift in Sources */,
 				0B5BA5B02C76445E00E1155A /* BaseView.swift in Sources */,
+				0BFAEA9E2C76A65D00B1CF83 /* HorizontalQuizListView.swift in Sources */,
 				0BA63B632C762CA100AE5048 /* ImageAndTitleView.swift in Sources */,
 				0B6561582C3E4FAF0013663B /* NetworkService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		0BC091E92C1D4466005FB223 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				0B65612F2C3E4F020013663B /* QuizSession.swift in Sources */,
-				0B6561232C3E4EDB0013663B /* CGFloat+Extensions.swift in Sources */,
-				0B65614A2C3E4F640013663B /* ReviewsManager.swift in Sources */,
-				0B6561172C3E4E7E0013663B /* QuizProtocols.swift in Sources */,
-				0B65612C2C3E4EEA0013663B /* Array+Extension.swift in Sources */,
-				0B6561442C3E4F5A0013663B /* QuestionPlayer.swift in Sources */,
-				0B6561352C3E4F100013663B /* SessionInitializer.swift in Sources */,
-				0B6561472C3E4F5F0013663B /* IdleSession.swift in Sources */,
-				0B6561292C3E4EE50013663B /* UUID+Extension.swift in Sources */,
-				0B6561562C3E4FA40013663B /* QuizConfigManager.swift in Sources */,
-				0B65611D2C3E4E9F0013663B /* UiImage+Extensions.swift in Sources */,
-				0B6561322C3E4F080013663B /* QuizSessionManager.swift in Sources */,
-				0B65611A2C3E4E950013663B /* Colo+Extensions.swift in Sources */,
-				0B6561262C3E4EE10013663B /* UIScreen+Extensions.swift in Sources */,
-				0BA62FC32C4067450053F7C2 /* SessionCloser.swift in Sources */,
-				0B6561202C3E4ED60013663B /* View+Extensions.swift in Sources */,
-				0B6561502C3E4F940013663B /* QuizDataModels.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		0BC091F32C1D4466005FB223 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		0BC091EF2C1D4466005FB223 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 0BC091D92C1D4463005FB223 /* VOQA */;
-			targetProxy = 0BC091EE2C1D4466005FB223 /* PBXContainerItemProxy */;
-		};
-		0BC091F92C1D4466005FB223 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 0BC091D92C1D4463005FB223 /* VOQA */;
-			targetProxy = 0BC091F82C1D4466005FB223 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		0BC091FF2C1D4466005FB223 /* Debug */ = {
@@ -1057,94 +933,6 @@
 			};
 			name = Release;
 		};
-		0BC092052C1D4466005FB223 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = VW5K99T4JJ;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.educational-games";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
-				MACOSX_DEPLOYMENT_TARGET = 14.4;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = Voqa.io.VOQATests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		0BC092062C1D4466005FB223 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = VW5K99T4JJ;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.educational-games";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
-				MACOSX_DEPLOYMENT_TARGET = 14.4;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = Voqa.io.VOQATests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
-		0BC092082C1D4466005FB223 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = VW5K99T4JJ;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
-				MACOSX_DEPLOYMENT_TARGET = 14.4;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = Voqa.io.VOQAUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = VOQA;
-			};
-			name = Debug;
-		};
-		0BC092092C1D4466005FB223 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = VW5K99T4JJ;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
-				MACOSX_DEPLOYMENT_TARGET = 14.4;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = Voqa.io.VOQAUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = VOQA;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1166,28 +954,10 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		0BC092042C1D4466005FB223 /* Build configuration list for PBXNativeTarget "VOQATests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				0BC092052C1D4466005FB223 /* Debug */,
-				0BC092062C1D4466005FB223 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		0BC092072C1D4466005FB223 /* Build configuration list for PBXNativeTarget "VOQAUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				0BC092082C1D4466005FB223 /* Debug */,
-				0BC092092C1D4466005FB223 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		0B5BA5B32C76466E00E1155A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+		0B5BA5C92C7651B500E1155A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
 			requirement = {
@@ -1198,39 +968,39 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		0B5BA5B42C76466E00E1155A /* FirebaseAnalytics */ = {
+		0B5BA5CA2C7651B500E1155A /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 0B5BA5B32C76466E00E1155A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			package = 0B5BA5C92C7651B500E1155A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseAnalytics;
 		};
-		0B5BA5B62C76466E00E1155A /* FirebaseAuth */ = {
+		0B5BA5CC2C7651B500E1155A /* FirebaseAuth */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 0B5BA5B32C76466E00E1155A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			package = 0B5BA5C92C7651B500E1155A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseAuth;
 		};
-		0B5BA5B82C76466E00E1155A /* FirebaseCrashlytics */ = {
+		0B5BA5CE2C7651B500E1155A /* FirebaseCrashlytics */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 0B5BA5B32C76466E00E1155A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			package = 0B5BA5C92C7651B500E1155A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseCrashlytics;
 		};
-		0B5BA5BA2C76466E00E1155A /* FirebaseDatabase */ = {
+		0B5BA5D02C7651B500E1155A /* FirebaseDatabase */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 0B5BA5B32C76466E00E1155A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			package = 0B5BA5C92C7651B500E1155A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseDatabase;
 		};
-		0B5BA5BC2C76466E00E1155A /* FirebaseFirestore */ = {
+		0B5BA5D22C7651B500E1155A /* FirebaseFirestore */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 0B5BA5B32C76466E00E1155A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			package = 0B5BA5C92C7651B500E1155A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseFirestore;
 		};
-		0B5BA5BE2C76466E00E1155A /* FirebasePerformance */ = {
+		0B5BA5D42C7651B500E1155A /* FirebasePerformance */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 0B5BA5B32C76466E00E1155A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			package = 0B5BA5C92C7651B500E1155A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebasePerformance;
 		};
-		0B5BA5C02C76466E00E1155A /* FirebaseStorage */ = {
+		0B5BA5D62C7651B500E1155A /* FirebaseStorage */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 0B5BA5B32C76466E00E1155A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			package = 0B5BA5C92C7651B500E1155A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseStorage;
 		};
 /* End XCSwiftPackageProductDependency section */
