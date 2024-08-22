@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		0B0988AB2C76E550002C5116 /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0988AA2C76E550002C5116 /* FirebaseManager.swift */; };
 		0B09BDB42C4919FF00DD6452 /* Creative Beat.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 0B09BDB32C4919FF00DD6452 /* Creative Beat.mp3 */; };
+		0B11C93C2C77E32D002AF228 /* ThemeColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B11C93B2C77E32D002AF228 /* ThemeColors.swift */; };
+		0B11C93E2C77E4C4002AF228 /* Voqa.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B11C93D2C77E4C4002AF228 /* Voqa.swift */; };
+		0B11C9402C77E4ED002AF228 /* QuizCatalogue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B11C93F2C77E4ED002AF228 /* QuizCatalogue.swift */; };
 		0B24B9A52C4777BD004A63F5 /* Performance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B24B9A42C4777BD004A63F5 /* Performance.swift */; };
 		0B25E0E02C24ECD000ACD552 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B25E0DF2C24ECD000ACD552 /* String+Extensions.swift */; };
 		0B31C3FC2C220F06006FB5D1 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B31C3FB2C220F06006FB5D1 /* Errors.swift */; };
@@ -75,7 +78,6 @@
 		0BA63B3E2C76276100AE5048 /* VoqaConfigManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BA63B3D2C76276100AE5048 /* VoqaConfigManager.swift */; };
 		0BA63B422C7627CD00AE5048 /* HomePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BA63B412C7627CD00AE5048 /* HomePage.swift */; };
 		0BA63B442C7627E000AE5048 /* QuizDetailPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BA63B432C7627E000AE5048 /* QuizDetailPage.swift */; };
-		0BA63B462C76280C00AE5048 /* HomepageViewmodel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BA63B452C76280C00AE5048 /* HomepageViewmodel.swift */; };
 		0BA63B4B2C7628AD00AE5048 /* AppLaunch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BA63B4A2C7628AD00AE5048 /* AppLaunch.swift */; };
 		0BA63B532C762A1700AE5048 /* QuizInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BA63B522C762A1700AE5048 /* QuizInfoView.swift */; };
 		0BA63B552C762A2400AE5048 /* QuizPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BA63B542C762A2400AE5048 /* QuizPlayerView.swift */; };
@@ -102,6 +104,9 @@
 /* Begin PBXFileReference section */
 		0B0988AA2C76E550002C5116 /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
 		0B09BDB32C4919FF00DD6452 /* Creative Beat.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Creative Beat.mp3"; sourceTree = "<group>"; };
+		0B11C93B2C77E32D002AF228 /* ThemeColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeColors.swift; sourceTree = "<group>"; };
+		0B11C93D2C77E4C4002AF228 /* Voqa.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Voqa.swift; sourceTree = "<group>"; };
+		0B11C93F2C77E4ED002AF228 /* QuizCatalogue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizCatalogue.swift; sourceTree = "<group>"; };
 		0B24B9A42C4777BD004A63F5 /* Performance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Performance.swift; sourceTree = "<group>"; };
 		0B25E0DF2C24ECD000ACD552 /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
 		0B31C3FB2C220F06006FB5D1 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
@@ -164,7 +169,6 @@
 		0BA63B3D2C76276100AE5048 /* VoqaConfigManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VoqaConfigManager.swift; sourceTree = SOURCE_ROOT; };
 		0BA63B412C7627CD00AE5048 /* HomePage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomePage.swift; sourceTree = SOURCE_ROOT; };
 		0BA63B432C7627E000AE5048 /* QuizDetailPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuizDetailPage.swift; sourceTree = SOURCE_ROOT; };
-		0BA63B452C76280C00AE5048 /* HomepageViewmodel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomepageViewmodel.swift; sourceTree = SOURCE_ROOT; };
 		0BA63B4A2C7628AD00AE5048 /* AppLaunch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLaunch.swift; sourceTree = "<group>"; };
 		0BA63B522C762A1700AE5048 /* QuizInfoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuizInfoView.swift; sourceTree = "<group>"; };
 		0BA63B542C762A2400AE5048 /* QuizPlayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuizPlayerView.swift; sourceTree = "<group>"; };
@@ -254,18 +258,10 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		0B4BD9372C752FBC006A043D /* SwiftData */ = {
-			isa = PBXGroup;
-			children = (
-				0B4BD9382C752FD3006A043D /* QuizData.swift */,
-			);
-			path = SwiftData;
-			sourceTree = "<group>";
-		};
 		0B511D062C76331600D02CE6 /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				0B511D092C76334000D02CE6 /* FormattedViews */,
+				0BA63B5D2C762C5800AE5048 /* Subviews */,
 				0B511D082C76333500D02CE6 /* Ratings */,
 				0B511D072C76332A00D02CE6 /* Buttons */,
 			);
@@ -290,15 +286,6 @@
 				0BFAEA992C76A5F000B1CF83 /* RatingsView.swift */,
 			);
 			name = Ratings;
-			sourceTree = "<group>";
-		};
-		0B511D092C76334000D02CE6 /* FormattedViews */ = {
-			isa = PBXGroup;
-			children = (
-				0B511D0C2C76338E00D02CE6 /* FormattedQuestionContentView.swift */,
-				0B511D0A2C76335E00D02CE6 /* CustomSpinnerView.swift */,
-			);
-			name = FormattedViews;
 			sourceTree = "<group>";
 		};
 		0B5161A52C431BD200BEC8D5 /* Helpers */ = {
@@ -447,13 +434,12 @@
 		0BA63B4C2C7628FF00AE5048 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				0B511D062C76331600D02CE6 /* Components */,
-				0BA63B5D2C762C5800AE5048 /* Subviews */,
-				0BA63B5B2C762B3E00AE5048 /* Base */,
-				0BA63B582C762AE200AE5048 /* Performance */,
+				0BA63B4D2C76292200AE5048 /* HomePage */,
 				0BA63B4F2C7629D600AE5048 /* Quiz */,
 				0BA63B4E2C76292F00AE5048 /* MyLibrary */,
-				0BA63B4D2C76292200AE5048 /* HomePage */,
+				0BA63B582C762AE200AE5048 /* Performance */,
+				0BA63B5B2C762B3E00AE5048 /* Base */,
+				0B511D062C76331600D02CE6 /* Components */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -461,10 +447,7 @@
 		0BA63B4D2C76292200AE5048 /* HomePage */ = {
 			isa = PBXGroup;
 			children = (
-				0BA63B5C2C762BB300AE5048 /* Models */,
 				0BA63B412C7627CD00AE5048 /* HomePage.swift */,
-				0BA63B3D2C76276100AE5048 /* VoqaConfigManager.swift */,
-				0BA63B452C76280C00AE5048 /* HomepageViewmodel.swift */,
 			);
 			name = HomePage;
 			sourceTree = "<group>";
@@ -510,6 +493,11 @@
 			children = (
 				0B5BA5AB2C7642FC00E1155A /* VoqaCollection.swift */,
 				0BA63B3B2C76274200AE5048 /* HomepageConfigProtocols.swift */,
+				0B11C93B2C77E32D002AF228 /* ThemeColors.swift */,
+				0B11C93D2C77E4C4002AF228 /* Voqa.swift */,
+				0B11C93F2C77E4ED002AF228 /* QuizCatalogue.swift */,
+				0B4BD9382C752FD3006A043D /* QuizData.swift */,
+				0BA63B3D2C76276100AE5048 /* VoqaConfigManager.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -530,6 +518,8 @@
 				0BFAEA9B2C76A62D00B1CF83 /* QuizCarouselView.swift */,
 				0BFAEA9D2C76A65D00B1CF83 /* HorizontalQuizListView.swift */,
 				0BFAEA9F2C76A6E900B1CF83 /* HomePageBackgroundView.swift */,
+				0B511D0C2C76338E00D02CE6 /* FormattedQuestionContentView.swift */,
+				0B511D0A2C76335E00D02CE6 /* CustomSpinnerView.swift */,
 			);
 			name = Subviews;
 			sourceTree = "<group>";
@@ -553,10 +543,10 @@
 				0B31C3FF2C221C35006FB5D1 /* AppConfigurations */,
 				0B0988A92C76E52E002C5116 /* Firebase */,
 				0B7B17BF2C4806D000B11974 /* ConfigData */,
-				0B4BD9372C752FBC006A043D /* SwiftData */,
 				0B25E0DE2C24ECB600ACD552 /* Extensions */,
 				0BA62FBB2C405D360053F7C2 /* QuizSessionModule */,
 				0BA63B492C76287D00AE5048 /* AppLaunch */,
+				0BA63B5C2C762BB300AE5048 /* Models */,
 				0BA63B4C2C7628FF00AE5048 /* Views */,
 				0B7B17BB2C48061800B11974 /* SFX */,
 				0BC091E32C1D4465005FB223 /* Assets.xcassets */,
@@ -681,6 +671,7 @@
 				0B5BA5A82C76419900E1155A /* AcceptButton.swift in Sources */,
 				0B6561372C3E4F3C0013663B /* SessionAudioPlayer.swift in Sources */,
 				0BA63B5F2C762C7000AE5048 /* VoqaCollectionHeaderView.swift in Sources */,
+				0B11C93C2C77E32D002AF228 /* ThemeColors.swift in Sources */,
 				0BA63B5A2C762AF600AE5048 /* PerformanceView.swift in Sources */,
 				0BA63B6B2C762CF900AE5048 /* QuizPlayerBackground.swift in Sources */,
 				0B5BA5A62C76413D00E1155A /* TabIcons.swift in Sources */,
@@ -705,15 +696,16 @@
 				0BA63B612C762C8F00AE5048 /* VoqaCollectionView.swift in Sources */,
 				0B65614F2C3E4F940013663B /* QuizDataModels.swift in Sources */,
 				0B65615B2C3E4FB80013663B /* ConfigurationUrls.swift in Sources */,
+				0B11C9402C77E4ED002AF228 /* QuizCatalogue.swift in Sources */,
 				0BA63B532C762A1700AE5048 /* QuizInfoView.swift in Sources */,
 				0B5BA5C52C764B1200E1155A /* QuizViewModel.swift in Sources */,
 				0BA63B652C762CAE00AE5048 /* HomepageBackground.swift in Sources */,
+				0B11C93E2C77E4C4002AF228 /* Voqa.swift in Sources */,
 				0B6561492C3E4F640013663B /* ReviewsManager.swift in Sources */,
 				0B31C3FE2C2211AD006FB5D1 /* NetworkMonitor.swift in Sources */,
 				0B65612B2C3E4EEA0013663B /* Array+Extension.swift in Sources */,
 				0B6561462C3E4F5F0013663B /* IdleSession.swift in Sources */,
 				0BA63B4B2C7628AD00AE5048 /* AppLaunch.swift in Sources */,
-				0BA63B462C76280C00AE5048 /* HomepageViewmodel.swift in Sources */,
 				0BA63B422C7627CD00AE5048 /* HomePage.swift in Sources */,
 				0BFAEAA02C76A6E900B1CF83 /* HomePageBackgroundView.swift in Sources */,
 				0B24B9A52C4777BD004A63F5 /* Performance.swift in Sources */,

@@ -9,7 +9,7 @@ import SwiftUI
 import SwiftData
 
 struct ContentView: View {
-    @AppStorage("log_Status") private var logStatus: Bool = false
+    @AppStorage("log_Status") private var logStatus: Bool = true
     @EnvironmentObject var networkMonitor: NetworkMonitor
     @EnvironmentObject var databaseManager: DatabaseManager
     

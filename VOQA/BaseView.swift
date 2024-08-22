@@ -16,15 +16,15 @@ struct BaseView: View {
     @State var logStatus: Bool
     var configManager = QuizConfigManager()
 
-    // New state variable to hold the converted quiz catalogue
-    @State private var quizCatalogue: [QuizCatalogue] = []
-
     var body: some View {
         NavigationStack(path: $path) {
             VStack {
                 if logStatus {
-                    if !quizCatalogue.isEmpty {
-                       // HomePage(quizCatalogue: quizCatalogue)
+                    if !databaseManager.quizCatalogue.isEmpty {
+                        Text("Catalogue ready!")
+        
+                       // Pass the created catalogue to HomePage
+                       // HomePage(quizCatalogue: databaseManager.quizCatalogue)
                     } else {
                         Text("Loading quizzes...")
                     }
@@ -37,7 +37,10 @@ struct BaseView: View {
             .onAppear {
                 Task {
                     await setupQuizSessionConfig()
-                    await loadQuizData()
+                    await databaseManager.fetchQuizCollection()
+                }
+                if !databaseManager.quizCatalogue.isEmpty {
+                    print("Catalogue downloaded")
                 }
             }
             .alert(item: $databaseManager.currentError) { error in
@@ -64,14 +67,12 @@ struct BaseView: View {
         do {
             let localConfig = try configManager.loadLocalConfiguration()
             self.config = localConfig
-            
             print("Local configuration loaded successfully")
         } catch {
             print("Failed to load local configuration: \(error)")
             do {
                 let downloadedConfig = try await configManager.downloadConfiguration()
                 self.config = downloadedConfig
-                
                 print("Downloaded configuration loaded successfully")
             } catch {
                 print("Failed to download configuration: \(error)")
@@ -79,19 +80,6 @@ struct BaseView: View {
         }
     }
 
-    private func loadQuizData() async {
-       Task {
-            await databaseManager.fetchQuizCatalogue()
-            await databaseManager.fetchQuizCollection()
-            
-            // Convert fetched QuizCatalogueData to QuizCatalogue
-            let convertedCatalogue = databaseManager.quizCatalogue.map { QuizCatalogue(from: $0) }
-            DispatchQueue.main.async {
-                self.quizCatalogue = convertedCatalogue
-            }
-        }
-    }
-    
     var fullPageErrorView: some View {
         VStack {
             Text(databaseManager.currentError?.title ?? "Error")
@@ -100,7 +88,6 @@ struct BaseView: View {
             Text(databaseManager.currentError?.message ?? "An unknown error occurred.")
                 .padding()
             Button(action: {
-                // Handle retry logic here
                 databaseManager.showFullPageError = false
             }) {
                 Text("Retry")
@@ -115,5 +102,3 @@ struct BaseView: View {
         .edgesIgnoringSafeArea(.all)
     }
 }
-
-

@@ -113,7 +113,7 @@ struct QuizDetailPage: View {
                     
                     HStack(spacing: 16.0) {
                         
-                        ForEach(audioQuiz.categories, id: \.self) { category in
+                        ForEach(audioQuiz.tags, id: \.self) { category in
                             Text(category)
                                 .font(.system(size: 10))
                                 .fontWeight(.light)

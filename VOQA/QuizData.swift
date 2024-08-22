@@ -8,13 +8,7 @@
 import Foundation
 import SwiftUI
 
-struct ThemeColors: Decodable {
-    var main: String
-    var sub: String
-    var third: String
-}
-
-struct QuizDataStruct: Decodable {
+struct QuizData: Decodable {
     var id: String
     var coreTopics: [String]
     var about: String
@@ -27,9 +21,11 @@ struct QuizDataStruct: Decodable {
     var users: Int
     var catalogueGroup: String?
     var acronym: String?
+    var tags: [String]
+    var requiresSubscription: Bool
     
     // Custom initializer for manual instantiation
-    init(id: String, coreTopics: [String], about: String, generalTopics: [String], quizTitle: String, imageUrl: String, colors: ThemeColors, curator: String?, ratings: Int, users: Int, catalogueGroup: String?, acronym: String?) {
+    init(id: String, coreTopics: [String], about: String, generalTopics: [String], quizTitle: String, imageUrl: String, colors: ThemeColors, curator: String?, ratings: Int, users: Int, catalogueGroup: String?, acronym: String?, tags: [String], requiresSubscription: Bool) {
         self.id = id
         self.coreTopics = coreTopics
         self.about = about
@@ -42,9 +38,11 @@ struct QuizDataStruct: Decodable {
         self.users = users
         self.catalogueGroup = catalogueGroup
         self.acronym = acronym
+        self.tags = tags
+        self.requiresSubscription = requiresSubscription
     }
     
-    // Existing decoding initializer
+    // Decoding initializer
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
@@ -58,6 +56,8 @@ struct QuizDataStruct: Decodable {
         self.users = try container.decodeIfPresent(Int.self, forKey: .users) ?? 0
         self.catalogueGroup = try container.decodeIfPresent(String.self, forKey: .catalogueGroup)
         self.acronym = try container.decodeIfPresent(String.self, forKey: .acronym)
+        self.tags = try container.decodeIfPresent([String].self, forKey: .tags) ?? []
+        self.requiresSubscription = try container.decode(Bool.self, forKey: .requiresSubscription)
         
         // Decode coreTopics and generalTopics as dictionaries, then convert to arrays
         let coreTopicsDict = try container.decode([String: String].self, forKey: .coreTopics)
@@ -68,7 +68,6 @@ struct QuizDataStruct: Decodable {
     }
     
     private enum CodingKeys: String, CodingKey {
-        case id, coreTopics, about, generalTopics, quizTitle, imageUrl, colors, curator, ratings, users, catalogueGroup, acronym
+        case id, coreTopics, about, generalTopics, quizTitle, imageUrl, colors, curator, ratings, users, catalogueGroup, acronym, tags, requiresSubscription
     }
 }
-

@@ -11,8 +11,7 @@ import Combine
 
 struct QuizCatalogueData {
     var categoryName: String
-    var quizzes: [QuizDataStruct]
-    
+    var quizzes: [QuizData]
 }
 
 final class FirebaseManager {
@@ -20,8 +19,8 @@ final class FirebaseManager {
     
     private let db = Firestore.firestore()
     
-    // Holds the cached quiz catalogue data
-    @Published var quizCatalogue: [QuizCatalogueData] = []
+    // Holds the cached quiz collection data
+    @Published var quizCollection: [QuizData] = []
     
     private init() {
         configureFirestorePersistence()
@@ -32,56 +31,9 @@ final class FirebaseManager {
         settings.isPersistenceEnabled = true
         db.settings = settings
     }
-    
-    // Fetch Quiz Catalogue from Firebase
-    func fetchQuizCatalogue() async throws -> [QuizCatalogueData] {
-        print("Starting to fetch the quiz catalogue from Firebase...")
-        
-        let catalogueRef = db.collection("voqa_catalogue").document("nNIARO0aAQV6S9MzZ2Fx")
-        var quizCatalogueData = [QuizCatalogueData]()
-        
-        do {
-            let documentSnapshot = try await catalogueRef.getDocument()
-            if let documentData = documentSnapshot.data(), let rawCatalogue = documentData["voqa_catalogue"] as? [String: [String: Any]] {
-                print("Catalogue fetched successfully: \(documentData)")
-                
-                // Parse the raw catalogue data into QuizCatalogueData
-                for (categoryName, categoryDetails) in rawCatalogue {
-                    let quizzes = categoryDetails["quizzes"] as? [[String: String]] ?? []
-                    let quizDataList = quizzes.compactMap { quiz -> QuizDataStruct? in
-                        guard let quizId = quiz["quizId"], let quizTitle = quiz["title"] else { return nil }
-                        return QuizDataStruct(
-                            id: quizId,
-                            coreTopics: [],
-                            about: "",
-                            generalTopics: [],
-                            quizTitle: quizTitle,
-                            imageUrl: "",
-                            colors: ThemeColors(main: "", sub: "", third: ""),
-                            curator: nil,
-                            ratings: 0,
-                            users: 0,
-                            catalogueGroup: nil,
-                            acronym: nil
-                        )
-                    }
-                    let categoryData = QuizCatalogueData(categoryName: categoryName, quizzes: quizDataList)
-                    quizCatalogueData.append(categoryData)
-                }
-            } else {
-                print("No catalogue data found for the document.")
-            }
-        } catch {
-            print("Error fetching catalogue: \(error.localizedDescription)")
-            throw error
-        }
-        
-        self.quizCatalogue = quizCatalogueData
-        return quizCatalogueData
-    }
-    
+
     // Upload a Single Quiz Document to Firebase
-    func uploadQuizDocumentToFirebase(quiz: QuizDataStruct) async throws {
+    func uploadQuizDocumentToFirebase(quiz: QuizData) async throws {
         print("Starting to upload quiz document to Firebase for quiz: \(quiz.quizTitle)")
         
         let quizData: [String: Any] = [
@@ -114,7 +66,7 @@ final class FirebaseManager {
     }
     
     // Fetch Quiz Collection from Backend
-    func fetchQuizCollection() async throws -> [QuizDataStruct] {
+    func fetchQuizCollection() async throws -> [QuizData] {
         print("Starting to fetch the quiz collection from the backend...")
         
         guard let url = URL(string: "https://ljnsun.buildship.run/getQuizCollection") else {
@@ -126,7 +78,7 @@ final class FirebaseManager {
             let (data, _) = try await URLSession.shared.data(from: url)
             print("Data successfully fetched from the backend.")
             
-            let quizCollection = try JSONDecoder().decode([QuizDataStruct].self, from: data)
+            let quizCollection = try JSONDecoder().decode([QuizData].self, from: data)
             print("Quiz collection successfully decoded into QuizDataStruct.")
             
             // For visibility, print out one item from the fetched collection
@@ -136,6 +88,7 @@ final class FirebaseManager {
                 print("No items found in the fetched quiz collection.")
             }
             
+            self.quizCollection = quizCollection
             return quizCollection
             
         } catch {
@@ -143,4 +96,44 @@ final class FirebaseManager {
             throw error
         }
     }
+
+    // Create Quiz Catalogue Locally
+    func createQuizCatalogue(from quizCollection: [QuizData]) -> [QuizCatalogue] {
+        let assignments: [String: [String]] = [
+            "Arts and Humanities": ["World War 1 History", "English Language Arts", "Advanced Placement Exam", "American History"],
+            "Most Popular College Admission Exams": ["SAT", "MCAT (Medical College Admission Test)", "TOEFL (Test of English as a Foreign Language)", "Advanced Placement Exam", "General Chemistry"],
+            "Most Popular Professional Certifications and Exams": ["MBE (Multistate Bar Examination)", "CPA (Certified Public Accountant)", "CYSA (Cybersecurity Analyst)", "Real Estate Licensing", "CompTIA A+"],
+            "Innovators' Hub (Tech and Innovation)": ["Kotlin Programming Language", "CCNA (Cisco Certified Network Associate)", "CompTIA A+", "CYSA (Cybersecurity Analyst)", "Privacy Engineering Principles"],
+            "Top Picks": ["SAT", "MCAT (Medical College Admission Test)", "CPA (Certified Public Accountant)", "CCNA (Cisco Certified Network Associate)", "CYSA (Cybersecurity Analyst)", "TOEFL (Test of English as a Foreign Language)", "World War 1 History", "MBE (Multistate Bar Examination)", "General Physics", "Advanced Placement Exam"]
+        ]
+
+        let descriptions: [String: String] = [
+            "Arts and Humanities": "Explore the rich history and diverse cultural expressions of humanity.",
+            "Most Popular College Admission Exams": "Prepare for the most important college admission exams with our comprehensive quizzes.",
+            "Most Popular Professional Certifications and Exams": "Enhance your career with top certifications and professional exams.",
+            "Innovators' Hub (Tech and Innovation)": "Dive into the world of technology and innovation with these quizzes.",
+            "Top Picks": "Our top selections of quizzes across various categories."
+        ]
+        
+        var quizCatalogue = [QuizCatalogue]()
+        
+        for (categoryName, quizTitles) in assignments {
+            var quizzesInCategory: [Voqa] = []
+            
+            for quiz in quizCollection {
+                if quizTitles.contains(quiz.quizTitle) {
+                    quizzesInCategory.append(Voqa(from: quiz))
+                }
+            }
+            
+            let categoryData = QuizCatalogue(
+                categoryName: categoryName,
+                quizzes: quizzesInCategory
+            )
+            quizCatalogue.append(categoryData)
+        }
+        
+        return quizCatalogue
+    }
 }
+

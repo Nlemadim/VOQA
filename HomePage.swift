@@ -133,7 +133,6 @@ struct HomePage: View {
 
 
 struct ProfileView: View {
-    @StateObject private var viewModel = HomePageViewModel()
     @State private var voqaItem: Voqa?
     @State private var path = NavigationPath()
     @State private var currentQuiz = [Voqa]()
