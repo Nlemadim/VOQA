@@ -5,9 +5,13 @@
 //  Created by Tony Nlemadim on 8/21/24.
 //
 
+
 import Foundation
 import FirebaseFirestore
 import Combine
+import FirebaseAuth
+import AuthenticationServices
+import CryptoKit
 
 struct QuizCatalogueData {
     var categoryName: String
@@ -31,7 +35,7 @@ final class FirebaseManager {
         settings.isPersistenceEnabled = true
         db.settings = settings
     }
-
+    
     // Upload a Single Quiz Document to Firebase
     func uploadQuizDocumentToFirebase(quiz: QuizData) async throws {
         print("Starting to upload quiz document to Firebase for quiz: \(quiz.quizTitle)")
@@ -96,44 +100,31 @@ final class FirebaseManager {
             throw error
         }
     }
-
-    // Create Quiz Catalogue Locally
-    func createQuizCatalogue(from quizCollection: [QuizData]) -> [QuizCatalogue] {
-        let assignments: [String: [String]] = [
-            "Arts and Humanities": ["World War 1 History", "English Language Arts", "Advanced Placement Exam", "American History"],
-            "Most Popular College Admission Exams": ["SAT", "MCAT (Medical College Admission Test)", "TOEFL (Test of English as a Foreign Language)", "Advanced Placement Exam", "General Chemistry"],
-            "Most Popular Professional Certifications and Exams": ["MBE (Multistate Bar Examination)", "CPA (Certified Public Accountant)", "CYSA (Cybersecurity Analyst)", "Real Estate Licensing", "CompTIA A+"],
-            "Innovators' Hub (Tech and Innovation)": ["Kotlin Programming Language", "CCNA (Cisco Certified Network Associate)", "CompTIA A+", "CYSA (Cybersecurity Analyst)", "Privacy Engineering Principles"],
-            "Top Picks": ["SAT", "MCAT (Medical College Admission Test)", "CPA (Certified Public Accountant)", "CCNA (Cisco Certified Network Associate)", "CYSA (Cybersecurity Analyst)", "TOEFL (Test of English as a Foreign Language)", "World War 1 History", "MBE (Multistate Bar Examination)", "General Physics", "Advanced Placement Exam"]
-        ]
-
-        let descriptions: [String: String] = [
-            "Arts and Humanities": "Explore the rich history and diverse cultural expressions of humanity.",
-            "Most Popular College Admission Exams": "Prepare for the most important college admission exams with our comprehensive quizzes.",
-            "Most Popular Professional Certifications and Exams": "Enhance your career with top certifications and professional exams.",
-            "Innovators' Hub (Tech and Innovation)": "Dive into the world of technology and innovation with these quizzes.",
-            "Top Picks": "Our top selections of quizzes across various categories."
-        ]
-        
-        var quizCatalogue = [QuizCatalogue]()
-        
-        for (categoryName, quizTitles) in assignments {
-            var quizzesInCategory: [Voqa] = []
-            
-            for quiz in quizCollection {
-                if quizTitles.contains(quiz.quizTitle) {
-                    quizzesInCategory.append(Voqa(from: quiz))
-                }
+    
+    // Sign-In with Apple using Firebase
+    func loginWithFirebase(authorization: ASAuthorization, nonce: String, completion: @escaping (Result<Void, Error>) -> Void) {
+        if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
+            guard let appleIDToken = appleIDCredential.identityToken else {
+                completion(.failure(NSError(domain: "Unable to fetch identity token", code: 0, userInfo: nil)))
+                return
+            }
+            guard let idTokenString = String(data: appleIDToken, encoding: .utf8) else {
+                completion(.failure(NSError(domain: "Unable to serialize token string", code: 0, userInfo: nil)))
+                return
             }
             
-            let categoryData = QuizCatalogue(
-                categoryName: categoryName,
-                quizzes: quizzesInCategory
-            )
-            quizCatalogue.append(categoryData)
+            let credential = OAuthProvider.appleCredential(withIDToken: idTokenString, rawNonce: nonce, fullName: appleIDCredential.fullName)
+            
+            Auth.auth().signIn(with: credential) { (authResult, error) in
+                if let error = error {
+                    completion(.failure(error))
+                } else {
+                    completion(.success(()))
+                }
+            }
+        } else {
+            completion(.failure(NSError(domain: "Invalid Credential", code: 0, userInfo: nil)))
         }
-        
-        return quizCatalogue
     }
 }
 

@@ -1,14 +1,13 @@
 //
-//  BaseView.swift
+//  MainView.swift
 //  VOQA
 //
-//  Created by Tony Nlemadim on 6/18/24.
+//  Created by Tony Nlemadim on 8/23/24.
 //
 
-import Foundation
 import SwiftUI
 
-struct BaseView: View {
+struct MainView: View {
     @EnvironmentObject var networkMonitor: NetworkMonitor
     @EnvironmentObject var databaseManager: DatabaseManager
     @State private var path = NavigationPath()
@@ -19,15 +18,14 @@ struct BaseView: View {
     var body: some View {
         NavigationStack(path: $path) {
             VStack {
-                if logStatus {
-                    if !databaseManager.quizCatalogue.isEmpty {
-                        HomePage(quizCatalogue: databaseManager.quizCatalogue)
-                    } else {
+                if !databaseManager.quizCatalogue.isEmpty {
+                    HomePage(quizCatalogue: databaseManager.quizCatalogue)
+                } else {
+                    VStack(alignment: .center) {
+                        
                         CustomSpinnerView()
                             .frame(height: 45)
                     }
-                } else {
-                    Text("App Sign In placeHolder")
                 }
             }
             .environment(\.quizSessionConfig, config)
@@ -35,7 +33,6 @@ struct BaseView: View {
             .onAppear {
                 Task {
                     await setupQuizSessionConfig()
-                    await getCatalogue()
                 }
             }
             .alert(item: $databaseManager.currentError) { error in
@@ -56,11 +53,6 @@ struct BaseView: View {
                 databaseManager.showFullPageError ? fullPageErrorView : nil
             )
         }
-    }
-    
-    private func getCatalogue() async {
-        guard databaseManager.quizCollection.isEmpty else { return }
-        await databaseManager.fetchQuizCollection()
     }
 
     private func setupQuizSessionConfig() async {
@@ -101,4 +93,13 @@ struct BaseView: View {
         .background(Color.white)
         .edgesIgnoringSafeArea(.all)
     }
+}
+
+#Preview {
+    let dbMgr = DatabaseManager.shared
+    let ntwConn = NetworkMonitor.shared
+    return MainView(logStatus: true)
+        .preferredColorScheme(.dark)
+        .environmentObject(dbMgr)
+        .environmentObject(ntwConn)
 }

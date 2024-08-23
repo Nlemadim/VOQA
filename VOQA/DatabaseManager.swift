@@ -11,7 +11,7 @@ import Combine
 class DatabaseManager: ObservableObject {
     @Published var currentError: DatabaseError?
     @Published var questions: [Question] = []
-    @Published var quizCatalogue: [QuizCatalogue] = []  // Updated to hold the QuizCatalogue
+    @Published var quizCatalogue: [QuizCatalogue] = []  // Holds the QuizCatalogue
     @Published var quizCollection: [QuizData] = []
     @Published var showFullPageError: Bool = false
     
@@ -34,7 +34,6 @@ class DatabaseManager: ObservableObject {
                 }
             case .connectionError:
                 break
-                
             default:
                 break
             }
@@ -59,13 +58,48 @@ class DatabaseManager: ObservableObject {
             let collection = try await firebaseManager.fetchQuizCollection()
             DispatchQueue.main.async {
                 self.quizCollection = collection
+                for quiz in collection {
+                    print("Quiz Title: \(quiz.quizTitle)")
+                }
                 
-                // Create the catalogue after fetching the collection
-                self.quizCatalogue = self.firebaseManager.createQuizCatalogue(from: collection)
+                // After fetching, create the catalogue
+                self.quizCatalogue = self.createQuizCatalogue(from: collection)
             }
         } catch {
             print("Error fetching quiz collection: \(error.localizedDescription)")
         }
+    }
+    
+    // Create Quiz Catalogue Locally
+    func createQuizCatalogue(from quizCollection: [QuizData]) -> [QuizCatalogue] {
+        let assignments: [CatalogueDetails: [QuizList]] = [
+            .artsAndHumanities(): [.historyOfWorldWar1, .englishLanguageArts, .advancedPlacementExam, .americanHistory],
+            .collegeAdmissionsExams(): [.sat, .medicalCollegeAdmissionTest, .testOfEnglishAsForeignLanguage, .advancedPlacementExam, .generalChemistry],
+            .professionalCertifications(): [.multistateBarExamination, .certifiedPublicAccountantExam, .comptiaCYSAPlus, .realEstateLicensing, .comptiaAPlus],
+            .techAndInnovation(): [.kotlinProgramming, .ciscoCertifiedNetworkAssociateExam, .comptiaAPlus, .privacyEngineeringPrinciples],
+            .topPicks(): [.sat, .medicalCollegeAdmissionTest, .certifiedPublicAccountantExam, .ciscoCertifiedNetworkAssociateExam, .comptiaCYSAPlus, .testOfEnglishAsForeignLanguage, .historyOfWorldWar1, .multistateBarExamination, .generalPhysics, .advancedPlacementExam]
+        ]
+
+        var quizCatalogue = [QuizCatalogue]()
+        
+        for (category, quizEnums) in assignments {
+            var quizzesInCategory: [Voqa] = []
+            
+            for quizEnum in quizEnums {
+                if let quiz = quizCollection.first(where: { $0.quizTitle == quizEnum.rawValue }) {
+                    quizzesInCategory.append(Voqa(from: quiz))
+                }
+            }
+            
+            let categoryData = QuizCatalogue(
+                categoryName: category.details.title,
+                description: category.details.description,
+                quizzes: quizzesInCategory
+            )
+            quizCatalogue.append(categoryData)
+        }
+        
+        return quizCatalogue
     }
     
     func uploadQuiz(quiz: QuizData) async {

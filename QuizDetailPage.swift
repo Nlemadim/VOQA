@@ -51,7 +51,7 @@ struct QuizDetailPage: View {
                                 .frame(width: 250, height: 250)
                         }
                         
-                        Text(audioQuiz.quizTitle)
+                        Text(audioQuiz.acronym)
                             .lineLimit(4, reservesSpace: false)
                             .multilineTextAlignment(.center)
                             .fontWeight(.bold)
@@ -59,15 +59,19 @@ struct QuizDetailPage: View {
                             .frame(maxWidth: .infinity)
                             .hAlign(.center)
                         
-                        Text(audioQuiz.about)
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
-                            .hAlign(.center)
+                        if audioQuiz.acronym != audioQuiz.quizTitle {
+                            Text(audioQuiz.quizTitle)
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                                .hAlign(.center)
+                        }
                         
-//                        Text("Curated by: \(audioQuiz.curator)")
-//                            .font(.caption)
-//                            .foregroundStyle(.secondary)
-//                            .hAlign(.center)
+                        if audioQuiz.curator.isEmptyOrWhiteSpace {
+                            Text("Curated by: Gista Society")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                                .hAlign(.center)
+                        }
                         
                         Text("Users: \(audioQuiz.users)")
                             .font(.caption)
@@ -139,7 +143,7 @@ struct QuizDetailPage: View {
                     
                     Text(audioQuiz.about)
                         .font(.subheadline)
-                        .fontWeight(.light)
+                        .fontWeight(.bold)
                         .hAlign(.leading)
                 }
                 .padding()
