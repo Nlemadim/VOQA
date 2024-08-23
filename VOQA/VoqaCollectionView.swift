@@ -35,7 +35,7 @@ struct VoqaCollectionView: View {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 0) {
                     ForEach(quizzes) { quiz in
-                        ImageAndTitleView(title: quiz.acronym, titleImage: quiz.imageUrl, tapAction: tapAction, quiz: quiz)
+                        ImageAndTitleView(title: quiz.acronym, imageUrl: quiz.imageUrl, tapAction: tapAction, quiz: quiz)
                     }
                 }
             }

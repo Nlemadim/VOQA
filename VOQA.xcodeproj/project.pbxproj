@@ -95,6 +95,7 @@
 		0BC091E02C1D4463005FB223 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BC091DF2C1D4463005FB223 /* ContentView.swift */; };
 		0BC091E42C1D4465005FB223 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0BC091E32C1D4465005FB223 /* Assets.xcassets */; };
 		0BC091E82C1D4465005FB223 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0BC091E72C1D4465005FB223 /* Preview Assets.xcassets */; };
+		0BEF0F3A2C78934200341F21 /* CachedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BEF0F392C78934200341F21 /* CachedImageView.swift */; };
 		0BFAEA9A2C76A5F000B1CF83 /* RatingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BFAEA992C76A5F000B1CF83 /* RatingsView.swift */; };
 		0BFAEA9C2C76A62D00B1CF83 /* QuizCarouselView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BFAEA9B2C76A62D00B1CF83 /* QuizCarouselView.swift */; };
 		0BFAEA9E2C76A65D00B1CF83 /* HorizontalQuizListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BFAEA9D2C76A65D00B1CF83 /* HorizontalQuizListView.swift */; };
@@ -187,6 +188,8 @@
 		0BC091E32C1D4465005FB223 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0BC091E52C1D4465005FB223 /* VOQA.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = VOQA.entitlements; sourceTree = "<group>"; };
 		0BC091E72C1D4465005FB223 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		0BEF0F392C78934200341F21 /* CachedImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachedImageView.swift; sourceTree = "<group>"; };
+		0BEF0F3D2C78AE4700341F21 /* VoqaCollection.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = VoqaCollection.json; sourceTree = "<group>"; };
 		0BFAEA992C76A5F000B1CF83 /* RatingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingsView.swift; sourceTree = "<group>"; };
 		0BFAEA9B2C76A62D00B1CF83 /* QuizCarouselView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizCarouselView.swift; sourceTree = "<group>"; };
 		0BFAEA9D2C76A65D00B1CF83 /* HorizontalQuizListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorizontalQuizListView.swift; sourceTree = "<group>"; };
@@ -498,6 +501,7 @@
 				0B11C93F2C77E4ED002AF228 /* QuizCatalogue.swift */,
 				0B4BD9382C752FD3006A043D /* QuizData.swift */,
 				0BA63B3D2C76276100AE5048 /* VoqaConfigManager.swift */,
+				0BEF0F392C78934200341F21 /* CachedImageView.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -553,6 +557,7 @@
 				0BC091E52C1D4465005FB223 /* VOQA.entitlements */,
 				0B31C4002C222A8D006FB5D1 /* Info.plist */,
 				0BC091E62C1D4465005FB223 /* Preview Content */,
+				0BEF0F3D2C78AE4700341F21 /* VoqaCollection.json */,
 			);
 			path = VOQA;
 			sourceTree = "<group>";
@@ -708,6 +713,7 @@
 				0BA63B4B2C7628AD00AE5048 /* AppLaunch.swift in Sources */,
 				0BA63B422C7627CD00AE5048 /* HomePage.swift in Sources */,
 				0BFAEAA02C76A6E900B1CF83 /* HomePageBackgroundView.swift in Sources */,
+				0BEF0F3A2C78934200341F21 /* CachedImageView.swift in Sources */,
 				0B24B9A52C4777BD004A63F5 /* Performance.swift in Sources */,
 				0B31C3FC2C220F06006FB5D1 /* Errors.swift in Sources */,
 				0B7B17BA2C4804D600B11974 /* ScoreRegistry.swift in Sources */,

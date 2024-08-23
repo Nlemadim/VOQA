@@ -19,13 +19,13 @@ struct HorizontalQuizListView: View {
             Text(title.uppercased())
                 .font(.subheadline)
                 .fontWeight(.bold)
-                .kerning(-0.5) // Reduces the default spacing between characters
+                .kerning(-0.5)
                 .padding(.horizontal)
-                .lineLimit(1) // Ensures the text does not wrap
-                .truncationMode(.tail) // Adds "..." at the end if the text is too long
+                .lineLimit(1)
+                .truncationMode(.tail)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
-            if let subtitle {
+            if let subtitle = subtitle {
                 Text(subtitle)
                     .font(.footnote)
                     .padding(.horizontal)
@@ -36,7 +36,7 @@ struct HorizontalQuizListView: View {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 0) {
                     ForEach(quizzes, id: \.self) { quiz in
-                        ImageAndTitleView(title: quiz.acronym, titleImage: quiz.imageUrl, tapAction: tapAction, quiz: quiz)
+                        ImageAndTitleView(title: quiz.acronym, imageUrl: quiz.imageUrl, tapAction: tapAction, quiz: quiz)
                     }
                 }
             }
@@ -45,4 +45,3 @@ struct HorizontalQuizListView: View {
         }
     }
 }
-
