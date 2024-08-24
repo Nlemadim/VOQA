@@ -15,17 +15,17 @@ struct AllRecordsView: View {
     var numberOfTestsTaken: Int
     
     var body: some View {
-        HStack {
-            
-            Text("All Time Records")
-                .foregroundStyle(.primary)
-                .fontWeight(.bold)
-                .kerning(-0.5) // Reduces the default spacing between characters
-            
-            Spacer(minLength: 0)
-        }
-        .padding(.horizontal)
-        .hAlign(.leading)
+//        HStack {
+//            
+//            Text("All Time Records")
+//                .foregroundStyle(.primary)
+//                .fontWeight(.bold)
+//                .kerning(-0.5) // Reduces the default spacing between characters
+//            
+//            Spacer(minLength: 0)
+//        }
+//        .padding(.horizontal)
+//        .hAlign(.leading)
         
         VStack(spacing: 15) {
             

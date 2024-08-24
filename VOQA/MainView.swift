@@ -14,47 +14,44 @@ struct MainView: View {
     @State private var config: QuizSessionConfig?
     @State var logStatus: Bool
     var configManager = QuizConfigManager()
-
+    
     var body: some View {
-        NavigationStack(path: $path) {
-            VStack {
-                if !databaseManager.quizCatalogue.isEmpty {
-                    HomePage(quizCatalogue: databaseManager.quizCatalogue)
-                } else {
-                    VStack(alignment: .center) {
-                        
-                        CustomSpinnerView()
-                            .frame(height: 45)
-                    }
+        VStack {
+            if !databaseManager.quizCatalogue.isEmpty {
+                HomePage(quizCatalogue: databaseManager.quizCatalogue)
+            } else {
+                VStack(alignment: .center) {
+                    CustomSpinnerView()
+                        .frame(height: 45)
                 }
             }
-            .environment(\.quizSessionConfig, config)
-            .preferredColorScheme(.dark)
-            .onAppear {
-                Task {
-                    await setupQuizSessionConfig()
-                }
+        }
+        .environment(\.quizSessionConfig, config)
+        .preferredColorScheme(.dark)
+        .onAppear {
+            Task {
+                await setupQuizSessionConfig()
             }
-            .alert(item: $databaseManager.currentError) { error in
-                Alert(
-                    title: Text(error.title ?? "Error"),
-                    message: Text(error.message ?? "An unknown error occurred."),
-                    dismissButton: .default(Text("OK"))
-                )
-            }
-            .alert(item: $networkMonitor.connectionError) { error in
-                Alert(
-                    title: Text(error.title ?? "Network Error"),
-                    message: Text(error.message ?? "An unknown network error occurred."),
-                    dismissButton: .default(Text("OK"))
-                )
-            }
-            .overlay(
-                databaseManager.showFullPageError ? fullPageErrorView : nil
+        }
+        .alert(item: $databaseManager.currentError) { error in
+            Alert(
+                title: Text(error.title ?? "Error"),
+                message: Text(error.message ?? "An unknown error occurred."),
+                dismissButton: .default(Text("OK"))
             )
         }
+        .alert(item: $networkMonitor.connectionError) { error in
+            Alert(
+                title: Text(error.title ?? "Network Error"),
+                message: Text(error.message ?? "An unknown network error occurred."),
+                dismissButton: .default(Text("OK"))
+            )
+        }
+        .overlay(
+            databaseManager.showFullPageError ? fullPageErrorView : nil
+        )
     }
-
+    
     private func setupQuizSessionConfig() async {
         do {
             let localConfig = try configManager.loadLocalConfiguration()
@@ -71,7 +68,7 @@ struct MainView: View {
             }
         }
     }
-
+    
     var fullPageErrorView: some View {
         VStack {
             Text(databaseManager.currentError?.title ?? "Error")

@@ -60,11 +60,6 @@ struct HomePage: View {
                             .primaryTextStyleForeground()
                     }
                 }
-                .onAppear {
-                    Task {
-                        // Handle any onAppear logic if needed
-                    }
-                }
                 .alert(item: $errorMessage) { error in
                     Alert(title: Text("Error"), message: Text(error.message), dismissButton: .default(Text("OK")))
                 }
@@ -73,59 +68,44 @@ struct HomePage: View {
                 }
             }
             .tabItem {
-                TabIcons(title: "Home", icon: "square.grid.2x2")
+                TabIcons(title: "Home", icon: "house.fill")
             }
             .tag(0)
 
-            ProfileView()
+            MyLibrary()
                 .tabItem {
-                    TabIcons(title: "Performance", icon: "chart.bar.fill")
+                    TabIcons(title: "My Library", icon: "books.vertical.fill")
                 }
                 .tag(1)
 
-            PerformanceView()
+            AudioSettings()
                 .tabItem {
-                    TabIcons(title: "Profile", icon: "person.fill")
+                    TabIcons(title: "Audio Settings", icon: "slider.horizontal.3")
                 }
                 .tag(2)
+
         }
         .tint(.white).activeGlow(.white, radius: 2)
     }
 }
 
 
-//#Preview {
-//    HomePage()
-//        .preferredColorScheme(.dark)
-//}
-
-
-struct ProfileView: View {
-    @State private var voqaItem: Voqa?
-    @State private var path = NavigationPath()
-    @State private var currentQuiz = [Voqa]()
+struct AudioSettings: View {
     var body: some View {
-        NavigationStack(path: $path) {
-            VStack {
-                Text("Placeholder Profile View")
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-                    .padding()
-                
-//                HorizontalQuizListView(quizzes: currentQuiz, title: "STEM Subjects", tapAction: { quiz in
-//                    path.append(quiz)
-//                })
-            }
-            .onAppear {
-                getCatalogue()
-            }
+        VStack {
+            Text("Audio Settings")
+            
         }
     }
-    
-    func getCatalogue()  {
-        Task {
-           // viewModel.updateVoqaCatalogue()
-            
+}
+
+struct ProfileView: View {
+    var body: some View {
+        VStack {
+            Text("Placeholder Profile View")
+                .font(.largeTitle)
+                .fontWeight(.bold)
+                .padding()
         }
     }
 }

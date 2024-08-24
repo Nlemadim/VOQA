@@ -76,6 +76,10 @@
 		0B6561672C3E50340013663B /* dismissResponderBell.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0B6561662C3E50340013663B /* dismissResponderBell.wav */; };
 		0B6561792C3E50ED0013663B /* SessionCloser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B6561782C3E50ED0013663B /* SessionCloser.swift */; };
 		0B65617B2C3E51060013663B /* AudioSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B65617A2C3E51060013663B /* AudioSessionManager.swift */; };
+		0B747B332C799D6F000C5050 /* MyLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B747B322C799D6F000C5050 /* MyLibrary.swift */; };
+		0B747B362C79C08E000C5050 /* PageNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B747B352C79C08E000C5050 /* PageNavigationController.swift */; };
+		0B747B382C79C4DE000C5050 /* MyLibraryItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B747B372C79C4DE000C5050 /* MyLibraryItemView.swift */; };
+		0B747B3A2C79C570000C5050 /* QuizActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B747B392C79C570000C5050 /* QuizActivityView.swift */; };
 		0B7B17BA2C4804D600B11974 /* ScoreRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B7B17B92C4804D600B11974 /* ScoreRegistry.swift */; };
 		0B854D322C632AAE0025C2E1 /* Collection+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B854D312C632AAE0025C2E1 /* Collection+Extension.swift */; };
 		0B90E50C2C3E655A00903FB0 /* SessionConfigData2.json in Resources */ = {isa = PBXBuildFile; fileRef = 0B90E50B2C3E655A00903FB0 /* SessionConfigData2.json */; };
@@ -174,6 +178,10 @@
 		0B6561662C3E50340013663B /* dismissResponderBell.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = dismissResponderBell.wav; sourceTree = "<group>"; };
 		0B6561782C3E50ED0013663B /* SessionCloser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionCloser.swift; sourceTree = "<group>"; };
 		0B65617A2C3E51060013663B /* AudioSessionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioSessionManager.swift; sourceTree = "<group>"; };
+		0B747B322C799D6F000C5050 /* MyLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyLibrary.swift; sourceTree = "<group>"; };
+		0B747B352C79C08E000C5050 /* PageNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageNavigationController.swift; sourceTree = "<group>"; };
+		0B747B372C79C4DE000C5050 /* MyLibraryItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyLibraryItemView.swift; sourceTree = "<group>"; };
+		0B747B392C79C570000C5050 /* QuizActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizActivityView.swift; sourceTree = "<group>"; };
 		0B7B17B92C4804D600B11974 /* ScoreRegistry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreRegistry.swift; sourceTree = "<group>"; };
 		0B854D312C632AAE0025C2E1 /* Collection+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collection+Extension.swift"; sourceTree = "<group>"; };
 		0B90E50B2C3E655A00903FB0 /* SessionConfigData2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = SessionConfigData2.json; path = ../../../Desktop/SessionConfigData2.json; sourceTree = "<group>"; };
@@ -336,6 +344,14 @@
 			name = EnvironmentVariables;
 			sourceTree = "<group>";
 		};
+		0B747B342C79C058000C5050 /* PageNavigation */ = {
+			isa = PBXGroup;
+			children = (
+				0B747B352C79C08E000C5050 /* PageNavigationController.swift */,
+			);
+			name = PageNavigation;
+			sourceTree = "<group>";
+		};
 		0B7B17B82C48048E00B11974 /* Performance */ = {
 			isa = PBXGroup;
 			children = (
@@ -468,10 +484,11 @@
 		0BA63B4C2C7628FF00AE5048 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				0B747B342C79C058000C5050 /* PageNavigation */,
 				0BA63B492C76287D00AE5048 /* AppLaunch */,
 				0BA63B4D2C76292200AE5048 /* HomePage */,
-				0BA63B4F2C7629D600AE5048 /* Quiz */,
 				0BA63B4E2C76292F00AE5048 /* MyLibrary */,
+				0BA63B4F2C7629D600AE5048 /* Quiz */,
 				0BA63B582C762AE200AE5048 /* Performance */,
 				0BA63B5B2C762B3E00AE5048 /* Base */,
 				0B511D062C76331600D02CE6 /* Components */,
@@ -483,6 +500,7 @@
 			isa = PBXGroup;
 			children = (
 				0BA63B412C7627CD00AE5048 /* HomePage.swift */,
+				0BA63B432C7627E000AE5048 /* QuizDetailPage.swift */,
 			);
 			name = HomePage;
 			sourceTree = "<group>";
@@ -490,6 +508,9 @@
 		0BA63B4E2C76292F00AE5048 /* MyLibrary */ = {
 			isa = PBXGroup;
 			children = (
+				0B747B322C799D6F000C5050 /* MyLibrary.swift */,
+				0B747B372C79C4DE000C5050 /* MyLibraryItemView.swift */,
+				0B747B392C79C570000C5050 /* QuizActivityView.swift */,
 			);
 			name = MyLibrary;
 			sourceTree = "<group>";
@@ -499,7 +520,6 @@
 			children = (
 				0BA63B522C762A1700AE5048 /* QuizInfoView.swift */,
 				0BA63B542C762A2400AE5048 /* QuizPlayerView.swift */,
-				0BA63B432C7627E000AE5048 /* QuizDetailPage.swift */,
 				0B5BA5C42C764B1200E1155A /* QuizViewModel.swift */,
 				0BA63B562C762A8E00AE5048 /* SfxPlayer.swift */,
 				0B43DD0A2C78FA3E009F32EA /* QuizList.swift */,
@@ -696,12 +716,14 @@
 				0B6561792C3E50ED0013663B /* SessionCloser.swift in Sources */,
 				0B43DD122C790424009F32EA /* MainView.swift in Sources */,
 				0B6561192C3E4E950013663B /* Colo+Extensions.swift in Sources */,
+				0B747B382C79C4DE000C5050 /* MyLibraryItemView.swift in Sources */,
 				0B5BA5B22C76445E00E1155A /* DatabaseManager.swift in Sources */,
 				0BFAEA9C2C76A62D00B1CF83 /* QuizCarouselView.swift in Sources */,
 				0BC091E02C1D4463005FB223 /* ContentView.swift in Sources */,
 				0B25E0E02C24ECD000ACD552 /* String+Extensions.swift in Sources */,
 				0B5161A72C431BEB00BEC8D5 /* QuestionFormatter.swift in Sources */,
 				0B43DD162C791440009F32EA /* CreatAccountView.swift in Sources */,
+				0B747B3A2C79C570000C5050 /* QuizActivityView.swift in Sources */,
 				0B65613A2C3E4F440013663B /* AudioPlayerManager.swift in Sources */,
 				0B6561162C3E4E7E0013663B /* QuizProtocols.swift in Sources */,
 				0BA63B672C762CC000AE5048 /* FullTitleScrollView.swift in Sources */,
@@ -721,6 +743,7 @@
 				0B6561222C3E4EDB0013663B /* CGFloat+Extensions.swift in Sources */,
 				0B6561252C3E4EE10013663B /* UIScreen+Extensions.swift in Sources */,
 				0B65612E2C3E4F020013663B /* QuizSession.swift in Sources */,
+				0B747B362C79C08E000C5050 /* PageNavigationController.swift in Sources */,
 				0B6561402C3E4F540013663B /* AudioFileSorter.swift in Sources */,
 				0B511D112C76342200D02CE6 /* AddToLibraryButton.swift in Sources */,
 				0B6561552C3E4FA40013663B /* QuizConfigManager.swift in Sources */,
@@ -731,6 +754,7 @@
 				0BA63B442C7627E000AE5048 /* QuizDetailPage.swift in Sources */,
 				0BA63B3E2C76276100AE5048 /* VoqaConfigManager.swift in Sources */,
 				0B6561342C3E4F100013663B /* SessionInitializer.swift in Sources */,
+				0B747B332C799D6F000C5050 /* MyLibrary.swift in Sources */,
 				0B43DD0B2C78FA3E009F32EA /* QuizList.swift in Sources */,
 				0B6561432C3E4F5A0013663B /* QuestionPlayer.swift in Sources */,
 				0B6561282C3E4EE50013663B /* UUID+Extension.swift in Sources */,

@@ -93,6 +93,7 @@ struct QuizInfoView: View {
             .padding()
             .padding(.horizontal)
         }
+        .navigationBarBackButtonHidden(true)
         .frame(maxHeight: .infinity)
         .background {
             if let url = URL(string: selectedVoqa.imageUrl.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "") {

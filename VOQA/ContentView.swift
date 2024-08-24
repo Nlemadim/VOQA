@@ -55,10 +55,12 @@ struct ContentView: View {
 #Preview {
     let dbMgr = DatabaseManager.shared
     let ntwConn = NetworkMonitor.shared
+    let user = User()
     return ContentView()
         .preferredColorScheme(.dark)
         .environmentObject(dbMgr)
         .environmentObject(ntwConn)
+        .environmentObject(user)
 }
 
 /**

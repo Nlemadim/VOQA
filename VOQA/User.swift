@@ -14,6 +14,8 @@ class User: ObservableObject {
     @Published var fullName: String = ""
     @Published var profileImage: UIImage? = nil // New property for profile image
     @Published var isLoggedIn: Bool = false
+    @Published var voqaCollection: [Voqa] = []
+    @Published var currentUserVoqa: Voqa?
     
     // Function to save user credentials securely
     func saveCredentials() {
