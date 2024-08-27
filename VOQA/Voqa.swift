@@ -26,6 +26,35 @@ struct Voqa: Identifiable, Hashable, Decodable {
         case id, quizTitle, acronym, about, imageUrl, rating, curator, users, tags, colors, ratings, requiresSubscription
     }
     
+    // Custom initializer
+        init(
+            id: String,
+            quizTitle: String,
+            acronym: String,
+            about: String,
+            imageUrl: String,
+            rating: Int,
+            curator: String,
+            users: Int,
+            tags: [String],
+            colors: ThemeColors,
+            ratings: Int,
+            requiresSubscription: Bool
+        ) {
+            self.id = id
+            self.quizTitle = quizTitle
+            self.acronym = acronym
+            self.about = about
+            self.imageUrl = imageUrl
+            self.rating = rating
+            self.curator = curator
+            self.users = users
+            self.tags = tags
+            self.colors = colors
+            self.ratings = ratings
+            self.requiresSubscription = requiresSubscription
+        }
+    
     // Decoding initializer
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -63,6 +92,54 @@ struct Voqa: Identifiable, Hashable, Decodable {
     static func == (lhs: Voqa, rhs: Voqa) -> Bool {
         return lhs.id == rhs.id
     }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+}
+
+struct VoqaMockModel: Identifiable, Hashable {
+    var id: String
+    var quizTitle: String
+    var acronym: String
+    var about: String
+    var imageUrl: String
+    var rating: Int
+    var curator: String
+    var users: Int
+    var tags: [String]
+    var colors: [Color]
+    var ratings: Int
+    var requiresSubscription: Bool
+    
+    init(
+        id: String,
+        quizTitle: String,
+        acronym: String,
+        about: String,
+        imageUrl: String,
+        rating: Int,
+        curator: String,
+        users: Int,
+        tags: [String],
+        colors: [Color],
+        ratings: Int,
+        requiresSubscription: Bool
+    ) {
+        self.id = id
+        self.quizTitle = quizTitle
+        self.acronym = acronym
+        self.about = about
+        self.imageUrl = imageUrl
+        self.rating = rating
+        self.curator = curator
+        self.users = users
+        self.tags = tags
+        self.colors = colors
+        self.ratings = ratings
+        self.requiresSubscription = requiresSubscription
+    }
+    
     
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)

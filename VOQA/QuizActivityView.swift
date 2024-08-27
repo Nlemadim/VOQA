@@ -10,34 +10,28 @@ import SwiftUI
 
 struct QuizActivityView: View {
     @Environment(\.dismiss) private var dismiss
-    @State private var currentPage: String = "Summary"
+    @State private var currentPage: String = "Activity"
     @Namespace private var animation
 
-    // Add Voqa as a parameter
     var voqa: Voqa
+    var onNavigateToQuizInfo: (Voqa) -> Void  // Callback to handle navigation
 
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
             VStack {
-                HeaderView(voqa: voqa)  // Pass Voqa to HeaderView
+                HeaderView(voqa: voqa)
                 
                 // MARK: Pinned Header With Content
                 LazyVStack(pinnedViews: [.sectionHeaders]) {
                     Section {
-                        
                         if currentPage == "Summary" {
                             Text("Summary Records Section")
-                        }
-                        
-                        if currentPage == "Core Topics" {
+                        } else if currentPage == "Core Topics" {
                             Text("Core Topics List Section")
-                        }
-                        
-                        if currentPage == "Q&A" {
+                        } else if currentPage == "Q&A" {
                             Text("Q&A List Section")
                         }
                         // Add more content views based on currentPage if needed
-                        
                     } header: {
                         PinnedHeaderView()
                     }
@@ -49,7 +43,6 @@ struct QuizActivityView: View {
         .coordinateSpace(name: "SCROLL")
         .navigationBarBackButtonHidden(true)
     }
-    
     
     @ViewBuilder
     func HeaderView(voqa: Voqa) -> some View {
@@ -69,43 +62,58 @@ struct QuizActivityView: View {
                             .black.opacity(0.9)
                         ], startPoint: .top, endPoint: .bottom)
                         
-                        VStack(alignment: .leading, spacing: 1) {
-                            Image(systemName: "chevron.left")
-                                .foregroundStyle(.white).activeGlow(.white, radius: 1)
-                                .padding(.vertical)
-                                .allowsHitTesting(true)
-                                .onTapGesture {
-                                    dismiss()
+                        HStack {
+                            VStack(alignment: .leading, spacing: 1) {
+                                Image(systemName: "chevron.left")
+                                    .foregroundStyle(.white)
+                                    .activeGlow(.white, radius: 1)
+                                    .padding(.vertical)
+                                    .allowsHitTesting(true)
+                                    .onTapGesture {
+                                        dismiss()
+                                    }
+                                
+                                Spacer()
+                                
+                                Text(voqa.acronym)
+                                    .font(.title.bold())
+                                    .primaryTextStyleForeground()
+                                
+                                Label {
+                                    Text("My Activities")
+                                        .fontWeight(.semibold)
+                                        .foregroundStyle(.white.opacity(0.7))
+                                } icon: {}
+                                .font(.caption)
+                            }
+                            .padding(.horizontal)
+                            .padding(.bottom, 15)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            
+                            CircularPlayButton2(
+                                color: Color.fromHex(voqa.colors.main),
+                                label: "Start",
+                                progressMode: .quickLoad,
+                                action: {
+                                    onNavigateToQuizInfo(voqa)
                                 }
-                            
-                            Spacer()
-                            
-                            Text(voqa.acronym)
-                                .font(.title.bold())
-                                .primaryTextStyleForeground()
-                            
-                            Label {
-                                Text("My Activities")
-                                    .fontWeight(.semibold)
-                                    .foregroundStyle(.white.opacity(0.7))
-                            } icon: {}
-                            .font(.caption)
+                            )
+                            .hAlign(.trailing)
+                            .padding(.horizontal)
+                            .padding(5)
+                            .offset(y: -minY)
                         }
-                        .padding(.horizontal)
-                        .padding(.bottom, 15)
-                        .frame(maxWidth: .infinity, alignment: .leading)
                     }
                 }
                 .cornerRadius(15)
                 .offset(y: -minY)
-                
         }
         .frame(height: 250)
     }
     
     @ViewBuilder
     func PinnedHeaderView() -> some View {
-        let pages: [String] = ["Summary", "Core Topics", "Q&A", "Performance"]
+        let pages: [String] = ["Activity", "Q&A History", "Performance", "Core Topics", "Contribute a Question", "Rate and Review"]
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 25) {
                 ForEach(pages, id: \.self) { page in
@@ -143,3 +151,9 @@ struct QuizActivityView: View {
     }
 }
 
+//#Preview {
+//    return QuizActivityView(starttPressed: .constant(false), voqa: mockVoqa)
+//        .preferredColorScheme(.dark)
+//}
+
+let mockVoqa = VoqaMockModel(id: "hbjsdjjkxsk", quizTitle: "Mock Voqa Title", acronym: "MVT", about: "Some Mock Model string used to represent about quiz property", imageUrl: "https://storage.googleapis.com/buildship-ljnsun-us-central1/VoqaCollection/kotlin/kotlin_programming_language.png", rating: 4, curator: "Gista", users: 5, tags: ["Mock", "Sample"], colors: [.mint, .purple, .teal], ratings: 4, requiresSubscription: true)

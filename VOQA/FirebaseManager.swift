@@ -26,15 +26,15 @@ final class FirebaseManager {
     // Holds the cached quiz collection data
     @Published var quizCollection: [QuizData] = []
     
-    private init() {
-        configureFirestorePersistence()
-    }
-    
-    private func configureFirestorePersistence() {
-        let settings = FirestoreSettings()
-        settings.isPersistenceEnabled = true
-        db.settings = settings
-    }
+//    private init() {
+//        configureFirestorePersistence()
+//    }
+//    
+//    private func configureFirestorePersistence() {
+//        let settings = FirestoreSettings()
+//        settings.isPersistenceEnabled = true
+//        db.settings = settings
+//    }
     
     // Upload a Single Quiz Document to Firebase
     func uploadQuizDocumentToFirebase(quiz: QuizData) async throws {

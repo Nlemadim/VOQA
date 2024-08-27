@@ -37,7 +37,7 @@ struct QuestionFormatter {
     }
     
     static func formatQuestionText(question: Question) -> String {
-        var formattedQuestion =
+        let formattedQuestion =
         
         """
         New Question!\n

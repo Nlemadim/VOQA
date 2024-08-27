@@ -12,6 +12,7 @@ import FirebaseAuth
 import CryptoKit
 
 struct AppLaunch: View {
+    @EnvironmentObject var user: User
     @State private var startLoading: Bool = false
     @State private var transitionToSignIn: Bool = false
     @State private var zoomInProgress: Bool = false
@@ -26,7 +27,6 @@ struct AppLaunch: View {
     @State private var nonce: String?
     @AppStorage("log_Status") private var logStatus: Bool = false
     @State var loadCatalogue: Bool
-    @StateObject private var user = User()
     @State private var path = NavigationPath()
     
     var body: some View {
@@ -143,6 +143,7 @@ struct AppLaunch: View {
         }
     }
     
+    // Method to handle sign in with Apple
     private func signInWithApple(authorization: ASAuthorization) {
         guard let nonce = nonce else {
             showError("Unable to process your request")
@@ -157,13 +158,25 @@ struct AppLaunch: View {
                     user.fullName = "\(appleIDCredential.fullName?.givenName ?? "") \(appleIDCredential.fullName?.familyName ?? "")"
                     user.isLoggedIn = true
                     user.saveCredentials()
+
+                    // Assign Beta subscription access
+                    let betaAccess = AccountType.beta.packageAccess.map { $0.rawValue }
+                    let badges = [Badges.betaAccessUser.rawValue]
+                    
+                    // Update user configuration with Beta access, badges, and account type
+                    user.updateUserConfig(
+                        accountType: AccountType.beta.rawValue,
+                        subscriptionPackages: betaAccess,
+                        badges: badges
+                    )
                 }
-                handleSuccessfulSignIn()
+                self.handleSuccessfulSignIn()
             case .failure(let error):
-                showError(error.localizedDescription)
+                self.showError(error.localizedDescription)
             }
         }
     }
+
     
     private func handleSignInError(_ error: Error) {
         let nsError = error as NSError

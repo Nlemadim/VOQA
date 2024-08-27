@@ -14,27 +14,20 @@ struct MyLibrary: View {
 
     var body: some View {
         NavigationStack(path: $path) {
-            List {
-                ForEach(user.voqaCollection, id: \.self) { voqa in
-                    MyLibraryItemView(audioQuiz: voqa) { selectedVoqa in
-                        // Navigate to QuizInfoView when the list item is tapped
-                        path.append(PageNavigationController(type: .quizPlayerDetails(selectedVoqa)))
-                        
-                    } onDetailsTap: { selectedVoqa in
-                        // Navigate to QuizPlayerDetails when the ellipsis button is tapped
-                        path.append(PageNavigationController(type: .quizInfo(selectedVoqa)))
-                    }
-                }
+            LibraryListView(voqaCollection: user.voqaCollection) { selectedVoqa in
+                // Update user's current Voqa on tap and navigate to QuizActivityView
+                user.currentUserVoqa = selectedVoqa
+                path.append(PageNavigationController(type: .quizPlayerDetails(selectedVoqa)))
             }
             .listStyle(PlainListStyle())
             .navigationTitle("My Library")
-            .navigationBarBackButtonHidden(true)
             .navigationBarTitleDisplayMode(.large)
             .preferredColorScheme(.dark)
             .onAppear {
                 Task {
                     await databaseManager.fetchQuizCollection()
                     loadUserCollection()
+                    handleNavigationLogicOnAppear()  // Call the new navigation logic method
                 }
             }
             .navigationDestination(for: PageNavigationController.self) { destination in
@@ -42,8 +35,10 @@ struct MyLibrary: View {
                 case .quizInfo(let voqa):
                     QuizInfoView(selectedVoqa: voqa)
                 case .quizPlayerDetails(let voqa):
-                    QuizActivityView(voqa: voqa)
-                case .createAccount:
+                    QuizActivityView(voqa: voqa) { voqa in
+                        path.append(PageNavigationController(type: .quizInfo(voqa)))
+                    }
+                case .quizPlayerView:
                     CreateAccountView()
                 }
             }
@@ -54,13 +49,19 @@ struct MyLibrary: View {
         user.voqaCollection = databaseManager.quizCollection.map { Voqa(from: $0) }
         user.currentUserVoqa = user.voqaCollection.first
     }
+
+    private func handleNavigationLogicOnAppear() {
+        // Check if user has a selected Voqa
+        if let selectedVoqa = user.currentUserVoqa {
+            // Navigate to QuizActivityView if a Voqa is selected
+            path.append(PageNavigationController(type: .quizPlayerDetails(selectedVoqa)))
+        }
+    }
 }
+
 
 #Preview {
     MyLibrary()
         .environmentObject(User())
         .environmentObject(DatabaseManager.shared)
 }
-
-
-

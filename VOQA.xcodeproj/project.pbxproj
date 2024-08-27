@@ -19,6 +19,14 @@
 		0B31C40C2C223286006FB5D1 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B31C4092C223286006FB5D1 /* AVFoundation.framework */; };
 		0B31C40D2C223286006FB5D1 /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B31C40A2C223286006FB5D1 /* AVKit.framework */; };
 		0B31C40E2C223286006FB5D1 /* AVFAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B31C40B2C223286006FB5D1 /* AVFAudio.framework */; };
+		0B34E4642C7CDC2E005A64D8 /* QuizCategoryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B34E4632C7CDC2E005A64D8 /* QuizCategoryButton.swift */; };
+		0B34E4662C7CE899005A64D8 /* HapticFeedback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B34E4652C7CE899005A64D8 /* HapticFeedback.swift */; };
+		0B34E4682C7D9C7E005A64D8 /* AccountType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B34E4672C7D9C7E005A64D8 /* AccountType.swift */; };
+		0B34E46A2C7D9CA9005A64D8 /* SubscriptionPackageAccess.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B34E4692C7D9CA9005A64D8 /* SubscriptionPackageAccess.swift */; };
+		0B34E46C2C7D9CC9005A64D8 /* Badge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B34E46B2C7D9CC9005A64D8 /* Badge.swift */; };
+		0B34E46E2C7D9CF1005A64D8 /* UserConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B34E46D2C7D9CF1005A64D8 /* UserConfig.swift */; };
+		0B34E4712C7DA25E005A64D8 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B34E4702C7DA25E005A64D8 /* ProfileView.swift */; };
+		0B34E4742C7DB66C005A64D8 /* AddOns.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B34E4732C7DB66C005A64D8 /* AddOns.swift */; };
 		0B43DD0B2C78FA3E009F32EA /* QuizList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B43DD0A2C78FA3E009F32EA /* QuizList.swift */; };
 		0B43DD0D2C78FB4B009F32EA /* QuizCategoryDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B43DD0C2C78FB4B009F32EA /* QuizCategoryDetails.swift */; };
 		0B43DD102C78FF49009F32EA /* QuizListViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B43DD0F2C78FF49009F32EA /* QuizListViewer.swift */; };
@@ -126,6 +134,14 @@
 		0B31C4092C223286006FB5D1 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS17.4.sdk/System/Library/Frameworks/AVFoundation.framework; sourceTree = DEVELOPER_DIR; };
 		0B31C40A2C223286006FB5D1 /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS17.4.sdk/System/Library/Frameworks/AVKit.framework; sourceTree = DEVELOPER_DIR; };
 		0B31C40B2C223286006FB5D1 /* AVFAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFAudio.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS17.4.sdk/System/Library/Frameworks/AVFAudio.framework; sourceTree = DEVELOPER_DIR; };
+		0B34E4632C7CDC2E005A64D8 /* QuizCategoryButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizCategoryButton.swift; sourceTree = "<group>"; };
+		0B34E4652C7CE899005A64D8 /* HapticFeedback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticFeedback.swift; sourceTree = "<group>"; };
+		0B34E4672C7D9C7E005A64D8 /* AccountType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountType.swift; sourceTree = "<group>"; };
+		0B34E4692C7D9CA9005A64D8 /* SubscriptionPackageAccess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionPackageAccess.swift; sourceTree = "<group>"; };
+		0B34E46B2C7D9CC9005A64D8 /* Badge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Badge.swift; sourceTree = "<group>"; };
+		0B34E46D2C7D9CF1005A64D8 /* UserConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserConfig.swift; sourceTree = "<group>"; };
+		0B34E4702C7DA25E005A64D8 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		0B34E4732C7DB66C005A64D8 /* AddOns.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddOns.swift; sourceTree = "<group>"; };
 		0B43DD0A2C78FA3E009F32EA /* QuizList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizList.swift; sourceTree = "<group>"; };
 		0B43DD0C2C78FB4B009F32EA /* QuizCategoryDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizCategoryDetails.swift; sourceTree = "<group>"; };
 		0B43DD0F2C78FF49009F32EA /* QuizListViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizListViewer.swift; sourceTree = "<group>"; };
@@ -281,6 +297,22 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		0B34E46F2C7DA246005A64D8 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				0B34E4702C7DA25E005A64D8 /* ProfileView.swift */,
+			);
+			name = Profile;
+			sourceTree = "<group>";
+		};
+		0B34E4722C7DB651005A64D8 /* AddOns */ = {
+			isa = PBXGroup;
+			children = (
+				0B34E4732C7DB66C005A64D8 /* AddOns.swift */,
+			);
+			name = AddOns;
+			sourceTree = "<group>";
+		};
 		0B43DD0E2C78FF2E009F32EA /* TestQuizList */ = {
 			isa = PBXGroup;
 			children = (
@@ -293,6 +325,10 @@
 			isa = PBXGroup;
 			children = (
 				0B43DD132C791405009F32EA /* User.swift */,
+				0B34E4672C7D9C7E005A64D8 /* AccountType.swift */,
+				0B34E4692C7D9CA9005A64D8 /* SubscriptionPackageAccess.swift */,
+				0B34E46B2C7D9CC9005A64D8 /* Badge.swift */,
+				0B34E46D2C7D9CF1005A64D8 /* UserConfig.swift */,
 			);
 			name = User;
 			sourceTree = "<group>";
@@ -315,6 +351,7 @@
 				0B5BA5AE2C76445E00E1155A /* CircularPlayButton.swift */,
 				0B5BA5A72C76419900E1155A /* AcceptButton.swift */,
 				0B5BA5A52C76413D00E1155A /* TabIcons.swift */,
+				0B34E4632C7CDC2E005A64D8 /* QuizCategoryButton.swift */,
 				0B5BA5C22C76499C00E1155A /* DownloadButton.swift */,
 			);
 			name = Buttons;
@@ -332,6 +369,7 @@
 			isa = PBXGroup;
 			children = (
 				0B5161A62C431BEB00BEC8D5 /* QuestionFormatter.swift */,
+				0B34E4652C7CE899005A64D8 /* HapticFeedback.swift */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -484,6 +522,8 @@
 		0BA63B4C2C7628FF00AE5048 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				0B34E4722C7DB651005A64D8 /* AddOns */,
+				0B34E46F2C7DA246005A64D8 /* Profile */,
 				0B747B342C79C058000C5050 /* PageNavigation */,
 				0BA63B492C76287D00AE5048 /* AppLaunch */,
 				0BA63B4D2C76292200AE5048 /* HomePage */,
@@ -661,7 +701,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1530;
-				LastUpgradeCheck = 1530;
+				LastUpgradeCheck = 1540;
 				TargetAttributes = {
 					0BC091D92C1D4463005FB223 = {
 						CreatedOnToolsVersion = 15.3;
@@ -723,6 +763,7 @@
 				0B25E0E02C24ECD000ACD552 /* String+Extensions.swift in Sources */,
 				0B5161A72C431BEB00BEC8D5 /* QuestionFormatter.swift in Sources */,
 				0B43DD162C791440009F32EA /* CreatAccountView.swift in Sources */,
+				0B34E46E2C7D9CF1005A64D8 /* UserConfig.swift in Sources */,
 				0B747B3A2C79C570000C5050 /* QuizActivityView.swift in Sources */,
 				0B65613A2C3E4F440013663B /* AudioPlayerManager.swift in Sources */,
 				0B6561162C3E4E7E0013663B /* QuizProtocols.swift in Sources */,
@@ -748,12 +789,16 @@
 				0B511D112C76342200D02CE6 /* AddToLibraryButton.swift in Sources */,
 				0B6561552C3E4FA40013663B /* QuizConfigManager.swift in Sources */,
 				0BFAEA9A2C76A5F000B1CF83 /* RatingsView.swift in Sources */,
+				0B34E4662C7CE899005A64D8 /* HapticFeedback.swift in Sources */,
 				0B6561312C3E4F080013663B /* QuizSessionManager.swift in Sources */,
+				0B34E46A2C7D9CA9005A64D8 /* SubscriptionPackageAccess.swift in Sources */,
 				0BC091DE2C1D4463005FB223 /* VOQAApp.swift in Sources */,
+				0B34E4712C7DA25E005A64D8 /* ProfileView.swift in Sources */,
 				0B5BA5AC2C7642FC00E1155A /* VoqaCollection.swift in Sources */,
 				0BA63B442C7627E000AE5048 /* QuizDetailPage.swift in Sources */,
 				0BA63B3E2C76276100AE5048 /* VoqaConfigManager.swift in Sources */,
 				0B6561342C3E4F100013663B /* SessionInitializer.swift in Sources */,
+				0B34E46C2C7D9CC9005A64D8 /* Badge.swift in Sources */,
 				0B747B332C799D6F000C5050 /* MyLibrary.swift in Sources */,
 				0B43DD0B2C78FA3E009F32EA /* QuizList.swift in Sources */,
 				0B6561432C3E4F5A0013663B /* QuestionPlayer.swift in Sources */,
@@ -764,6 +809,7 @@
 				0BA63B612C762C8F00AE5048 /* VoqaCollectionView.swift in Sources */,
 				0B65614F2C3E4F940013663B /* QuizDataModels.swift in Sources */,
 				0B65615B2C3E4FB80013663B /* ConfigurationUrls.swift in Sources */,
+				0B34E4682C7D9C7E005A64D8 /* AccountType.swift in Sources */,
 				0B11C9402C77E4ED002AF228 /* QuizCatalogue.swift in Sources */,
 				0BA63B532C762A1700AE5048 /* QuizInfoView.swift in Sources */,
 				0B43DD0D2C78FB4B009F32EA /* QuizCategoryDetails.swift in Sources */,
@@ -772,6 +818,7 @@
 				0B11C93E2C77E4C4002AF228 /* Voqa.swift in Sources */,
 				0B6561492C3E4F640013663B /* ReviewsManager.swift in Sources */,
 				0B31C3FE2C2211AD006FB5D1 /* NetworkMonitor.swift in Sources */,
+				0B34E4642C7CDC2E005A64D8 /* QuizCategoryButton.swift in Sources */,
 				0B65612B2C3E4EEA0013663B /* Array+Extension.swift in Sources */,
 				0B6561462C3E4F5F0013663B /* IdleSession.swift in Sources */,
 				0BA63B4B2C7628AD00AE5048 /* AppLaunch.swift in Sources */,
@@ -790,6 +837,7 @@
 				0BA63B3C2C76274200AE5048 /* HomepageConfigProtocols.swift in Sources */,
 				0B4BD9392C752FD3006A043D /* QuizData.swift in Sources */,
 				0BA63B692C762CCA00AE5048 /* FullTitleView.swift in Sources */,
+				0B34E4742C7DB66C005A64D8 /* AddOns.swift in Sources */,
 				0B5BA5B12C76445E00E1155A /* CircularPlayButton.swift in Sources */,
 				0BA63B572C762A8E00AE5048 /* SfxPlayer.swift in Sources */,
 				0B65617B2C3E51060013663B /* AudioSessionManager.swift in Sources */,
@@ -837,6 +885,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -898,6 +947,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -922,9 +972,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = VOQA/VOQA.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"VOQA/Preview Content\"";
 				DEVELOPMENT_TEAM = VW5K99T4JJ;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -939,8 +991,7 @@
 				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
@@ -961,9 +1012,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = VOQA/VOQA.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"VOQA/Preview Content\"";
 				DEVELOPMENT_TEAM = VW5K99T4JJ;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -978,8 +1031,7 @@
 				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";

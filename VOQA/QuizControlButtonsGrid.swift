@@ -165,36 +165,64 @@ struct MultiChoiceButton: View {
 }
 
 
+
+enum ProgressViewDisplayMode {
+    case quickLoad
+    case awaitLoading(Binding<Bool>)
+}
+
 struct CircularPlayButton2: View {
-    @Binding var isDownloading: Bool
-    @State var isNowPlaying: Bool = false
-    var imageLabel: String?
+    @State private var showProgressView = false
     var color: Color
-    var playAction: () -> Void
-    
+    var label: String
+    var progressMode: ProgressViewDisplayMode
+    var action: () -> Void
+
     var body: some View {
-        Button(action: {
-            self.isNowPlaying.toggle()
-            playAction()
-        }) {
-            if isDownloading {
+        Button(action: buttonAction) {
+            if showProgressView {
                 ProgressView()
                     .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                    .frame(width: 23, height: 23)  // Adjusted for 2/3 size
             } else {
-                Text(isNowPlaying ? "Start" : "Play")
-                    .foregroundColor(.black)
-                    .frame(width: 70, height: 70)
+                Text(label)
+                    .foregroundColor(.white)
+                    .frame(width: 47, height: 47)  // Adjusted for 2/3 size
                     .background(color)
-                    .cornerRadius(40)
+                    .cornerRadius(23.5)  // Adjusted for 2/3 size
             }
         }
-        .frame(width: 70, height: 70)
+        .frame(width: 47, height: 47)  // Adjusted for 2/3 size
+        .foregroundStyle(color)
         .overlay(
             Circle()
                 .stroke(Color.white, lineWidth: 1)
         )
-        .disabled(isDownloading)
+        .disabled(showProgressView && isAwaitLoadingMode())
+    }
+
+    private func buttonAction() {
+        switch progressMode {
+        case .quickLoad:
+            showProgressView = true
+            action()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                showProgressView = false
+            }
+        case .awaitLoading(let isLoading):
+            showProgressView = true
+            action()
+            isLoading.wrappedValue = true
+        }
+    }
+    
+    private func isAwaitLoadingMode() -> Bool {
+        if case .awaitLoading = progressMode {
+            return true
+        }
+        return false
     }
 }
+
 
 

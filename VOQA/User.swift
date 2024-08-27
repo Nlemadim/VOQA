@@ -12,38 +12,80 @@ class User: ObservableObject {
     @Published var email: String = ""
     @Published var password: String = ""
     @Published var fullName: String = ""
-    @Published var profileImage: UIImage? = nil // New property for profile image
+    @Published var profileImage: UIImage? = nil
     @Published var isLoggedIn: Bool = false
     @Published var voqaCollection: [Voqa] = []
     @Published var currentUserVoqa: Voqa?
+    @Published var accessItems: [SubscriptionPackageAccess] = []
+    @Published var userConfig: UserConfig
+
+    init() {
+        self.userConfig = UserConfig()  // Initialize with default values
+        self.accessItems = []  // Initialize with an empty list or based on some logic
+        loadUserConfig()  // Load user config after initialization
+    }
     
-    // Function to save user credentials securely
+    // Method to create user configuration
+    func createUserConfig(username: String, email: String, voice: String, currentUserVoqaID: String? = nil, quizCollection: [String] = [], accountType: String = AccountType.guest.rawValue, subscriptionPackages: [String] = [], badges: [String] = []) {
+        self.userConfig = UserConfig(username: username, email: email, voice: voice, currentUserVoqaID: currentUserVoqaID, quizCollection: quizCollection, accountType: accountType, subscriptionPackages: subscriptionPackages, badges: badges)
+        saveUserConfig()
+    }
+    
+    // Method to update user configuration
+    func updateUserConfig(username: String? = nil, email: String? = nil, voice: String? = nil, currentUserVoqaID: String? = nil, quizCollection: [String]? = nil, accountType: String? = nil, subscriptionPackages: [String]? = nil, badges: [String]? = nil) {
+        if let username = username {
+            self.userConfig.username = username
+        }
+        if let email = email {
+            self.userConfig.email = email
+        }
+        if let voice = voice {
+            self.userConfig.voice = voice
+        }
+        if let currentUserVoqaID = currentUserVoqaID {
+            self.userConfig.currentUserVoqaID = currentUserVoqaID
+        }
+        if let quizCollection = quizCollection {
+            self.userConfig.quizCollection = quizCollection
+        }
+        if let accountType = accountType {
+            self.userConfig.accountType = accountType
+        }
+        if let subscriptionPackages = subscriptionPackages {
+            self.userConfig.subscriptionPackages = subscriptionPackages
+        }
+        if let badges = badges {
+            self.userConfig.badges = badges
+        }
+        
+        saveUserConfig()
+    }
+    
+    // Save user credentials securely
     func saveCredentials() {
         let emailKey = "userEmail"
         let passwordKey = "userPassword"
         let fullNameKey = "userFullName"
         let profileImageKey = "userProfileImage"
         
-        // Save email and full name in UserDefaults
         UserDefaults.standard.set(email, forKey: emailKey)
         UserDefaults.standard.set(fullName, forKey: fullNameKey)
-        
-        // Save password in UserDefaults (for simplicity; ideally use Keychain)
         UserDefaults.standard.set(password, forKey: passwordKey)
         
-        // Save profile image in UserDefaults
         if let imageData = profileImage?.pngData() {
             UserDefaults.standard.set(imageData, forKey: profileImageKey)
         }
         
-        // Print user details when credentials are saved
+        // Update user configuration with new details
+        updateUserConfig(username: fullName, email: email)
+        
         print("User details saved:")
         print("Email: \(email)")
         print("Full Name: \(fullName)")
         print("Password: \(password)")
     }
     
-    // Function to retrieve saved credentials
+    // Retrieve saved credentials
     func loadCredentials() {
         let emailKey = "userEmail"
         let passwordKey = "userPassword"
@@ -61,7 +103,7 @@ class User: ObservableObject {
         }
     }
     
-    // Function to clear credentials
+    // Clear credentials
     func clearCredentials() {
         let emailKey = "userEmail"
         let passwordKey = "userPassword"
@@ -78,6 +120,33 @@ class User: ObservableObject {
         fullName = ""
         profileImage = nil
     }
+    
+    // Save user configuration
+    private func saveUserConfig() {
+        do {
+            let data = try JSONEncoder().encode(userConfig)
+            UserDefaults.standard.set(data, forKey: "userConfig")
+        } catch {
+            print("Failed to save user config: \(error.localizedDescription)")
+        }
+    }
+    
+    // Load user configuration
+    private func loadUserConfig() {
+        guard let data = UserDefaults.standard.data(forKey: "userConfig") else {
+            return  // Use the default UserConfig already set in init
+        }
+        do {
+            self.userConfig = try JSONDecoder().decode(UserConfig.self, from: data)
+        } catch {
+            print("Failed to load user config: \(error.localizedDescription)")
+        }
+    }
+    
+    // Delete user configuration
+    func deleteUserConfig() {
+        UserDefaults.standard.removeObject(forKey: "userConfig")
+        self.userConfig = UserConfig()  // Reset to default configuration
+    }
 }
-
 
