@@ -41,20 +41,17 @@ struct VoicedFeedback: Codable {
 
 struct ControlsFeedback: Codable {
     var startQuiz: VoicedFeedback
-    var quit: VoicedFeedback
     var nextQuestion: VoicedFeedback
     var repeatQuestion: VoicedFeedback
 
     enum CodingKeys: String, CodingKey {
         case startQuiz
-        case quit
         case nextQuestion
         case repeatQuestion
     }
 
-    init(startQuiz: VoicedFeedback, quit: VoicedFeedback, nextQuestion: VoicedFeedback, repeatQuestion: VoicedFeedback) {
+    init(startQuiz: VoicedFeedback, nextQuestion: VoicedFeedback, repeatQuestion: VoicedFeedback) {
         self.startQuiz = startQuiz
-        self.quit = quit
         self.nextQuestion = nextQuestion
         self.repeatQuestion = repeatQuestion
     }
@@ -62,7 +59,6 @@ struct ControlsFeedback: Codable {
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         startQuiz = try container.decode(VoicedFeedback.self, forKey: .startQuiz)
-        quit = try container.decode(VoicedFeedback.self, forKey: .quit)
         nextQuestion = try container.decode(VoicedFeedback.self, forKey: .nextQuestion)
         repeatQuestion = try container.decode(VoicedFeedback.self, forKey: .repeatQuestion)
     }
@@ -70,7 +66,6 @@ struct ControlsFeedback: Codable {
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(startQuiz, forKey: .startQuiz)
-        try container.encode(quit, forKey: .quit)
         try container.encode(nextQuestion, forKey: .nextQuestion)
         try container.encode(repeatQuestion, forKey: .repeatQuestion)
     }

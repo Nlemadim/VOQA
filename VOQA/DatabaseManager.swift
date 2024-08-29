@@ -19,6 +19,8 @@ class DatabaseManager: ObservableObject {
     
     private let firebaseManager = FirebaseManager.shared
     private var networkService = NetworkService()
+    private var configManager = QuizConfigManager()
+    var sessionConfiguration: QuizSessionConfig?
     private init() {}
     
     func handleError(_ error: DatabaseError) {
@@ -38,6 +40,11 @@ class DatabaseManager: ObservableObject {
                 break
             }
         }
+    }
+    
+    func loadVoiceConfiguration(for voice: AddOnItem) async throws  {
+        let loadedConfig = try await configManager.loadVoiceConfiguration(for: voice)
+        self.sessionConfiguration = loadedConfig
     }
     
     func fetchQuestions() async {

@@ -10,12 +10,12 @@ import SwiftUI
 
 struct QuizActivityView: View {
     @Environment(\.dismiss) private var dismiss
-    @State private var currentPage: String = "Activity"
+    @State private var currentPage: String = "Latest Scores"
     @Namespace private var animation
-
+    
     var voqa: Voqa
     var onNavigateToQuizInfo: (Voqa) -> Void  // Callback to handle navigation
-
+    
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
             VStack {
@@ -24,12 +24,22 @@ struct QuizActivityView: View {
                 PinnedHeaderView()
                 
                 VStack {
-                    if currentPage == "Summary" {
-                        Text("Summary Records Section")
-                    } else if currentPage == "Core Topics" {
-                        Text("Core Topics List Section")
-                    } else if currentPage == "Q&A" {
-                        Text("Q&A List Section")
+                    // Switch between different views based on currentPage
+                    switch currentPage {
+                    case "Latest Scores":
+                        LatestScoresView()
+                    case "Performance":
+                        PerformanceView()
+                    case "Q&A History":
+                        QnAHistoryView()
+                    case "Test Topics":
+                        TestTopicsView()
+                    case "Contribute a Question":
+                        ContributeQuestionView()
+                    case "Rate and Review":
+                        RateReviewView()
+                    default:
+                        Text("No content available")
                     }
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -40,22 +50,6 @@ struct QuizActivityView: View {
         .navigationBarBackButtonHidden(true)
     }
     
-    @ViewBuilder
-    func NarratorTabView() -> some View {
-        let userAddonItems: [AddOnItem] = [gusVoiceItem, casandraVoiceItem, iniVoiceItem, dogonYaroVoiceItem]
-        
-        VStack {
-            TabView {
-                ForEach(userAddonItems, id: \.name) { item in
-                    QuizAddOnItem(item: item)
-                        .padding()
-                }
-            }
-            .tabViewStyle(PageTabViewStyle())
-            .frame(height: 400)
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-    }
     
     @ViewBuilder
     func HeaderView(voqa: Voqa) -> some View {
@@ -97,7 +91,7 @@ struct QuizActivityView: View {
                                         .fontWeight(.semibold)
                                         .foregroundStyle(.white.opacity(0.7))
                                 } icon: {}
-                                .font(.caption)
+                                    .font(.caption)
                             }
                             .padding(.horizontal)
                             .padding(.bottom, 15)
@@ -121,12 +115,12 @@ struct QuizActivityView: View {
                 .cornerRadius(15)
                 .offset(y: -minY)
         }
-        .frame(height: 200)
+        .frame(height: 250)
     }
     
     @ViewBuilder
     func PinnedHeaderView() -> some View {
-        let pages: [String] = ["Latest Score", "Performance", "Q&A History", "Test Topics", "Contribute a Question", "Rate and Review"]
+        let pages: [String] = ["Latest Scores", "Performance", "Q&A History", "Test Topics", "Contribute a Question", "Rate and Review"]
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 25) {
                 ForEach(pages, id: \.self) { page in
@@ -160,6 +154,60 @@ struct QuizActivityView: View {
             .padding(.horizontal)
             .padding(.top, 20)
             //.padding(.bottom, 25)
+        }
+    }
+    
+    @ViewBuilder
+    func LatestScoresView() -> some View {
+        VStack {
+            Text("Latest Scores")
+                .font(.title)
+            // Add more UI elements for Latest Scores here
+        }
+    }
+    
+    @ViewBuilder
+    func PerformanceView() -> some View {
+        VStack {
+            Text("Performance")
+                .font(.title)
+            // Add more UI elements for Performance here
+        }
+    }
+    
+    @ViewBuilder
+    func QnAHistoryView() -> some View {
+        VStack {
+            Text("Q&A History")
+                .font(.title)
+            // Add more UI elements for Q&A History here
+        }
+    }
+    
+    @ViewBuilder
+    func TestTopicsView() -> some View {
+        VStack {
+            Text("Test Topics")
+                .font(.title)
+            // Add more UI elements for Test Topics here
+        }
+    }
+    
+    @ViewBuilder
+    func ContributeQuestionView() -> some View {
+        VStack {
+            Text("Contribute a Question")
+                .font(.title)
+            // Add more UI elements for Contribute a Question here
+        }
+    }
+    
+    @ViewBuilder
+    func RateReviewView() -> some View {
+        VStack {
+            Text("Rate and Review")
+                .font(.title)
+            // Add more UI elements for Rate and Review here
         }
     }
 }

@@ -9,10 +9,9 @@ import Foundation
 import SwiftUI
 import Combine
 
-import SwiftUI
-import Combine
 
 class AddOnViewModel: ObservableObject {
+    var databaseManager: DatabaseManager
     // Available add-on items
     @Published var availableVoiceNarrators: [AddOnItem] = AddOnItem.defaultNarratorItems
     @Published var availableMusicTracks: [AddOnItem] = AddOnItem.defaultMusicItems
@@ -32,8 +31,9 @@ class AddOnViewModel: ObservableObject {
     private var audioPlayer = AddOnAudioPlayer()
     private var cancellables = Set<AnyCancellable>()
     
-    init(user: User) {
+    init(user: User, databaseManager: DatabaseManager) {
         self.user = user
+        self.databaseManager = databaseManager
         // Initialize selections from user config
         self.selectedVoiceNarrator = availableVoiceNarrators.first { $0.name == user.userConfig.selectedVoiceNarrator }
         self.selectedBackgroundMusic = availableMusicTracks.first { $0.name == user.userConfig.selectedBackgroundMusic }
@@ -47,6 +47,17 @@ class AddOnViewModel: ObservableObject {
         }
         selectedVoiceNarrator = narrator
         user.updateVoiceNarrator(narrator.name)
+        Task {
+            await loadVoiceConfig(narrator)
+        }
+    }
+    
+    private func loadVoiceConfig(_ narrator: AddOnItem) async {
+        do {
+            try await databaseManager.loadVoiceConfiguration(for: narrator)
+        } catch {
+            print("Error loading voice configuration for \(narrator)")
+        }
     }
     
     // Method to select background music

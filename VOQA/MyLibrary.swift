@@ -61,7 +61,8 @@ struct MyLibrary: View {
 
 
 #Preview {
-    MyLibrary()
+    let dbMgr = DatabaseManager.shared
+    return MyLibrary()
         .environmentObject(User())
-        .environmentObject(DatabaseManager.shared)
+        .environmentObject(dbMgr)
 }

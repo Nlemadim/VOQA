@@ -22,11 +22,11 @@ struct AddOnItemView: View {
             VStack(alignment: .leading, spacing: 10) {
                 itemDetails
                 
-                Spacer() // Push buttons to the bottom
+                Spacer()
                 
                 actionButtons
             }
-            .frame(height: 200) // Match the image height to ensure the text doesn't exceed it
+            .frame(height: 200)
         }
         .padding(.horizontal)
         .background{

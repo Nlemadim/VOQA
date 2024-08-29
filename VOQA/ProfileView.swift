@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-import SwiftUI
-
 struct ProfileView: View {
     @EnvironmentObject var user: User
     
@@ -20,7 +18,6 @@ struct ProfileView: View {
                     subscriptionAccessSection
                     badgesSection
                     listSection
-                    deleteAccountButton
                     logoutButton
                 }
                 .padding()
@@ -30,20 +27,19 @@ struct ProfileView: View {
     
     // MARK: - Profile Information Section
     private var profileSection: some View {
-        HStack(alignment: .top, spacing: 16) { // Adjust alignment to .top
+        HStack(alignment: .top, spacing: 16) {
             profileImage
-                .alignmentGuide(.top) { _ in 0 } // Align profile image to top
+                .alignmentGuide(.top) { _ in 0 }
 
             VStack(alignment: .leading, spacing: 8) {
                 Text(user.fullName.isEmpty ? "Hi Anonymous" : "Hello, \(user.fullName)!")
                     .font(.headline)
                     .foregroundColor(.white)
-                    .alignmentGuide(.top) { _ in 0 } // Align text to top
+                    .alignmentGuide(.top) { _ in 0 }
                    
                 Text("\(user.userConfig.accountType) Subscriber")
                     .font(.subheadline)
                     .foregroundColor(.gray)
-                
             }
         }
         .padding(.top)
@@ -71,21 +67,29 @@ struct ProfileView: View {
     // MARK: - Subscription Access Section
     private var subscriptionAccessSection: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text("Access:")
+            Text("Subscription Access:")
                 .font(.headline)
                 .foregroundColor(.white)
+                .padding(.bottom)
             
-            if user.userConfig.subscriptionPackages.isEmpty {
+            if !user.userConfig.subscriptionPackages.isEmpty {
                 emptyAccessView
             } else {
-                LazyVGrid(columns: Array(repeating: GridItem(.fixed(100), spacing: 10), count: 3), spacing: 10) {
+                LazyVGrid(columns: Array(repeating: GridItem(.fixed(100), spacing: 10), count: 2), spacing: 10) {
+                    
+                    ForEach(0..<4) { items in
+                        accessItemView(item: "item")
+                            
+                    }
+                    
                     ForEach(user.userConfig.subscriptionPackages, id: \.self) { item in
                         accessItemView(item: item)
                     }
                 }
             }
         }
-        .frame(height: 250)
+        .frame(height: 200, alignment: .top)
+        .padding(.top)
     }
     
     private var emptyAccessView: some View {
@@ -101,18 +105,16 @@ struct ProfileView: View {
     private func accessItemView(item: String) -> some View {
         ZStack(alignment: .topTrailing) {
             Rectangle()
-                .fill(Color.black.opacity(0.7))
+                .fill(Color.teal.opacity(0.7))
                 .frame(width: 100, height: 80)
                 .cornerRadius(10)
-            
-            Text(item)
-                .font(.subheadline)
-                .foregroundColor(.white)
-            
-            Image(systemName: "checkmark.circle.fill")
-                .font(.system(size: 12))
-                .foregroundColor(.green)
-                .offset(x: -8, y: -8)
+                .overlay {
+                    Text(item)
+                        .font(.footnote)
+                        .fontWeight(.bold)
+                        .foregroundColor(.white)
+                }
+               
         }
     }
     
@@ -134,7 +136,7 @@ struct ProfileView: View {
                         }
                     }
                 }
-                .frame(height: 60) // Adjusted height for a scrollable appearance
+                .frame(height: 60)
             }
         }
         .frame(maxWidth: .infinity)
@@ -168,6 +170,24 @@ struct ProfileView: View {
         }
     }
     
+    private func badgesIcon(_ numberOfBadges: Int) -> some View {
+        NavigationLink(destination: Text("Badges")) {
+            VStack(spacing: 8) {
+                Text("Badges")
+                    .font(.footnote)
+                    .foregroundColor(.secondary)
+                Image(systemName: "medal.fill")
+                    .resizable()
+                    .frame(width: 20, height: 20)
+                    .foregroundColor(numberOfBadges > 0 ? .yellow : .secondary)
+                Text("\(numberOfBadges)")
+                    .font(.footnote)
+                    .foregroundColor(numberOfBadges > 0 ? .yellow : .secondary)
+            }
+            .padding()
+        }
+    }
+    
     // MARK: - List Section for Short Items
     private var listSection: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -185,6 +205,13 @@ struct ProfileView: View {
                     .background(Color.black.opacity(0.1))
                     .cornerRadius(8)
             }
+            
+            NavigationLink(destination: Text("FAQs")) {
+                pageLink(title: "FAQs")
+                    .padding(.vertical, 8)
+                    .background(Color.black.opacity(0.1))
+                    .cornerRadius(8)
+            }
         }
         .padding(.top)
     }
@@ -194,7 +221,7 @@ struct ProfileView: View {
         HStack {
             Text(title)
                 .font(.subheadline)
-                .foregroundColor(.white)
+                .foregroundColor(title == "Delete My Account" ? .red : .white)
             
             Spacer()
             
@@ -202,7 +229,6 @@ struct ProfileView: View {
                 .foregroundColor(.gray)
                 .font(.system(size: 14))
         }
-        .padding(.horizontal)
     }
     
     // MARK: - Delete Account Button
@@ -211,6 +237,7 @@ struct ProfileView: View {
             user.clearCredentials()
         }) {
             Text("Delete My Account")
+                .font(.subheadline)
                 .foregroundColor(.red)
         }
         .padding(.top)
@@ -227,16 +254,16 @@ struct ProfileView: View {
                     .frame(width: 30, height: 30)
                     
                 Text("Logout")
+                    .font(.subheadline)
                     .fontWeight(.bold)
             }
             .padding()
-            .foregroundColor(Color.orange.opacity(0.8))
+            .foregroundColor(Color.red)
            
         }
         .padding(.top)
     }
 }
-
 
 
 #Preview {

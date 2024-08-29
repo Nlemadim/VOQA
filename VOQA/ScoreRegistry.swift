@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 class ScoreRegistry: ObservableObject {
-    @StateObject private var databaseManager = DatabaseManager.shared
+    @EnvironmentObject private var databaseManager: DatabaseManager
     @Published var currentScore: CGFloat = 0.0
     @Published var currentScoreStreak: Int = 0
     @Published var currentScorePercentage: Int = 0

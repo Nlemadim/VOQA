@@ -12,8 +12,8 @@ struct AddOnsView: View {
     @Namespace private var animation
     @StateObject private var viewModel: AddOnViewModel
     
-    init(user: User) {
-        _viewModel = StateObject(wrappedValue: AddOnViewModel(user: user))
+    init(user: User, databaseManager: DatabaseManager) {
+        _viewModel = StateObject(wrappedValue: AddOnViewModel(user: user, databaseManager: databaseManager))
     }
     
     var body: some View {
@@ -177,6 +177,9 @@ struct AddOnsView: View {
 
 #Preview {
     let user = User()
-    return AddOnsView(user: user)
+    let dbMgr = DatabaseManager.shared
+    return AddOnsView(user: user, databaseManager: dbMgr)
         .preferredColorScheme(/*@START_MENU_TOKEN@*/.dark/*@END_MENU_TOKEN@*/)
+        .environmentObject(user)
+        .environmentObject(dbMgr)
 }

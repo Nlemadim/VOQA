@@ -53,6 +53,13 @@ class VoiceConfigurationManager {
         do {
             let data = try Data(contentsOf: URL(fileURLWithPath: filePath), options: .mappedIfSafe)
             let config = try JSONDecoder().decode(QuizSessionConfig.self, from: data)
+            print("Successfully loaded selected voice configuration")
+            if let hostMessages = config.quizHostMessages {
+                printHostMessages(hostMessages)
+            }
+            printControlFeedback(config.controlFeedback)
+            printQuizFeedback(config.quizFeedback)
+           
             return config
         } catch {
             print("Error loading or decoding local data for path \(path): \(error)")
@@ -87,7 +94,6 @@ class VoiceConfigurationManager {
     private func populateControlFeedback(_ controlFeedback: ControlsFeedback) async throws -> ControlsFeedback {
         return ControlsFeedback(
             startQuiz: try await populateAudioUrls(for: controlFeedback.startQuiz),
-            quit: try await populateAudioUrls(for: controlFeedback.quit),
             nextQuestion: try await populateAudioUrls(for: controlFeedback.nextQuestion),
             repeatQuestion: try await populateAudioUrls(for: controlFeedback.repeatQuestion)
         )
@@ -159,7 +165,6 @@ extension VoiceConfigurationManager {
     private func printControlFeedback(_ controlFeedback: ControlsFeedback) {
         print("Control Feedback:")
         printVoicedFeedback(controlFeedback.startQuiz, title: "Start Quiz")
-        printVoicedFeedback(controlFeedback.quit, title: "Quit")
         printVoicedFeedback(controlFeedback.nextQuestion, title: "Next Question")
         printVoicedFeedback(controlFeedback.repeatQuestion, title: "Repeat Question")
     }

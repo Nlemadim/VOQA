@@ -17,8 +17,11 @@ struct ContentView: View {
     var body: some View {
         VStack {
             if logStatus {
+                
                 MainView(logStatus: logStatus)
+                
             } else {
+                
                 AppLaunch(loadCatalogue: loadCatalogue)
             }
         }
@@ -73,5 +76,6 @@ struct ContentView: View {
      AppLaunch()
  }
  */
+
 
 
