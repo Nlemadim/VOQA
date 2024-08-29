@@ -21,19 +21,15 @@ struct QuizActivityView: View {
             VStack {
                 HeaderView(voqa: voqa)
                 
-                // MARK: Pinned Header With Content
-                LazyVStack(pinnedViews: [.sectionHeaders]) {
-                    Section {
-                        if currentPage == "Summary" {
-                            Text("Summary Records Section")
-                        } else if currentPage == "Core Topics" {
-                            Text("Core Topics List Section")
-                        } else if currentPage == "Q&A" {
-                            Text("Q&A List Section")
-                        }
-                        // Add more content views based on currentPage if needed
-                    } header: {
-                        PinnedHeaderView()
+                PinnedHeaderView()
+                
+                VStack {
+                    if currentPage == "Summary" {
+                        Text("Summary Records Section")
+                    } else if currentPage == "Core Topics" {
+                        Text("Core Topics List Section")
+                    } else if currentPage == "Q&A" {
+                        Text("Q&A List Section")
                     }
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -42,6 +38,23 @@ struct QuizActivityView: View {
         .ignoresSafeArea(.container, edges: .vertical)
         .coordinateSpace(name: "SCROLL")
         .navigationBarBackButtonHidden(true)
+    }
+    
+    @ViewBuilder
+    func NarratorTabView() -> some View {
+        let userAddonItems: [AddOnItem] = [gusVoiceItem, casandraVoiceItem, iniVoiceItem, dogonYaroVoiceItem]
+        
+        VStack {
+            TabView {
+                ForEach(userAddonItems, id: \.name) { item in
+                    QuizAddOnItem(item: item)
+                        .padding()
+                }
+            }
+            .tabViewStyle(PageTabViewStyle())
+            .frame(height: 400)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
     
     @ViewBuilder
@@ -108,12 +121,12 @@ struct QuizActivityView: View {
                 .cornerRadius(15)
                 .offset(y: -minY)
         }
-        .frame(height: 250)
+        .frame(height: 200)
     }
     
     @ViewBuilder
     func PinnedHeaderView() -> some View {
-        let pages: [String] = ["Activity", "Q&A History", "Performance", "Core Topics", "Contribute a Question", "Rate and Review"]
+        let pages: [String] = ["Latest Score", "Performance", "Q&A History", "Test Topics", "Contribute a Question", "Rate and Review"]
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 25) {
                 ForEach(pages, id: \.self) { page in
@@ -146,7 +159,7 @@ struct QuizActivityView: View {
             }
             .padding(.horizontal)
             .padding(.top, 20)
-            .padding(.bottom, 25)
+            //.padding(.bottom, 25)
         }
     }
 }
@@ -156,4 +169,3 @@ struct QuizActivityView: View {
 //        .preferredColorScheme(.dark)
 //}
 
-let mockVoqa = VoqaMockModel(id: "hbjsdjjkxsk", quizTitle: "Mock Voqa Title", acronym: "MVT", about: "Some Mock Model string used to represent about quiz property", imageUrl: "https://storage.googleapis.com/buildship-ljnsun-us-central1/VoqaCollection/kotlin/kotlin_programming_language.png", rating: 4, curator: "Gista", users: 5, tags: ["Mock", "Sample"], colors: [.mint, .purple, .teal], ratings: 4, requiresSubscription: true)

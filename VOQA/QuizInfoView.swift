@@ -21,7 +21,7 @@ struct QuizInfoView: View {
         VStack(spacing: 16) {
             disnissButton
 
-            QuizInfoHeaderView(
+            InfoHeaderView(
                 mainTitle: "Quiz Overview",
                 subtitle: selectedVoqa.quizTitle,
                 description: "Select a category of questions"
@@ -178,7 +178,7 @@ struct QuizInfoView: View {
     }
 }
 
-struct QuizInfoHeaderView: View {
+struct InfoHeaderView: View {
     let mainTitle: String
     let subtitle: String
     let description: String

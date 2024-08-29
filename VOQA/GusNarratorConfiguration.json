@@ -1,0 +1,282 @@
+
+
+{
+  "sessionTitle": "",
+  "sessionVoice": "Gus",
+  "alerts": [
+    {
+      "title": "Correct Answer Bell",
+      "urlScript": "Correct",
+      "audioUrl": ""
+    },
+    {
+      "title": "Error Bell",
+      "urlScript": "Error",
+      "audioUrl": ""
+    },
+    {
+      "title": "Next Question Wave",
+      "urlScript": "Next Question",
+      "audioUrl": ""
+    },
+    {
+      "title": "Show Responder Bell",
+      "urlScript": "Responder",
+      "audioUrl": ""
+    },
+    {
+      "title": "Wrong Answer Bell",
+      "urlScript": "Incorrect",
+      "audioUrl": ""
+    },
+    {
+      "title": "Dismiss Responder Bell",
+      "urlScript": "Dismiss Responder",
+      "audioUrl": ""
+    }
+  ],
+  "controlFeedback": {
+    "startQuiz": {
+      "title": "Start Quiz",
+      "audioUrls": [
+        {
+          "title": "firstIntro",
+          "urlScript": "Hi there, my name is Gus. Welcome to your first voiced over Q&A. Hope you're doing great!",
+          "audioUrl": ""
+        },
+        {
+          "title": "start1",
+          "urlScript": "Let's get started.",
+          "audioUrl": ""
+        },
+        {
+          "title": "start2",
+          "urlScript": "Ready? Go.",
+          "audioUrl": ""
+        },
+        {
+          "title": "start3",
+          "urlScript": "Starting now.",
+          "audioUrl": ""
+        }
+      ]
+    },
+    "nextQuestion": {
+      "title": "Next Question",
+      "audioUrls": [
+        {
+          "title": "next1",
+          "urlScript": "Next question.",
+          "audioUrl": ""
+        },
+        {
+          "title": "next2",
+          "urlScript": "Moving on.",
+          "audioUrl": ""
+        },
+        {
+          "title": "next3",
+          "urlScript": "Let's keep going.",
+          "audioUrl": ""
+        }
+      ]
+    },
+    "repeatQuestion": {
+      "title": "Repeat Question",
+      "audioUrls": [
+        {
+          "title": "repeat1",
+          "urlScript": "Repeating the question.",
+          "audioUrl": ""
+        },
+        {
+          "title": "repeat2",
+          "urlScript": "I'll say it again.",
+          "audioUrl": ""
+        },
+        {
+          "title": "repeat3",
+          "urlScript": "Listen up. Here it is.",
+          "audioUrl": ""
+        }
+      ]
+    }
+  },
+  "quizFeedback": {
+    "incorrectAnswer": {
+      "title": "Incorrect Answer",
+      "audioUrls": [
+        {
+          "title": "incorrect1",
+          "urlScript": "That's not right.",
+          "audioUrl": ""
+        },
+        {
+          "title": "incorrect2",
+          "urlScript": "Nope, that's not it.",
+          "audioUrl": ""
+        },
+        {
+          "title": "incorrect3",
+          "urlScript": "Wrong answer.",
+          "audioUrl": ""
+        }
+      ]
+    },
+    "correctAnswer": {
+      "title": "Correct Answer",
+      "audioUrls": [
+        {
+          "title": "correct1",
+          "urlScript": "Correct! Good job.",
+          "audioUrl": ""
+        },
+        {
+          "title": "correct2",
+          "urlScript": "Right on! Nice work.",
+          "audioUrl": ""
+        },
+        {
+          "title": "correct3",
+          "urlScript": "That's it. Well done.",
+          "audioUrl": ""
+        }
+      ]
+    },
+    "noResponse": {
+      "title": "No Response",
+      "audioUrls": [
+        {
+          "title": "noResponse1",
+          "urlScript": "Didn't catch that. Moving on.",
+          "audioUrl": ""
+        },
+        {
+          "title": "noResponse2",
+          "urlScript": "No answer detected. Let's continue.",
+          "audioUrl": ""
+        },
+        {
+          "title": "noResponse3",
+          "urlScript": "Nothing there. Moving ahead.",
+          "audioUrl": ""
+        }
+      ]
+    },
+    "giveScore": {
+      "title": "Give Scores",
+      "audioUrls": [
+        {
+          "title": "0",
+          "urlScript": "You scored zero points. Better luck next time.",
+          "audioUrl": ""
+        },
+        {
+          "title": "10",
+          "urlScript": "You scored ten points. Not bad.",
+          "audioUrl": ""
+        },
+        {
+          "title": "20",
+          "urlScript": "You scored twenty points. Good effort.",
+          "audioUrl": ""
+        },
+        {
+          "title": "30",
+          "urlScript": "You scored thirty points. Nice work.",
+          "audioUrl": ""
+        },
+        {
+          "title": "40",
+          "urlScript": "You scored forty points. Keep it up.",
+          "audioUrl": ""
+        },
+        {
+          "title": "50",
+          "urlScript": "You scored fifty points. Well done. Keep practicing!",
+          "audioUrl": ""
+        },
+        {
+          "title": "60",
+          "urlScript": "You scored sixty points. Great progress.",
+          "audioUrl": ""
+        },
+        {
+          "title": "70",
+          "urlScript": "You scored seventy points. Fantastic.",
+          "audioUrl": ""
+        },
+        {
+          "title": "80",
+          "urlScript": "You scored eighty points. Impressive.",
+          "audioUrl": ""
+        },
+        {
+          "title": "90",
+          "urlScript": "You scored ninety points. Outstanding.",
+          "audioUrl": ""
+        },
+        {
+          "title": "100",
+          "urlScript": "You scored a perfect score! You're a pro.",
+          "audioUrl": ""
+        }
+      ]
+    }
+  },
+  "sessionMusic": [
+    {
+      "title": "Background Music 1",
+      "urlScript": "Soft instrumental music playing",
+      "audioUrl": ""
+    },
+    {
+      "title": "Background Music 2",
+      "urlScript": "Upbeat background music",
+      "audioUrl": ""
+    }
+  ],
+  "quizHostMessages": {
+    "intro": {
+      "title": "Intro",
+      "audioUrls": [
+        {
+          "title": "intro1",
+          "urlScript": "Hi there, I'm Gus. How's it going? Let's dive into another voiced over Q&A.",
+          "audioUrl": ""
+        },
+        {
+          "title": "intro2",
+          "urlScript": "Hello! Gus here. Ready for another voiced over Q&A? Hope you're well.",
+          "audioUrl": ""
+        },
+        {
+          "title": "intro3",
+          "urlScript": "Hey, I'm Gus. Let's jump into another voiced over Q&A. How are you doing today?",
+          "audioUrl": ""
+        }
+      ]
+    },
+    "outro": {
+      "title": "Outro",
+      "audioUrls": [
+        {
+          "title": "outro1",
+          "urlScript": "Thanks for finishing the session! Keep practicing, and you'll get even better. Till next time, cheers!",
+          "audioUrl": ""
+        },
+        {
+          "title": "outro2",
+          "urlScript": "Great job completing the session! Remember, practice makes perfect. Keep it up! That's a wrap for now. Till next time!",
+          "audioUrl": ""
+        },
+        {
+          "title": "outro3",
+          "urlScript": "Well done on finishing the session! Keep practicing and improving. That's it for now. Be safe till the next time!",
+          "audioUrl": ""
+        }
+      ]
+    }
+  },
+  "sessionQuestion": []
+}

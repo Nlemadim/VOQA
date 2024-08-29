@@ -26,13 +26,49 @@ class User: ObservableObject {
     }
     
     // Method to create user configuration
-    func createUserConfig(username: String, email: String, voice: String, currentUserVoqaID: String? = nil, quizCollection: [String] = [], accountType: String = AccountType.guest.rawValue, subscriptionPackages: [String] = [], badges: [String] = []) {
-        self.userConfig = UserConfig(username: username, email: email, voice: voice, currentUserVoqaID: currentUserVoqaID, quizCollection: quizCollection, accountType: accountType, subscriptionPackages: subscriptionPackages, badges: badges)
+    func createUserConfig(
+        username: String,
+        email: String,
+        voice: String,
+        currentUserVoqaID: String? = nil,
+        quizCollection: [String] = [],
+        accountType: String = AccountType.guest.rawValue,
+        subscriptionPackages: [String] = [],
+        badges: [String] = [],
+        selectedVoiceNarrator: String = "Gus",  // Default to "Gus"
+        selectedBackgroundMusic: String? = nil,  // Default to nil
+        selectedSoundEffect: String? = nil
+    ) {
+        self.userConfig = UserConfig(
+            username: username,
+            email: email,
+            voice: voice,
+            currentUserVoqaID: currentUserVoqaID,
+            quizCollection: quizCollection,
+            accountType: accountType,
+            subscriptionPackages: subscriptionPackages,
+            badges: badges,
+            selectedVoiceNarrator: selectedVoiceNarrator,
+            selectedBackgroundMusic: selectedBackgroundMusic,
+            selectedSoundEffect: selectedSoundEffect
+        )
         saveUserConfig()
     }
     
     // Method to update user configuration
-    func updateUserConfig(username: String? = nil, email: String? = nil, voice: String? = nil, currentUserVoqaID: String? = nil, quizCollection: [String]? = nil, accountType: String? = nil, subscriptionPackages: [String]? = nil, badges: [String]? = nil) {
+    func updateUserConfig(
+        username: String? = nil,
+        email: String? = nil,
+        voice: String? = nil,
+        currentUserVoqaID: String? = nil,
+        quizCollection: [String]? = nil,
+        accountType: String? = nil,
+        subscriptionPackages: [String]? = nil,
+        badges: [String]? = nil,
+        selectedVoiceNarrator: String? = nil,
+        selectedBackgroundMusic: String? = nil,
+        selectedSoundEffect: String? = nil
+    ) {
         if let username = username {
             self.userConfig.username = username
         }
@@ -57,10 +93,35 @@ class User: ObservableObject {
         if let badges = badges {
             self.userConfig.badges = badges
         }
+        if let selectedVoiceNarrator = selectedVoiceNarrator {
+            self.userConfig.selectedVoiceNarrator = selectedVoiceNarrator
+        }
+        if let selectedBackgroundMusic = selectedBackgroundMusic {
+            self.userConfig.selectedBackgroundMusic = selectedBackgroundMusic
+        }
+        if let selectedSoundEffect = selectedSoundEffect {
+            self.userConfig.selectedSoundEffect = selectedSoundEffect
+        }
         
         saveUserConfig()
     }
     
+    // Methods to update specific add-on selections
+    func updateVoiceNarrator(_ narrator: String) {
+        userConfig.selectedVoiceNarrator = narrator
+        saveUserConfig()
+    }
+    
+    func updateBackgroundMusic(_ music: String?) {
+        userConfig.selectedBackgroundMusic = music
+        saveUserConfig()
+    }
+    
+    func updateSoundEffect(_ sfx: String?) {
+        userConfig.selectedSoundEffect = sfx
+        saveUserConfig()
+    }
+
     // Save user credentials securely
     func saveCredentials() {
         let emailKey = "userEmail"
@@ -149,4 +210,3 @@ class User: ObservableObject {
         self.userConfig = UserConfig()  // Reset to default configuration
     }
 }
-

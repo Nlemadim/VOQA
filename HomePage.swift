@@ -9,6 +9,7 @@ import SwiftUI
 
 
 struct HomePage: View {
+    @EnvironmentObject var user: User
     @State private var selectedTab = 0
     @State private var errorMessage: IdentifiableError?
     @State private var currentItem: Int = 0
@@ -77,7 +78,7 @@ struct HomePage: View {
                 }
                 .tag(1)
 
-            AddOns()
+            AddOnsView(user: user)
                 .tabItem {
                     TabIcons(title: "Add Ons", icon: "medal.fill")
                 }
