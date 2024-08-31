@@ -31,3 +31,34 @@ struct SmallDownloadButton: View {
         }
     }
 }
+
+
+struct MediumDownloadButton: View {
+    var label: String
+    var color: Color
+    var iconImage: String
+    var action: () -> Void
+    
+    var body: some View {
+        Button(action: {
+           action()
+        }) {
+            HStack {
+                Text(label)
+                Image(systemName: iconImage)
+            }
+            .font(.subheadline)
+            .fontWeight(.semibold)
+            .foregroundColor(color.dynamicTextColor())
+            .frame(maxWidth: .infinity)
+            .frame(height: 50)
+            .background(color)
+            .cornerRadius(10)
+        }
+        .overlay {
+            RoundedRectangle(cornerRadius: 10.0)
+                .stroke(lineWidth: 1.0)
+                .opacity(color == .clear ? 1 : 0)
+        }
+    }
+}

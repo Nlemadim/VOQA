@@ -11,11 +11,12 @@ struct MyLibrary: View {
     @EnvironmentObject var user: User
     @EnvironmentObject var databaseManager: DatabaseManager
     @State private var path = NavigationPath()
+    @Binding var hideTabBar: Bool
 
     var body: some View {
         NavigationStack(path: $path) {
             LibraryListView(voqaCollection: user.voqaCollection) { selectedVoqa in
-                // Update user's current Voqa on tap and navigate to QuizActivityView
+                hideTabBar = true
                 user.currentUserVoqa = selectedVoqa
                 path.append(PageNavigationController(type: .quizPlayerDetails(selectedVoqa)))
             }
@@ -27,7 +28,8 @@ struct MyLibrary: View {
                 Task {
                     await databaseManager.fetchQuizCollection()
                     loadUserCollection()
-                    handleNavigationLogicOnAppear()  // Call the new navigation logic method
+                    hideTabBar = false
+                   // handleNavigationLogicOnAppear()
                 }
             }
             .navigationDestination(for: PageNavigationController.self) { destination in
@@ -35,8 +37,10 @@ struct MyLibrary: View {
                 case .quizInfo(let voqa):
                     QuizInfoView(selectedVoqa: voqa)
                 case .quizPlayerDetails(let voqa):
-                    QuizActivityView(voqa: voqa) { voqa in
+                    QuizDashboardPage(voqa: voqa) { voqa in
                         path.append(PageNavigationController(type: .quizInfo(voqa)))
+                       
+                            
                     }
                 case .quizPlayerView:
                     CreateAccountView()
@@ -62,7 +66,7 @@ struct MyLibrary: View {
 
 #Preview {
     let dbMgr = DatabaseManager.shared
-    return MyLibrary()
+    return MyLibrary(hideTabBar: .constant(false))
         .environmentObject(User())
         .environmentObject(dbMgr)
 }

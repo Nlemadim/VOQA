@@ -15,6 +15,11 @@ class DatabaseManager: ObservableObject {
     @Published var quizCollection: [QuizData] = []
     @Published var showFullPageError: Bool = false
     
+    @Published var ratingsAndReview: RatingsAndReview?
+    @Published var latestScores: LatestScore?
+    @Published var contributedQuestion: [ContributeQuestion] = []
+    @Published var performanceHistory: [Performance] = []
+    
     static let shared = DatabaseManager()
     
     private let firebaseManager = FirebaseManager.shared

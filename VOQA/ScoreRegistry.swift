@@ -28,8 +28,8 @@ class ScoreRegistry: ObservableObject {
     
     // Create a performance record
     func createPerformanceRecord(title: String, numberOfQuestions: Int) {
-        let performance = Performance(id: UUID(), quizTitle: title, date: Date(), score: currentScore, numberOfQuestions: numberOfQuestions)
-        print(performance.quizTitle)
+//        let performance = Performance(id: UUID(), quizTitle: title, date: Date(), score: currentScore, numberOfQuestions: numberOfQuestions)
+//        print(performance.quizTitle)
         // update databaseManager and pass on to the environment
     }
     

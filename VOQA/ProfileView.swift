@@ -193,21 +193,21 @@ struct ProfileView: View {
         VStack(alignment: .leading, spacing: 10) {
             
             NavigationLink(destination: Text("Terms and Conditions")) {
-                pageLink(title: "Terms and Conditions")
+                PageLinkView(title: "Terms and Conditions")
                     .padding(.vertical, 8)
                     .background(Color.black.opacity(0.1))
                     .cornerRadius(8)
             }
             
             NavigationLink(destination: Text("Privacy")) {
-                pageLink(title: "Privacy")
+                PageLinkView(title: "Privacy")
                     .padding(.vertical, 8)
                     .background(Color.black.opacity(0.1))
                     .cornerRadius(8)
             }
             
             NavigationLink(destination: Text("FAQs")) {
-                pageLink(title: "FAQs")
+                PageLinkView(title: "FAQs")
                     .padding(.vertical, 8)
                     .background(Color.black.opacity(0.1))
                     .cornerRadius(8)
@@ -217,19 +217,19 @@ struct ProfileView: View {
     }
 
     
-    private func pageLink(title: String) -> some View {
-        HStack {
-            Text(title)
-                .font(.subheadline)
-                .foregroundColor(title == "Delete My Account" ? .red : .white)
-            
-            Spacer()
-            
-            Image(systemName: "chevron.right")
-                .foregroundColor(.gray)
-                .font(.system(size: 14))
-        }
-    }
+//    private func pageLink(title: String) -> some View {
+//        HStack {
+//            Text(title)
+//                .font(.subheadline)
+//                .foregroundColor(title == "Delete My Account" ? .red : .white)
+//            
+//            Spacer()
+//            
+//            Image(systemName: "chevron.right")
+//                .foregroundColor(.gray)
+//                .font(.system(size: 14))
+//        }
+//    }
     
     // MARK: - Delete Account Button
     private var deleteAccountButton: some View {

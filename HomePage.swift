@@ -15,6 +15,7 @@ struct HomePage: View {
     @State private var errorMessage: IdentifiableError?
     @State private var currentItem: Int = 0
     @State private var backgroundImage: String = ""
+    @State private var hideTabBar: Bool = false
     @State private var path = NavigationPath()
 
     var quizCatalogue: [QuizCatalogue]
@@ -52,6 +53,7 @@ struct HomePage: View {
                     }
                     .zIndex(1)
                 }
+                .toolbar(hideTabBar ? .hidden : .visible, for: .tabBar)
                 .toolbar {
                     ToolbarItemGroup(placement: .navigationBarTrailing) {
                         Text("VOQA")
@@ -73,7 +75,7 @@ struct HomePage: View {
             }
             .tag(0)
 
-            MyLibrary()
+            MyLibrary(hideTabBar: $hideTabBar)
                 .tabItem {
                     TabIcons(title: "My Library", icon: "books.vertical.fill")
                 }

@@ -11,11 +11,11 @@ import SwiftUI
 struct QuizActivityView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var currentPage: String = "Latest Scores"
+    @State private var isLoadingScores: Bool = false
     @Namespace private var animation
     
     var voqa: Voqa
-    var onNavigateToQuizInfo: (Voqa) -> Void  // Callback to handle navigation
-    
+    var onNavigateToQuizInfo: (Voqa) -> Void  
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
             VStack {
@@ -27,15 +27,33 @@ struct QuizActivityView: View {
                     // Switch between different views based on currentPage
                     switch currentPage {
                     case "Latest Scores":
-                        LatestScoresView()
+                        LatestScoresView(
+                            latestScore: mockScore,
+                            
+                            onRestartQuiz: {
+                                
+                            },
+                            onStartNewQuiz: {
+                                
+                            },
+                            isLoading: isLoadingScores
+                        )
                     case "Performance":
-                        PerformanceView()
+                        PerformanceView(
+                            highScore: 90,
+                            leaderboardScore: 117,
+                            leaderboardMembers: 18890,
+                            completedQuizzes: 70,
+                            rank: "GOLD",
+                            performances: mockHistory
+                        )
                     case "Q&A History":
                         QnAHistoryView()
                     case "Test Topics":
                         TestTopicsView()
                     case "Contribute a Question":
                         ContributeQuestionView()
+                            .frame(maxHeight: .infinity)
                     case "Rate and Review":
                         RateReviewView()
                     default:
@@ -87,7 +105,7 @@ struct QuizActivityView: View {
                                     .primaryTextStyleForeground()
                                 
                                 Label {
-                                    Text("My Activities")
+                                    Text("My Dashboard")
                                         .fontWeight(.semibold)
                                         .foregroundStyle(.white.opacity(0.7))
                                 } icon: {}
@@ -96,26 +114,13 @@ struct QuizActivityView: View {
                             .padding(.horizontal)
                             .padding(.bottom, 15)
                             .frame(maxWidth: .infinity, alignment: .leading)
-                            
-                            CircularPlayButton2(
-                                color: Color.fromHex(voqa.colors.main),
-                                label: "Start",
-                                progressMode: .quickLoad,
-                                action: {
-                                    onNavigateToQuizInfo(voqa)
-                                }
-                            )
-                            .hAlign(.trailing)
-                            .padding(.horizontal)
-                            .padding(5)
-                            .offset(y: -minY)
                         }
                     }
                 }
                 .cornerRadius(15)
                 .offset(y: -minY)
         }
-        .frame(height: 250)
+        .frame(height: 200)
     }
     
     @ViewBuilder
@@ -157,24 +162,7 @@ struct QuizActivityView: View {
         }
     }
     
-    @ViewBuilder
-    func LatestScoresView() -> some View {
-        VStack {
-            Text("Latest Scores")
-                .font(.title)
-            // Add more UI elements for Latest Scores here
-        }
-    }
-    
-    @ViewBuilder
-    func PerformanceView() -> some View {
-        VStack {
-            Text("Performance")
-                .font(.title)
-            // Add more UI elements for Performance here
-        }
-    }
-    
+   
     @ViewBuilder
     func QnAHistoryView() -> some View {
         VStack {
@@ -193,14 +181,6 @@ struct QuizActivityView: View {
         }
     }
     
-    @ViewBuilder
-    func ContributeQuestionView() -> some View {
-        VStack {
-            Text("Contribute a Question")
-                .font(.title)
-            // Add more UI elements for Contribute a Question here
-        }
-    }
     
     @ViewBuilder
     func RateReviewView() -> some View {
@@ -212,8 +192,226 @@ struct QuizActivityView: View {
     }
 }
 
-//#Preview {
-//    return QuizActivityView(starttPressed: .constant(false), voqa: mockVoqa)
-//        .preferredColorScheme(.dark)
-//}
+#Preview {
+    return LatestScoresView(latestScore: mockScore , onRestartQuiz: {}, onStartNewQuiz: {}, isLoading: true)
+        .preferredColorScheme(.dark)
+}
 
+#Preview {
+    LatestScoresView(onRestartQuiz: {}, onStartNewQuiz: {}, isLoading: false)
+        .preferredColorScheme(.dark)
+}
+
+#Preview {
+    LatestScoresView(onRestartQuiz: {}, onStartNewQuiz: {}, isLoading: true)
+        .preferredColorScheme(.dark)
+}
+
+
+
+struct LatestScore {
+    var quizId: String
+    var date: Date
+    var quizCategory: String
+    var numberOfquestions: String
+    var review: String
+    var score: String
+}
+
+
+struct LatestScoresView: View {
+    var latestScore: LatestScore?
+    var onRestartQuiz: () -> Void
+    var onStartNewQuiz: () -> Void
+    var isLoading: Bool
+    @State private var isReviewExpanded = false
+
+    var body: some View {
+        if let score = latestScore {
+            // When content is available
+            VStack(alignment: .leading, spacing: 30) {
+                // Top Leading Item: Latest Score
+                HStack {
+                    Text("Score:")
+                        .foregroundColor(.primary)
+                        .font(.headline)
+                    //Spacer()
+                    Text(score.score)
+                        .font(.largeTitle)
+                        .fontWeight(.bold)
+                        .foregroundColor(scoreColor(for: score.score))
+                    
+                    Spacer(minLength: /*@START_MENU_TOKEN@*/0/*@END_MENU_TOKEN@*/)
+                    
+                    Text("\(score.date.ISO8601Format())")
+                        .foregroundColor(.secondary)
+                        .font(.footnote)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+                // Quiz Category
+                Text(score.quizCategory.uppercased())
+                    .font(.title2)
+                    .lineLimit(2, reservesSpace: false)
+                    .fontWeight(.semibold)
+                    .primaryTextStyleForeground()
+
+                // Number of Questions
+                HStack {
+                    Text("Number of Questions:")
+                        .foregroundColor(.secondary)
+                        .font(.subheadline)
+                    
+                    Text(score.numberOfquestions)
+                        .foregroundColor(.white)
+                        .font(.title3)
+                        .fontWeight(.semibold)
+                }
+
+                // Correct and Wrong Answers
+                HStack {
+                    Text("Correct Answers:")
+                        .foregroundColor(.secondary)
+                        .font(.footnote)
+                    
+                    Text(correctAnswers(for: score))
+                        .foregroundColor(.green)
+                        .font(.title3)
+                        .fontWeight(.semibold)
+                    
+                    Spacer()
+                    
+                    Text("Wrong Answers:")
+                        .foregroundColor(.secondary)
+                        .font(.footnote)
+                    
+                    Text(wrongAnswers(for: score))
+                        .foregroundColor(.red)
+                        .font(.title3)
+                        .fontWeight(.semibold)
+                }
+
+                // Review Text with Expandable Button
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(score.review)
+                        .font(.footnote)
+                        .foregroundColor(.secondary)
+                        .lineLimit(isReviewExpanded ? nil : 2)
+                        .truncationMode(.tail)
+
+                    if score.review.count > 100 {
+                        Button(action: {
+                            withAnimation {
+                                isReviewExpanded.toggle()
+                            }
+                        }) {
+                            Text(isReviewExpanded ? "Show Less" : "Show More")
+                                .font(.footnote)
+                                .foregroundColor(.blue)
+                        }
+                    }
+                }
+
+                // Buttons for Restart and Start a New Quiz
+                VStack(spacing: 16) {
+                    
+                    MediumDownloadButton(label: "Restart", color: .teal, iconImage: "arrow.counterclockwise", action: {
+                        onRestartQuiz()
+                    })
+                    
+                    MediumDownloadButton(label: "New Quiz", color: .teal, iconImage: "", action: {
+                        onStartNewQuiz()
+                    })
+
+                }
+            }
+            .padding()
+            .padding(.top, 20)
+            .background(Color.black.opacity(0.8))
+            .cornerRadius(12)
+            .padding(.horizontal)
+        } else {
+            // No content view when latestScore is nil
+            NoContentView(action: onStartNewQuiz, isLoadingScores: isLoading)
+        }
+    }
+
+    // Helper function to determine score color
+    private func scoreColor(for score: String) -> Color {
+        guard let scoreValue = Int(score.trimmingCharacters(in: CharacterSet(charactersIn: "%"))) else {
+            return .white
+        }
+        switch scoreValue {
+        case ..<10:
+            return .red
+        case 10..<30:
+            return .orange
+        case 30..<50:
+            return .yellow
+        case 50..<70:
+            return .white
+        default:
+            return .green
+        }
+    }
+
+    // Mock function for correct answers - replace with real logic
+    private func correctAnswers(for latestScore: LatestScore) -> String {
+        // Implement your logic to calculate correct answers
+        return "15" // Example value
+    }
+
+    // Mock function for wrong answers - replace with real logic
+    private func wrongAnswers(for latestScore: LatestScore) -> String {
+        // Implement your logic to calculate wrong answers
+        return "5" // Example value
+    }
+}
+
+// A view to display when there's no content available
+struct NoContentView: View {
+    var action: () -> Void
+    var isLoadingScores: Bool
+
+    var body: some View {
+        ZStack {
+            Rectangle()
+                .fill(Color.clear)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+            
+            VStack {
+                CustomSpinnerView()
+                    .frame(height: 50)
+            }
+            .opacity(isLoadingScores ? 1 : 0)
+            
+            VStack(spacing: 10) {
+                Spacer()
+                
+                Text("You Have No Scores Yet")
+                    .font(.subheadline)
+                
+                MediumDownloadButton(label: "Start Assessment Quiz", color: .teal, iconImage: "", action: {
+                    action()
+                })
+                .padding()
+                
+                Spacer()
+            }
+            .opacity(isLoadingScores ? 0 : 1)
+        }
+        .padding()
+        .cornerRadius(12)
+        .padding(.horizontal)
+    }
+}
+
+
+let mockScore = LatestScore(
+           quizId: "123",
+           date: Date(),
+           quizCategory: "Science",
+           numberOfquestions: "20",
+           review: "This quiz covered various topics in science, including biology, chemistry, and physics. The questions were challenging and tested the understanding of key concepts.",
+           score: "75%"
+       )

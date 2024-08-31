@@ -7,57 +7,133 @@
 
 import Foundation
 import SwiftUI
-import Combine
 
 struct PerformanceView: View {
-//    @StateObject private var viewModel = PerformanceTrackerViewModel(performances: [
-//        Performance(id: UUID(), quizTitle: "Quiz 1", date: Date(), score: 45.7, numberOfQuestions: 10),
-//        Performance(id: UUID(), quizTitle: "Quiz 2", date: Date(), score: 6.8, numberOfQuestions: 10),
-//        Performance(id: UUID(), quizTitle: "Quiz 2", date: Date(), score: 70.0, numberOfQuestions: 15),
-//        Performance(id: UUID(), quizTitle: "Quiz 2", date: Date(), score: 15.5, numberOfQuestions: 10),
-//        Performance(id: UUID(), quizTitle: "Quiz 2", date: Date(), score: 29.7, numberOfQuestions: 10),
-//        Performance(id: UUID(), quizTitle: "Quiz 2", date: Date(), score: 40.0, numberOfQuestions: 15)
-//        
-//    ])
+    let highScore: CGFloat
+    let leaderboardScore: Int
+    let leaderboardMembers: Int
+    let completedQuizzes: Int 
+    let rank: String
+    let performances: [Performance]
     
     var body: some View {
-        NavigationView {
-            VStack(alignment: .center, spacing: 8.0) {
-                
-                ScrollView(.vertical, showsIndicators: false) {
+        VStack(alignment: .leading, spacing: 16) {
+            
+            HStack {
+                HStack(spacing: 4) {
+                    Text("High Score")
+                        .foregroundColor(.secondary)
+                        .font(.footnote)
                     
-//                    PerformanceTrackerBar(viewModel: viewModel)
-//                        .padding(.top)
-//                    
-//                    PerformanceHistoryGraph(history: viewModel.performances, mainColor: .teal, subColor: .white)
-//                        .padding(.bottom)
-                    
-//                    AllRecordsView(quizzesCompleted: viewModel.performances.count, totalAnsweredQuestions: 20, highScore: 80, numberOfTestsTaken: 2)
-//                        .padding(.bottom)
-                    
-                    Spacer(minLength: /*@START_MENU_TOKEN@*/0/*@END_MENU_TOKEN@*/)
-                        .frame(height: 100)
-                        
-                }
-                .background {
-                    HomePageBackground()
-                }
-            }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    HStack(spacing: 2){
-                        Image(systemName: "chart.line.uptrend.xyaxis")
+                    HStack(spacing: 4) {
+                        Image(systemName: "trophy.fill")
+                            .foregroundColor(.yellow)
                             .font(.subheadline)
-                            .fontWeight(.semibold)
-                            .foregroundStyle(.primary)
-                        Text("My Stats")
-                            .font(.subheadline)
-                            .fontWeight(.semibold)
-                            .kerning(-0.5)
-                            .foregroundStyle(.primary)
+                            
+                        Text("\(Int(highScore))%")
+                            .font(.body)
+                            .fontWeight(.black)
                     }
                 }
+                
+                Spacer()
+                
+                HStack {
+                    
+                    Text("Rank:")
+                        .font(.footnote)
+                        .foregroundColor(.secondary)
+                    
+                    Text(rank.uppercased())
+                        .font(.body)
+                        .fontWeight(.black)
+                        .foregroundColor(.yellow)
+                }
             }
+            
+            HStack {
+                Text("\(completedQuizzes)")
+                    .font(.subheadline)
+                    .foregroundColor(.white)
+                Text("Quizzes Completed")
+                    .font(.footnote)
+                    .foregroundColor(.secondary)
+            }
+            
+            Divider()
+                
+                PerformanceHistoryGraph(history: [
+                    Performance(id: UUID(), date: Date(), score: 40, numberOfQuestions: 10),
+                    Performance(id: UUID(), date: Date(), score: 80, numberOfQuestions: 10),
+                    Performance(id: UUID(), date: Date(), score: 30, numberOfQuestions: 10),
+                    Performance(id: UUID(), date: Date(), score: 90, numberOfQuestions: 10),
+                    Performance(id: UUID(), date: Date(), score: 30, numberOfQuestions: 20),
+                    Performance(id: UUID(), date: Date(), score: 20, numberOfQuestions: 10),
+                    Performance(id: UUID(), date: Date(), score: 70, numberOfQuestions: 10)
+                ], mainColor: .white, subColor: .yellow)
+                
+                Divider()
+                    .padding(.top)
+                
+                NavigationLink(destination: Text("Performance History")) {
+                    PageLinkView(title: "Performance History")
+                        .font(.footnote)
+                        .padding(.vertical, 8)
+                        .background(Color.black.opacity(0.1))
+                        .cornerRadius(8)
+                }
+                
+                Divider()
+                    .padding(.top)
+     
+            
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .padding(.top, 20)
+        .padding(.horizontal, 10)
+        
     }
 }
+
+
+struct PerformanceCellView: View {
+    let performance: Performance
+    
+    var body: some View {
+        HStack {
+            VStack(alignment: .leading) {
+                Text(performance.quizCategory ?? "Unknown Category")
+                    .font(.headline)
+                
+                Text("\(performance.numberOfQuestions) Questions")
+                    .font(.footnote)
+                    .foregroundColor(.secondary)
+            }
+            
+            Spacer()
+            
+            Text("\(Int(performance.score))%")
+                .font(.title3)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 8)
+    }
+}
+
+
+#Preview {
+    PerformanceView(highScore: 80, leaderboardScore: 235, leaderboardMembers: 789, completedQuizzes: 56, rank: "Silver", performances: mockHistory)
+        .preferredColorScheme(.dark)
+}
+
+let mockHistory = [
+    
+    Performance(id: UUID(), date: Date(), score: 40, numberOfQuestions: 10),
+    Performance(id: UUID(), date: Date(), score: 80, numberOfQuestions: 10),
+    Performance(id: UUID(), date: Date(), score: 30, numberOfQuestions: 10),
+    Performance(id: UUID(), date: Date(), score: 90, numberOfQuestions: 10),
+    Performance(id: UUID(), date: Date(), score: 30, numberOfQuestions: 20),
+    Performance(id: UUID(), date: Date(), score: 20, numberOfQuestions: 10),
+    Performance(id: UUID(), date: Date(), score: 70, numberOfQuestions: 10)
+
+]
