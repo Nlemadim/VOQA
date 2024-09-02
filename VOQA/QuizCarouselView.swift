@@ -7,6 +7,8 @@
 
 import Foundation
 import SwiftUI
+import Shimmer
+
 
 struct QuizCarouselView: View {
     var quizzes: [Voqa]
@@ -29,25 +31,26 @@ struct QuizCarouselView: View {
                         CachedImageView(imageUrl: quiz.imageUrl)
                             .frame(width: 240, height: 240)
                             .cornerRadius(15.0)
-
-                        Text(quiz.quizTitle)
-                            .font(.callout)
-                            .fontWeight(.black)
-                            .lineLimit(3)
-                            .multilineTextAlignment(.center)
-                            .frame(width: 180)
-                            .padding(.horizontal, 8)
-
-                        Text("Users: \(quiz.users)")
-                            .font(.caption)
-                            .foregroundStyle(.primary)
-                            .multilineTextAlignment(.center)
-
-                        if !quiz.curator.isEmpty {
-                            Text("Curated by: \(quiz.curator)")
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
+                        
+                        if !quiz.quizTitle.isEmpty {
+                            Text(quiz.quizTitle)
+                                .font(.callout)
+                                .fontWeight(.black)
+                                .lineLimit(3)
                                 .multilineTextAlignment(.center)
+                                .frame(width: 180)
+                                .padding(.horizontal, 8)
+                        } else {
+                            // Shimmer effect for quiz title placeholder
+                            Text("Loading title...")
+                                .font(.callout)
+                                .fontWeight(.black)
+                                .lineLimit(3)
+                                .multilineTextAlignment(.center)
+                                .frame(width: 180)
+                                .padding(.horizontal, 8)
+                                .redacted(reason: .placeholder) // Use placeholder style
+                                .shimmering(active: true) // Apply shimmering effect
                         }
 
                         HStack {

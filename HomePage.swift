@@ -53,6 +53,37 @@ struct HomePage: View {
                     }
                     .zIndex(1)
                 }
+
+//                ZStack(alignment: .topLeading) {
+//                    if let currentQuiz = quizCatalogue.first(where: { $0.categoryName == CatalogueDetails.topPicks().details.title })?.quizzes[safe: currentItem] {
+//                        BackgroundView(backgroundImage: currentQuiz.imageUrl, color: Color.fromHex(currentQuiz.colors.main))
+//                    }
+//
+//                    ScrollView(showsIndicators: false) {
+//                        VStack(alignment: .leading, spacing: 0) {
+//                            if let topPicks = quizCatalogue.first(where: { $0.categoryName == CatalogueDetails.topPicks().details.title })?.quizzes, !topPicks.isEmpty {
+//                                QuizCarouselView(quizzes: topPicks, currentItem: $currentItem, backgroundImage: $backgroundImage, tapAction: {
+//                                    path.append(topPicks[currentItem])
+//                                })
+//                            }
+//
+//                            // Dynamic creation of HorizontalQuizListViews based on quizCatalogue
+//                            ForEach(quizCatalogue, id: \.categoryName) { category in
+//                                HorizontalQuizListView(
+//                                    catalogue: category,
+//                                    tapAction: { quiz in
+//                                        path.append(quiz)
+//                                    }
+//                                )
+//                            }
+//
+//                            Rectangle()
+//                                .fill(.clear)
+//                                .frame(height: 100)
+//                        }
+//                    }
+//                    .zIndex(1)
+//                }
                 .toolbar(hideTabBar ? .hidden : .visible, for: .tabBar)
                 .toolbar {
                     ToolbarItemGroup(placement: .navigationBarTrailing) {

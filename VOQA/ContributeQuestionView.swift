@@ -6,24 +6,145 @@
 //
 
 import SwiftUI
+import SwiftUILib_DocumentPicker
 
+// Parent View: ContributeQuestionView
+struct ContributeQuestionView: View {
+    @State private var isModalPresented: Bool = false
+    @State private var selectedDocumentURL: URL? = nil
+    @State private var showDocumentPicker: Bool = false // State to manage document picker presentation
+    @Binding var isLoggedIn: Bool
+    var themeColor: Color
+    var submitQuestionText: (String) -> Void
+    
+    var body: some View {
+        VStack {
+            Spacer()
+            
+            if isLoggedIn {
+                // Button with text to present the modal
+                Button(action: {
+                    isModalPresented.toggle()
+                }) {
+                    HStack {
+                        Image(systemName: "questionmark.bubble")
+                            .resizable()
+                            .frame(width: 40, height: 40)
+                            .padding(10)
+                            .background(Color.themePurpleLight)
+                            .foregroundColor(.white)
+                            .cornerRadius(10)
+                        
+                        Text("Contribute a Question")
+                            .font(.headline)
+                            .foregroundColor(.white)
+                            .padding()
+                            .cornerRadius(10)
+                    }
+                }
+                .padding(.bottom, 20)
+                .scaleEffect(0.8)
+                .hAlign(.leading)
+                
+                // Button with image to present the document picker
+                Button(action: {
+                    showDocumentPicker.toggle()
+                }) {
+                    HStack {
+                        Image(systemName: "doc.badge.plus")
+                            .resizable()
+                            .frame(width: 40, height: 40)
+                            .padding(10)
+                            .background(Color.green)
+                            .foregroundColor(.white)
+                            .cornerRadius(10)
+                        
+                        Text("Add Practice Exam PDF")
+                            .font(.headline)
+                            .foregroundColor(.white)
+                            .padding()
+                            .cornerRadius(10)
+                    }
+                }
+                .scaleEffect(0.8)
+                .hAlign(.leading)
+                .documentPicker(isPresented: $showDocumentPicker, documentTypes: ["public.item"], onDocumentsPicked:  { urls in
+                    if let selectedURL = urls.first {
+                        selectedDocumentURL = selectedURL
+                    }
+                })
+                
+            } else {
+                Rectangle()
+                    .fill(Color.clear)
+                    .frame(height: 80)
+                
+                Text("Join The Community".uppercased())
+                    .font(.title2)
+                    .foregroundStyle(themeColor)
+                    .fontWeight(.bold)
+                    .padding(.horizontal)
+                    .padding(.bottom, 20)
+                
+                Rectangle()
+                    .fill(Color.clear)
+                    .frame(height: 80)
+                
+                VStack(spacing: 4) {
+                    Text("Sign-In to post a question")
+                        .font(.title3)
+                        .fontWeight(.semibold)
+                        .padding(.horizontal)
+                    
+                    MediumDownloadButton(
+                        label: "Sign In",
+                        color: themeColor,
+                        iconImage: "apple.logo",
+                        action: {
+                            //MARK: TODO:- Navigation Action for Sign In
+                        }
+                    )
+                    .padding()
+                }
+            }
+            
+            Spacer()
+            
+            // Display selected document over the rectangle if available
+            if let documentURL = selectedDocumentURL {
+                SelectedDocumentView(documentURL: documentURL) {
+                    // Action to clear the document selection
+                    selectedDocumentURL = nil
+                }
+            }
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .padding(.horizontal)
+        .sheet(isPresented: $isModalPresented) {
+            ContributeQuestionModalView { questionText in
+                submitQuestionText(questionText)
+            }
+            .preferredColorScheme(.dark)
+        }
+    }
+}
+
+// Modal View: ContributeQuestionModalView
 struct ContributeQuestionModalView: View {
     @Environment(\.dismiss) private var dismiss
-    @State private var questionText: String = "" // State variable for the text editor input
-    @State private var contributeQuestion = ContributeQuestion(questionText: "") // Model to store the question and document
-    @FocusState private var isTextEditorFocused: Bool // Focus state for the text editor
-
+    @State private var typedText: String = ""
+    @FocusState private var isTextEditorFocused: Bool
+    var submit: (String) -> Void
+    
     var body: some View {
         VStack(alignment: .leading) {
-            QuestionTextEditor(text: $questionText, isFocused: $isTextEditorFocused)
+            QuestionTextEditor(text: $typedText, isFocused: $isTextEditorFocused)
             
             Spacer(minLength: 0)
             
-            SubmitButton(questionText: questionText) {
-                // Populate the contributeQuestion model when submitting
-                contributeQuestion.questionText = questionText
+            SubmitButton(questionText: typedText) { contributedQuestion in
+                submit(contributedQuestion) // Callback to pass text to parent
                 dismiss()
-                print("Submitted question: \(contributeQuestion)")
             }
             .padding()
             .padding(.bottom, 50)
@@ -36,25 +157,10 @@ struct ContributeQuestionModalView: View {
     }
 }
 
-struct SubmitButton: View {
-    let questionText: String
-    let action: () -> Void
-    
-    var body: some View {
-        MediumDownloadButton(
-            label: "Submit",
-            color: questionText.isEmpty ? .gray.opacity(0.4) : .teal.opacity(0.7),
-            iconImage: "arrow.up",
-            action: action
-        )
-        .disabled(questionText.isEmpty)
-    }
-}
-
+// Text Editor View: QuestionTextEditor
 struct QuestionTextEditor: View {
     @Binding var text: String
     @FocusState.Binding var isFocused: Bool
-    //@Binding var isFocused: Bool
     
     var body: some View {
         TextEditor(text: $text)
@@ -84,103 +190,34 @@ struct QuestionTextEditor: View {
     }
 }
 
-
-struct ContributeQuestionView: View {
-    @State private var isModalPresented: Bool = false // State to manage modal presentation
-    @State private var selectedDocumentURL: URL? = nil 
+// Button View: SubmitButton
+struct SubmitButton: View {
+    let questionText: String
+    let action: (String) -> Void
+    
     var body: some View {
-        VStack {
-            Spacer()
-            
-            // Button with text to present the modal
-            Button(action: {
-                isModalPresented.toggle()
-            }) {
-                HStack {
-                    Image(systemName: "questionmark.bubble")
-                        .resizable()
-                        .frame(width: 40, height: 40)
-                        .padding(10)
-                        .background(Color.themePurpleLight)
-                        .foregroundColor(.white)
-                        .cornerRadius(10)
-                    
-                    Text("Contribute a Question")
-                        .font(.headline)
-                        .foregroundColor(.white)
-                        .padding()
-                        .cornerRadius(10)
-                }
-            }
-            .padding(.bottom, 20)
-            .scaleEffect(0.8)
-            .hAlign(.leading)
-
-            // Button with image to present the modal
-            Button(action: {
-                isModalPresented.toggle()
-            }) {
-                HStack {
-                    Image(systemName: "doc.badge.plus")
-                        .resizable()
-                        .frame(width: 40, height: 40)
-                        .padding(10)
-                        .background(Color.green)
-                        .foregroundColor(.white)
-                        .cornerRadius(10)
-                    
-                    Text("Add Practice Exam PDF")
-                        .font(.headline)
-                        .foregroundColor(.white)
-                        .padding()
-                        .cornerRadius(10)
-                }
-            }
-            .scaleEffect(0.8)
-            .hAlign(.leading)
-
-            Spacer()
-            
-            // Display selected document over the rectangle if available
-            if let documentURL = selectedDocumentURL {
-                SelectedDocumentView(documentURL: documentURL) {
-                    // Action to clear the document selection
-                    selectedDocumentURL = nil
-                }
-            } else {
-                Rectangle()
-                    .fill(Color.clear)
-                    .frame(height: 200)
-                    .overlay(
-                        Text("No Document Selected")
-                            .foregroundColor(.gray)
-                            .font(.subheadline)
-                    )
-            }
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .padding(.horizontal)
-        .fullScreenCover(isPresented: $isModalPresented) {
-            ContributeQuestionModalView()
-                .preferredColorScheme(.dark)
-                .onDisappear {
-                    
-                }
-        }
+        MediumDownloadButton(
+            label: "Submit",
+            color: questionText.isEmpty ? .gray.opacity(0.4) : .teal.opacity(0.7),
+            iconImage: "arrow.up",
+            action: { action(questionText) }
+        )
+        .disabled(questionText.isEmpty)
     }
 }
 
+// Selected Document View: SelectedDocumentView
 struct SelectedDocumentView: View {
     let documentURL: URL
     let onRemove: () -> Void
-
+    
     var body: some View {
         ZStack(alignment: .topTrailing) {
             VStack {
-                Image(systemName: "doc.fill") // Use a system image to represent the document
+                Image(systemName: "doc.fill")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: 100, height: 100) // Adjust the size as needed
+                    .frame(width: 100, height: 100)
                     .padding()
             }
             .frame(height: 200)
@@ -201,22 +238,10 @@ struct SelectedDocumentView: View {
     }
 }
 
-
-struct AddDocumentButton: View {
-    let action: () -> Void
-    
-    var body: some View {
-        MediumDownloadButton(
-            label: "Add Practice Exam PDF",
-            color: .teal.opacity(0.7),
-            iconImage: "doc.badge.plus",
-            action: action
-        )
-        .padding(.bottom, 20)
-        .padding()
-    }
+#Preview {
+    ContributeQuestionView(isLoggedIn: .constant(false), themeColor: .pink, submitQuestionText: { text in })
+        .preferredColorScheme(.dark)
 }
-
 
 /**
  https://github.com/swiftuilib/document-picker

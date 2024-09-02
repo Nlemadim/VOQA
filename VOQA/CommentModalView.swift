@@ -11,7 +11,8 @@ import SwiftUI
 struct CommentModalView: View {
     @Environment(\.dismiss) private var dismiss
     @Binding var comment: String // Binding to the comment text
-    @FocusState private var isTextEditorFocused: Bool // Focus state for the text editor
+    @FocusState private var isTextEditorFocused: Bool
+    var submitComment: (String) -> Void
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -43,6 +44,7 @@ struct CommentModalView: View {
             // Submit button
             Button(action: {
                 isTextEditorFocused = true
+                submitComment(comment)
                 dismiss()
                 print("Submit comment tapped with comment: \(comment)")
             }) {

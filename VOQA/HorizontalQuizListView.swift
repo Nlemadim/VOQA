@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import Shimmer
 
 struct HorizontalQuizListView: View {
     var catalogue: QuizCatalogue
@@ -22,7 +23,7 @@ struct HorizontalQuizListView: View {
                 .lineLimit(1)
                 .truncationMode(.tail)
                 .frame(maxWidth: .infinity, alignment: .leading)
-
+            
                 Text(catalogue.description)
                     .font(.footnote)
                     .padding(.horizontal)

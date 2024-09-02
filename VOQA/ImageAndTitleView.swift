@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import Shimmer
 
 struct ImageAndTitleView: View {
     var title: String
@@ -22,11 +23,22 @@ struct ImageAndTitleView: View {
                 .clipped()
 
             VStack(alignment: .leading, spacing: 8) {
-                Text(title)
-                    .font(.system(size: 13))
-                    .lineLimit(2)
-                    .multilineTextAlignment(.leading)
-                    .fontWeight(.bold)
+                if !title.isEmpty {
+                    Text(title)
+                        .font(.system(size: 13))
+                        .lineLimit(2)
+                        .multilineTextAlignment(.leading)
+                        .fontWeight(.bold)
+                    
+                } else {
+                  
+                    Text("Loading title...")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                        .multilineTextAlignment(.center)
+                        .redacted(reason: .placeholder)
+                        .shimmering(active: true)
+                }
 
                 Text("\(quiz.users) Ratings")
                     .font(.caption)

@@ -8,13 +8,16 @@
 import Foundation
 import SwiftUI
 
-struct LatestScoresView1: View {
+struct LatestScoresView: View {
     var latestScore: LatestScore?
     var onRestartQuiz: () -> Void
     var onStartNewQuiz: () -> Void
     var isLoading: Bool
+    let mainColor: Color
+    let subColor: Color
+    
     @State private var isReviewExpanded = false
-
+    
     var body: some View {
         if let score = latestScore {
             // When content is available
@@ -37,14 +40,14 @@ struct LatestScoresView1: View {
                         .font(.footnote)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
-
+                
                 // Quiz Category
                 Text(score.quizCategory.uppercased())
-                    .font(.title2)
+                    .font(.title3)
                     .lineLimit(2, reservesSpace: false)
                     .fontWeight(.semibold)
                     .primaryTextStyleForeground()
-
+                
                 // Number of Questions
                 HStack {
                     Text("Number of Questions:")
@@ -56,7 +59,7 @@ struct LatestScoresView1: View {
                         .font(.title3)
                         .fontWeight(.semibold)
                 }
-
+                
                 // Correct and Wrong Answers
                 HStack {
                     Text("Correct Answers:")
@@ -79,7 +82,7 @@ struct LatestScoresView1: View {
                         .font(.title3)
                         .fontWeight(.semibold)
                 }
-
+                
                 // Review Text with Expandable Button
                 VStack(alignment: .leading, spacing: 4) {
                     Text(score.review)
@@ -87,7 +90,7 @@ struct LatestScoresView1: View {
                         .foregroundColor(.secondary)
                         .lineLimit(isReviewExpanded ? nil : 2)
                         .truncationMode(.tail)
-
+                    
                     if score.review.count > 100 {
                         Button(action: {
                             withAnimation {
@@ -96,33 +99,34 @@ struct LatestScoresView1: View {
                         }) {
                             Text(isReviewExpanded ? "Show Less" : "Show More")
                                 .font(.footnote)
-                                .foregroundColor(.blue)
+                                .foregroundColor(mainColor)
                         }
                     }
                 }
-
+                
                 // Buttons for Restart and Start a New Quiz
+                
                 VStack(spacing: 16) {
                     
-                    MediumDownloadButton(label: "Restart", color: .teal, iconImage: "arrow.counterclockwise", action: {
+                    MediumDownloadButton(label: "Restart", color: mainColor, iconImage: "arrow.counterclockwise", action: {
                         onRestartQuiz()
                     })
                     
-                    MediumDownloadButton(label: "New Quiz", color: .teal, iconImage: "", action: {
+                    MediumDownloadButton(label: "New Quiz", color: mainColor, iconImage: "", action: {
                         onStartNewQuiz()
                     })
-
                 }
+                
             }
             .padding(.top, 20)
             .cornerRadius(12)
             .padding(.horizontal, 10)
         } else {
             // No content view when latestScore is nil
-            NoContentView1(action: onStartNewQuiz, isLoadingScores: isLoading)
+            NoContentView(action: onStartNewQuiz, isLoadingScores: isLoading)
         }
     }
-
+    
     // Helper function to determine score color
     private func scoreColor(for score: String) -> Color {
         guard let scoreValue = Int(score.trimmingCharacters(in: CharacterSet(charactersIn: "%"))) else {
@@ -154,14 +158,14 @@ struct LatestScoresView1: View {
         
         return formatter.string(from: date)
     }
-
-
+    
+    
     // Mock function for correct answers - replace with real logic
     private func correctAnswers(for latestScore: LatestScore) -> String {
         // Implement your logic to calculate correct answers
         return "15" // Example value
     }
-
+    
     // Mock function for wrong answers - replace with real logic
     private func wrongAnswers(for latestScore: LatestScore) -> String {
         // Implement your logic to calculate wrong answers
@@ -171,10 +175,10 @@ struct LatestScoresView1: View {
 
 
 // A view to display when there's no content available
-struct NoContentView1: View {
+struct NoContentView: View {
     var action: () -> Void
     var isLoadingScores: Bool
-
+    
     var body: some View {
         ZStack {
             Rectangle()
@@ -190,8 +194,15 @@ struct NoContentView1: View {
             VStack(spacing: 10) {
                 Spacer()
                 
-                Text("You Have No Scores Yet")
-                    .font(.subheadline)
+                Rectangle()
+                    .fill(Color.clear)
+                    .frame(height: 100)
+                
+                Text("No Scores Yet".uppercased())
+                    .font(.headline)
+                    .padding(.horizontal)
+                    .padding()
+                    .primaryTextStyleForeground()
                 
                 MediumDownloadButton(label: "Start Assessment Quiz", color: .teal, iconImage: "", action: {
                     action()
@@ -207,3 +218,29 @@ struct NoContentView1: View {
         .padding(.horizontal)
     }
 }
+
+let mockScore = LatestScore(
+    quizId: "123",
+    date: Date(),
+    quizCategory: "Science",
+    numberOfquestions: "20",
+    review: "This quiz covered various topics in science, including biology, chemistry, and physics. The questions were challenging and tested the understanding of key concepts.",
+    score: "75%"
+)
+
+
+#Preview {
+    return LatestScoresView(latestScore: mockScore , onRestartQuiz: {}, onStartNewQuiz: {}, isLoading: true, mainColor: .pink, subColor: .yellow)
+        .preferredColorScheme(.dark)
+}
+
+#Preview {
+    LatestScoresView(onRestartQuiz: {}, onStartNewQuiz: {}, isLoading: false, mainColor: .pink, subColor: .yellow)
+        .preferredColorScheme(.dark)
+}
+
+#Preview {
+    LatestScoresView(onRestartQuiz: {}, onStartNewQuiz: {}, isLoading: true, mainColor: .pink, subColor: .yellow)
+        .preferredColorScheme(.dark)
+}
+

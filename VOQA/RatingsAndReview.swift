@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct RatingsAndReview {
+struct RatingsAndReview: Equatable {
     var narrationRating: Int?
     var difficultyRating: Int?
     var relevanceRating: Int?

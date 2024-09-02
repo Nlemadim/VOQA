@@ -37,10 +37,9 @@ struct MyLibrary: View {
                 case .quizInfo(let voqa):
                     QuizInfoView(selectedVoqa: voqa)
                 case .quizPlayerDetails(let voqa):
-                    QuizDashboardPage(voqa: voqa) { voqa in
+                    QuizDashboardPage(isLoggedIn: true, voqa: voqa) { voqa in
                         path.append(PageNavigationController(type: .quizInfo(voqa)))
                        
-                            
                     }
                 case .quizPlayerView:
                     CreateAccountView()

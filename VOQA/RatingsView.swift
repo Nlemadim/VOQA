@@ -23,7 +23,7 @@ public struct RatingsView: View {
     var maxRating: Int
     @Binding var currentRating: Int?
     var width:Int
-    var color: UIColor
+    var color: Color
     var sfSymbol: String
     
     /// Only two required parameters are maxRating and the binding to currentRating.  All other parameters have default values
@@ -34,7 +34,7 @@ public struct RatingsView: View {
     ///   - color: The color of the image ( (Default - systemYellow)
     ///   - sfSymbol: A String representing an SFImage that has a fill variabnt (Default -  "star")
     ///
-    public init(maxRating: Int, currentRating: Binding<Int?>, width: Int = 20, color: UIColor = .systemYellow, sfSymbol: String = "star") {
+    public init(maxRating: Int, currentRating: Binding<Int?>, width: Int = 20, color: Color = .yellow, sfSymbol: String = "star") {
         self.maxRating = maxRating
         self._currentRating = currentRating
         self.width = width

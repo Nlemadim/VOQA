@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct PerformanceHistoryGraph: View {
-    var history = [Performance]()
+    @Binding var history: [Performance]
     var mainColor: Color
     var subColor: Color
     
@@ -18,13 +18,13 @@ struct PerformanceHistoryGraph: View {
             Image(systemName: "chart.line.uptrend.xyaxis")
                 .font(.subheadline)
                 .fontWeight(.semibold)
-                .foregroundStyle(.yellow)
+                .foregroundStyle(mainColor)
             
             Text("Most Recent Performance")
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
                 .fontWeight(.bold)
-                .kerning(-0.5) // Reduces the default spacing between characters
+                .kerning(-0.5)
             
             Spacer(minLength: 0)
         }
@@ -53,7 +53,6 @@ struct PerformanceHistoryGraph: View {
         .background(Color.gray.opacity(0.07).gradient)
         .cornerRadius(15)
     }
-    
     
     
     @ViewBuilder
@@ -162,21 +161,17 @@ struct PerformanceHistoryGraph: View {
             return "Earlier"
         }
     }
-
-    
 }
 
 #Preview {
-    PerformanceHistoryGraph(history: [
-        Performance(id: UUID(), date: Date(), score: 40, numberOfQuestions: 10),
-        Performance(id: UUID(), date: Date(), score: 80, numberOfQuestions: 10),
-        Performance(id: UUID(), date: Date(), score: 30, numberOfQuestions: 10),
-        Performance(id: UUID(), date: Date(), score: 90, numberOfQuestions: 10),
-        Performance(id: UUID(), date: Date(), score: 30, numberOfQuestions: 20),
-        Performance(id: UUID(), date: Date(), score: 20, numberOfQuestions: 10),
-        Performance(id: UUID(), date: Date(), score: 70, numberOfQuestions: 10)
-    ], mainColor: .teal, subColor: .themePurpleLight)
+    @State var history = mockHistory
+    return PerformanceHistoryGraph(
+        history: $history,
+        mainColor: .teal,
+        subColor: .themePurpleLight
+    )
     .preferredColorScheme(.dark)
 }
+
 
 

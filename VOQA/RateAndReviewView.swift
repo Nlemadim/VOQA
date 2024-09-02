@@ -9,9 +9,12 @@ import SwiftUI
 import Foundation
 
 struct RateAndReviewView: View {
-    @State private var review = RatingsAndReview() // State to hold the updated review information
-    @State private var isCommentModalPresented: Bool = false // State to manage modal presentation
-    @State private var currentComment: String = "" // Temporary state for non-optional comment text
+    @Binding var review: RatingsAndReview
+    @State private var isCommentModalPresented: Bool = false
+    @State private var currentComment: String = ""
+    
+    let themeColor: Color
+    var submitReview: () -> Void
 
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
@@ -24,49 +27,52 @@ struct RateAndReviewView: View {
             // Ratings Section for Narration
             RatingSectionView(
                 title: "Narration",
+                themeColor: themeColor,
                 currentRating: $review.narrationRating
             )
             
             // Ratings Section for Difficulty
             RatingSectionView(
                 title: "Difficulty",
+                themeColor: themeColor,
                 currentRating: $review.difficultyRating
             )
             
             // Ratings Section for Relevance
             RatingSectionView(
                 title: "Relevance",
+                themeColor: themeColor,
                 currentRating: $review.relevanceRating
             )
             
-            // Comment Box
-            CommentBoxView {
-                // Update currentComment with review.comment or an empty string
-                currentComment = review.comment ?? ""
+            MediumDownloadButton(label: "Leave a review", color: .clear, iconImage: "") {
                 isCommentModalPresented.toggle()
+            }
+            
+            
+            MediumDownloadButton(label: "Submit Ratings", color: themeColor, iconImage: "") {
+                submitReview()
             }
             
             Spacer()
         }
         .padding()
         .sheet(isPresented: $isCommentModalPresented) {
-            // Use a Binding to the temporary state variable
-            CommentModalView(comment: $currentComment)
-                .onDisappear {
-                    // Update review.comment with currentComment when modal is dismissed
-                    review.comment = currentComment.isEmpty ? nil : currentComment
-                }
+            CommentModalView(comment: $currentComment, submitComment: { comment in
+                review.comment = comment
+            })
         }
     }
 }
 
-#Preview {
-    RateAndReviewView()
-        .preferredColorScheme(.dark)
-}
+//#Preview {
+//    RateAndReviewView(review: <#Binding<RatingsAndReview>#>, themeColor: .pink)
+//        .preferredColorScheme(.dark)
+//}
 
 struct RatingSectionView: View {
     let title: String
+    let themeColor: Color
     @Binding var currentRating: Int?
     
     var body: some View {
@@ -77,31 +83,8 @@ struct RatingSectionView: View {
                 .padding(.trailing, 100)
             
             
-            RatingsView(maxRating: 5, currentRating: $currentRating, width: 30, color: getColor(), sfSymbol: "star")
+            RatingsView(maxRating: 5, currentRating: $currentRating, width: 30, color: currentRating != nil ? themeColor : .gray, sfSymbol: "star")
         }
-    }
-    
-    func getColor() -> UIColor {
-        return  currentRating != nil ? .systemTeal : .gray
-    }
-}
-
-struct CommentBoxView: View {
-    let action: () -> Void
-    
-    var body: some View {
-        Rectangle()
-            .fill(Color.gray.opacity(0.2))
-            .frame(height: 100)
-            .overlay(
-                Text("Leave a Review")
-                    .foregroundColor(.gray)
-                    .padding()
-            )
-            .cornerRadius(10)
-            .onTapGesture {
-                action()
-            }
     }
 }
 

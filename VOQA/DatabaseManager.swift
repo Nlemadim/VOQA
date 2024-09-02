@@ -17,8 +17,12 @@ class DatabaseManager: ObservableObject {
     
     @Published var ratingsAndReview: RatingsAndReview?
     @Published var latestScores: LatestScore?
-    @Published var contributedQuestion: [ContributeQuestion] = []
+    @Published var contributedQuestion: [ContributeAQuestion] = []
     @Published var performanceHistory: [Performance] = []
+    
+    @Published var userHighScore: Int = 0
+    @Published var totalQuestionsAnswered: Int = 0
+    @Published var quizzesCompleted: Int = 0
     
     static let shared = DatabaseManager()
     
@@ -47,6 +51,7 @@ class DatabaseManager: ObservableObject {
         }
     }
     
+    
     func loadVoiceConfiguration(for voice: AddOnItem) async throws  {
         let loadedConfig = try await configManager.loadVoiceConfiguration(for: voice)
         self.sessionConfiguration = loadedConfig
@@ -64,6 +69,7 @@ class DatabaseManager: ObservableObject {
             print("Error fetching questions: \(error)")
         }
     }
+    
     
     func fetchQuizCollection() async {
         do {
@@ -114,11 +120,34 @@ class DatabaseManager: ObservableObject {
         return quizCatalogue
     }
     
+    func createUserProfile() {
+        
+    }
+    
     func uploadQuiz(quiz: QuizData) async {
         do {
             try await firebaseManager.uploadQuizDocumentToFirebase(quiz: quiz)
         } catch {
             print("Error uploading quiz: \(error)")
         }
+    }
+    
+    func postNewQuestion(_ newQuestion: ContributeAQuestion) {
+        let questionToPost = newQuestion.questionText
+        print("Posting Question")
+        print(questionToPost)
+        //Set up validation and question post configuration
+        //networkService.postQuestion(userId: String, quizId: String, questionText: String)
+    }
+    
+    func postNewReview(_ review: RatingsAndReview) {
+        let  reviewToPost = review
+        print("Posting Review")
+        print(reviewToPost.difficultyRating as Any)
+        print(reviewToPost.narrationRating as Any)
+        print(reviewToPost.relevanceRating as Any)
+        print(reviewToPost.comment as Any)
+        //Set up validation and question post configuration
+        //networkService.postReview(userId: String, quizId: String, diificultyRating: Int, relevanceRating: Int, narratorRating: Int, comment: Int? = nil)
     }
 }

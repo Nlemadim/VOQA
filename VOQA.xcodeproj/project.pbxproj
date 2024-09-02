@@ -39,6 +39,8 @@
 		0B43DD162C791440009F32EA /* CreatAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B43DD152C791440009F32EA /* CreatAccountView.swift */; };
 		0B4BD9392C752FD3006A043D /* QuizData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B4BD9382C752FD3006A043D /* QuizData.swift */; };
 		0B4FE0CE2C6E46740086B43F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0B4FE0CD2C6E46740086B43F /* GoogleService-Info.plist */; };
+		0B4FFECD2C855F1900E8D8D9 /* SwiftUILib.DocumentPicker in Frameworks */ = {isa = PBXBuildFile; productRef = 0B4FFECC2C855F1900E8D8D9 /* SwiftUILib.DocumentPicker */; };
+		0B4FFED02C8562C100E8D8D9 /* Shimmer in Frameworks */ = {isa = PBXBuildFile; productRef = 0B4FFECF2C8562C100E8D8D9 /* Shimmer */; };
 		0B511D052C7632F300D02CE6 /* AllRecordsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B511D042C7632F300D02CE6 /* AllRecordsView.swift */; };
 		0B511D0B2C76335F00D02CE6 /* CustomSpinnerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B511D0A2C76335E00D02CE6 /* CustomSpinnerView.swift */; };
 		0B511D0D2C76338E00D02CE6 /* FormattedQuestionContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B511D0C2C76338E00D02CE6 /* FormattedQuestionContentView.swift */; };
@@ -273,7 +275,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0B4FFED02C8562C100E8D8D9 /* Shimmer in Frameworks */,
 				0B31C40E2C223286006FB5D1 /* AVFAudio.framework in Frameworks */,
+				0B4FFECD2C855F1900E8D8D9 /* SwiftUILib.DocumentPicker in Frameworks */,
 				0B5BA5CD2C7651B500E1155A /* FirebaseAuth in Frameworks */,
 				0B5BA5D52C7651B500E1155A /* FirebasePerformance in Frameworks */,
 				0B5BA5D72C7651B500E1155A /* FirebaseStorage in Frameworks */,
@@ -766,6 +770,8 @@
 				0B5BA5D22C7651B500E1155A /* FirebaseFirestore */,
 				0B5BA5D42C7651B500E1155A /* FirebasePerformance */,
 				0B5BA5D62C7651B500E1155A /* FirebaseStorage */,
+				0B4FFECC2C855F1900E8D8D9 /* SwiftUILib.DocumentPicker */,
+				0B4FFECF2C8562C100E8D8D9 /* Shimmer */,
 			);
 			productName = VOQA;
 			productReference = 0B5BA5C62C764FE000E1155A /* VOQA.app */;
@@ -797,6 +803,8 @@
 			mainGroup = 0BC091D12C1D4463005FB223;
 			packageReferences = (
 				0B5BA5C92C7651B500E1155A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				0B4FFECB2C855F1900E8D8D9 /* XCRemoteSwiftPackageReference "document-picker" */,
+				0B4FFECE2C8562C100E8D8D9 /* XCRemoteSwiftPackageReference "SwiftUI-Shimmer" */,
 			);
 			productRefGroup = 0BC091D12C1D4463005FB223;
 			projectDirPath = "";
@@ -1167,6 +1175,22 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		0B4FFECB2C855F1900E8D8D9 /* XCRemoteSwiftPackageReference "document-picker" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/swiftuilib/document-picker";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+		0B4FFECE2C8562C100E8D8D9 /* XCRemoteSwiftPackageReference "SwiftUI-Shimmer" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/markiv/SwiftUI-Shimmer";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.5.1;
+			};
+		};
 		0B5BA5C92C7651B500E1155A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
@@ -1178,6 +1202,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		0B4FFECC2C855F1900E8D8D9 /* SwiftUILib.DocumentPicker */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0B4FFECB2C855F1900E8D8D9 /* XCRemoteSwiftPackageReference "document-picker" */;
+			productName = SwiftUILib.DocumentPicker;
+		};
+		0B4FFECF2C8562C100E8D8D9 /* Shimmer */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0B4FFECE2C8562C100E8D8D9 /* XCRemoteSwiftPackageReference "SwiftUI-Shimmer" */;
+			productName = Shimmer;
+		};
 		0B5BA5CA2C7651B500E1155A /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 0B5BA5C92C7651B500E1155A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;

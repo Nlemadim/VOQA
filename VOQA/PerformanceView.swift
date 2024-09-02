@@ -10,11 +10,10 @@ import SwiftUI
 
 struct PerformanceView: View {
     let highScore: CGFloat
-    let leaderboardScore: Int
-    let leaderboardMembers: Int
-    let completedQuizzes: Int 
-    let rank: String
-    let performances: [Performance]
+    let completedQuizzes: Int
+    let mainColor: Color
+    let subColor: Color
+    @State var performanceHistory: [Performance]
     
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -27,7 +26,7 @@ struct PerformanceView: View {
                     
                     HStack(spacing: 4) {
                         Image(systemName: "trophy.fill")
-                            .foregroundColor(.yellow)
+                            .foregroundColor(subColor)
                             .font(.subheadline)
                             
                         Text("\(Int(highScore))%")
@@ -37,23 +36,23 @@ struct PerformanceView: View {
                 }
                 
                 Spacer()
-                
-                HStack {
-                    
-                    Text("Rank:")
-                        .font(.footnote)
-                        .foregroundColor(.secondary)
-                    
-                    Text(rank.uppercased())
-                        .font(.body)
-                        .fontWeight(.black)
-                        .foregroundColor(.yellow)
-                }
+                //MARK: To Be Implemented in V2
+//                HStack {
+//                    
+//                    Text("Rank:")
+//                        .font(.footnote)
+//                        .foregroundColor(.secondary)
+//                    
+//                    Text(rank.uppercased())
+//                        .font(.body)
+//                        .fontWeight(.black)
+//                        .foregroundColor(.yellow)
+//                }
             }
             
             HStack {
                 Text("\(completedQuizzes)")
-                    .font(.subheadline)
+                    .font(.headline)
                     .foregroundColor(.white)
                 Text("Quizzes Completed")
                     .font(.footnote)
@@ -62,15 +61,7 @@ struct PerformanceView: View {
             
             Divider()
                 
-                PerformanceHistoryGraph(history: [
-                    Performance(id: UUID(), date: Date(), score: 40, numberOfQuestions: 10),
-                    Performance(id: UUID(), date: Date(), score: 80, numberOfQuestions: 10),
-                    Performance(id: UUID(), date: Date(), score: 30, numberOfQuestions: 10),
-                    Performance(id: UUID(), date: Date(), score: 90, numberOfQuestions: 10),
-                    Performance(id: UUID(), date: Date(), score: 30, numberOfQuestions: 20),
-                    Performance(id: UUID(), date: Date(), score: 20, numberOfQuestions: 10),
-                    Performance(id: UUID(), date: Date(), score: 70, numberOfQuestions: 10)
-                ], mainColor: .white, subColor: .yellow)
+            PerformanceHistoryGraph(history: $performanceHistory, mainColor: mainColor, subColor: subColor)
                 
                 Divider()
                     .padding(.top)
@@ -122,11 +113,11 @@ struct PerformanceCellView: View {
 
 
 #Preview {
-    PerformanceView(highScore: 80, leaderboardScore: 235, leaderboardMembers: 789, completedQuizzes: 56, rank: "Silver", performances: mockHistory)
+    PerformanceView(highScore: 80, completedQuizzes: 789, mainColor: .green, subColor: .purple,  performanceHistory: mockHistory)
         .preferredColorScheme(.dark)
 }
 
-let mockHistory = [
+let mockHistory: [Performance] = [
     
     Performance(id: UUID(), date: Date(), score: 40, numberOfQuestions: 10),
     Performance(id: UUID(), date: Date(), score: 80, numberOfQuestions: 10),
@@ -137,3 +128,5 @@ let mockHistory = [
     Performance(id: UUID(), date: Date(), score: 70, numberOfQuestions: 10)
 
 ]
+
+

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ContributeQuestion {
+struct ContributeAQuestion {
     var questionText: String
     var documentURL: URL?
 }

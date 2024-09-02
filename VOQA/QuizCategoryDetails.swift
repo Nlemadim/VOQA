@@ -41,8 +41,29 @@ enum CatalogueDetails: Hashable {
             return .others()
         case .realEstateLicensing, .generalPhysics, .generalBiology, .generalChemistry, .dataPrivacy:
             return .topPicks()
-        default:
-            return nil
+        // Add cases for all remaining quizzes
+        case .testOfEnglishAsForeignLanguage, .multistateBarExamination, .nclexRN, .advancedPlacementExam, .engineerInTraining, .englishLanguageArts, .humanAnatomy, .ethicalHackingPrinciples, .iappCertification, .linux, .objectOrientedProgramming, .uiUXDesign:
+            return .topPicks() // or another appropriate category
         }
     }
+
+    
+//    static func category(for quiz: QuizList) -> CatalogueDetails? {
+//        switch quiz {
+//        case .historyOfWorldWar1, .historyOfWorldWar2, .usConstitution, .americanHistory:
+//            return .artsAndHumanities()
+//        case .sat, .gre, .act, .lawSchoolAdmissionTest, .medicalCollegeAdmissionTest:
+//            return .collegeAdmissionsExams()
+//        case .certifiedPublicAccountantExam, .comptiaCYSAPlus, .ciscoCertifiedNetworkAssociateExam, .comptiaAPlus, .certifiedInformationSystemsAuditor:
+//            return .professionalCertifications()
+//        case .kotlinProgramming, .swiftProgramming, .amazonWebServices, .microsoftAzure, .privacyEngineeringPrinciples:
+//            return .techAndInnovation()
+//        case .worldCupHistory, .mlbGreatestOfAllTime, .nbaGreatestOfAllTime, .f1RacingGreatestOfAllTime, .nascarGreatestOfAllTime:
+//            return .others()
+//        case .realEstateLicensing, .generalPhysics, .generalBiology, .generalChemistry, .dataPrivacy:
+//            return .topPicks()
+//        default:
+//            return nil
+//        }
+//    }
 }

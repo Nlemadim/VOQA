@@ -10,9 +10,15 @@ import SwiftUI
 
 
 struct QuizDashboardPage: View {
+    @EnvironmentObject var user: User
+    @EnvironmentObject var databaseManager: DatabaseManager
+    @State private var contributeQuestion = ContributeAQuestion(questionText: "")
+    @State var ratingsAndReviews = RatingsAndReview()
+    @State private var contributedQuestion: String = ""
     @Environment(\.dismiss) private var dismiss
     @State private var currentPage: String = "Latest Scores"
     @State private var isLoadingScores: Bool = false
+    @State var isLoggedIn: Bool
     @Namespace private var animation
     
     var voqa: Voqa
@@ -26,12 +32,12 @@ struct QuizDashboardPage: View {
                 PinnedHeaderView()
                 
                 ViewThatFits {
-                    VStack {
-                        // Switch between different views based on currentPage
+                    VStack(alignment: .center) {
                         switch currentPage {
                         case "Latest Scores":
-                            LatestScoresView1(
-                                latestScore: mockScore,
+                            LatestScoresView(
+                                
+                                latestScore: databaseManager.latestScores,
                                 
                                 onRestartQuiz: {
                                     
@@ -39,24 +45,52 @@ struct QuizDashboardPage: View {
                                 onStartNewQuiz: {
                                     
                                 },
-                                isLoading: isLoadingScores
+                                isLoading: isLoadingScores,
+                                
+                                mainColor: Color.fromHex(voqa.colors.main),
+                                
+                                subColor: Color.fromHex(voqa.colors.sub)
                             )
                             
                         case "Performance":
-                            
                             PerformanceView(
-                                highScore: 90,
-                                leaderboardScore: 117,
-                                leaderboardMembers: 18890,
-                                completedQuizzes: 70,
-                                rank: "GOLD",
-                                performances: mockHistory
+                                
+                                highScore: CGFloat(databaseManager.userHighScore),
+                                
+                                completedQuizzes: databaseManager.quizzesCompleted,
+                                
+                                mainColor: Color.fromHex(voqa.colors.main),
+                                
+                                subColor: Color.fromHex(voqa.colors.sub),
+                                
+                                performanceHistory: databaseManager.performanceHistory
                             )
-                
+                            
                         case "Contribute a Question":
-                            ContributeQuestionView()
+                            ContributeQuestionView(
+                                
+                                isLoggedIn: $isLoggedIn,
+                                
+                                themeColor: Color.fromHex(voqa.colors.main),
+                                
+                                submitQuestionText: { contributedQuestion in
+                                    
+                                postQuestion(questionText: contributedQuestion)
+                                    
+                            })
+                            
                         case "Rate and Review":
-                            RateAndReviewView()
+                            RateAndReviewView(
+                                
+                                review: $ratingsAndReviews,
+                                
+                                themeColor: Color.fromHex(voqa.colors.main),
+                                
+                                submitReview: {
+                                    
+                                    postReview(review: self.ratingsAndReviews)
+                            })
+             
                         default:
                             Text("No content available")
                         }
@@ -70,6 +104,16 @@ struct QuizDashboardPage: View {
         .navigationBarBackButtonHidden(true)
     }
     
+    private func postQuestion(questionText: String) {
+        guard !questionText.isEmptyOrWhiteSpace else { return }
+        self.contributeQuestion.questionText = questionText
+        databaseManager.postNewQuestion(contributeQuestion)
+    }
+    
+    private func postReview(review: RatingsAndReview) {
+        guard review.difficultyRating != 0 || review.narrationRating != 0 || review.relevanceRating != 0  else { return }
+        databaseManager.postNewReview(review)
+    }
     
     @ViewBuilder
     func HeaderView(voqa: Voqa) -> some View {
@@ -161,45 +205,26 @@ struct QuizDashboardPage: View {
             }
             .padding(.horizontal)
             .padding(.top, 20)
-            //.padding(.bottom, 25)
-        }
-    }
-    
-    
-    @ViewBuilder
-    func QnAHistoryView() -> some View {
-        VStack {
-            Text("Q&A History")
-                .font(.title)
-            // Add more UI elements for Q&A History here
-        }
-    }
-    
-    @ViewBuilder
-    func TestTopicsView() -> some View {
-        VStack {
-            Text("Test Topics")
-                .font(.title)
-            // Add more UI elements for Test Topics here
+            
         }
     }
 }
 
-#Preview {
-    return LatestScoresView1(latestScore: mockScore , onRestartQuiz: {}, onStartNewQuiz: {}, isLoading: true)
-        .preferredColorScheme(.dark)
-}
-
-#Preview {
-    LatestScoresView1(onRestartQuiz: {}, onStartNewQuiz: {}, isLoading: false)
-        .preferredColorScheme(.dark)
-}
-
-#Preview {
-    LatestScoresView1(onRestartQuiz: {}, onStartNewQuiz: {}, isLoading: true)
-        .preferredColorScheme(.dark)
-}
-
+//#Preview {
+//    return LatestScoresView1(latestScore: mockScore , onRestartQuiz: {}, onStartNewQuiz: {}, isLoading: true)
+//        .preferredColorScheme(.dark)
+//}
+//
+//#Preview {
+//    LatestScoresView1(onRestartQuiz: {}, onStartNewQuiz: {}, isLoading: false)
+//        .preferredColorScheme(.dark)
+//}
+//
+//#Preview {
+//    LatestScoresView1(onRestartQuiz: {}, onStartNewQuiz: {}, isLoading: true)
+//        .preferredColorScheme(.dark)
+//}
+//
 
 
 
