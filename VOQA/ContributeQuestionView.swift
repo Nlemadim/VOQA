@@ -12,7 +12,8 @@ import SwiftUILib_DocumentPicker
 struct ContributeQuestionView: View {
     @State private var isModalPresented: Bool = false
     @State private var selectedDocumentURL: URL? = nil
-    @State private var showDocumentPicker: Bool = false // State to manage document picker presentation
+    @State private var showDocumentPicker: Bool = false
+    
     @Binding var isLoggedIn: Bool
     var themeColor: Color
     var submitQuestionText: (String) -> Void

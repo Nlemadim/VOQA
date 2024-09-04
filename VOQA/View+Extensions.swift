@@ -9,6 +9,15 @@ import Foundation
 import SwiftUI
 
 extension View {
+    func signInButtonStyle() -> some View {
+        self.overlay(
+            Capsule(style: .continuous)
+                .stroke(Color.white, lineWidth: 2)
+        )
+        .clipShape(Capsule())
+        .frame(height: 45)
+    }
+    
     func dynamicExactGradientBackground(startColor: Color, endColor: Color) -> some View {
         let startPoint = UnitPoint(x: 0.49999998837676157, y: 2.9479518284275417e-15)
         let endPoint = UnitPoint(x: 0.4999999443689973, y: 0.9363635917143408)

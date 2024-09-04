@@ -106,6 +106,19 @@ class User: ObservableObject {
         saveUserConfig()
     }
     
+    func createUserProfile() -> UserProfile {
+        return UserProfile(
+            firstCreated: userConfig.firstCreated,
+            userId: userConfig.userId,
+            userName: userConfig.username,
+            email: userConfig.email,
+            voqaCollection: userConfig.quizCollection,
+            voiceNarrator: [userConfig.selectedVoiceNarrator],
+            backgroundMusic: userConfig.selectedBackgroundMusic.map { [$0] } ?? [],
+            backgroundSFX: userConfig.selectedSoundEffect.map { [$0] } ?? []
+        )
+    }
+    
     // Methods to update specific add-on selections
     func updateVoiceNarrator(_ narrator: String) {
         userConfig.selectedVoiceNarrator = narrator

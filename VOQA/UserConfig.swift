@@ -21,6 +21,10 @@ struct UserConfig: Codable {
     var selectedVoiceNarrator: String
     var selectedBackgroundMusic: String?
     var selectedSoundEffect: String?
+    
+    // New properties
+    var firstCreated: Date  // Date when the user config was first created
+    var userId: String  // User ID as a string
 
     init(
         username: String = "",
@@ -33,7 +37,9 @@ struct UserConfig: Codable {
         badges: [String] = [],
         selectedVoiceNarrator: String = "Gus",  // Default to "Gus"
         selectedBackgroundMusic: String? = nil,  // Default to nil
-        selectedSoundEffect: String? = nil
+        selectedSoundEffect: String? = nil,
+        firstCreated: Date = .now,  // Default to the current date and time
+        userId: String = UUID().uuidString  // Default to a new UUID string
     ) {
         self.username = username
         self.email = email
@@ -46,5 +52,8 @@ struct UserConfig: Codable {
         self.selectedVoiceNarrator = selectedVoiceNarrator
         self.selectedBackgroundMusic = selectedBackgroundMusic
         self.selectedSoundEffect = selectedSoundEffect
+        self.firstCreated = firstCreated
+        self.userId = userId
     }
 }
+

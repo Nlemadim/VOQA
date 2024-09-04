@@ -120,8 +120,9 @@ class DatabaseManager: ObservableObject {
         return quizCatalogue
     }
     
-    func createUserProfile() {
-        
+    func createUserProfile(for user: User) async throws {
+        let userProfile = user.createUserProfile()
+        try await networkService.postUserProfile(userProfile)
     }
     
     func uploadQuiz(quiz: QuizData) async {

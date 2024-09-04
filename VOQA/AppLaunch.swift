@@ -13,6 +13,7 @@ import CryptoKit
 
 struct AppLaunch: View {
     @EnvironmentObject var user: User
+    @EnvironmentObject var databaseManager: DatabaseManager
     @State private var startLoading: Bool = false
     @State private var transitionToSignIn: Bool = false
     @State private var zoomInProgress: Bool = false
@@ -133,6 +134,17 @@ struct AppLaunch: View {
             .alert(errorMessage, isPresented: $showAlert, actions: {})
             .onAppear {
                 performInitialAnimations()
+            }
+            .onDisappear {
+                if user.isLoggedIn {
+                    Task {
+                        do {
+                            try await createUser()
+                        } catch {
+                            print("Failed to create user profile: \(error.localizedDescription)")
+                        }
+                    }
+                }
             }
             .navigationDestination(for: String.self) { destination in
                 if destination == "CreateAccount" {
@@ -257,16 +269,9 @@ struct AppLaunch: View {
         showAlert.toggle()
         isLoading = false
     }
-}
-
-extension View {
-    func signInButtonStyle() -> some View {
-        self.overlay(
-            Capsule(style: .continuous)
-                .stroke(Color.white, lineWidth: 2)
-        )
-        .clipShape(Capsule())
-        .frame(height: 45)
+    
+    private func createUser() async throws {
+        try await databaseManager.createUserProfile(for: user)
     }
 }
 
