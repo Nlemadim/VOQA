@@ -13,4 +13,5 @@ struct ConfigurationUrls  {
     static let voiceFeedbackRequestUrl = "https://ljnsun.buildship.run/VoqaVoiceFeedback"
     static let questionsRequestUrl = "https://ljnsun.buildship.run/TestQuestions"
     static let createUserProfile = "https://ljnsun.buildship.run/createUserProfile"
+    static let downloadVoqalizedQuestions = "https://ljnsun.buildship.run/fetchVoqalizedQuestion"
 }

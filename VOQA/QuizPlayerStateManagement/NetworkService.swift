@@ -112,6 +112,39 @@ class NetworkService {
         
         return processedQuestions
     }
+    
+//    func fetchQuestionsV2(requestBody: QuestionRequestBody) async throws -> [QuestionV2] {
+//        print("Fetching questions V2 from URL: \(ConfigurationUrls.questionsRequestUrl)")
+//        
+//        // Prepare the URL and request
+//        guard let url = URL(string: ConfigurationUrls.questionsRequestUrl) else {
+//            throw URLError(.badURL)
+//        }
+//        
+//        var request = URLRequest(url: url)
+//        request.httpMethod = "POST"
+//        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+//        
+//        // Encode the request body
+//        let bodyData = try JSONEncoder().encode(requestBody)
+//        request.httpBody = bodyData
+//        
+//        // Download data
+//        let (data, response) = try await URLSession.shared.data(for: request)
+//        
+//        if let httpResponse = response as? HTTPURLResponse {
+//            print("HTTP Response Status Code: \(httpResponse.statusCode)")
+//        }
+//        
+//        print("Decoding questions V2...")
+//        
+//        // Decode the data into the new QuestionV2 model
+//        let questions = try JSONDecoder().decode([QuestionV2].self, from: data)
+//        
+//        print("Successfully decoded \(questions.count) questions V2.")
+//        
+//        return questions
+//    }
 
     private func retryFailedQuestions(questions: inout [Question], failedIndices: [Int]) async {
         for index in failedIndices {
@@ -163,4 +196,81 @@ extension NetworkService {
         }
     }
 }
+
+
+
+extension NetworkService {
+    
+    // MARK: - Fetch Questions V2 with request body
+    func fetchQuestionsV2(requestBody: QuestionRequestBody) async throws -> [QuestionV2] {
+        print("Fetching questions V2 from URL: \(ConfigurationUrls.downloadVoqalizedQuestions)")
+        
+        // Prepare the URL and request
+        guard let url = URL(string: ConfigurationUrls.downloadVoqalizedQuestions) else {
+            throw URLError(.badURL)
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        // Encode the request body
+        do {
+            let bodyData = try JSONEncoder().encode(requestBody)
+            request.httpBody = bodyData
+            print("Request body successfully encoded.")
+            print("Request Body: \(String(data: bodyData, encoding: .utf8) ?? "Unable to encode body")")
+        } catch {
+            print("Failed to encode request body: \(error)")
+            throw error
+        }
+        
+        // Make the network call
+        do {
+            let (data, response) = try await URLSession.shared.data(for: request)
+            
+            if let httpResponse = response as? HTTPURLResponse {
+                print("HTTP Response Status Code: \(httpResponse.statusCode)")
+            }
+            
+            print("Received raw data size: \(data.count) bytes")
+            
+            if let jsonString = String(data: data, encoding: .utf8) {
+                print("Raw JSON data: \(jsonString)")
+            } else {
+                print("Unable to convert data to string for debugging")
+            }
+            
+            print("Attempting to decode response data into QuestionV2 models...")
+            
+            let questions = try JSONDecoder().decode([QuestionV2].self, from: data)
+            
+            print("Successfully decoded \(questions.count) questions V2.")
+            
+            return questions
+            
+        } catch let decodingError as DecodingError {
+            print("Decoding error: \(decodingError.localizedDescription)")
+            switch decodingError {
+            case .dataCorrupted(let context):
+                print("Data corrupted error: \(context.debugDescription)")
+            case .keyNotFound(let key, let context):
+                print("Key not found: \(key.stringValue), \(context.debugDescription)")
+            case .typeMismatch(let type, let context):
+                print("Type mismatch: \(type), \(context.debugDescription)")
+            case .valueNotFound(let value, let context):
+                print("Value not found: \(value), \(context.debugDescription)")
+            default:
+                print("Unknown decoding error.")
+            }
+            throw decodingError
+        } catch {
+            print("Network or other error: \(error.localizedDescription)")
+            throw error
+        }
+    }
+}
+
+
+
 

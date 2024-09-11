@@ -13,10 +13,7 @@ import FirebaseAuth
 import AuthenticationServices
 import CryptoKit
 
-struct QuizCatalogueData {
-    var categoryName: String
-    var quizzes: [QuizData]
-}
+
 
 final class FirebaseManager {
     static let shared = FirebaseManager()

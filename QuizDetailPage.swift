@@ -24,18 +24,10 @@ struct QuizDetailPage: View {
                 )
             
             VStack(alignment: .center) {
-                AsyncImage(url: URL(string: audioQuiz.imageUrl)) { image in
-                    image
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .clipped()
-                } placeholder: {
-                    ProgressView()
-                        .frame(height: 280)
-                }
-                .frame(height: 280)
-                .blur(radius: 60)
+                
             }
+            .frame(height: 280)
+            .background(Color.fromHex(audioQuiz.colors.main).gradient)
             
             ScrollView(showsIndicators: false) {
                 VStack(alignment: .leading, spacing: 10) {
@@ -91,9 +83,10 @@ struct QuizDetailPage: View {
                     .hAlign(.center)
                     
                     VStack(alignment: .leading) {
-                        AddToLibraryButton(color: Color.fromHex(audioQuiz.colors.main), label: "Add To Library", playAction: {
+                        AddToLibraryButton(color: Color.fromHex(audioQuiz.colors.third), label: "Join Quiz Community", playAction: {
                             
                         })
+                        .foregroundStyle(Color.fromHex(audioQuiz.colors.third).dynamicTextColor())
                         .padding(.horizontal)
                         .padding()
                         .padding(.top)

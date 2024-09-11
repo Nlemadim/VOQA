@@ -7,6 +7,11 @@
 
 import Foundation
 
+struct QuizCatalogueData {
+    var categoryName: String
+    var quizzes: [QuizData]
+}
+
 struct QuizCatalogue: Identifiable, Hashable {
     var id: UUID = UUID() // Automatically generated UUID for each instance
     var categoryName: String

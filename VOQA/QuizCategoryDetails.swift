@@ -8,62 +8,98 @@
 import Foundation
 
 enum CatalogueDetails: Hashable {
-    case artsAndHumanities(title: String = "Arts and Humanities", description: String = "Explore the rich history and diverse cultural expressions of humanity.")
-    case collegeAdmissionsExams(title: String = "Most Popular College Admission Exams", description: String = "Prepare for the most important college admission exams with our comprehensive quizzes.")
-    case professionalCertifications(title: String = "Most Popular Professional Certifications and Exams", description: String = "Enhance your career with top certifications and professional exams.")
-    case techAndInnovation(title: String = "Innovators' Hub (Tech and Innovation)", description: String = "Dive into the world of technology and innovation with these quizzes.")
-    case topPicks(title: String = "Top Picks", description: String = "Our top selections of quizzes across various categories.")
-    case others(title: String = "Others", description: String = "Additional quizzes not categorized under the main groups.")
+
+    // Technology and Innovation
+    case technologyAndInnovation(title: String = "Tech Trailblazers",
+        description: String = "Test your knowledge in tech with quizzes on programming, cloud computing, and more. Perfect for tech enthusiasts looking to push their skills further.")
     
+    // Health and Medical Sciences
+    case healthAndMedical(title: String = "Medical Mastery",
+        description: String = "Challenge yourself with quizzes in biology, anatomy, and professional medical exams. Perfect for medical students or health professionals.")
+    
+    // History and Government
+    case historyAndGovernment(title: String = "History and Government Challenges",
+        description: String = "From historical events to political systems, test your knowledge on the world's most important moments and movements.")
+    
+    // Business and Finance
+    case businessAndFinance(title: String = "Business and Financial Acumen",
+        description: String = "Sharpen your business sense with quizzes on finance, law, and real estate. Ideal for professionals or business enthusiasts.")
+    
+    // Sports and Recreation
+    case sportsAndRecreation(title: String = "Sports Legends and Trivia",
+        description: String = "Think you know your sports? Test your trivia skills on the greatest players, teams, and events in sports history.")
+    
+    // Certifications and Professional Exams
+    case certificationsAndExams(title: String = "Certifications and Career Advancement",
+        description: String = "Prepare for professional certifications with these quizzes designed to challenge your knowledge in IT, security, and other fields.")
+    
+    // Education and Testing
+    case educationAndTesting(title: String = "Academic Challenges and Standardized Tests",
+        description: String = "Prepare for standardized tests and core academic subjects. Ideal for students gearing up for admissions exams or academic challenges.")
+    
+    // Top Picks
+    case topPicks(title: String = "Top Picks",
+        description: String = "Discover the most popular and highly recommended quizzes. From tech to biology, these are the best of the best.")
+    
+    // Returning the details for the selected case
     var details: (title: String, description: String) {
         switch self {
-        case .artsAndHumanities(let title, let description),
-             .collegeAdmissionsExams(let title, let description),
-             .professionalCertifications(let title, let description),
-             .techAndInnovation(let title, let description),
-             .topPicks(let title, let description),
-             .others(let title, let description):
+        case .technologyAndInnovation(let title, let description),
+             .healthAndMedical(let title, let description),
+             .historyAndGovernment(let title, let description),
+             .businessAndFinance(let title, let description),
+             .sportsAndRecreation(let title, let description),
+             .certificationsAndExams(let title, let description),
+             .educationAndTesting(let title, let description),
+             .topPicks(let title, let description):
             return (title, description)
         }
     }
-    
+
+    // Mapping quizzes to their respective categories
     static func category(for quiz: QuizList) -> CatalogueDetails? {
         switch quiz {
-        case .historyOfWorldWar1, .historyOfWorldWar2, .usConstitution, .americanHistory:
-            return .artsAndHumanities()
-        case .sat, .gre, .act, .lawSchoolAdmissionTest, .medicalCollegeAdmissionTest:
-            return .collegeAdmissionsExams()
-        case .certifiedPublicAccountantExam, .comptiaCYSAPlus, .ciscoCertifiedNetworkAssociateExam, .comptiaAPlus, .certifiedInformationSystemsAuditor:
-            return .professionalCertifications()
-        case .kotlinProgramming, .swiftProgramming, .amazonWebServices, .microsoftAzure, .privacyEngineeringPrinciples:
-            return .techAndInnovation()
-        case .worldCupHistory, .mlbGreatestOfAllTime, .nbaGreatestOfAllTime, .f1RacingGreatestOfAllTime, .nascarGreatestOfAllTime:
-            return .others()
-        case .realEstateLicensing, .generalPhysics, .generalBiology, .generalChemistry, .dataPrivacy:
+
+        // Technology and Innovation
+        case .kotlinProgramming,
+             .microsoftAzure, .privacyEngineeringPrinciples,
+             .ethicalHackingPrinciples, .objectOrientedProgramming, .linux, .dataPrivacy, .uiUXDesign:
+            return .technologyAndInnovation()
+        
+        // Health and Medical Sciences
+        case .medicalCollegeAdmissionTest, .nclexRN,
+             .humanAnatomy, .generalChemistry:
+            return .healthAndMedical()
+        
+        // History and Government
+        case .usConstitution, .americanHistory,
+             .historyOfWorldWar1, .historyOfWorldWar2:
+            return .historyAndGovernment()
+
+        // Business and Finance
+        case .realEstateLicensing, .certifiedPublicAccountantExam,
+             .multistateBarExamination:
+            return .businessAndFinance()
+        
+        // Sports and Recreation
+        case .mlbGreatestOfAllTime, .nbaGreatestOfAllTime, .worldCupHistory,
+             .f1RacingGreatestOfAllTime, .nascarGreatestOfAllTime:
+            return .sportsAndRecreation()
+
+        // Certifications and Professional Exams
+        case .ciscoCertifiedNetworkAssociateExam,
+             .comptiaCYSAPlus,
+             .iappCertification:
+            return .certificationsAndExams()
+
+        // Education and Testing
+        case .act, .testOfEnglishAsForeignLanguage, .gre, .englishLanguageArts,
+             .lawSchoolAdmissionTest, .engineerInTraining:
+            return .educationAndTesting()
+
+        // Top Picks
+        case .sat, .amazonWebServices, .advancedPlacementExam, .comptiaAPlus, .generalBiology, .swiftProgramming:
             return .topPicks()
-        // Add cases for all remaining quizzes
-        case .testOfEnglishAsForeignLanguage, .multistateBarExamination, .nclexRN, .advancedPlacementExam, .engineerInTraining, .englishLanguageArts, .humanAnatomy, .ethicalHackingPrinciples, .iappCertification, .linux, .objectOrientedProgramming, .uiUXDesign:
-            return .topPicks() // or another appropriate category
         }
     }
-
-    
-//    static func category(for quiz: QuizList) -> CatalogueDetails? {
-//        switch quiz {
-//        case .historyOfWorldWar1, .historyOfWorldWar2, .usConstitution, .americanHistory:
-//            return .artsAndHumanities()
-//        case .sat, .gre, .act, .lawSchoolAdmissionTest, .medicalCollegeAdmissionTest:
-//            return .collegeAdmissionsExams()
-//        case .certifiedPublicAccountantExam, .comptiaCYSAPlus, .ciscoCertifiedNetworkAssociateExam, .comptiaAPlus, .certifiedInformationSystemsAuditor:
-//            return .professionalCertifications()
-//        case .kotlinProgramming, .swiftProgramming, .amazonWebServices, .microsoftAzure, .privacyEngineeringPrinciples:
-//            return .techAndInnovation()
-//        case .worldCupHistory, .mlbGreatestOfAllTime, .nbaGreatestOfAllTime, .f1RacingGreatestOfAllTime, .nascarGreatestOfAllTime:
-//            return .others()
-//        case .realEstateLicensing, .generalPhysics, .generalBiology, .generalChemistry, .dataPrivacy:
-//            return .topPicks()
-//        default:
-//            return nil
-//        }
-//    }
 }

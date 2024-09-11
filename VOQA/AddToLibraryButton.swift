@@ -29,7 +29,7 @@ struct AddToLibraryButton: View {
                     
                     Text(label)
                         .font(.subheadline)
-                        .foregroundStyle(.white.dynamicTextColor())
+                        .foregroundStyle(color.dynamicTextColor())
                         
                 }
             } else {

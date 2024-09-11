@@ -91,24 +91,59 @@ class DatabaseManager: ObservableObject {
     // Create Quiz Catalogue Locally
     func createQuizCatalogue(from quizCollection: [QuizData]) -> [QuizCatalogue] {
         let assignments: [CatalogueDetails: [QuizList]] = [
-            .artsAndHumanities(): [.historyOfWorldWar1, .englishLanguageArts, .advancedPlacementExam, .americanHistory],
-            .collegeAdmissionsExams(): [.sat, .medicalCollegeAdmissionTest, .testOfEnglishAsForeignLanguage, .advancedPlacementExam, .generalChemistry],
-            .professionalCertifications(): [.multistateBarExamination, .certifiedPublicAccountantExam, .comptiaCYSAPlus, .realEstateLicensing, .comptiaAPlus],
-            .techAndInnovation(): [.kotlinProgramming, .ciscoCertifiedNetworkAssociateExam, .comptiaAPlus, .privacyEngineeringPrinciples],
-            .topPicks(): [.sat, .medicalCollegeAdmissionTest, .certifiedPublicAccountantExam, .ciscoCertifiedNetworkAssociateExam, .comptiaCYSAPlus, .testOfEnglishAsForeignLanguage, .historyOfWorldWar1, .multistateBarExamination, .generalPhysics, .advancedPlacementExam]
+            .technologyAndInnovation(): [
+                .amazonWebServices, .kotlinProgramming, .swiftProgramming,
+                .microsoftAzure, .privacyEngineeringPrinciples, .ethicalHackingPrinciples,
+                .objectOrientedProgramming, .linux, .dataPrivacy
+            ],
+            .healthAndMedical(): [
+                .medicalCollegeAdmissionTest, .nclexRN, .generalBiology,
+                .humanAnatomy, .generalChemistry
+            ],
+            .historyAndGovernment(): [
+                .usConstitution, .americanHistory, .historyOfWorldWar1, .historyOfWorldWar2
+            ],
+            .businessAndFinance(): [
+                .realEstateLicensing, .certifiedPublicAccountantExam, .multistateBarExamination
+            ],
+            .sportsAndRecreation(): [
+                .mlbGreatestOfAllTime, .nbaGreatestOfAllTime, .worldCupHistory,
+                .f1RacingGreatestOfAllTime, .nascarGreatestOfAllTime
+            ],
+            .certificationsAndExams(): [
+                .ciscoCertifiedNetworkAssociateExam, .comptiaCYSAPlus,
+                .iappCertification, .comptiaAPlus
+            ],
+            .educationAndTesting(): [
+                .act, .testOfEnglishAsForeignLanguage, .sat, .gre,
+                .lawSchoolAdmissionTest, .advancedPlacementExam, .engineerInTraining
+            ],
+            .topPicks(): [
+                .sat, .amazonWebServices, .advancedPlacementExam, .comptiaAPlus,
+                .generalBiology, .swiftProgramming
+            ]
         ]
 
         var quizCatalogue = [QuizCatalogue]()
-        
+
         for (category, quizEnums) in assignments {
             var quizzesInCategory: [Voqa] = []
-            
+
             for quizEnum in quizEnums {
                 if let quiz = quizCollection.first(where: { $0.quizTitle == quizEnum.rawValue }) {
+                    print("Mapped Quiz: \(quiz.quizTitle) -> \(quizEnum.rawValue) in \(category.details.title)")
                     quizzesInCategory.append(Voqa(from: quiz))
+                } else {
+                    print("No match found for \(quizEnum.rawValue) in \(category.details.title)")
+                    // Optionally log possible matches based on lowercased quiz titles for debugging
+                    let possibleMatches = quizCollection.filter { $0.quizTitle.lowercased() == quizEnum.rawValue.lowercased() }
+                    if !possibleMatches.isEmpty {
+                        print("Possible matches found for \(quizEnum.rawValue): \(possibleMatches.map { $0.quizTitle })")
+                    }
                 }
             }
-            
+
+            // Create and append the QuizCatalogue for each category
             let categoryData = QuizCatalogue(
                 categoryName: category.details.title,
                 description: category.details.description,
@@ -116,9 +151,11 @@ class DatabaseManager: ObservableObject {
             )
             quizCatalogue.append(categoryData)
         }
-        
+
         return quizCatalogue
     }
+
+
     
     func createUserProfile(for user: User) async throws {
         let userProfile = user.createUserProfile()

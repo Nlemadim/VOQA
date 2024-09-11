@@ -646,8 +646,6 @@
 				0BA63B542C762A2400AE5048 /* QuizPlayerView.swift */,
 				0B5BA5C42C764B1200E1155A /* QuizViewModel.swift */,
 				0BA63B562C762A8E00AE5048 /* SfxPlayer.swift */,
-				0B43DD0A2C78FA3E009F32EA /* QuizList.swift */,
-				0B43DD0C2C78FB4B009F32EA /* QuizCategoryDetails.swift */,
 			);
 			name = Quiz;
 			sourceTree = "<group>";
@@ -675,7 +673,9 @@
 				0BA63B3B2C76274200AE5048 /* HomepageConfigProtocols.swift */,
 				0B11C93B2C77E32D002AF228 /* ThemeColors.swift */,
 				0B11C93D2C77E4C4002AF228 /* Voqa.swift */,
+				0B43DD0C2C78FB4B009F32EA /* QuizCategoryDetails.swift */,
 				0B11C93F2C77E4ED002AF228 /* QuizCatalogue.swift */,
+				0B43DD0A2C78FA3E009F32EA /* QuizList.swift */,
 				0B4BD9382C752FD3006A043D /* QuizData.swift */,
 				0BA63B3D2C76276100AE5048 /* VoqaConfigManager.swift */,
 				0BEF0F392C78934200341F21 /* CachedImageView.swift */,

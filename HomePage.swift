@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-
 struct HomePage: View {
     @EnvironmentObject var user: User
     @EnvironmentObject var databaseManager: DatabaseManager
@@ -17,6 +16,7 @@ struct HomePage: View {
     @State private var backgroundImage: String = ""
     @State private var hideTabBar: Bool = false
     @State private var path = NavigationPath()
+    @State private var isLoading: Bool = true
 
     var quizCatalogue: [QuizCatalogue]
 
@@ -24,66 +24,37 @@ struct HomePage: View {
         TabView(selection: $selectedTab) {
             NavigationStack(path: $path) {
                 ZStack(alignment: .topLeading) {
+                    // Background based on the selected top picks quiz
                     if let currentQuiz = quizCatalogue.first(where: { $0.categoryName == CatalogueDetails.topPicks().details.title })?.quizzes[safe: currentItem] {
                         BackgroundView(backgroundImage: currentQuiz.imageUrl, color: Color.fromHex(currentQuiz.colors.main))
                     }
 
                     ScrollView(showsIndicators: false) {
                         VStack(alignment: .leading, spacing: 0) {
-                            if let topPicks = quizCatalogue.first(where: { $0.categoryName == CatalogueDetails.topPicks().details.title })?.quizzes, !topPicks.isEmpty {
-                                QuizCarouselView(quizzes: topPicks, currentItem: $currentItem, backgroundImage: $backgroundImage, tapAction: {
-                                    path.append(topPicks[currentItem])
-                                })
-                            }
-
-                            // Dynamic creation of HorizontalQuizListViews based on quizCatalogue
-                            ForEach(quizCatalogue, id: \.categoryName) { category in
-                                HorizontalQuizListView(
-                                    catalogue: category,
-                                    tapAction: { quiz in
-                                        path.append(quiz)
+                                // Top Picks Carousel
+                                if let topPicks = quizCatalogue.first(where: { $0.categoryName == CatalogueDetails.topPicks().details.title })?.quizzes, !topPicks.isEmpty {
+                                    QuizCarouselView(quizzes: topPicks, currentItem: $currentItem, backgroundImage: $backgroundImage) {
+                                        path.append(topPicks[currentItem])
+                                            
                                     }
-                                )
-                            }
+                                }
 
-                            Rectangle()
-                                .fill(.clear)
-                                .frame(height: 100)
+                                // Display categories in the preferred order
+                                createCategoryView(for: .educationAndTesting())   // Education
+                                createCategoryView(for: .sportsAndRecreation())   // Sports
+                                createCategoryView(for: .technologyAndInnovation())  // Technology
+                                createCategoryView(for: .certificationsAndExams())
+                                createCategoryView(for: .healthAndMedical())   // Medical
+                                createCategoryView(for: .businessAndFinance())  // Business
+                                
+                                // Bottom spacing
+                                Rectangle()
+                                    .fill(.clear)
+                                    .frame(height: 100)
+                            
                         }
                     }
-                    .zIndex(1)
                 }
-
-//                ZStack(alignment: .topLeading) {
-//                    if let currentQuiz = quizCatalogue.first(where: { $0.categoryName == CatalogueDetails.topPicks().details.title })?.quizzes[safe: currentItem] {
-//                        BackgroundView(backgroundImage: currentQuiz.imageUrl, color: Color.fromHex(currentQuiz.colors.main))
-//                    }
-//
-//                    ScrollView(showsIndicators: false) {
-//                        VStack(alignment: .leading, spacing: 0) {
-//                            if let topPicks = quizCatalogue.first(where: { $0.categoryName == CatalogueDetails.topPicks().details.title })?.quizzes, !topPicks.isEmpty {
-//                                QuizCarouselView(quizzes: topPicks, currentItem: $currentItem, backgroundImage: $backgroundImage, tapAction: {
-//                                    path.append(topPicks[currentItem])
-//                                })
-//                            }
-//
-//                            // Dynamic creation of HorizontalQuizListViews based on quizCatalogue
-//                            ForEach(quizCatalogue, id: \.categoryName) { category in
-//                                HorizontalQuizListView(
-//                                    catalogue: category,
-//                                    tapAction: { quiz in
-//                                        path.append(quiz)
-//                                    }
-//                                )
-//                            }
-//
-//                            Rectangle()
-//                                .fill(.clear)
-//                                .frame(height: 100)
-//                        }
-//                    }
-//                    .zIndex(1)
-//                }
                 .toolbar(hideTabBar ? .hidden : .visible, for: .tabBar)
                 .toolbar {
                     ToolbarItemGroup(placement: .navigationBarTrailing) {
@@ -99,6 +70,9 @@ struct HomePage: View {
                 }
                 .navigationDestination(for: Voqa.self) { voqa in
                     QuizDetailPage(audioQuiz: voqa)
+                }
+                .onAppear {
+                    loadData()
                 }
             }
             .tabItem {
@@ -118,17 +92,55 @@ struct HomePage: View {
                 }
                 .tag(2)
             
-           
             ProfileView()
                 .tabItem {
                     TabIcons(title: "My Profile", icon: "person.fill")
                 }
                 .tag(3)
-
         }
         .tint(.white).activeGlow(.white, radius: 2)
     }
+    
+    private func loadData() {
+        // Simulate data fetching
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            // Update isLoading to false after data is fetched
+            isLoading = false
+        }
+    }
+
+    private func createCategoryView(for category: CatalogueDetails) -> some View {
+        if let quizzes = quizCatalogue.first(where: { $0.categoryName == category.details.title })?.quizzes, !quizzes.isEmpty {
+            return AnyView(
+                HorizontalQuizListView(
+                    catalogue: QuizCatalogue(categoryName: category.details.title, description: category.details.description, quizzes: quizzes)
+                ) { quiz in
+                    path.append(quiz)
+                }
+            )
+        } else {
+            print("Missing category: \(category.details.title)")
+            return AnyView(missingCategoryView(for: category))
+        }
+    }
+    
+    private func missingCategoryView(for category: CatalogueDetails) -> some View {
+        VStack {
+            Text("No quizzes available for \(category.details.title)")
+                .font(.headline)
+                .padding()
+            Rectangle()
+                .fill(Color.red.opacity(0.2))
+                .frame(height: 100)
+                .overlay(
+                    Text("Missing \(category.details.title)")
+                        .foregroundColor(.red)
+                )
+        }
+        .padding(.horizontal)
+    }
 }
+
 
 
 struct AudioSettings: View {

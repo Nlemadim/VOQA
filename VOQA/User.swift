@@ -107,17 +107,32 @@ class User: ObservableObject {
     }
     
     func createUserProfile() -> UserProfile {
-        return UserProfile(
+        // Create the user profile
+        let userProfile = UserProfile(
             firstCreated: userConfig.firstCreated,
             userId: userConfig.userId,
-            userName: userConfig.username,
+            username: userConfig.username,  // Make sure this aligns with the backend's expected "username" field
             email: userConfig.email,
             voqaCollection: userConfig.quizCollection,
             voiceNarrator: [userConfig.selectedVoiceNarrator],
             backgroundMusic: userConfig.selectedBackgroundMusic.map { [$0] } ?? [],
             backgroundSFX: userConfig.selectedSoundEffect.map { [$0] } ?? []
         )
+        
+        // Debug print statements to log the user profile properties
+        print("UserProfile Data Being Sent to Server:")
+        print("firstCreated: \(userProfile.firstCreated)")
+        print("userId: \(userProfile.userId)")
+        print("userName: \(userProfile.username)") // Ensure correct casing
+        print("email: \(userProfile.email)")
+        print("voqaCollection: \(userProfile.voqaCollection)")
+        print("voiceNarrator: \(userProfile.voiceNarrator)")
+        print("backgroundMusic: \(userProfile.backgroundMusic)")
+        print("backgroundSFX: \(userProfile.backgroundSFX)")
+
+        return userProfile
     }
+
     
     // Methods to update specific add-on selections
     func updateVoiceNarrator(_ narrator: String) {

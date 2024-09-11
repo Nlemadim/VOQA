@@ -10,7 +10,7 @@ import Foundation
 struct UserProfile: Codable {
     var firstCreated: Date
     var userId: String
-    var userName: String
+    var username: String
     var email: String
     var questionsAskedId: String = ""
     var performanceHistoryId: String = ""
