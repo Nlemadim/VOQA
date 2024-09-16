@@ -11,6 +11,7 @@ import Combine
 class DatabaseManager: ObservableObject {
     @Published var currentError: DatabaseError?
     @Published var questions: [Question] = []
+    @Published var questionsV2: [QuestionV2] = []
     @Published var quizCatalogue: [QuizCatalogue] = []  // Holds the QuizCatalogue
     @Published var quizCollection: [QuizData] = []
     @Published var showFullPageError: Bool = false
@@ -67,6 +68,20 @@ class DatabaseManager: ObservableObject {
             print("Questions fetched successfully: \(questions.count) questions.")
         } catch {
             print("Error fetching questions: \(error)")
+        }
+    }
+    
+    func fetchProcessedQuestions(_ quizTitle: String, maxNumberOfQuestions: Int) {
+        Task {
+            do {
+                // Initialize the QuestionDownloader with the UserConfig from the environment
+                let fakeConfig: FakeConfig = FakeConfig(userId: "rBkUyTtc2XXXcj43u53N", quizTitle: "Data Privacy", narrator: "Gus", language: "")
+                let questionDownloader = QuestionDownloader(config: fakeConfig)
+                // Fetch questions using the user's quiz title
+                questionsV2 = try await questionDownloader.downloadQuizQuestions(quizTitle: quizTitle, maxNumberOfQuestions: maxNumberOfQuestions)  // Replace with desired quiz title
+            } catch {
+                print("Error fetching questions: \(error)")
+            }
         }
     }
     

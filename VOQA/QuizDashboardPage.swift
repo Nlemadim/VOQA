@@ -13,7 +13,12 @@ struct QuizDashboardPage: View {
     @EnvironmentObject var user: User
     @EnvironmentObject var databaseManager: DatabaseManager
     @State private var contributeQuestion = ContributeAQuestion(questionText: "")
+    @Environment(\.quizSessionConfig) private var config: QuizSessionConfig?
     @State var ratingsAndReviews = RatingsAndReview()
+    
+    @State private var questionsLoaded: Bool = false
+    @State private var isDownloading: Bool = false
+    @State private var selectedTopic: String?
     @State private var contributedQuestion: String = ""
     @Environment(\.dismiss) private var dismiss
     @State private var currentPage: String = "Latest Scores"
@@ -34,6 +39,10 @@ struct QuizDashboardPage: View {
                 ViewThatFits {
                     VStack(alignment: .center) {
                         switch currentPage {
+                        case "My Quizzes":
+                            
+                            Text("List Quiz Categories Here")
+                            
                         case "Latest Scores":
                             LatestScoresView(
                                 
@@ -99,6 +108,13 @@ struct QuizDashboardPage: View {
                 }
             }
         }
+        .fullScreenCover(isPresented: $questionsLoaded) {
+            if let config = config {
+                QuizPlayerView(config: config, selectedVoqa: voqa)
+                    .environment(\.questions, databaseManager.questions)
+                    .onDisappear { dismiss() }
+            }
+        }
         .ignoresSafeArea(.container, edges: .vertical)
         .coordinateSpace(name: "SCROLL")
         .navigationBarBackButtonHidden(true)
@@ -114,6 +130,17 @@ struct QuizDashboardPage: View {
         guard review.difficultyRating != 0 || review.narrationRating != 0 || review.relevanceRating != 0  else { return }
         databaseManager.postNewReview(review)
     }
+    
+    private func getQuestions() async {
+        isDownloading = true
+        await databaseManager.fetchQuestions()
+        isDownloading = false
+        if !databaseManager.questions.isEmpty {
+            questionsLoaded = true
+        }
+    }
+    
+    
     
     @ViewBuilder
     func HeaderView(voqa: Voqa) -> some View {
@@ -172,7 +199,7 @@ struct QuizDashboardPage: View {
     
     @ViewBuilder
     func PinnedHeaderView() -> some View {
-        let pages: [String] = ["Latest Scores", "Performance", "Contribute a Question", "Rate and Review"]
+        let pages: [String] = ["My Quizzes, Latest Scores", "Performance", "Contribute a Question", "Rate and Review"]
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 25) {
                 ForEach(pages, id: \.self) { page in
