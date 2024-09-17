@@ -80,7 +80,7 @@ struct HomePage: View {
             }
             .tag(0)
 
-            MyLibrary(hideTabBar: $hideTabBar)
+            MyChannels(hideTabBar: $hideTabBar)
                 .tabItem {
                     TabIcons(title: "My Library", icon: "books.vertical.fill")
                 }

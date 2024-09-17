@@ -103,20 +103,6 @@ struct LatestScoresView: View {
                         }
                     }
                 }
-                
-                // Buttons for Restart and Start a New Quiz
-                
-                VStack(spacing: 16) {
-                    
-                    MediumDownloadButton(label: "Restart", color: mainColor, iconImage: "arrow.counterclockwise", action: {
-                        onRestartQuiz()
-                    })
-                    
-                    MediumDownloadButton(label: "New Quiz", color: mainColor, iconImage: "", action: {
-                        onStartNewQuiz()
-                    })
-                }
-                
             }
             .padding(.top, 20)
             .cornerRadius(12)
@@ -192,24 +178,12 @@ struct NoContentView: View {
             .opacity(isLoadingScores ? 1 : 0)
             
             VStack(spacing: 10) {
-                Spacer()
                 
-                Rectangle()
-                    .fill(Color.clear)
-                    .frame(height: 100)
-                
-                Text("No Scores Yet".uppercased())
+                Text("No Scores Recorded Yet".uppercased())
                     .font(.headline)
                     .padding(.horizontal)
                     .padding()
                     .primaryTextStyleForeground()
-                
-                MediumDownloadButton(label: "Start Assessment Quiz", color: .teal, iconImage: "", action: {
-                    action()
-                })
-                .padding()
-                
-                Spacer()
             }
             .opacity(isLoadingScores ? 0 : 1)
         }

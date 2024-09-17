@@ -1,13 +1,14 @@
 //
-//  MyLibrary.swift
+//  MyChannels.swift
 //  VOQA
 //
-//  Created by Tony Nlemadim on 8/24/24.
+//  Created by Tony Nlemadim on 9/17/24.
 //
 
+import Foundation
 import SwiftUI
 
-struct MyLibrary: View {
+struct MyChannels: View {
     @EnvironmentObject var user: User
     @EnvironmentObject var databaseManager: DatabaseManager
     @State private var path = NavigationPath()
@@ -15,14 +16,14 @@ struct MyLibrary: View {
 
     var body: some View {
         NavigationStack(path: $path) {
-            LibraryListView(voqaCollection: user.voqaCollection) { selectedVoqa in
+            ChannelListView(voqaCollection: user.voqaCollection) { selectedVoqa in
                 hideTabBar = true
                 user.currentUserVoqa = selectedVoqa
                 path.append(PageNavigationController(type: .quizPlayerDetails(selectedVoqa)))
             }
             .listStyle(PlainListStyle())
-            .navigationTitle("My Library")
-            .navigationBarTitleDisplayMode(.large)
+            .navigationTitle("My VOQA Channels")
+            .navigationBarTitleDisplayMode(.inline)
             .preferredColorScheme(.dark)
             .onAppear {
                 Task {
@@ -37,7 +38,7 @@ struct MyLibrary: View {
                 case .quizInfo(let voqa):
                     QuizInfoView(selectedVoqa: voqa)
                 case .quizPlayerDetails(let voqa):
-                    QuizDashboardPage(isLoggedIn: true, voqa: voqa) { voqa in
+                    QuizDashboard(isLoggedIn: true, voqa: voqa) { voqa in
                         path.append(PageNavigationController(type: .quizInfo(voqa)))
                        
                     }
@@ -60,12 +61,4 @@ struct MyLibrary: View {
             path.append(PageNavigationController(type: .quizPlayerDetails(selectedVoqa)))
         }
     }
-}
-
-
-#Preview {
-    let dbMgr = DatabaseManager.shared
-    return MyLibrary(hideTabBar: .constant(false))
-        .environmentObject(User())
-        .environmentObject(dbMgr)
 }

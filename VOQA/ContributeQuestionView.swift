@@ -22,63 +22,67 @@ struct ContributeQuestionView: View {
         VStack {
             Spacer()
             
-            if isLoggedIn {
-                // Button with text to present the modal
-                Button(action: {
-                    isModalPresented.toggle()
-                }) {
-                    HStack {
-                        Image(systemName: "questionmark.bubble")
-                            .resizable()
-                            .frame(width: 40, height: 40)
-                            .padding(10)
-                            .background(Color.themePurpleLight)
-                            .foregroundColor(.white)
-                            .cornerRadius(10)
-                        
-                        Text("Contribute a Question")
-                            .font(.headline)
-                            .foregroundColor(.white)
-                            .padding()
-                            .cornerRadius(10)
-                    }
-                }
-                .padding(.bottom, 20)
-                .scaleEffect(0.8)
-                .hAlign(.leading)
+            if !isLoggedIn {
+                Spacer()
                 
-                // Button with image to present the document picker
-                Button(action: {
-                    showDocumentPicker.toggle()
-                }) {
-                    HStack {
-                        Image(systemName: "doc.badge.plus")
-                            .resizable()
-                            .frame(width: 40, height: 40)
-                            .padding(10)
-                            .background(Color.green)
-                            .foregroundColor(.white)
-                            .cornerRadius(10)
-                        
-                        Text("Add Practice Exam PDF")
-                            .font(.headline)
-                            .foregroundColor(.white)
-                            .padding()
-                            .cornerRadius(10)
+                VStack(alignment: .center) {
+                    // Button with text to present the modal
+                    Spacer()
+                    Button(action: {
+                        isModalPresented.toggle()
+                    }) {
+                        HStack {
+                            Image(systemName: "questionmark.bubble")
+                                .resizable()
+                                .frame(width: 40, height: 40)
+                                .padding(10)
+                                .background(Color.themePurpleLight)
+                                .foregroundColor(.white)
+                                .cornerRadius(10)
+                            
+                            Text("Contribute a Question")
+                                .font(.headline)
+                                .foregroundColor(.white)
+                                .padding()
+                                .cornerRadius(10)
+                        }
                     }
+                    .padding(.bottom, 20)
+                    .scaleEffect(0.8)
+                    .hAlign(.leading)
+                    
+                    // Button with image to present the document picker
+                    Button(action: {
+                        showDocumentPicker.toggle()
+                    }) {
+                        HStack {
+                            Image(systemName: "doc.badge.plus")
+                                .resizable()
+                                .frame(width: 40, height: 40)
+                                .padding(10)
+                                .background(Color.green)
+                                .foregroundColor(.white)
+                                .cornerRadius(10)
+                            
+                            Text("Add Practice Exam PDF")
+                                .font(.headline)
+                                .foregroundColor(.white)
+                                .padding()
+                                .cornerRadius(10)
+                        }
+                    }
+                    .scaleEffect(0.8)
+                    .hAlign(.leading)
+                    .documentPicker(isPresented: $showDocumentPicker, documentTypes: ["public.item"], onDocumentsPicked:  { urls in
+                        if let selectedURL = urls.first {
+                            selectedDocumentURL = selectedURL
+                        }
+                    })
                 }
-                .scaleEffect(0.8)
-                .hAlign(.leading)
-                .documentPicker(isPresented: $showDocumentPicker, documentTypes: ["public.item"], onDocumentsPicked:  { urls in
-                    if let selectedURL = urls.first {
-                        selectedDocumentURL = selectedURL
-                    }
-                })
+                .padding()
                 
             } else {
-                Rectangle()
-                    .fill(Color.clear)
-                    .frame(height: 80)
+               
                 
                 Text("Join The Community".uppercased())
                     .font(.title2)
@@ -87,12 +91,12 @@ struct ContributeQuestionView: View {
                     .padding(.horizontal)
                     .padding(.bottom, 20)
                 
-                Rectangle()
-                    .fill(Color.clear)
-                    .frame(height: 80)
+                Spacer()
+                    .frame(height: 40)
+                
                 
                 VStack(spacing: 4) {
-                    Text("Sign-In to post a question")
+                    Text("Sign-In to share a question")
                         .font(.title3)
                         .fontWeight(.semibold)
                         .padding(.horizontal)
@@ -119,7 +123,7 @@ struct ContributeQuestionView: View {
                 }
             }
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .frame(maxWidth: .infinity)
         .padding(.horizontal)
         .sheet(isPresented: $isModalPresented) {
             ContributeQuestionModalView { questionText in

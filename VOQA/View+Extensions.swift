@@ -9,6 +9,20 @@ import Foundation
 import SwiftUI
 
 extension View {
+    @ViewBuilder
+    func rect(completion: @escaping (CGRect) -> ()) -> some View {
+        self
+            .overlay {
+                GeometryReader {
+                    let rect = $0.frame(in: .scrollView(axis: .horizontal))
+                    
+                    Color.clear
+                        .preference(key: RectKey.self, value: rect)
+                        .onPreferenceChange(RectKey.self, perform: completion)
+                }
+            }
+    }
+    
     func signInButtonStyle() -> some View {
         self.overlay(
             Capsule(style: .continuous)

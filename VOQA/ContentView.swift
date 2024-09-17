@@ -28,7 +28,7 @@ struct ContentView: View {
         }
         .onAppear {
             Task {
-                await getCatalogue()
+               // await getCatalogue()
             }
         }
     }
