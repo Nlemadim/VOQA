@@ -8,12 +8,12 @@
 import SwiftUI
 
 struct MainView: View {
+    @EnvironmentObject var navigationRouter: NavigationRouter
     @EnvironmentObject var networkMonitor: NetworkMonitor
     @EnvironmentObject var databaseManager: DatabaseManager
     @EnvironmentObject var user: User
-    @State private var path = NavigationPath()
-    @State private var config: QuizSessionConfig?
     @State var logStatus: Bool
+    @State private var config: QuizSessionConfig?
     var configManager = QuizConfigManager()
     
     var body: some View {
@@ -22,7 +22,7 @@ struct MainView: View {
                 HomePage(quizCatalogue: databaseManager.quizCatalogue)
             } else {
                 VStack(alignment: .center) {
-                    CustomSpinnerView()
+                    CustomSpinnerView() // Placeholder launch view
                         .frame(height: 45)
                 }
             }
@@ -31,7 +31,6 @@ struct MainView: View {
         .preferredColorScheme(.dark)
         .onAppear {
             Task {
-                //await setupQuizSessionConfig()
                 await loadUserVoiceSelection()
             }
         }
@@ -53,6 +52,8 @@ struct MainView: View {
             databaseManager.showFullPageError ? fullPageErrorView : nil
         )
     }
+
+
     
     private func loadUserVoiceSelection() async {
         let defaultVoiceItems = AddOnItem.defaultNarratorItems
@@ -64,23 +65,6 @@ struct MainView: View {
             } catch {
                 
                 print("Error loading default voice selection: \(error.localizedDescription)")
-            }
-        }
-    }
-    
-    private func setupQuizSessionConfig() async {
-        do {
-            let localConfig = try configManager.loadLocalConfiguration()
-            self.config = localConfig
-            print("Local configuration loaded successfully")
-        } catch {
-            print("Failed to load local configuration: \(error)")
-            do {
-                let downloadedConfig = try await configManager.downloadConfiguration()
-                self.config = downloadedConfig
-                print("Downloaded configuration loaded successfully")
-            } catch {
-                print("Failed to download configuration: \(error)")
             }
         }
     }
@@ -120,6 +104,7 @@ struct MainView: View {
 }
 
 #Preview {
+    let navMgr = NavigationRouter()
     let user = User()
     let dbMgr = DatabaseManager.shared
     let ntwConn = NetworkMonitor.shared
@@ -128,4 +113,7 @@ struct MainView: View {
         .environmentObject(dbMgr)
         .environmentObject(ntwConn)
         .environmentObject(user)
+        .environmentObject(navMgr)
 }
+
+

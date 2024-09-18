@@ -90,14 +90,7 @@ struct QuizzesView: View {
                         selectedCategory = nil // Correctly assigns 'nil' to the outer 'selectedCategory'
                     }
                     .tag(QuizTab.loading)
-                } else {
-                    // Placeholder if no category is selected
-                    VStack {
-                        Text("No Category Selected")
-                        Spacer()
-                    }
-                    .tag(QuizTab.loading)
-                }
+                } 
             }
             .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never)) // Hide page index
             .animation(.easeInOut, value: selectedTab)

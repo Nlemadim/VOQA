@@ -12,6 +12,7 @@ import FirebaseAuth
 import CryptoKit
 
 struct AppLaunch: View {
+    @EnvironmentObject var navigationRouter: NavigationRouter
     @EnvironmentObject var user: User
     @EnvironmentObject var databaseManager: DatabaseManager
     @State private var startLoading: Bool = false
@@ -19,7 +20,6 @@ struct AppLaunch: View {
     @State private var zoomInProgress: Bool = false
     @State private var showSignInButton: Bool = false
     @State private var fadeToBlack: Bool = false
-    @State private var showModal: Bool = false
     @State private var showName: Bool = false
     @State private var showDescriptionText: Bool = false
     @State private var errorMessage: String = ""
@@ -27,135 +27,130 @@ struct AppLaunch: View {
     @State private var isLoading: Bool = false
     @State private var nonce: String?
     @AppStorage("log_Status") private var logStatus: Bool = false
-    @State var loadCatalogue: Bool
-    @State private var path = NavigationPath()
-    
+    @State var loadCatalogue: Bool = false // Initialized to a default value
+
     var body: some View {
-        NavigationStack(path: $path) {
-            ZStack {
-                VStack(spacing: 4) {
-                    Image("VoqaIcon")
-                        .resizable()
-                        .frame(width: 220, height: 250)
-                    
-                    Text("VOQA")
-                        .font(.largeTitle)
-                        .fontWeight(.black)
-                        .opacity(transitionToSignIn || zoomInProgress ? 0 : showName ? 1 : 0)
-                        .animation(.easeIn(duration: 0.3), value: transitionToSignIn)
-                    
-                    Text("Voiced Over Questions and Answers")
-                        .font(.headline)
-                        .fontWeight(.ultraLight)
-                        .foregroundColor(.white)
-                        .padding(.horizontal)
-                        .opacity(transitionToSignIn || zoomInProgress ? 0 : showName ? 1 : 0)
-                        .animation(.easeIn(duration: 0.3), value: transitionToSignIn)
-                }
-                .scaleEffect(zoomInProgress ? 2.5 : 1)
-                .animation(.easeInOut(duration: 3), value: zoomInProgress)
+        ZStack {
+            VStack(spacing: 4) {
+                Image("VoqaIcon")
+                    .resizable()
+                    .frame(width: 220, height: 250)
                 
-                if fadeToBlack {
-                    Color.black
-                        .edgesIgnoringSafeArea(.all)
-                        .transition(.opacity)
-                        .animation(.easeInOut(duration: 3), value: fadeToBlack)
-                }
+                Text("VOQA")
+                    .font(.largeTitle)
+                    .fontWeight(.black)
+                    .opacity(transitionToSignIn || zoomInProgress ? 0 : showName ? 1 : 0)
+                    .animation(.easeIn(duration: 0.3), value: transitionToSignIn)
+                
+                Text("Voiced Over Questions and Answers")
+                    .font(.headline)
+                    .fontWeight(.ultraLight)
+                    .foregroundColor(.white)
+                    .padding(.horizontal)
+                    .opacity(transitionToSignIn || zoomInProgress ? 0 : showName ? 1 : 0)
+                    .animation(.easeIn(duration: 0.3), value: transitionToSignIn)
+            }
+            .scaleEffect(zoomInProgress ? 2.5 : 1)
+            .animation(.easeInOut(duration: 3), value: zoomInProgress)
+            
+            if fadeToBlack {
+                Color.black
+                    .edgesIgnoringSafeArea(.all)
+                    .transition(.opacity)
+                    .animation(.easeInOut(duration: 3), value: fadeToBlack)
+            }
+        }
+        
+        VStack(spacing: 8) {
+            Spacer()
+                .frame(height: 120)
+            
+            ZStack {
+                Rectangle()
+                    .fill(.clear)
+                    .frame(width: 80, height: 80)
+                
+                CustomSpinnerView()
+                    .frame(width: 45, height: 45)
+                    .padding()
+                    .padding(.top, 20)
+                    .opacity(loadCatalogue ? 1 : 0)
+                    .animation(.easeInOut(duration: 0.5), value: loadCatalogue)
             }
             
-            VStack(spacing: 8) {
-                Spacer()
-                    .frame(height: 120)
-                
-                ZStack {
-                    Rectangle()
-                        .fill(.clear)
-                        .frame(width: 80, height: 80)
+            if showSignInButton {
+                VStack {
+                    Text(isLoading ? "Signing in" : "Sign in to get started")
+                        .font(.title)
+                        .fontWeight(.ultraLight)
+                        .frame(maxWidth: .infinity, alignment: .center)
+                        .padding(.bottom)
                     
-                    CustomSpinnerView()
-                        .frame(width: 45, height: 45)
-                        .padding()
-                        .padding(.top, 20)
-                        .opacity(loadCatalogue ? 1 : 0)
-                        .animation(.easeInOut(duration: 0.5), value: loadCatalogue)
-                }
-                
-                if showSignInButton {
-                    VStack {
-                        Text(isLoading ? "Signing in" : "Sign in to get started")
-                            .font(.title)
-                            .fontWeight(.ultraLight)
-                            .hAlign(.center)
-                            .padding(.bottom)
-                        
-                        SignInWithAppleButton { request in
-                            let nonce = randomNonceString()
-                            self.nonce = nonce
-                            request.requestedScopes = [.email, .fullName]
-                            request.nonce = sha256(nonce)
-                        } onCompletion: { result in
-                            switch result {
-                            case .success(let authorization):
-                                signInWithApple(authorization: authorization)
-                            case .failure(let error):
-                                handleSignInError(error)
-                            }
-                        }
-                        .signInButtonStyle()
-                        
-                        Button(action: {
-                            // Navigate to Create Account
-                            path.append("CreateAccount")
-                        }) {
-                            Text("Create an Account")
-                                .font(.headline)
-                                .foregroundColor(.white)
-                                .frame(maxWidth: .infinity)
-                                .padding(12)
-                                .background(Color.clear)
-                        }
-                        .signInButtonStyle()
-                        
-                        Button(action: {
-                            // Continue as guest logic
-                        }) {
-                            Text("Continue as Guest")
-                                .font(.headline)
-                                .foregroundColor(.white)
-                                .frame(maxWidth: .infinity)
-                                .padding(12)
-                                .background(Color.clear)
+                    SignInWithAppleButton { request in
+                        let nonce = randomNonceString()
+                        self.nonce = nonce
+                        request.requestedScopes = [.email, .fullName]
+                        request.nonce = sha256(nonce)
+                    } onCompletion: { result in
+                        switch result {
+                        case .success(let authorization):
+                            signInWithApple(authorization: authorization)
+                        case .failure(let error):
+                            handleSignInError(error)
                         }
                     }
-                    .offset(y: -20)
-                    .transition(.move(edge: isLoading ? .leading : .trailing))
-                }
-            }
-            .alert(errorMessage, isPresented: $showAlert, actions: {})
-            .onAppear {
-                performInitialAnimations()
-            }
-            .onDisappear {
-                if user.isLoggedIn {
-                    Task {
-                        do {
-                            try await createUser()
-                        } catch {
-                            print("Failed to create user profile: \(error.localizedDescription)")
-                        }
+                    .signInButtonStyle()
+                    
+                    Button(action: {
+                        // Navigate to Create Account
+                        navigationRouter.navigate(to: .createAccount)
+                    }) {
+                        Text("Create an Account")
+                            .font(.headline)
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity)
+                            .padding(12)
+                            .background(Color.clear)
                     }
+                    .buttonStyle(PlainButtonStyle())
+                    
+                    Button(action: {
+                        user.continueAsGuest()
+                        logStatus = true
+                        navigationRouter.goBack()
+                    }) {
+                        Text("Continue as Guest")
+                            .font(.headline)
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity)
+                            .padding(12)
+                            .background(Color.clear)
+                    }
+                    .buttonStyle(PlainButtonStyle())
                 }
+                .offset(y: -20)
+                .transition(.move(edge: isLoading ? .leading : .trailing))
             }
-            .navigationDestination(for: String.self) { destination in
-                if destination == "CreateAccount" {
-                    CreateAccountView()
-                        .environmentObject(user)
+        }
+        .alert(errorMessage, isPresented: $showAlert, actions: {})
+        .onAppear {
+            performInitialAnimations()
+        }
+        .onDisappear {
+            if user.isLoggedIn {
+                Task {
+                    do {
+                        try await createUser()
+                    } catch {
+                        print("Failed to create user profile: \(error.localizedDescription)")
+                    }
                 }
             }
         }
     }
-    
-    // Method to handle sign in with Apple
+
+    // MARK: - Updated Sign In with Apple Method
+
     private func signInWithApple(authorization: ASAuthorization) {
         guard let nonce = nonce else {
             showError("Unable to process your request")
@@ -166,30 +161,35 @@ struct AppLaunch: View {
             switch result {
             case .success:
                 if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
-                    user.email = appleIDCredential.email ?? ""
-                    user.fullName = "\(appleIDCredential.fullName?.givenName ?? "") \(appleIDCredential.fullName?.familyName ?? "")"
-                    user.isLoggedIn = true
-                    user.saveCredentials()
-
-                    // Assign Beta subscription access
-                    let betaAccess = AccountType.beta.packageAccess.map { $0.rawValue }
-                    let badges = [Badges.betaAccessUser.rawValue]
-                    
-                    // Update user configuration with Beta access, badges, and account type
-                    user.updateUserConfig(
-                        accountType: AccountType.beta.rawValue,
-                        subscriptionPackages: betaAccess,
-                        badges: badges
-                    )
+                    // Update UserConfig properties directly
+                    DispatchQueue.main.async {
+                        user.userConfig.email = appleIDCredential.email ?? ""
+                        
+                        let givenName = appleIDCredential.fullName?.givenName ?? ""
+                        let familyName = appleIDCredential.fullName?.familyName ?? ""
+                        user.userConfig.username = "\(givenName) \(familyName)".trimmingCharacters(in: .whitespaces)
+                        
+                        // Assign Beta subscription access
+                        let betaAccess = AccountType.beta.packageAccess.map { $0.rawValue }
+                        let badges = [Badges.betaAccessUser.rawValue]
+                        
+                        // Update UserConfig with Beta access, badges, and account type
+                        user.userConfig.accountType = AccountType.beta.rawValue
+                        user.userConfig.subscriptionPackages = betaAccess
+                        user.userConfig.badges = badges
+                        
+                        // No need to set isLoggedIn manually; it's derived from accountType
+                    }
                 }
-                self.handleSuccessfulSignIn()
+                handleSuccessfulSignIn()
             case .failure(let error):
-                self.showError(error.localizedDescription)
+                showError(error.localizedDescription)
             }
         }
     }
 
-    
+    // MARK: - Other Methods (Unchanged)
+
     private func handleSignInError(_ error: Error) {
         let nsError = error as NSError
         if nsError.code == ASAuthorizationError.canceled.rawValue {
@@ -276,9 +276,12 @@ struct AppLaunch: View {
 }
 
 
-
 #Preview {
-    AppLaunch(loadCatalogue: true)
+    let user = User()
+    let dbMgr = DatabaseManager.shared
+    return AppLaunch(loadCatalogue: true)
+        .environmentObject(user)
+        .environmentObject(dbMgr)
         .preferredColorScheme(.dark)
 }
 

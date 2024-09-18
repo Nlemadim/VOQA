@@ -7,56 +7,100 @@
 
 import SwiftUI
 
-import SwiftUI
-
 struct CreateAccountView: View {
+    @EnvironmentObject var navigationRouter: NavigationRouter
+    @Environment(\.dismiss) private var dismiss
     @EnvironmentObject var user: User
+    @EnvironmentObject var databaseManager: DatabaseManager
+    @EnvironmentObject var networkMonitor: NetworkMonitor
+    @AppStorage("log_Status") private var logStatus: Bool = false
     @State private var confirmPassword: String = ""
     @State private var errorMessage: String = ""
     @State private var showAlert: Bool = false
     
+    @FocusState private var focusedField: Field?
+    
+    enum Field: Hashable {
+        case email
+        case password
+        case confirmPassword
+    }
+    
     var body: some View {
-        VStack(spacing: 20) {
-            Text("Create an Account")
-                .font(.largeTitle)
-                .fontWeight(.bold)
-                .padding(.top, 40)
-            
-            TextField("Email", text: $user.email)
-                .autocapitalization(.none)
-                .padding()
-                .background(Color(.secondarySystemBackground))
-                .cornerRadius(8)
-                .padding(.horizontal)
-            
-            SecureField("Password", text: $user.password)
-                .padding()
-                .background(Color(.secondarySystemBackground))
-                .cornerRadius(8)
-                .padding(.horizontal)
-            
-            SecureField("Confirm Password", text: $confirmPassword)
-                .padding()
-                .background(Color(.secondarySystemBackground))
-                .cornerRadius(8)
-                .padding(.horizontal)
-            
-            Button(action: createAccount) {
-                Text("Create Account")
-                    .font(.headline)
-                    .foregroundColor(.white)
-                    .frame(maxWidth: .infinity)
+        ScrollView {
+            VStack(spacing: 20) {
+                Text("Create an account")
+                    .font(.title3)
+                    .fontWeight(.semibold)
+                    .padding(.top, 40)
+                    .padding(.horizontal)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                
+                TextField("Email", text: $user.email)
+                    .autocapitalization(.none)
+                    .keyboardType(.emailAddress)
                     .padding()
-                    .background(Color.blue)
+                    .background(Color(.secondarySystemBackground))
                     .cornerRadius(8)
                     .padding(.horizontal)
+                    .focused($focusedField, equals: .email)
+                    .submitLabel(.next)
+                    .onSubmit {
+                        focusedField = .password
+                    }
+                
+                SecureField("Password", text: $user.password)
+                    .padding()
+                    .background(Color(.secondarySystemBackground))
+                    .cornerRadius(8)
+                    .padding(.horizontal)
+                    .focused($focusedField, equals: .password)
+                    .submitLabel(.next)
+                    .onSubmit {
+                        focusedField = .confirmPassword
+                    }
+                
+                SecureField("Confirm Password", text: $confirmPassword)
+                    .padding()
+                    .background(Color(.secondarySystemBackground))
+                    .cornerRadius(8)
+                    .padding(.horizontal)
+                    .focused($focusedField, equals: .confirmPassword)
+                    .submitLabel(.done)
+                    .onSubmit {
+                        createAccount()
+                    }
+                
+                Button(action: createAccount) {
+                    Text("Create Account")
+                        .font(.headline)
+                        .foregroundColor(.white)
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(Color.purple)
+                        .cornerRadius(8)
+                        .padding(.horizontal)
+                }
+                .disabled(!isFormValid())
+                .opacity(isFormValid() ? 1 : 0.5)
+                
+                Spacer()
             }
-            
-            Spacer()
+            .padding()
         }
         .alert(isPresented: $showAlert) {
             Alert(title: Text("Error"), message: Text(errorMessage), dismissButton: .default(Text("OK")))
         }
+        .onAppear {
+            // Automatically focus the email field when the view appears
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                self.focusedField = .email
+            }
+        }
+    }
+    
+    private func isFormValid() -> Bool {
+        return !user.email.isEmpty && !user.password.isEmpty && !confirmPassword.isEmpty
     }
     
     private func createAccount() {
@@ -72,11 +116,24 @@ struct CreateAccountView: View {
             return
         }
         
+        logStatus = true
         // Save user credentials securely
         user.saveCredentials()
         
-        // Navigate back or show success message
-        // For simplicity, assuming success
+        // Notify parent view of successful account creation
+        navigationRouter.goBack()
+        // Optionally, navigate to another view if needed
+        // navigationRouter.navigate(to: .nextView)
     }
 }
 
+
+
+#Preview {
+    let user = User()
+    let navMgr = NavigationRouter()
+    return CreateAccountView()
+        .environmentObject(user)
+        .environmentObject(navMgr)
+        .preferredColorScheme(.dark)
+}

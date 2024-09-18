@@ -26,7 +26,7 @@ struct QuestionListView: View {
                     Spacer()
                 }
                 .onAppear {
-                   fetchQuestions()
+//                   fetchQuestions()
                 }
             }
         } else {
@@ -61,7 +61,6 @@ struct QuestionListView: View {
                 }
                 .padding(.vertical, 10)
             }
-            
         }
     }
     
@@ -77,8 +76,8 @@ struct QuestionListView: View {
     }
     
     // Function to fetch questions and update state
-    private func fetchQuestions()  {
-        databaseManager.fetchProcessedQuestions("Data Privacy", questionTypeRequest: "", maxNumberOfQuestions: 5)
+    private func fetchQuestions() async throws {
+        try await databaseManager.fetchProcessedQuestions("Data Privacy", questionTypeRequest: "", maxNumberOfQuestions: 5)
         DispatchQueue.main.asyncAfter(deadline: .now() + 3){
             self.questions.append(contentsOf: databaseManager.questionsV2)
         }
@@ -91,7 +90,6 @@ struct QuestionListView: View {
     return QuestionListView()
         .preferredColorScheme(.dark)
         .environmentObject(dbMgr)
-    
 }
 
 struct FakeConfig {
@@ -121,7 +119,7 @@ class QuestionDownloader {
     // MARK: - Expose a public method to download quiz questions
     func downloadQuizQuestions(quizTitle: String, questionTypeRequest: String, maxNumberOfQuestions: Int?) async throws -> [QuestionV2] {
         let requestBody = QuestionRequestBody(
-            userId: config.userId,
+            userId: "rBkUyTtc2XXXcj43u53N",
             quizTitle: quizTitle,
             request: questionTypeRequest,
             narrator: narratorVoiceSelection(narrator: "Gus"),
@@ -151,9 +149,7 @@ class QuestionDownloader {
         // Return the voice designation for the selected narrator
         return selectedVoice.voiceDesignation
     }
-
 }
-
 
 
 extension NetworkService {

@@ -237,46 +237,166 @@
     }
   ],
   "quizHostMessages": {
-    "intro": {
-      "title": "Intro",
-      "audioUrls": [
-        {
-          "title": "intro1",
-          "urlScript": "Hi there, I'm Gus. How's it going? Let's dive into another voiced over Q&A.",
-          "audioUrl": ""
-        },
-        {
-          "title": "intro2",
-          "urlScript": "Hello! Gus here. Ready for another voiced over Q&A? Hope you're well.",
-          "audioUrl": ""
-        },
-        {
-          "title": "intro3",
-          "urlScript": "Hey, I'm Gus. Let's jump into another voiced over Q&A. How are you doing today?",
-          "audioUrl": ""
-        }
-      ]
-    },
-    "outro": {
-      "title": "Outro",
-      "audioUrls": [
-        {
-          "title": "outro1",
-          "urlScript": "Thanks for finishing the session! Keep practicing, and you'll get even better. Till next time, cheers!",
-          "audioUrl": ""
-        },
-        {
-          "title": "outro2",
-          "urlScript": "Great job completing the session! Remember, practice makes perfect. Keep it up! That's a wrap for now. Till next time!",
-          "audioUrl": ""
-        },
-        {
-          "title": "outro3",
-          "urlScript": "Well done on finishing the session! Keep practicing and improving. That's it for now. Be safe till the next time!",
-          "audioUrl": ""
-        }
-      ]
-    }
+      "hostNarratorIntro": {
+          "title": "Host Narrator Intro",
+          "audioUrls": [
+              {
+                  "title": "hostIntro1",
+                  "urlScript": "Welcome to the quiz session!",
+                  "audioUrl": ""
+              },
+              {
+                  "title": "hostIntro2",
+                  "urlScript": "Let's get started with your questions.",
+                  "audioUrl": ""
+              },
+              {
+                  "title": "hostIntro3",
+                  "urlScript": "I'm your host, ready to guide you through.",
+                  "audioUrl": ""
+              }
+          ]
+      },
+      "quizSessionIntro": {
+          "title": "Quiz Session Intro",
+          "audioUrls": [
+              {
+                  "title": "sessionIntro1",
+                  "urlScript": "Here's your first question.",
+                  "audioUrl": ""
+              },
+              {
+                  "title": "sessionIntro2",
+                  "urlScript": "Let's dive into the quiz.",
+                  "audioUrl": ""
+              },
+              {
+                  "title": "sessionIntro3",
+                  "urlScript": "Are you ready to begin?",
+                  "audioUrl": ""
+              }
+          ]
+      },
+      "messageFromSponsor": {
+          "title": "Message From Sponsor",
+          "audioUrls": [
+              {
+                  "title": "sponsorMessage1",
+                  "urlScript": "A special message from our sponsor.",
+                  "audioUrl": ""
+              },
+              {
+                  "title": "sponsorMessage2",
+                  "urlScript": "Thank you to our sponsor for supporting this quiz.",
+                  "audioUrl": ""
+              },
+              {
+                  "title": "sponsorMessage3",
+                  "urlScript": "Don't forget to check out our sponsor's offerings.",
+                  "audioUrl": ""
+              }
+          ]
+      },
+      "resumeFromSponsoredMessage": {
+          "title": "Resume From Sponsored Message",
+          "audioUrls": [
+              {
+                  "title": "resumeSponsor1",
+                  "urlScript": "Let's continue after the sponsor message.",
+                  "audioUrl": ""
+              },
+              {
+                  "title": "resumeSponsor2",
+                  "urlScript": "Back to the quiz now.",
+                  "audioUrl": ""
+              },
+              {
+                  "title": "resumeSponsor3",
+                  "urlScript": "Continuing with your questions.",
+                  "audioUrl": ""
+              }
+          ]
+      },
+      "prepareForReview": {
+          "title": "Prepare For Review",
+          "audioUrls": [
+              {
+                  "title": "prepareReview1",
+                  "urlScript": "Let's prepare to review your answers.",
+                  "audioUrl": ""
+              },
+              {
+                  "title": "prepareReview2",
+                  "urlScript": "Get ready to see your results.",
+                  "audioUrl": ""
+              },
+              {
+                  "title": "prepareReview3",
+                  "urlScript": "Preparing the review section.",
+                  "audioUrl": ""
+              }
+          ]
+      },
+      "resumeFromReview": {
+          "title": "Resume From Review",
+          "audioUrls": [
+              {
+                  "title": "resumeReview1",
+                  "urlScript": "Resuming after the review.",
+                  "audioUrl": ""
+              },
+              {
+                  "title": "resumeReview2",
+                  "urlScript": "Continuing the quiz.",
+                  "audioUrl": ""
+              },
+              {
+                  "title": "resumeReview3",
+                  "urlScript": "Let's move forward.",
+                  "audioUrl": ""
+              }
+          ]
+      },
+      "sponsoredOutroMessage": {
+          "title": "Sponsored Outro Message",
+          "audioUrls": [
+              {
+                  "title": "sponsoredOutro1",
+                  "urlScript": "A final word from our sponsor.",
+                  "audioUrl": ""
+              },
+              {
+                  "title": "sponsoredOutro2",
+                  "urlScript": "Thank you to our sponsor for their support.",
+                  "audioUrl": ""
+              },
+              {
+                  "title": "sponsoredOutro3",
+                  "urlScript": "Don't miss our sponsor's latest offerings.",
+                  "audioUrl": ""
+              }
+          ]
+      },
+      "outro": {
+          "title": "Outro",
+          "audioUrls": [
+              {
+                  "title": "outro1",
+                  "urlScript": "Thanks for finishing the session! Keep practicing, and you'll get even better. Till next time, cheers!",
+                  "audioUrl": ""
+              },
+              {
+                  "title": "outro2",
+                  "urlScript": "Great job completing the session! Remember, practice makes perfect. Keep it up! That's a wrap for now. Till next time!",
+                  "audioUrl": ""
+              },
+              {
+                  "title": "outro3",
+                  "urlScript": "Well done on finishing the session! Keep practicing and improving. That's it for now. Be safe till the next time!",
+                  "audioUrl": ""
+              }
+          ]
+      }
   },
   "sessionQuestion": []
 }

@@ -9,12 +9,14 @@ import Foundation
 import Combine
 
 class DatabaseManager: ObservableObject {
+    //MARK: TO FIX Publishing from background threads
     @Published var currentError: DatabaseError?
     @Published var questions: [Question] = []
     @Published var questionsV2: [QuestionV2] = []
     @Published var quizCatalogue: [QuizCatalogue] = []  // Holds the QuizCatalogue
     @Published var quizCollection: [QuizData] = []
     @Published var showFullPageError: Bool = false
+    @Published var questionV2Loaded: Bool = false
     
     @Published var ratingsAndReview: RatingsAndReview?
     @Published var latestScores: LatestScore?
@@ -81,17 +83,14 @@ class DatabaseManager: ObservableObject {
         self.sessionConfiguration = loadedConfig
     }
     
-    func fetchProcessedQuestions(_ quizTitle: String, questionTypeRequest: String, maxNumberOfQuestions: Int) {
-        Task {
-            do {
-                // Initialize the QuestionDownloader with the UserConfig from the environment
-                let fakeConfig: FakeConfig = FakeConfig(userId: "rBkUyTtc2XXXcj43u53N", quizTitle: "Data Privacy", narrator: "Gus", language: "")
-                let questionDownloader = QuestionDownloader(config: fakeConfig)
-                // Fetch questions using the user's quiz title
-                questionsV2 = try await questionDownloader.downloadQuizQuestions(quizTitle: quizTitle, questionTypeRequest: questionTypeRequest, maxNumberOfQuestions: maxNumberOfQuestions)  // Replace with desired quiz title
-            } catch {
-                print("Error fetching questions: \(error)")
-            }
+    func fetchProcessedQuestions(_ quizTitle: String, questionTypeRequest: String, maxNumberOfQuestions: Int) async throws  {
+        // Initialize the QuestionDownloader with the UserConfig from the environment
+        let fakeConfig: FakeConfig = FakeConfig(userId: "rBkUyTtc2XXXcj43u53N", quizTitle: "Data Privacy", narrator: "Gus", language: "")
+        let questionDownloader = QuestionDownloader(config: fakeConfig)
+        // Fetch questions using the user's quiz title
+        questionsV2 = try await questionDownloader.downloadQuizQuestions(quizTitle: quizTitle, questionTypeRequest: questionTypeRequest, maxNumberOfQuestions: maxNumberOfQuestions)  // Replace with desired quiz title
+        DispatchQueue.main.async {
+            self.questionV2Loaded = !self.questionsV2.isEmpty
         }
     }
     

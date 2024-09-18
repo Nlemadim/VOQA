@@ -10,6 +10,7 @@ import Firebase
 
 @main
 struct VOQAApp: App {
+    @StateObject private var navigationRouter = NavigationRouter()
     @StateObject private var databaseManager = DatabaseManager.shared
     @StateObject private var networkMonitor = NetworkMonitor.shared
     @StateObject private var user = User()  // Adding User as a StateObject
@@ -21,6 +22,7 @@ struct VOQAApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(navigationRouter)
                 .environmentObject(databaseManager)
                 .environmentObject(networkMonitor)
                 .environmentObject(user)  // Passing User to the environment

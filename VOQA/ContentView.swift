@@ -9,26 +9,40 @@ import SwiftUI
 import SwiftData
 
 struct ContentView: View {
-    @AppStorage("log_Status") private var logStatus: Bool = true
+    @AppStorage("log_Status") private var logStatus: Bool = false
     @AppStorage("load_catalogue") private var loadCatalogue: Bool = true
+    @EnvironmentObject var user: User
     @EnvironmentObject var networkMonitor: NetworkMonitor
     @EnvironmentObject var databaseManager: DatabaseManager
-    
+    @EnvironmentObject var navigationRouter: NavigationRouter
     
     var body: some View {
-        VStack {
-            if logStatus {
-                
-                MainView(logStatus: logStatus)
-                
-            } else {
-                
-                AppLaunch(loadCatalogue: loadCatalogue)
+        NavigationStack(path: $navigationRouter.path) {
+            VStack {
+                if logStatus {
+                    MainView(logStatus: logStatus)
+                        .navigationDestination(for: NavigationDestination.self) { destination in
+                            navigate(to: destination)
+                        }
+                } else {
+                    AppLaunch(loadCatalogue: loadCatalogue)
+                        .navigationDestination(for: NavigationDestination.self) { destination in
+                            navigate(to: destination)
+                        }
+                }
             }
-        }
-        .onAppear {
-            Task {
-               // await getCatalogue()
+            .navigationBarBackButtonHidden(true)
+            .onAppear {
+                Task {
+                    await getCatalogue()
+                }
+            }
+            .alert(item: $databaseManager.currentError) { error in
+                Alert(
+                    title: Text(error.title ?? "Error"),
+                    message: Text(error.message ?? "An unknown error occurred."),
+                    dismissButton: .default(Text("OK"))
+                )
             }
         }
     }
@@ -42,16 +56,61 @@ struct ContentView: View {
             DispatchQueue.main.async {
                 loadCatalogue = false
             }
-            
             return
         }
         
-        Task {
-            await databaseManager.fetchQuizCollection()
-        }
+        await databaseManager.fetchQuizCollection()
         
         DispatchQueue.main.async {
             loadCatalogue = false
+        }
+    }
+    
+    @ViewBuilder
+    private func navigate(to destination: NavigationDestination) -> some View {
+        switch destination {
+        case .createAccount:
+            CreateAccountView()
+                .environmentObject(navigationRouter)
+                .environmentObject(databaseManager)
+                .environmentObject(networkMonitor)
+                .environmentObject(user)
+            
+        case .quizPlayer(let voqa):
+            QuizDashboard(isLoggedIn: true, voqa: voqa)
+                .environmentObject(navigationRouter)
+                .environmentObject(databaseManager)
+                .environmentObject(networkMonitor)
+                .environmentObject(user)
+            
+        case .mainView:
+            MainView(logStatus: logStatus)
+                .environmentObject(navigationRouter)
+                .environmentObject(databaseManager)
+                .environmentObject(networkMonitor)
+                .environmentObject(user)
+            
+        case .homePage:
+            HomePage(quizCatalogue: databaseManager.quizCatalogue)
+                .environmentObject(navigationRouter)
+                .environmentObject(databaseManager)
+                .environmentObject(networkMonitor)
+                .environmentObject(user)
+            
+        case .quizDetailPage(let voqa):
+            QuizDetailPage(audioQuiz: voqa)
+                .environmentObject(navigationRouter)
+                .environmentObject(databaseManager)
+                .environmentObject(networkMonitor)
+                .environmentObject(user)
+            
+        case .quizDashboard(let voqa):
+            QuizDashboard(isLoggedIn: true, voqa: voqa)
+                .environmentObject(navigationRouter)
+                .environmentObject(databaseManager)
+                .environmentObject(networkMonitor)
+                .environmentObject(user)
+            
         }
     }
 }
@@ -59,12 +118,14 @@ struct ContentView: View {
 #Preview {
     let dbMgr = DatabaseManager.shared
     let ntwConn = NetworkMonitor.shared
+    let navMgr = NavigationRouter()
     let user = User()
     return ContentView()
         .preferredColorScheme(.dark)
         .environmentObject(dbMgr)
         .environmentObject(ntwConn)
         .environmentObject(user)
+        .environmentObject(navMgr)
 }
 
 /**

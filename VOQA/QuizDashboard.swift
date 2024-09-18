@@ -36,7 +36,6 @@ struct QuizDashboard: View {
     @State private var progress: CGFloat = .zero
     
     var voqa: Voqa
-    var onNavigateToQuizInfo: (Voqa) -> Void
     
     var body: some View {
         
@@ -57,7 +56,9 @@ struct QuizDashboard: View {
                                 case .quizzes:
                                 
                                     QuizzesView(quizTopics: getCoreTopics(for: voqa) ?? []) { topicName in
-                                        getQuestions(quizTitle: voqa.quizTitle, questionTypeRequest: topicName, number: 10)
+                                        Task {
+                                            await getQuestions(quizTitle: "MCAT", questionTypeRequest: "ALL Categories", number: 10)
+                                        }
                                     }
                                     
                                 case .latestScores:
@@ -129,6 +130,11 @@ struct QuizDashboard: View {
                         progress = -rect.minX / size.width
                     }
                 }
+                .onChange(of: databaseManager.questionV2Loaded, { _, isLoaded in
+                    if isLoaded {
+                        questionsLoaded = true
+                    }
+                })
                 /// To track current tab selection and adjust scroll view accordingly. NOTE: scrollPosition Must match the precise data type of the id supplied in the ForEach Loop
                 .scrollPosition(id: $mainViewScrollState)
                 .scrollIndicators(.hidden)
@@ -180,12 +186,17 @@ struct QuizDashboard: View {
             }
     }
     
-    private func getQuestions(quizTitle: String, questionTypeRequest: String, number: Int)  {
+    private func getQuestions(quizTitle: String, questionTypeRequest: String, number: Int) async {
         isDownloading = true
-        databaseManager.fetchProcessedQuestions(quizTitle, questionTypeRequest: questionTypeRequest, maxNumberOfQuestions: number)
-        isDownloading = false
-        if !databaseManager.questions.isEmpty {
-            questionsLoaded = true
+        do {
+            try await databaseManager.fetchProcessedQuestions(quizTitle, questionTypeRequest: questionTypeRequest, maxNumberOfQuestions: number)
+            isDownloading = false
+//            if !databaseManager.questionsV2.isEmpty {
+//
+//            }
+        } catch {
+            isDownloading = false
+            print("Error fetching questions: \(error)")
         }
     }
     

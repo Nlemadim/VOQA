@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct QuizDetailPage: View {
-    @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject var navigationRouter: NavigationRouter
+    
     var audioQuiz: Voqa // Changed from Binding to a simple property
 
     @State private var hasDownloadedSample: Bool = false
@@ -150,7 +151,7 @@ struct QuizDetailPage: View {
         .navigationBarBackButtonHidden(true)
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
-                Button(action: { dismiss() }, label: {
+                Button(action: { navigationRouter.goBack() }, label: {
                     Image(systemName: "chevron.left.circle")
                         .foregroundStyle(.white)
                 })

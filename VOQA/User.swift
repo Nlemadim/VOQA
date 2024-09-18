@@ -7,8 +7,11 @@
 
 import Foundation
 import SwiftUI
+import Combine
 
 class User: ObservableObject {
+    // Published properties
+    @Published var userConfig: UserConfig
     @Published var email: String = ""
     @Published var password: String = ""
     @Published var fullName: String = ""
@@ -17,140 +20,53 @@ class User: ObservableObject {
     @Published var voqaCollection: [Voqa] = []
     @Published var currentUserVoqa: Voqa?
     @Published var accessItems: [SubscriptionPackageAccess] = []
-    @Published var userConfig: UserConfig
-
+    
+    // Private property to hold Combine subscriptions
+    private var cancellables = Set<AnyCancellable>()
+    
+    // MARK: - Initializer
+    
     init() {
-        self.userConfig = UserConfig()  // Initialize with default values
-        self.accessItems = []  // Initialize with an empty list or based on some logic
-        loadUserConfig()  // Load user config after initialization
-    }
-    
-    // Method to create user configuration
-    func createUserConfig(
-        username: String,
-        email: String,
-        voice: String,
-        currentUserVoqaID: String? = nil,
-        quizCollection: [String] = [],
-        accountType: String = AccountType.guest.rawValue,
-        subscriptionPackages: [String] = [],
-        badges: [String] = [],
-        selectedVoiceNarrator: String = "Gus",  // Default to "Gus"
-        selectedBackgroundMusic: String? = nil,  // Default to nil
-        selectedSoundEffect: String? = nil
-    ) {
-        self.userConfig = UserConfig(
-            username: username,
-            email: email,
-            voice: voice,
-            currentUserVoqaID: currentUserVoqaID,
-            quizCollection: quizCollection,
-            accountType: accountType,
-            subscriptionPackages: subscriptionPackages,
-            badges: badges,
-            selectedVoiceNarrator: selectedVoiceNarrator,
-            selectedBackgroundMusic: selectedBackgroundMusic,
-            selectedSoundEffect: selectedSoundEffect
-        )
-        saveUserConfig()
-    }
-    
-    // Method to update user configuration
-    func updateUserConfig(
-        username: String? = nil,
-        email: String? = nil,
-        voice: String? = nil,
-        currentUserVoqaID: String? = nil,
-        quizCollection: [String]? = nil,
-        accountType: String? = nil,
-        subscriptionPackages: [String]? = nil,
-        badges: [String]? = nil,
-        selectedVoiceNarrator: String? = nil,
-        selectedBackgroundMusic: String? = nil,
-        selectedSoundEffect: String? = nil
-    ) {
-        if let username = username {
-            self.userConfig.username = username
-        }
-        if let email = email {
-            self.userConfig.email = email
-        }
-        if let voice = voice {
-            self.userConfig.voice = voice
-        }
-        if let currentUserVoqaID = currentUserVoqaID {
-            self.userConfig.currentUserVoqaID = currentUserVoqaID
-        }
-        if let quizCollection = quizCollection {
-            self.userConfig.quizCollection = quizCollection
-        }
-        if let accountType = accountType {
-            self.userConfig.accountType = accountType
-        }
-        if let subscriptionPackages = subscriptionPackages {
-            self.userConfig.subscriptionPackages = subscriptionPackages
-        }
-        if let badges = badges {
-            self.userConfig.badges = badges
-        }
-        if let selectedVoiceNarrator = selectedVoiceNarrator {
-            self.userConfig.selectedVoiceNarrator = selectedVoiceNarrator
-        }
-        if let selectedBackgroundMusic = selectedBackgroundMusic {
-            self.userConfig.selectedBackgroundMusic = selectedBackgroundMusic
-        }
-        if let selectedSoundEffect = selectedSoundEffect {
-            self.userConfig.selectedSoundEffect = selectedSoundEffect
-        }
+        // Initialize userConfig; this will load existing or create guest config
+        self.userConfig = UserConfig()
+        self.accessItems = []
         
-        saveUserConfig()
-    }
-    
-    func createUserProfile() -> UserProfile {
-        // Create the user profile
-        let userProfile = UserProfile(
-            firstCreated: userConfig.firstCreated,
-            userId: userConfig.userId,
-            username: userConfig.username,  // Make sure this aligns with the backend's expected "username" field
-            email: userConfig.email,
-            voqaCollection: userConfig.quizCollection,
-            voiceNarrator: [userConfig.selectedVoiceNarrator],
-            backgroundMusic: userConfig.selectedBackgroundMusic.map { [$0] } ?? [],
-            backgroundSFX: userConfig.selectedSoundEffect.map { [$0] } ?? []
-        )
+        // Initialize other properties based on userConfig
+        self.email = userConfig.email
+        self.fullName = userConfig.username
         
-        // Debug print statements to log the user profile properties
-        print("UserProfile Data Being Sent to Server:")
-        print("firstCreated: \(userProfile.firstCreated)")
-        print("userId: \(userProfile.userId)")
-        print("userName: \(userProfile.username)") // Ensure correct casing
-        print("email: \(userProfile.email)")
-        print("voqaCollection: \(userProfile.voqaCollection)")
-        print("voiceNarrator: \(userProfile.voiceNarrator)")
-        print("backgroundMusic: \(userProfile.backgroundMusic)")
-        print("backgroundSFX: \(userProfile.backgroundSFX)")
-
-        return userProfile
-    }
-
-    
-    // Methods to update specific add-on selections
-    func updateVoiceNarrator(_ narrator: String) {
-        userConfig.selectedVoiceNarrator = narrator
-        saveUserConfig()
+        // Observe changes in userConfig and update User's own properties accordingly
+        userConfig.$email
+            .receive(on: RunLoop.main)
+            .assign(to: \.email, on: self)
+            .store(in: &cancellables)
+        
+        userConfig.$username
+            .receive(on: RunLoop.main)
+            .assign(to: \.fullName, on: self)
+            .store(in: &cancellables)
+        
+        // Update isLoggedIn based on accountType
+        userConfig.$accountType
+            .receive(on: RunLoop.main)
+            .map { $0 != AccountType.guest.rawValue }
+            .assign(to: \.isLoggedIn, on: self)
+            .store(in: &cancellables)
     }
     
-    func updateBackgroundMusic(_ music: String?) {
-        userConfig.selectedBackgroundMusic = music
-        saveUserConfig()
+    // MARK: - User Actions
+    
+    /// Continue as guest by resetting to a new guest UserConfig
+    func continueAsGuest() {
+        self.userConfig = UserConfig.createGuest()
+        self.email = userConfig.email
+        self.fullName = userConfig.username
+        self.isLoggedIn = false
     }
     
-    func updateSoundEffect(_ sfx: String?) {
-        userConfig.selectedSoundEffect = sfx
-        saveUserConfig()
-    }
-
-    // Save user credentials securely
+    // MARK: - Credential Management
+    
+    /// Save user credentials securely
     func saveCredentials() {
         let emailKey = "userEmail"
         let passwordKey = "userPassword"
@@ -165,8 +81,10 @@ class User: ObservableObject {
             UserDefaults.standard.set(imageData, forKey: profileImageKey)
         }
         
-        // Update user configuration with new details
-        updateUserConfig(username: fullName, email: email)
+        // Update userConfig with new details
+        userConfig.username = fullName
+        userConfig.email = email
+        // No need to call saveToDefaults() since UserConfig automatically saves on changes
         
         print("User details saved:")
         print("Email: \(email)")
@@ -174,7 +92,7 @@ class User: ObservableObject {
         print("Password: \(password)")
     }
     
-    // Retrieve saved credentials
+    /// Retrieve saved credentials
     func loadCredentials() {
         let emailKey = "userEmail"
         let passwordKey = "userPassword"
@@ -192,7 +110,7 @@ class User: ObservableObject {
         }
     }
     
-    // Clear credentials
+    /// Clear credentials and reset to guest configuration
     func clearCredentials() {
         let emailKey = "userEmail"
         let passwordKey = "userPassword"
@@ -208,33 +126,45 @@ class User: ObservableObject {
         password = ""
         fullName = ""
         profileImage = nil
+        
+        // Reset userConfig to guest
+        self.userConfig = UserConfig()
     }
     
-    // Save user configuration
-    private func saveUserConfig() {
-        do {
-            let data = try JSONEncoder().encode(userConfig)
-            UserDefaults.standard.set(data, forKey: "userConfig")
-        } catch {
-            print("Failed to save user config: \(error.localizedDescription)")
-        }
-    }
-    
-    // Load user configuration
-    private func loadUserConfig() {
-        guard let data = UserDefaults.standard.data(forKey: "userConfig") else {
-            return  // Use the default UserConfig already set in init
-        }
-        do {
-            self.userConfig = try JSONDecoder().decode(UserConfig.self, from: data)
-        } catch {
-            print("Failed to load user config: \(error.localizedDescription)")
-        }
-    }
-    
-    // Delete user configuration
+    /// Delete user configuration and reset to guest
     func deleteUserConfig() {
-        UserDefaults.standard.removeObject(forKey: "userConfig")
-        self.userConfig = UserConfig()  // Reset to default configuration
+        UserDefaults.standard.removeObject(forKey: UserConfig.userConfigKey)
+        self.userConfig = UserConfig()
+        print("UserConfig deleted and reset to guest configuration.")
+    }
+    
+    // MARK: - User Profile Creation
+    
+    /// Create user profile from userConfig
+    func createUserProfile() -> UserProfile {
+        // Create the user profile
+        let userProfile = UserProfile(
+            firstCreated: userConfig.firstCreated,
+            userId: userConfig.userId,
+            username: userConfig.username,  // Ensure this aligns with the backend's expected "username" field
+            email: userConfig.email,
+            voqaCollection: userConfig.quizCollection,
+            voiceNarrator: [userConfig.selectedVoiceNarrator],
+            backgroundMusic: userConfig.selectedBackgroundMusic.map { [$0] } ?? [],
+            backgroundSFX: userConfig.selectedSoundEffect.map { [$0] } ?? []
+        )
+        
+        // Debug print statements to log the user profile properties
+        print("UserProfile Data Being Sent to Server:")
+        print("firstCreated: \(userProfile.firstCreated)")
+        print("userId: \(userProfile.userId)")
+        print("userName: \(userProfile.username)") // Ensure correct casing
+        print("email: \(userProfile.email)")
+        print("voqaCollection: \(userProfile.voqaCollection)")
+        print("voiceNarrator: \(userProfile.voiceNarrator)")
+        print("backgroundMusic: \(userProfile.backgroundMusic)")
+        print("backgroundSFX: \(userProfile.backgroundSFX)")
+        
+        return userProfile
     }
 }
