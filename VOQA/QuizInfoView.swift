@@ -169,12 +169,12 @@ struct QuizInfoView: View {
     }
 
     private func getQuestions() async {
-        isDownloading = true
-        await databaseManager.fetchQuestions()
-        isDownloading = false
-        if !databaseManager.questions.isEmpty {
-            questionsLoaded = true
-        }
+//        isDownloading = true
+//        await databaseManager.fetchQuestions()
+//        isDownloading = false
+//        if !databaseManager.questions.isEmpty {
+//            questionsLoaded = true
+//        }
     }
 }
 

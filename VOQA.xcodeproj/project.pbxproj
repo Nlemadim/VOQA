@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0B0763012C9A7C1D004A6673 /* CategoryRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0763002C9A7C1D004A6673 /* CategoryRow.swift */; };
+		0B0763032C9A7C5C004A6673 /* LoadingQuizView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0763022C9A7C5C004A6673 /* LoadingQuizView.swift */; };
 		0B0988AB2C76E550002C5116 /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0988AA2C76E550002C5116 /* FirebaseManager.swift */; };
 		0B09BDB42C4919FF00DD6452 /* Creative Beat.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 0B09BDB32C4919FF00DD6452 /* Creative Beat.mp3 */; };
 		0B11C93C2C77E32D002AF228 /* ThemeColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B11C93B2C77E32D002AF228 /* ThemeColors.swift */; };
@@ -152,6 +154,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0B0763002C9A7C1D004A6673 /* CategoryRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryRow.swift; sourceTree = "<group>"; };
+		0B0763022C9A7C5C004A6673 /* LoadingQuizView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingQuizView.swift; sourceTree = "<group>"; };
 		0B0988AA2C76E550002C5116 /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
 		0B09BDB32C4919FF00DD6452 /* Creative Beat.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Creative Beat.mp3"; sourceTree = "<group>"; };
 		0B11C93B2C77E32D002AF228 /* ThemeColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeColors.swift; sourceTree = "<group>"; };
@@ -490,6 +494,8 @@
 				0B24B9A42C4777BD004A63F5 /* Performance.swift */,
 				0B5B74F72C82EE0E00C1D44A /* RatingsAndReview.swift */,
 				0B5B74FB2C82F71100C1D44A /* ContributeQuestion.swift */,
+				0B0763002C9A7C1D004A6673 /* CategoryRow.swift */,
+				0B0763022C9A7C5C004A6673 /* LoadingQuizView.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -937,6 +943,7 @@
 				0B747B362C79C08E000C5050 /* PageNavigationController.swift in Sources */,
 				0B6561402C3E4F540013663B /* AudioFileSorter.swift in Sources */,
 				0B5433132C7EEEE400C759D4 /* SmallDownloadButton.swift in Sources */,
+				0B0763032C9A7C5C004A6673 /* LoadingQuizView.swift in Sources */,
 				0B511D112C76342200D02CE6 /* AddToLibraryButton.swift in Sources */,
 				0BF408E62C92A89E00998038 /* QuestionRequestBody.swift in Sources */,
 				0B4E251D2C9A01A2002AC7C3 /* QuizDashboard.swift in Sources */,
@@ -968,6 +975,7 @@
 				0B65615B2C3E4FB80013663B /* ConfigurationUrls.swift in Sources */,
 				0BF408E42C92A87800998038 /* VoiceSelector.swift in Sources */,
 				0B34E4682C7D9C7E005A64D8 /* AccountType.swift in Sources */,
+				0B0763012C9A7C1D004A6673 /* CategoryRow.swift in Sources */,
 				0B11C9402C77E4ED002AF228 /* QuizCatalogue.swift in Sources */,
 				0B5B74F82C82EE0E00C1D44A /* RatingsAndReview.swift in Sources */,
 				0BA63B532C762A1700AE5048 /* QuizInfoView.swift in Sources */,

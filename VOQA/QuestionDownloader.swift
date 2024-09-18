@@ -78,7 +78,7 @@ struct QuestionListView: View {
     
     // Function to fetch questions and update state
     private func fetchQuestions()  {
-       databaseManager.fetchProcessedQuestions("Data Privacy", maxNumberOfQuestions: 5)
+        databaseManager.fetchProcessedQuestions("Data Privacy", questionTypeRequest: "", maxNumberOfQuestions: 5)
         DispatchQueue.main.asyncAfter(deadline: .now() + 3){
             self.questions.append(contentsOf: databaseManager.questionsV2)
         }
@@ -119,11 +119,11 @@ class QuestionDownloader {
     }
     
     // MARK: - Expose a public method to download quiz questions
-    func downloadQuizQuestions(quizTitle: String, maxNumberOfQuestions: Int?) async throws -> [QuestionV2] {
+    func downloadQuizQuestions(quizTitle: String, questionTypeRequest: String, maxNumberOfQuestions: Int?) async throws -> [QuestionV2] {
         let requestBody = QuestionRequestBody(
-            userId: "bkjdjndkjwkjndkjwn",
-            quizTitle: "MCAT",
-            request: "All Categories",
+            userId: config.userId,
+            quizTitle: quizTitle,
+            request: questionTypeRequest,
             narrator: narratorVoiceSelection(narrator: "Gus"),
             numberOfQuestions: maxNumberOfQuestions ?? 5
         )

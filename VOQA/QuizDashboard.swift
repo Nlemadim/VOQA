@@ -55,9 +55,10 @@ struct QuizDashboard: View {
                             ViewThatFits {
                                 switch tab.id {
                                 case .quizzes:
-                                    QuizzesView(
-                                        quizTopics: getCoreTopics(for: voqa) ?? []
-                                    )
+                                
+                                    QuizzesView(quizTopics: getCoreTopics(for: voqa) ?? []) { topicName in
+                                        getQuestions(quizTitle: voqa.quizTitle, questionTypeRequest: topicName, number: 10)
+                                    }
                                     
                                 case .latestScores:
                                     LatestScoresView(
@@ -121,7 +122,6 @@ struct QuizDashboard: View {
                             }
                             .frame(width: size.width, height: size.height)
                             .contentShape(.rect)
-                            
                         }
                     }
                     .scrollTargetLayout()
@@ -172,12 +172,21 @@ struct QuizDashboard: View {
     private var backgroundImageView: some View {
         CachedImageView(imageUrl: voqa.imageUrl)
             .aspectRatio(contentMode: .fill)
-            .blur(radius: 3.0)
+            //.blur(radius: 3.0)
             .offset(x: -100)
             .overlay {
                 Rectangle()
                     .foregroundStyle(.black.opacity(0.95))
             }
+    }
+    
+    private func getQuestions(quizTitle: String, questionTypeRequest: String, number: Int)  {
+        isDownloading = true
+        databaseManager.fetchProcessedQuestions(quizTitle, questionTypeRequest: questionTypeRequest, maxNumberOfQuestions: number)
+        isDownloading = false
+        if !databaseManager.questions.isEmpty {
+            questionsLoaded = true
+        }
     }
     
     private func postQuestion(questionText: String) {
@@ -189,15 +198,6 @@ struct QuizDashboard: View {
     private func postReview(review: RatingsAndReview) {
         guard review.difficultyRating != 0 || review.narrationRating != 0 || review.relevanceRating != 0  else { return }
         databaseManager.postNewReview(review)
-    }
-    
-    private func getQuestions() async {
-        isDownloading = true
-        await databaseManager.fetchQuestions()
-        isDownloading = false
-        if !databaseManager.questions.isEmpty {
-            questionsLoaded = true
-        }
     }
     
     @ViewBuilder

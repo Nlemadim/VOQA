@@ -52,39 +52,48 @@ class DatabaseManager: ObservableObject {
         }
     }
     
+    func addUserToChannel(userId: String) {
+        /**
+         {
+          "userId":"",
+          "username":"",
+          "quizTitle":"",
+          "joinDate":""
+         }
+         */
+    }
+    
+    func buildQuestionsCache(voqa: Voqa) {
+        /**
+         Request Body
+         {
+          "userId":"rBkUyTtc2XXXcj43u53N",
+          "quizTitle":"MCAT",
+          "questionStyle":"ALL Categories",
+          "numberOfQuestions":"5"
+         }
+         
+         */
+    }
     
     func loadVoiceConfiguration(for voice: AddOnItem) async throws  {
         let loadedConfig = try await configManager.loadVoiceConfiguration(for: voice)
         self.sessionConfiguration = loadedConfig
     }
     
-    func fetchQuestions() async {
-        print("Database fetching Questions")
-        do {
-            let downloadedQuestions = try await networkService.fetchQuestions()
-            DispatchQueue.main.async {
-                self.questions = downloadedQuestions
-            }
-            print("Questions fetched successfully: \(questions.count) questions.")
-        } catch {
-            print("Error fetching questions: \(error)")
-        }
-    }
-    
-    func fetchProcessedQuestions(_ quizTitle: String, maxNumberOfQuestions: Int) {
+    func fetchProcessedQuestions(_ quizTitle: String, questionTypeRequest: String, maxNumberOfQuestions: Int) {
         Task {
             do {
                 // Initialize the QuestionDownloader with the UserConfig from the environment
                 let fakeConfig: FakeConfig = FakeConfig(userId: "rBkUyTtc2XXXcj43u53N", quizTitle: "Data Privacy", narrator: "Gus", language: "")
                 let questionDownloader = QuestionDownloader(config: fakeConfig)
                 // Fetch questions using the user's quiz title
-                questionsV2 = try await questionDownloader.downloadQuizQuestions(quizTitle: quizTitle, maxNumberOfQuestions: maxNumberOfQuestions)  // Replace with desired quiz title
+                questionsV2 = try await questionDownloader.downloadQuizQuestions(quizTitle: quizTitle, questionTypeRequest: questionTypeRequest, maxNumberOfQuestions: maxNumberOfQuestions)  // Replace with desired quiz title
             } catch {
                 print("Error fetching questions: \(error)")
             }
         }
     }
-    
     
     func fetchQuizCollection() async {
         do {
@@ -169,8 +178,6 @@ class DatabaseManager: ObservableObject {
 
         return quizCatalogue
     }
-
-
     
     func createUserProfile(for user: User) async throws {
         let userProfile = user.createUserProfile()

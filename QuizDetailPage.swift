@@ -83,7 +83,7 @@ struct QuizDetailPage: View {
                     .hAlign(.center)
                     
                     VStack(alignment: .leading) {
-                        AddToLibraryButton(color: Color.fromHex(audioQuiz.colors.third), label: "Join Quiz Community", playAction: {
+                        AddToLibraryButton(color: Color.fromHex(audioQuiz.colors.third), label: "Join Channel", playAction: {
                             
                         })
                         .foregroundStyle(Color.fromHex(audioQuiz.colors.third).dynamicTextColor())
