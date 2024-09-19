@@ -83,6 +83,11 @@ class DatabaseManager: ObservableObject {
         self.sessionConfiguration = loadedConfig
     }
     
+//    func getVoiceConfiguration(for voice: AddOnItem) async throws  -> QuizSessionConfig  {
+//        let loadedConfig = try await configManager.loadVoiceConfiguration(for: voice)
+//        return loadedConfig
+//    }
+    
     func fetchProcessedQuestions(_ quizTitle: String, questionTypeRequest: String, maxNumberOfQuestions: Int) async throws  {
         // Initialize the QuestionDownloader with the UserConfig from the environment
         let fakeConfig: FakeConfig = FakeConfig(userId: "rBkUyTtc2XXXcj43u53N", quizTitle: "Data Privacy", narrator: "Gus", language: "")

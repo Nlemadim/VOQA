@@ -78,7 +78,7 @@ struct HomePage: View {
 
             MyChannels(hideTabBar: $hideTabBar)
                 .tabItem {
-                    TabIcons(title: "My Library", icon: "books.vertical.fill")
+                    TabIcons(title: "My Channels", icon: "sparkles.tv.fill")
                 }
                 .tag(1)
 

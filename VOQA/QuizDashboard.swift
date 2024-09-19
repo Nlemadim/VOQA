@@ -10,6 +10,7 @@ import SwiftUI
 
 struct QuizDashboard: View {
     @EnvironmentObject var user: User
+    @EnvironmentObject var navigationRouter: NavigationRouter
     @EnvironmentObject var databaseManager: DatabaseManager
     @Environment(\.quizSessionConfig) private var config: QuizSessionConfig?
     @Environment(\.dismiss) private var dismiss
@@ -56,9 +57,12 @@ struct QuizDashboard: View {
                                 case .quizzes:
                                 
                                     QuizzesView(quizTopics: getCoreTopics(for: voqa) ?? []) { topicName in
+                                        
                                         Task {
                                             await getQuestions(quizTitle: "MCAT", questionTypeRequest: "ALL Categories", number: 10)
                                         }
+                                        
+                                        navigationRouter.navigate(to: .quizPlayer(voqa))
                                     }
                                     
                                 case .latestScores:
@@ -130,11 +134,11 @@ struct QuizDashboard: View {
                         progress = -rect.minX / size.width
                     }
                 }
-                .onChange(of: databaseManager.questionV2Loaded, { _, isLoaded in
-                    if isLoaded {
-                        questionsLoaded = true
-                    }
-                })
+//                .onChange(of: databaseManager.questionV2Loaded, { _, isLoaded in
+//                    if isLoaded {
+//                        questionsLoaded = true
+//                    }
+//                })
                 /// To track current tab selection and adjust scroll view accordingly. NOTE: scrollPosition Must match the precise data type of the id supplied in the ForEach Loop
                 .scrollPosition(id: $mainViewScrollState)
                 .scrollIndicators(.hidden)
@@ -155,13 +159,14 @@ struct QuizDashboard: View {
         .navigationBarBackButtonHidden(true)
         .navigationTitle("Dashboard")
         .navigationBarTitleDisplayMode(.inline)
-        .fullScreenCover(isPresented: $questionsLoaded) {
-            if let config = config {
-                QuizPlayerView(config: config, selectedVoqa: voqa)
-                    .environment(\.questions, databaseManager.questions)
-                    .onDisappear { dismiss() }
-            }
-        }
+        
+        //        .fullScreenCover(isPresented: $questionsLoaded) {
+        //            if let config = config {
+        //                QuizPlayerView(selectedVoqa: voqa)
+        //                    .environment(\.questions, databaseManager.questions)
+        //                    .onDisappear { dismiss() }
+        //            }
+        //        }
     }
     
     private func getCoreTopics(for voqa: Voqa) -> [String]? {
@@ -317,7 +322,10 @@ struct DashboardTab: Identifiable {
 
 #Preview {
     let dbMgr = DatabaseManager.shared
+    let user = User()
+    let navMgr = NavigationRouter()
     return MyChannels(hideTabBar: .constant(false))
-        .environmentObject(User())
+        .environmentObject(user)
         .environmentObject(dbMgr)
+        .environmentObject(navMgr)
 }

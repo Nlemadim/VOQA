@@ -117,7 +117,7 @@ struct AppLaunch: View {
                     Button(action: {
                         user.continueAsGuest()
                         logStatus = true
-                        navigationRouter.goBack()
+                        
                     }) {
                         Text("Continue as Guest")
                             .font(.headline)
@@ -133,6 +133,11 @@ struct AppLaunch: View {
             }
         }
         .alert(errorMessage, isPresented: $showAlert, actions: {})
+        .onChange(of: logStatus, { _, loggedIn in
+//            if loggedIn {
+//                navigationRouter.goBack()
+//            }
+        })
         .onAppear {
             performInitialAnimations()
         }
@@ -278,10 +283,12 @@ struct AppLaunch: View {
 
 #Preview {
     let user = User()
+    let navMgr = NavigationRouter()
     let dbMgr = DatabaseManager.shared
     return AppLaunch(loadCatalogue: true)
         .environmentObject(user)
         .environmentObject(dbMgr)
+        .environmentObject(navMgr)
         .preferredColorScheme(.dark)
 }
 

@@ -27,7 +27,7 @@ struct QuizControlButtonsGrid: View {
                 selectButton("B")
             })
             
-//            CircularPlayButton(quizContext: <#QuizSession#>, isDownloading: .constant(false), color: .white, playAction: {
+//            CircularPlayButton(quizContext: session, isDownloading: .constant(false), color: .white, playAction: {
 //                awaitingResponse = true
 //                centralAction()
 //            })

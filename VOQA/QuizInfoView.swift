@@ -45,13 +45,13 @@ struct QuizInfoView: View {
         .alert(item: $databaseManager.currentError) { error in
             Alert(title: Text("Error"), message: Text(error.message ?? ""), dismissButton: .default(Text("OK")))
         }
-        .fullScreenCover(isPresented: $questionsLoaded) {
-            if let config = config {
-                QuizPlayerView(config: config, selectedVoqa: selectedVoqa)
-                    .environment(\.questions, databaseManager.questions)
-                    .onDisappear { dismiss() }
-            }
-        }
+//        .fullScreenCover(isPresented: $questionsLoaded) {
+//            if let config = config {
+//                QuizPlayerView(config: config, selectedVoqa: selectedVoqa)
+//                    .environment(\.questions, databaseManager.questions)
+//                    .onDisappear { dismiss() }
+//            }
+//        }
     }
 
     private var disnissButton: some View {

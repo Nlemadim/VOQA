@@ -11,6 +11,7 @@ import SwiftUI
 import Shimmer
 
 struct ChannelListView: View {
+    @EnvironmentObject var navigationRouter: NavigationRouter
     var voqaCollection: [Voqa]
     var onSelectVoqa: (Voqa) -> Void
 

@@ -121,9 +121,15 @@ struct QuizzesView: View {
 }
 
 #Preview {
-    QuizzesView(quizTopics: ["Maths", "Physics", "Chemistry"], loadAction: { topicName in
+    let dbMgr = DatabaseManager.shared
+    let user = User()
+    let navMgr = NavigationRouter()
+    return QuizzesView(quizTopics: ["Maths", "Physics", "Chemistry"], loadAction: { topicName in
         
     })
+    .environmentObject(user)
+    .environmentObject(dbMgr)
+    .environmentObject(navMgr)
     .preferredColorScheme(.dark)
 }
 

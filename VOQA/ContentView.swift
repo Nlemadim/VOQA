@@ -15,6 +15,8 @@ struct ContentView: View {
     @EnvironmentObject var networkMonitor: NetworkMonitor
     @EnvironmentObject var databaseManager: DatabaseManager
     @EnvironmentObject var navigationRouter: NavigationRouter
+    @State private var config: QuizSessionConfig?
+    var configManager = QuizConfigManager()
     
     var body: some View {
         NavigationStack(path: $navigationRouter.path) {
@@ -77,11 +79,12 @@ struct ContentView: View {
                 .environmentObject(user)
             
         case .quizPlayer(let voqa):
-            QuizDashboard(isLoggedIn: true, voqa: voqa)
+            QuizPlayerView(selectedVoqa: voqa)
                 .environmentObject(navigationRouter)
                 .environmentObject(databaseManager)
                 .environmentObject(networkMonitor)
                 .environmentObject(user)
+                .environment(\.questions, databaseManager.questions)
             
         case .mainView:
             MainView(logStatus: logStatus)
@@ -110,7 +113,6 @@ struct ContentView: View {
                 .environmentObject(databaseManager)
                 .environmentObject(networkMonitor)
                 .environmentObject(user)
-            
         }
     }
 }

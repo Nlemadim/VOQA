@@ -38,7 +38,7 @@ class QuizViewModel: ObservableObject, QuizViewModelProtocol {
     @Published var sessionInReview: Bool = false
     
     private var sfxPlayer = SfxPlayer()
-    private var quizSessionManager: QuizSessionManager
+    var quizSessionManager: QuizSessionManager
     private var quizConfigManager: QuizConfigManager
     private var cancellables: Set<AnyCancellable> = []
 
@@ -83,7 +83,7 @@ class QuizViewModel: ObservableObject, QuizViewModelProtocol {
             
     }
     
-    func currentSession() -> QuizSession? {
+    func currentQuizSession() -> QuizSession? {
         guard let session = quizSessionManager.quizSession else { return nil }
         return session
     }

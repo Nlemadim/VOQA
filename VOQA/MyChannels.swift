@@ -15,13 +15,16 @@ struct MyChannels: View {
     @Binding var hideTabBar: Bool
 
     var body: some View {
-        ChannelListView(voqaCollection: user.voqaCollection) { selectedVoqa in
-            hideTabBar = true
-            user.currentUserVoqa = selectedVoqa
-            navigationRouter.navigate(to: .quizDashboard(selectedVoqa))
+        VStack {
+            ChannelListView(voqaCollection: user.voqaCollection) { selectedVoqa in
+                hideTabBar = true
+                user.currentUserVoqa = selectedVoqa
+                navigationRouter.navigate(to: .quizDashboard(selectedVoqa))
+                
+            }
+            .listStyle(PlainListStyle())
         }
-        .listStyle(PlainListStyle())
-        .navigationTitle("My VOQA Channels")
+        .navigationTitle("My Channels")
         .navigationBarTitleDisplayMode(.inline)
         .preferredColorScheme(.dark)
         .onAppear {
