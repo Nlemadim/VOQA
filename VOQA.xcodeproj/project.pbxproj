@@ -50,7 +50,6 @@
 		0B511D0B2C76335F00D02CE6 /* CustomSpinnerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B511D0A2C76335E00D02CE6 /* CustomSpinnerView.swift */; };
 		0B511D0D2C76338E00D02CE6 /* FormattedQuestionContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B511D0C2C76338E00D02CE6 /* FormattedQuestionContentView.swift */; };
 		0B511D112C76342200D02CE6 /* AddToLibraryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B511D102C76342100D02CE6 /* AddToLibraryButton.swift */; };
-		0B5161A72C431BEB00BEC8D5 /* QuestionFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B5161A62C431BEB00BEC8D5 /* QuestionFormatter.swift */; };
 		0B53810E2C4374E3002EBCBB /* EnvironmentVariables.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B53810D2C4374E3002EBCBB /* EnvironmentVariables.swift */; };
 		0B54330D2C7EA38400C759D4 /* AddOnAudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B54330C2C7EA38400C759D4 /* AddOnAudioPlayer.swift */; };
 		0B54330F2C7EA41800C759D4 /* AddOnViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B54330E2C7EA41800C759D4 /* AddOnViewModel.swift */; };
@@ -140,7 +139,6 @@
 		0BEF0F3A2C78934200341F21 /* CachedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BEF0F392C78934200341F21 /* CachedImageView.swift */; };
 		0BF30B5D2C90D1F700AFE578 /* QuestionDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BF30B5C2C90D1F700AFE578 /* QuestionDownloader.swift */; };
 		0BF408E02C92A7C100998038 /* ReadoutDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BF408DF2C92A7C100998038 /* ReadoutDownloader.swift */; };
-		0BF408E22C92A84E00998038 /* QuestionV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BF408E12C92A84E00998038 /* QuestionV2.swift */; };
 		0BF408E42C92A87800998038 /* VoiceSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BF408E32C92A87800998038 /* VoiceSelector.swift */; };
 		0BF408E62C92A89E00998038 /* QuestionRequestBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BF408E52C92A89E00998038 /* QuestionRequestBody.swift */; };
 		0BF408E82C92A8BF00998038 /* QuestionAudioPackage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BF408E72C92A8BF00998038 /* QuestionAudioPackage.swift */; };
@@ -195,7 +193,6 @@
 		0B511D0A2C76335E00D02CE6 /* CustomSpinnerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomSpinnerView.swift; sourceTree = "<group>"; };
 		0B511D0C2C76338E00D02CE6 /* FormattedQuestionContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormattedQuestionContentView.swift; sourceTree = "<group>"; };
 		0B511D102C76342100D02CE6 /* AddToLibraryButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddToLibraryButton.swift; sourceTree = "<group>"; };
-		0B5161A62C431BEB00BEC8D5 /* QuestionFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionFormatter.swift; sourceTree = "<group>"; };
 		0B53810D2C4374E3002EBCBB /* EnvironmentVariables.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentVariables.swift; sourceTree = "<group>"; };
 		0B53810F2C437DD5002EBCBB /* TestQuestions.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = TestQuestions.json; sourceTree = "<group>"; };
 		0B54330C2C7EA38400C759D4 /* AddOnAudioPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddOnAudioPlayer.swift; sourceTree = "<group>"; };
@@ -282,7 +279,6 @@
 		0BEF0F3D2C78AE4700341F21 /* VoqaCollection.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = VoqaCollection.json; sourceTree = "<group>"; };
 		0BF30B5C2C90D1F700AFE578 /* QuestionDownloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionDownloader.swift; sourceTree = "<group>"; };
 		0BF408DF2C92A7C100998038 /* ReadoutDownloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadoutDownloader.swift; sourceTree = "<group>"; };
-		0BF408E12C92A84E00998038 /* QuestionV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionV2.swift; sourceTree = "<group>"; };
 		0BF408E32C92A87800998038 /* VoiceSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceSelector.swift; sourceTree = "<group>"; };
 		0BF408E52C92A89E00998038 /* QuestionRequestBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionRequestBody.swift; sourceTree = "<group>"; };
 		0BF408E72C92A8BF00998038 /* QuestionAudioPackage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionAudioPackage.swift; sourceTree = "<group>"; };
@@ -353,6 +349,7 @@
 		0B31C3FF2C221C35006FB5D1 /* AppConfigurations */ = {
 			isa = PBXGroup;
 			children = (
+				0B5161A52C431BD200BEC8D5 /* Helpers */,
 				0B4E25152C99F15D002AC7C3 /* PreferenceKeys */,
 				0B53810C2C4374C5002EBCBB /* EnvironmentVariables */,
 				0BA62FCE2C4069C10053F7C2 /* Network */,
@@ -456,7 +453,6 @@
 		0B5161A52C431BD200BEC8D5 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				0B5161A62C431BEB00BEC8D5 /* QuestionFormatter.swift */,
 				0B34E4652C7CE899005A64D8 /* HapticFeedback.swift */,
 			);
 			name = Helpers;
@@ -563,6 +559,7 @@
 			isa = PBXGroup;
 			children = (
 				0B6561422C3E4F5A0013663B /* QuestionPlayer.swift */,
+				0BF408DE2C92A78A00998038 /* QuestionsDownloader */,
 			);
 			name = Questions;
 			sourceTree = "<group>";
@@ -607,7 +604,6 @@
 		0BA62FCE2C4069C10053F7C2 /* Network */ = {
 			isa = PBXGroup;
 			children = (
-				0B5161A52C431BD200BEC8D5 /* Helpers */,
 				0B31C3FD2C2211AD006FB5D1 /* NetworkMonitor.swift */,
 				0B6561572C3E4FAF0013663B /* NetworkService.swift */,
 				0B65615A2C3E4FB80013663B /* ConfigurationUrls.swift */,
@@ -761,7 +757,6 @@
 				0B7B17BF2C4806D000B11974 /* ConfigData */,
 				0B25E0DE2C24ECB600ACD552 /* Extensions */,
 				0BA62FBB2C405D360053F7C2 /* QuizSessionModule */,
-				0BF408DE2C92A78A00998038 /* QuestionsDownloader */,
 				0B43DD172C792A31009F32EA /* User */,
 				0BA63B5C2C762BB300AE5048 /* Models */,
 				0BA63B4C2C7628FF00AE5048 /* Views */,
@@ -788,7 +783,6 @@
 			children = (
 				0BF408DF2C92A7C100998038 /* ReadoutDownloader.swift */,
 				0BF30B5C2C90D1F700AFE578 /* QuestionDownloader.swift */,
-				0BF408E12C92A84E00998038 /* QuestionV2.swift */,
 				0BF408E32C92A87800998038 /* VoiceSelector.swift */,
 				0BF408E52C92A89E00998038 /* QuestionRequestBody.swift */,
 				0BF408E72C92A8BF00998038 /* QuestionAudioPackage.swift */,
@@ -901,7 +895,6 @@
 				0B55C85E2C7FDB960038ABE1 /* AddOnItemView.swift in Sources */,
 				0BC091E02C1D4463005FB223 /* ContentView.swift in Sources */,
 				0B25E0E02C24ECD000ACD552 /* String+Extensions.swift in Sources */,
-				0B5161A72C431BEB00BEC8D5 /* QuestionFormatter.swift in Sources */,
 				0B43DD162C791440009F32EA /* CreatAccountView.swift in Sources */,
 				0B34E46E2C7D9CF1005A64D8 /* UserConfig.swift in Sources */,
 				0B65613A2C3E4F440013663B /* AudioPlayerManager.swift in Sources */,
@@ -997,7 +990,6 @@
 				0B55C8602C7FEDEF0038ABE1 /* AddOnItems.swift in Sources */,
 				0B511D052C7632F300D02CE6 /* AllRecordsView.swift in Sources */,
 				0B511D0B2C76335F00D02CE6 /* CustomSpinnerView.swift in Sources */,
-				0BF408E22C92A84E00998038 /* QuestionV2.swift in Sources */,
 				0B511D0D2C76338E00D02CE6 /* FormattedQuestionContentView.swift in Sources */,
 				0B5BA5C32C76499C00E1155A /* DownloadButton.swift in Sources */,
 				0B65613D2C3E4F4D0013663B /* AudioActions.swift in Sources */,

@@ -42,9 +42,9 @@ struct QuizzesView: View {
         }
         .sorted {
             if $0.isLocked == $1.isLocked {
-                return false // Maintain original order if both are locked or unlocked
+                return false
             }
-            return !$0.isLocked // Unlocked (false) comes before locked (true)
+            return !$0.isLocked
         }
     }
     
@@ -84,10 +84,10 @@ struct QuizzesView: View {
                     )
                 }
                 // Slide 2: Loading Quiz
-                if let category = selectedCategory { // Renamed binding variable to 'category'
+                if let category = selectedCategory {
                     LoadingQuizView(category: category) {
                         selectedTab = .categories
-                        selectedCategory = nil // Correctly assigns 'nil' to the outer 'selectedCategory'
+                        selectedCategory = nil
                     }
                     .tag(QuizTab.loading)
                 } 

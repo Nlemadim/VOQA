@@ -77,13 +77,16 @@ struct QuizPlayerView: View {
             }
         })
         .onAppear {
-            if var config = databaseManager.sessionConfiguration {
-                config.sessionTitle = selectedVoqa.quizTitle
-                viewModel.initializeSession(with: config)
-                viewModel.initializeVoqaExperience(questions: questions)
-                viewModel.startNewQuizSession(questions: questions)
-                print("QuizPlayer has: \(questions.count) questions")
-            }
+            configureNewSession()
+        }
+    }
+    
+    private func configureNewSession() {
+        if var config = databaseManager.sessionConfiguration {
+            config.sessionTitle = selectedVoqa.quizTitle
+            viewModel.initializeSession(with: config)
+            viewModel.startNewQuizSession(questions: config.sessionQuestion)
+            print("QuizPlayer has: \(questions.count) questions")
         }
     }
     

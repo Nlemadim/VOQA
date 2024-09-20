@@ -85,7 +85,7 @@ struct ContentView: View {
                 .environmentObject(networkMonitor)
                 .environmentObject(user)
                 .environment(\.questions, databaseManager.questions)
-            
+                            
         case .mainView:
             MainView(logStatus: logStatus)
                 .environmentObject(navigationRouter)

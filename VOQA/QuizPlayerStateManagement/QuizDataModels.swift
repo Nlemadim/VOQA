@@ -176,37 +176,6 @@ struct QuizSessionHostMessages: Codable {
     }
 }
 
-
-struct Question: Codable {
-    var id: UUID
-    var content: String
-    var options: [String]
-    var correctOption: String
-    var selectedOption: String?
-    var overview: String
-    var isAnswered: Bool
-    var isAnsweredCorrectly: Bool
-    var numberOfPresentations: Int
-    var audioScript: String
-    var audioUrl: String
-    var overviewUrl: String
-
-    enum CodingKeys: String, CodingKey {
-        case id
-        case content
-        case options
-        case correctOption
-        case selectedOption
-        case overview
-        case isAnswered
-        case isAnsweredCorrectly
-        case numberOfPresentations
-        case audioScript
-        case audioUrl
-        case overviewUrl
-    }
-}
-
 struct FeedbackSfx: Codable {
     var title: String
     var urlScript: String

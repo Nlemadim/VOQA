@@ -9,7 +9,7 @@ import SwiftUI
 import AVKit
 
 struct QuestionListView: View {
-    @State private var questions: [QuestionV2] = []
+    @State private var questions: [Question] = []
     @State private var audioPlayer: AVPlayer? = nil
     
     // Access the UserConfig object from the environment
@@ -79,7 +79,7 @@ struct QuestionListView: View {
     private func fetchQuestions() async throws {
         try await databaseManager.fetchProcessedQuestions("Data Privacy", questionTypeRequest: "", maxNumberOfQuestions: 5)
         DispatchQueue.main.asyncAfter(deadline: .now() + 3){
-            self.questions.append(contentsOf: databaseManager.questionsV2)
+            self.questions.append(contentsOf: databaseManager.questions)
         }
     }
 }
@@ -117,7 +117,7 @@ class QuestionDownloader {
     }
     
     // MARK: - Expose a public method to download quiz questions
-    func downloadQuizQuestions(quizTitle: String, questionTypeRequest: String, maxNumberOfQuestions: Int?) async throws -> [QuestionV2] {
+    func downloadQuizQuestions(quizTitle: String, questionTypeRequest: String, maxNumberOfQuestions: Int?) async throws -> [Question] {
         let requestBody = QuestionRequestBody(
             userId: "rBkUyTtc2XXXcj43u53N",
             quizTitle: quizTitle,
@@ -130,7 +130,7 @@ class QuestionDownloader {
     }
 
     // MARK: - Private: Fetch Questions and manage audio download
-    private func fetchQuestions(requestBody: QuestionRequestBody) async throws -> [QuestionV2] {
+    private func fetchQuestions(requestBody: QuestionRequestBody) async throws -> [Question] {
         print("Starting Download")
         let questions = try await networkService.fetchQuestionsV2(requestBody: requestBody)
 
@@ -155,7 +155,7 @@ class QuestionDownloader {
 extension NetworkService {
 
     // MARK: - Fetch Questions V2 with request body
-    func fetchQuestionsV2(requestBody: QuestionRequestBody) async throws -> [QuestionV2] {
+    func fetchQuestionsV2(requestBody: QuestionRequestBody) async throws -> [Question] {
         print("Fetching questions V2 from URL: \(ConfigurationUrls.testQuestionsDownload)")
 
         // Prepare the URL and request
@@ -201,7 +201,7 @@ extension NetworkService {
 
             print("Attempting to decode response data into QuestionV2 models...")
 
-            let questions = try JSONDecoder().decode([QuestionV2].self, from: data)
+            let questions = try JSONDecoder().decode([Question].self, from: data)
 
             print("Successfully decoded \(questions.count) questions V2.")
             print("Decoded questions: \(questions)")  // Print the decoded data

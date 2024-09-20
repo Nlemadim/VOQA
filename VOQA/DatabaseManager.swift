@@ -12,11 +12,9 @@ class DatabaseManager: ObservableObject {
     //MARK: TO FIX Publishing from background threads
     @Published var currentError: DatabaseError?
     @Published var questions: [Question] = []
-    @Published var questionsV2: [QuestionV2] = []
     @Published var quizCatalogue: [QuizCatalogue] = []  // Holds the QuizCatalogue
     @Published var quizCollection: [QuizData] = []
     @Published var showFullPageError: Bool = false
-    @Published var questionV2Loaded: Bool = false
     
     @Published var ratingsAndReview: RatingsAndReview?
     @Published var latestScores: LatestScore?
@@ -32,7 +30,9 @@ class DatabaseManager: ObservableObject {
     private let firebaseManager = FirebaseManager.shared
     private var networkService = NetworkService()
     private var configManager = QuizConfigManager()
+    
     var sessionConfiguration: QuizSessionConfig?
+    
     private init() {}
     
     func handleError(_ error: DatabaseError) {
@@ -83,20 +83,13 @@ class DatabaseManager: ObservableObject {
         self.sessionConfiguration = loadedConfig
     }
     
-//    func getVoiceConfiguration(for voice: AddOnItem) async throws  -> QuizSessionConfig  {
-//        let loadedConfig = try await configManager.loadVoiceConfiguration(for: voice)
-//        return loadedConfig
-//    }
-    
     func fetchProcessedQuestions(_ quizTitle: String, questionTypeRequest: String, maxNumberOfQuestions: Int) async throws  {
         // Initialize the QuestionDownloader with the UserConfig from the environment
         let fakeConfig: FakeConfig = FakeConfig(userId: "rBkUyTtc2XXXcj43u53N", quizTitle: "Data Privacy", narrator: "Gus", language: "")
         let questionDownloader = QuestionDownloader(config: fakeConfig)
         // Fetch questions using the user's quiz title
-        questionsV2 = try await questionDownloader.downloadQuizQuestions(quizTitle: quizTitle, questionTypeRequest: questionTypeRequest, maxNumberOfQuestions: maxNumberOfQuestions)  // Replace with desired quiz title
-        DispatchQueue.main.async {
-            self.questionV2Loaded = !self.questionsV2.isEmpty
-        }
+        questions = try await questionDownloader.downloadQuizQuestions(quizTitle: quizTitle, questionTypeRequest: questionTypeRequest, maxNumberOfQuestions: maxNumberOfQuestions)
+        print("\(questions.count) question(s) fetched")
     }
     
     func fetchQuizCollection() async {

@@ -55,81 +55,7 @@ class NetworkService {
         return data
     }
     
-    func fetchQuestions() async throws -> [Question] {
-        print("Fetching questions from URL: \(ConfigurationUrls.questionsRequestUrl)")
-        let data = try await downloadData(from: ConfigurationUrls.questionsRequestUrl)
-        
-        print("Decoding questions...")
-        let questions = try JSONDecoder().decode([Question].self, from: data)
-        
-        print("Successfully decoded \(questions.count) questions.")
-        
-        var processedQuestions = questions
-        var failedQuestions: [Int] = []
-        
-        // Format questions and download audio URLs concurrently
-        try await withThrowingTaskGroup(of: (Int, Question?).self) { group in
-            for i in 0..<questions.count {
-                let question = questions[i]
-                group.addTask {
-                    var newQuestion = question
-                    newQuestion.audioScript = QuestionFormatter.formatQuestion(question: question)
-                    
-                    do {
-                        let audioUrl = try await self.fetchAudioUrl(for: newQuestion.audioScript)
-                        let overviewUrl = try await self.fetchAudioUrl(for: newQuestion.overview)
-                        
-                        newQuestion.audioUrl = audioUrl
-                        newQuestion.overviewUrl = overviewUrl
-                        return (i, newQuestion)
-                    } catch {
-                        print("Error fetching audio URLs for question at index \(i): \(error)")
-                        return (i, nil)
-                    }
-                }
-            }
-            
-            for try await result in group {
-                if let question = result.1 {
-                    processedQuestions[result.0] = question
-                } else {
-                    failedQuestions.append(result.0)
-                }
-            }
-        }
-        
-        if !failedQuestions.isEmpty {
-            print("Retrying failed questions...")
-            await retryFailedQuestions(questions: &processedQuestions, failedIndices: failedQuestions)
-        }
-        
-        // Print URLs for debugging
-        for question in processedQuestions {
-            print("Question ID: \(question.id)")
-            print("Audio URL: \(question.audioUrl)")
-            print("Overview URL: \(question.overviewUrl)")
-        }
-        
-        return processedQuestions
-    }
 
-    private func retryFailedQuestions(questions: inout [Question], failedIndices: [Int]) async {
-        for index in failedIndices {
-            var question = questions[index]
-            question.audioScript = QuestionFormatter.formatQuestion(question: question)
-            
-            do {
-                let audioUrl = try await self.fetchAudioUrl(for: question.audioScript)
-                let overviewUrl = try await self.fetchAudioUrl(for: question.overview)
-                
-                question.audioUrl = audioUrl
-                question.overviewUrl = overviewUrl
-                questions[index] = question
-            } catch {
-                print("Retry failed: Error fetching audio URLs for question at index \(index): \(error)")
-            }
-        }
-    }
     
     private func cleanMessage(_ message: String) -> String {
         var cleanedMessage = message.replacingOccurrences(of: "\n", with: " ")
@@ -139,33 +65,3 @@ class NetworkService {
         return cleanedMessage
     }
 }
-
-
-extension NetworkService {
-    
-    // Method to post user profile to the backend
-    func postUserProfile(_ profile: UserProfile) async throws {
-        guard let url = URL(string: ConfigurationUrls.createUserProfile) else {
-            throw NSError(domain: "Invalid URL", code: -1, userInfo: nil)
-        }
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        
-        let encoder = JSONEncoder()
-        request.httpBody = try encoder.encode(profile)
-        
-        let (_, response) = try await URLSession.shared.data(for: request)
-        
-        guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
-            throw NSError(domain: "Network Error", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to create user profile"])
-        }
-    }
-}
-
-
-
-
-
-

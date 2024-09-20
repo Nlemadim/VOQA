@@ -52,15 +52,15 @@ class QuizSessionManager: ObservableObject {
     // Expose necessary methods
     func nextQuestion() {
         guard let quizSession = quizSession else { return }
-        quizSession.questionPlayer.performAction(.readyToPlayNextQuestion, session: quizSession)
+        quizSession.questionPlayer.performAction(.prepareNextQuestion, session: quizSession)
         updateQuestionCounter()
     }
 
     private func updateQuestionCounter() {
-        guard let quizSession = quizSession else { return }
-        let questionIndex = quizSession.questionPlayer.currentQuestionIndex
-        let totalCount = quizSession.questions.count
-        quizSession.updateQuestionCounter(questionIndex: questionIndex, count: totalCount)
+//        guard let quizSession = quizSession else { return }
+//        let questionIndex = quizSession.questionPlayer.currentQuestionIndex
+//        let totalCount = quizSession.questionPlayer.currentQuestions.count
+//        quizSession.updateQuestionCounter(questionIndex: questionIndex, count: totalCount)
     }
 
     func selectAnswer(selectedOption: String) {

@@ -13,6 +13,7 @@ struct QuizDashboard: View {
     @EnvironmentObject var navigationRouter: NavigationRouter
     @EnvironmentObject var databaseManager: DatabaseManager
     @Environment(\.quizSessionConfig) private var config: QuizSessionConfig?
+    @Environment(\.questions) private var questions
     @Environment(\.dismiss) private var dismiss
     
     @State var ratingsAndReviews = RatingsAndReview()
@@ -134,11 +135,11 @@ struct QuizDashboard: View {
                         progress = -rect.minX / size.width
                     }
                 }
-//                .onChange(of: databaseManager.questionV2Loaded, { _, isLoaded in
-//                    if isLoaded {
-//                        questionsLoaded = true
-//                    }
-//                })
+                .onChange(of: questions, { _, _ in
+                    if !questions.isEmpty {
+                        navigationRouter.navigate(to: .quizPlayer(voqa))
+                    }
+                })
                 /// To track current tab selection and adjust scroll view accordingly. NOTE: scrollPosition Must match the precise data type of the id supplied in the ForEach Loop
                 .scrollPosition(id: $mainViewScrollState)
                 .scrollIndicators(.hidden)
@@ -196,13 +197,19 @@ struct QuizDashboard: View {
         do {
             try await databaseManager.fetchProcessedQuestions(quizTitle, questionTypeRequest: questionTypeRequest, maxNumberOfQuestions: number)
             isDownloading = false
-//            if !databaseManager.questionsV2.isEmpty {
-//
-//            }
         } catch {
             isDownloading = false
             print("Error fetching questions: \(error)")
         }
+    }
+    
+    func navigateToQuizPlayer() {
+        guard let config = config, !config.sessionQuestion.isEmpty else {
+            print("Failed to load session Questions")
+            return
+        }
+        
+        navigationRouter.navigate(to: .quizPlayer(voqa))
     }
     
     private func postQuestion(questionText: String) {

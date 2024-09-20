@@ -103,7 +103,7 @@ class SessionAudioPlayer: NSObject, AVAudioPlayerDelegate {
         context.isNowPlaying = false
         
         if context.state is QuizSession {
-            if lastAction == .playAnswer(url: context.currentQuestion?.overviewUrl ?? "") {
+            if lastAction == .playAnswer(url: context.currentQuestion?.correctionAudioURL ?? "") {
                 context.resumeQuiz()
             }
             
@@ -113,7 +113,7 @@ class SessionAudioPlayer: NSObject, AVAudioPlayerDelegate {
         }
         
         if context.state is QuestionPlayer {
-            if lastAction == .playQuestionAudioUrl(url: context.currentQuestion?.audioUrl ?? "") {
+            if lastAction == .playQuestionAudioUrl(url: context.currentQuestion?.questionScriptAudioURL ?? "") {
                 context.awaitResponse()
             }
         }
