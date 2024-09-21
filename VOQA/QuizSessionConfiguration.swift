@@ -6,18 +6,23 @@
 //
 
 import Foundation
+import Combine
 
-struct QuizSessionConfig: Codable {
+final class QuizSessionConfig: ObservableObject, Codable, Hashable, Equatable {
+    // MARK: - Published Properties
+    @Published var sessionQuestion: [Question] = []
+    
+    // MARK: - Properties
     var sessionId: UUID
     var sessionTitle: String
     var sessionVoice: String
-    var sessionQuestion: [Question]
     var alerts: [AlertSfx]
     var controlFeedback: ControlsFeedback
     var quizFeedback: QuizFeedback
     var sessionMusic: [BgmSfx]
-    var quizHostMessages: QuizSessionHostMessages? 
-
+    var quizHostMessages: QuizSessionHostMessages?
+    
+    // MARK: - Coding Keys
     enum CodingKeys: String, CodingKey {
         case sessionId
         case sessionTitle
@@ -29,20 +34,58 @@ struct QuizSessionConfig: Codable {
         case sessionMusic
         case quizHostMessages
     }
-
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        sessionId = (try? container.decode(UUID.self, forKey: .sessionId)) ?? UUID()
-        sessionTitle = try container.decode(String.self, forKey: .sessionTitle)
-        sessionVoice = try container.decode(String.self, forKey: .sessionVoice)
-        sessionQuestion = try container.decode([Question].self, forKey: .sessionQuestion)
-        alerts = try container.decode([AlertSfx].self, forKey: .alerts)
-        controlFeedback = try container.decode(ControlsFeedback.self, forKey: .controlFeedback)
-        quizFeedback = try container.decode(QuizFeedback.self, forKey: .quizFeedback)
-        sessionMusic = try container.decode([BgmSfx].self, forKey: .sessionMusic)
-        quizHostMessages = try? container.decode(QuizSessionHostMessages.self, forKey: .quizHostMessages) // Safely decoding optional property
+    
+    // MARK: - Initializers
+    
+    init(
+        sessionId: UUID,
+        sessionTitle: String,
+        sessionVoice: String,
+        sessionQuestion: [Question],
+        alerts: [AlertSfx],
+        controlFeedback: ControlsFeedback,
+        quizFeedback: QuizFeedback,
+        sessionMusic: [BgmSfx],
+        quizHostMessages: QuizSessionHostMessages?
+    ) {
+        self.sessionId = sessionId
+        self.sessionTitle = sessionTitle
+        self.sessionVoice = sessionVoice
+        self.sessionQuestion = sessionQuestion
+        self.alerts = alerts
+        self.controlFeedback = controlFeedback
+        self.quizFeedback = quizFeedback
+        self.sessionMusic = sessionMusic
+        self.quizHostMessages = quizHostMessages
     }
-
+    
+    // MARK: - Codable Conformance
+    
+    required convenience init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let sessionId = (try? container.decode(UUID.self, forKey: .sessionId)) ?? UUID()
+        let sessionTitle = try container.decode(String.self, forKey: .sessionTitle)
+        let sessionVoice = try container.decode(String.self, forKey: .sessionVoice)
+        let sessionQuestion = try container.decode([Question].self, forKey: .sessionQuestion)
+        let alerts = try container.decode([AlertSfx].self, forKey: .alerts)
+        let controlFeedback = try container.decode(ControlsFeedback.self, forKey: .controlFeedback)
+        let quizFeedback = try container.decode(QuizFeedback.self, forKey: .quizFeedback)
+        let sessionMusic = try container.decode([BgmSfx].self, forKey: .sessionMusic)
+        let quizHostMessages = try? container.decode(QuizSessionHostMessages.self, forKey: .quizHostMessages)
+        
+        self.init(
+            sessionId: sessionId,
+            sessionTitle: sessionTitle,
+            sessionVoice: sessionVoice,
+            sessionQuestion: sessionQuestion,
+            alerts: alerts,
+            controlFeedback: controlFeedback,
+            quizFeedback: quizFeedback,
+            sessionMusic: sessionMusic,
+            quizHostMessages: quizHostMessages
+        )
+    }
+    
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(sessionId, forKey: .sessionId)
@@ -53,6 +96,34 @@ struct QuizSessionConfig: Codable {
         try container.encode(controlFeedback, forKey: .controlFeedback)
         try container.encode(quizFeedback, forKey: .quizFeedback)
         try container.encode(sessionMusic, forKey: .sessionMusic)
-        try container.encodeIfPresent(quizHostMessages, forKey: .quizHostMessages) // Encoding optional property only if present
+        try container.encodeIfPresent(quizHostMessages, forKey: .quizHostMessages)
+    }
+    
+    // MARK: - Equatable Conformance
+    
+    static func == (lhs: QuizSessionConfig, rhs: QuizSessionConfig) -> Bool {
+        return lhs.sessionId == rhs.sessionId &&
+               lhs.sessionTitle == rhs.sessionTitle &&
+               lhs.sessionVoice == rhs.sessionVoice &&
+               lhs.sessionQuestion == rhs.sessionQuestion &&
+               lhs.alerts == rhs.alerts &&
+               lhs.controlFeedback == rhs.controlFeedback &&
+               lhs.quizFeedback == rhs.quizFeedback &&
+               lhs.sessionMusic == rhs.sessionMusic &&
+               lhs.quizHostMessages == rhs.quizHostMessages
+    }
+    
+    // MARK: - Hashable Conformance
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(sessionId)
+        hasher.combine(sessionTitle)
+        hasher.combine(sessionVoice)
+        hasher.combine(sessionQuestion)
+        hasher.combine(alerts)
+        hasher.combine(controlFeedback)
+        hasher.combine(quizFeedback)
+        hasher.combine(sessionMusic)
+        hasher.combine(quizHostMessages)
     }
 }

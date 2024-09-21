@@ -15,9 +15,9 @@ struct ContentView: View {
     @EnvironmentObject var networkMonitor: NetworkMonitor
     @EnvironmentObject var databaseManager: DatabaseManager
     @EnvironmentObject var navigationRouter: NavigationRouter
-    @State private var config: QuizSessionConfig?
+
     var configManager = QuizConfigManager()
-    
+
     var body: some View {
         NavigationStack(path: $navigationRouter.path) {
             VStack {
@@ -37,6 +37,7 @@ struct ContentView: View {
             .onAppear {
                 Task {
                     await getCatalogue()
+                    await loadUserVoiceSelection()
                 }
             }
             .alert(item: $databaseManager.currentError) { error in
@@ -48,26 +49,38 @@ struct ContentView: View {
             }
         }
     }
-    
+
     private func getCatalogue() async {
         DispatchQueue.main.async {
             loadCatalogue = true
         }
-        
+
         guard databaseManager.quizCollection.isEmpty else {
             DispatchQueue.main.async {
                 loadCatalogue = false
             }
             return
         }
-        
+
         await databaseManager.fetchQuizCollection()
-        
+
         DispatchQueue.main.async {
             loadCatalogue = false
         }
     }
-    
+
+    private func loadUserVoiceSelection() async {
+        let defaultVoiceItems = AddOnItem.defaultNarratorItems
+        if let currentItem = defaultVoiceItems.first(where: { $0.name == user.userConfig.selectedVoiceNarrator }) {
+            do {
+                try await databaseManager.loadVoiceConfiguration(for: currentItem)
+                // No need to set a separate config state variable
+            } catch {
+                print("Error loading default voice selection: \(error.localizedDescription)")
+            }
+        }
+    }
+
     @ViewBuilder
     private func navigate(to destination: NavigationDestination) -> some View {
         switch destination {
@@ -77,45 +90,46 @@ struct ContentView: View {
                 .environmentObject(databaseManager)
                 .environmentObject(networkMonitor)
                 .environmentObject(user)
-            
-        case .quizPlayer(let voqa):
-            QuizPlayerView(selectedVoqa: voqa)
+
+        case .quizPlayer(let config, let voqa):
+            QuizPlayerView(config: config, voqa: voqa)
                 .environmentObject(navigationRouter)
                 .environmentObject(databaseManager)
                 .environmentObject(networkMonitor)
                 .environmentObject(user)
-                .environment(\.questions, databaseManager.questions)
-                            
+
         case .mainView:
             MainView(logStatus: logStatus)
                 .environmentObject(navigationRouter)
                 .environmentObject(databaseManager)
                 .environmentObject(networkMonitor)
                 .environmentObject(user)
-            
+
         case .homePage:
             HomePage(quizCatalogue: databaseManager.quizCatalogue)
                 .environmentObject(navigationRouter)
                 .environmentObject(databaseManager)
                 .environmentObject(networkMonitor)
                 .environmentObject(user)
-            
+
         case .quizDetailPage(let voqa):
             QuizDetailPage(audioQuiz: voqa)
                 .environmentObject(navigationRouter)
                 .environmentObject(databaseManager)
                 .environmentObject(networkMonitor)
                 .environmentObject(user)
-            
+
         case .quizDashboard(let voqa):
-            QuizDashboard(isLoggedIn: true, voqa: voqa)
+            QuizDashboard(voqa: voqa, isLoggedIn: true)
                 .environmentObject(navigationRouter)
                 .environmentObject(databaseManager)
                 .environmentObject(networkMonitor)
                 .environmentObject(user)
+                .environment(\.quizSessionConfig, databaseManager.sessionConfiguration)
         }
     }
 }
+
 
 #Preview {
     let dbMgr = DatabaseManager.shared
@@ -131,6 +145,16 @@ struct ContentView: View {
 }
 
 /**
+ 
+ 
+ Quiz Player viewModel has initialized a session
+ QuizSessionManager initialized
+ current question ID: nil
+ Kotlin Programming Language
+ Gus
+ 0
+ 1 question(s) fetched
+ config added Optional(1) new questions
  
  if logStatus {
      BaseView {

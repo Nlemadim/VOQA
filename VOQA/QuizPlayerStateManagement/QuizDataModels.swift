@@ -7,8 +7,7 @@
 
 import Foundation
 
-
-struct VoicedFeedback: Codable {
+struct VoicedFeedback: Codable, Hashable, Equatable {
     var title: String
     var audioUrls: [FeedbackSfx]
 
@@ -34,12 +33,27 @@ struct VoicedFeedback: Codable {
         try container.encode(audioUrls, forKey: .audioUrls)
     }
 
+    // MARK: - Equatable Conformance
+
+    static func == (lhs: VoicedFeedback, rhs: VoicedFeedback) -> Bool {
+        return lhs.title == rhs.title &&
+               lhs.audioUrls == rhs.audioUrls
+    }
+
+    // MARK: - Hashable Conformance
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(title)
+        hasher.combine(audioUrls)
+    }
+
+    // Example of a cloning method if needed
     func clone(with audioUrls: [FeedbackSfx]) -> VoicedFeedback {
         return VoicedFeedback(title: self.title, audioUrls: audioUrls)
     }
 }
 
-struct ControlsFeedback: Codable {
+struct ControlsFeedback: Codable, Hashable, Equatable {
     var startQuiz: VoicedFeedback
     var nextQuestion: VoicedFeedback
     var repeatQuestion: VoicedFeedback
@@ -69,9 +83,25 @@ struct ControlsFeedback: Codable {
         try container.encode(nextQuestion, forKey: .nextQuestion)
         try container.encode(repeatQuestion, forKey: .repeatQuestion)
     }
+
+    // MARK: - Equatable Conformance
+
+    static func == (lhs: ControlsFeedback, rhs: ControlsFeedback) -> Bool {
+        return lhs.startQuiz == rhs.startQuiz &&
+               lhs.nextQuestion == rhs.nextQuestion &&
+               lhs.repeatQuestion == rhs.repeatQuestion
+    }
+
+    // MARK: - Hashable Conformance
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(startQuiz)
+        hasher.combine(nextQuestion)
+        hasher.combine(repeatQuestion)
+    }
 }
 
-struct QuizFeedback: Codable {
+struct QuizFeedback: Codable, Hashable, Equatable {
     var incorrectAnswer: VoicedFeedback
     var correctAnswer: VoicedFeedback
     var noResponse: VoicedFeedback
@@ -106,10 +136,31 @@ struct QuizFeedback: Codable {
         try container.encode(noResponse, forKey: .noResponse)
         try container.encode(giveScore, forKey: .giveScore)
     }
+
+    // MARK: - Equatable Conformance
+
+    static func == (lhs: QuizFeedback, rhs: QuizFeedback) -> Bool {
+        return lhs.incorrectAnswer == rhs.incorrectAnswer &&
+               lhs.correctAnswer == rhs.correctAnswer &&
+               lhs.noResponse == rhs.noResponse &&
+               lhs.giveScore == rhs.giveScore
+    }
+
+    // MARK: - Hashable Conformance
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(incorrectAnswer)
+        hasher.combine(correctAnswer)
+        hasher.combine(noResponse)
+        hasher.combine(giveScore)
+    }
 }
 
 
-struct QuizSessionHostMessages: Codable {
+
+import Foundation
+
+struct QuizSessionHostMessages: Codable, Hashable, Equatable {
     var hostNarratorIntro: VoicedFeedback
     var quizSessionIntro: VoicedFeedback
     var messageFromSponsor: VoicedFeedback
@@ -130,7 +181,6 @@ struct QuizSessionHostMessages: Codable {
         case outro
     }
 
-    // Member-wise initializer
     init(
         hostNarratorIntro: VoicedFeedback,
         quizSessionIntro: VoicedFeedback,
@@ -174,23 +224,170 @@ struct QuizSessionHostMessages: Codable {
         try container.encode(sponsoredOutroMessage, forKey: .sponsoredOutroMessage)
         try container.encode(outro, forKey: .outro)
     }
+
+    // MARK: - Equatable Conformance
+
+    static func == (lhs: QuizSessionHostMessages, rhs: QuizSessionHostMessages) -> Bool {
+        return lhs.hostNarratorIntro == rhs.hostNarratorIntro &&
+               lhs.quizSessionIntro == rhs.quizSessionIntro &&
+               lhs.messageFromSponsor == rhs.messageFromSponsor &&
+               lhs.resumeFromSponsoredMessage == rhs.resumeFromSponsoredMessage &&
+               lhs.prepareForReview == rhs.prepareForReview &&
+               lhs.resumeFromReview == rhs.resumeFromReview &&
+               lhs.sponsoredOutroMessage == rhs.sponsoredOutroMessage &&
+               lhs.outro == rhs.outro
+    }
+
+    // MARK: - Hashable Conformance
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(hostNarratorIntro)
+        hasher.combine(quizSessionIntro)
+        hasher.combine(messageFromSponsor)
+        hasher.combine(resumeFromSponsoredMessage)
+        hasher.combine(prepareForReview)
+        hasher.combine(resumeFromReview)
+        hasher.combine(sponsoredOutroMessage)
+        hasher.combine(outro)
+    }
 }
 
-struct FeedbackSfx: Codable {
+
+struct FeedbackSfx: Codable, Hashable, Equatable {
     var title: String
     var urlScript: String
     var audioUrl: String
+
+    enum CodingKeys: String, CodingKey {
+        case title
+        case urlScript
+        case audioUrl
+    }
+
+    init(title: String, urlScript: String, audioUrl: String) {
+        self.title = title
+        self.urlScript = urlScript
+        self.audioUrl = audioUrl
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        title = try container.decode(String.self, forKey: .title)
+        urlScript = try container.decode(String.self, forKey: .urlScript)
+        audioUrl = try container.decode(String.self, forKey: .audioUrl)
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(title, forKey: .title)
+        try container.encode(urlScript, forKey: .urlScript)
+        try container.encode(audioUrl, forKey: .audioUrl)
+    }
+
+    // MARK: - Equatable Conformance
+
+    static func == (lhs: FeedbackSfx, rhs: FeedbackSfx) -> Bool {
+        return lhs.title == rhs.title &&
+               lhs.urlScript == rhs.urlScript &&
+               lhs.audioUrl == rhs.audioUrl
+    }
+
+    // MARK: - Hashable Conformance
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(title)
+        hasher.combine(urlScript)
+        hasher.combine(audioUrl)
+    }
 }
 
-struct BgmSfx: Codable {
+struct BgmSfx: Codable, Hashable, Equatable {
     var title: String
     var audioUrl: String
+
+    enum CodingKeys: String, CodingKey {
+        case title
+        case audioUrl
+    }
+
+    init(title: String, audioUrl: String) {
+        self.title = title
+        self.audioUrl = audioUrl
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        title = try container.decode(String.self, forKey: .title)
+        audioUrl = try container.decode(String.self, forKey: .audioUrl)
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(title, forKey: .title)
+        try container.encode(audioUrl, forKey: .audioUrl)
+    }
+
+    // MARK: - Equatable Conformance
+
+    static func == (lhs: BgmSfx, rhs: BgmSfx) -> Bool {
+        return lhs.title == rhs.title &&
+               lhs.audioUrl == rhs.audioUrl
+    }
+
+    // MARK: - Hashable Conformance
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(title)
+        hasher.combine(audioUrl)
+    }
 }
 
-struct AlertSfx: Codable {
+struct AlertSfx: Codable, Hashable, Equatable {
     var title: String
     var urlScript: String
     var audioUrl: String
+
+    enum CodingKeys: String, CodingKey {
+        case title
+        case urlScript
+        case audioUrl
+    }
+
+    init(title: String, urlScript: String, audioUrl: String) {
+        self.title = title
+        self.urlScript = urlScript
+        self.audioUrl = audioUrl
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        title = try container.decode(String.self, forKey: .title)
+        urlScript = try container.decode(String.self, forKey: .urlScript)
+        audioUrl = try container.decode(String.self, forKey: .audioUrl)
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(title, forKey: .title)
+        try container.encode(urlScript, forKey: .urlScript)
+        try container.encode(audioUrl, forKey: .audioUrl)
+    }
+
+    // MARK: - Equatable Conformance
+
+    static func == (lhs: AlertSfx, rhs: AlertSfx) -> Bool {
+        return lhs.title == rhs.title &&
+               lhs.urlScript == rhs.urlScript &&
+               lhs.audioUrl == rhs.audioUrl
+    }
+
+    // MARK: - Hashable Conformance
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(title)
+        hasher.combine(urlScript)
+        hasher.combine(audioUrl)
+    }
 }
 
 

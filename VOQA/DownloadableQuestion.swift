@@ -8,12 +8,53 @@
 import Foundation
 
 /// A struct representing the status of the question.
-struct QuestionStatus: Codable, Equatable {
+struct QuestionStatus: Codable, Hashable, Equatable {
     var isAnsweredCorrectly: Bool?
     var isAnswered: Bool?
     var knowledgeConfirmed: Bool?
-}
 
+    enum CodingKeys: String, CodingKey {
+        case isAnsweredCorrectly
+        case isAnswered
+        case knowledgeConfirmed
+    }
+
+    init(isAnsweredCorrectly: Bool?, isAnswered: Bool?, knowledgeConfirmed: Bool?) {
+        self.isAnsweredCorrectly = isAnsweredCorrectly
+        self.isAnswered = isAnswered
+        self.knowledgeConfirmed = knowledgeConfirmed
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        isAnsweredCorrectly = try container.decodeIfPresent(Bool.self, forKey: .isAnsweredCorrectly)
+        isAnswered = try container.decodeIfPresent(Bool.self, forKey: .isAnswered)
+        knowledgeConfirmed = try container.decodeIfPresent(Bool.self, forKey: .knowledgeConfirmed)
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(isAnsweredCorrectly, forKey: .isAnsweredCorrectly)
+        try container.encodeIfPresent(isAnswered, forKey: .isAnswered)
+        try container.encodeIfPresent(knowledgeConfirmed, forKey: .knowledgeConfirmed)
+    }
+
+    // MARK: - Equatable Conformance
+
+    static func == (lhs: QuestionStatus, rhs: QuestionStatus) -> Bool {
+        return lhs.isAnsweredCorrectly == rhs.isAnsweredCorrectly &&
+               lhs.isAnswered == rhs.isAnswered &&
+               lhs.knowledgeConfirmed == rhs.knowledgeConfirmed
+    }
+
+    // MARK: - Hashable Conformance
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(isAnsweredCorrectly)
+        hasher.combine(isAnswered)
+        hasher.combine(knowledgeConfirmed)
+    }
+}
 
 /// A protocol that defines the essential properties required by QuestionPlayer to handle any question type.
 protocol QuestionType: Codable, Identifiable where ID == String {
@@ -75,8 +116,9 @@ protocol QuestionType: Codable, Identifiable where ID == String {
     var questionStatus: QuestionStatus? { get }
 }
 
+
 /// The updated `Question` model conforming to `QuestionType` and `Equatable`.
-struct Question: QuestionType, Equatable {
+struct Question: QuestionType, Equatable, Hashable {
     // MARK: - Properties
     
     var refId: String
@@ -160,28 +202,69 @@ struct Question: QuestionType, Equatable {
         return repeatQuestionAudioUrl
     }
     
+    init(
+        refId: String,
+        content: String,
+        mcOptions: [String: Bool],
+        correctOption: String?,
+        selectedOption: String?,
+        correction: String,
+        isAnsweredOptional: Bool?,
+        isAnsweredCorrectlyOptional: Bool?,
+        numberOfPresentations: Int,
+        questionScript: String,
+        repeatQuestionScript: String,
+        questionScriptAudioUrl: String?,
+        correctionAudioUrl: String?,
+        repeatQuestionAudioUrl: String?,
+        coreTopic: String,
+        quizId: String,
+        userId: String,
+        questionStatus: QuestionStatus?
+    ) {
+        self.refId = refId
+        self.content = content
+        self.mcOptions = mcOptions
+        self.correctOption = correctOption
+        self.selectedOption = selectedOption
+        self.correction = correction
+        self.isAnsweredOptional = isAnsweredOptional
+        self.isAnsweredCorrectlyOptional = isAnsweredCorrectlyOptional
+        self.numberOfPresentations = numberOfPresentations
+        self.questionScript = questionScript
+        self.repeatQuestionScript = repeatQuestionScript
+        self.questionScriptAudioUrl = questionScriptAudioUrl
+        self.correctionAudioUrl = correctionAudioUrl
+        self.repeatQuestionAudioUrl = repeatQuestionAudioUrl
+        self.coreTopic = coreTopic
+        self.quizId = quizId
+        self.userId = userId
+        self.questionStatus = questionStatus
+    }
+    
     // MARK: - Equatable Conformance
     
     static func == (lhs: Question, rhs: Question) -> Bool {
         return lhs.refId == rhs.refId &&
-               lhs.content == rhs.content &&
-               lhs.mcOptions == rhs.mcOptions &&
-               lhs.correctOption == rhs.correctOption &&
-               lhs.selectedOption == rhs.selectedOption &&
-               lhs.correction == rhs.correction &&
-               lhs.isAnsweredOptional == rhs.isAnsweredOptional &&
-               lhs.isAnsweredCorrectlyOptional == rhs.isAnsweredCorrectlyOptional &&
-               lhs.numberOfPresentations == rhs.numberOfPresentations &&
-               lhs.questionScript == rhs.questionScript &&
-               lhs.repeatQuestionScript == rhs.repeatQuestionScript &&
-               lhs.questionScriptAudioUrl == rhs.questionScriptAudioUrl &&
-               lhs.correctionAudioUrl == rhs.correctionAudioUrl &&
-               lhs.repeatQuestionAudioUrl == rhs.repeatQuestionAudioUrl &&
-               lhs.coreTopic == rhs.coreTopic &&
-               lhs.quizId == rhs.quizId &&
-               lhs.userId == rhs.userId &&
-               lhs.questionStatus == rhs.questionStatus
+        lhs.content == rhs.content &&
+        lhs.mcOptions == rhs.mcOptions &&
+        lhs.correctOption == rhs.correctOption &&
+        lhs.selectedOption == rhs.selectedOption &&
+        lhs.correction == rhs.correction &&
+        lhs.isAnsweredOptional == rhs.isAnsweredOptional &&
+        lhs.isAnsweredCorrectlyOptional == rhs.isAnsweredCorrectlyOptional &&
+        lhs.numberOfPresentations == rhs.numberOfPresentations &&
+        lhs.questionScript == rhs.questionScript &&
+        lhs.repeatQuestionScript == rhs.repeatQuestionScript &&
+        lhs.questionScriptAudioUrl == rhs.questionScriptAudioUrl &&
+        lhs.correctionAudioUrl == rhs.correctionAudioUrl &&
+        lhs.repeatQuestionAudioUrl == rhs.repeatQuestionAudioUrl &&
+        lhs.coreTopic == rhs.coreTopic &&
+        lhs.quizId == rhs.quizId &&
+        lhs.userId == rhs.userId &&
+        lhs.questionStatus == rhs.questionStatus
     }
+    
     
     // MARK: - Codable Conformance
     
@@ -229,5 +312,28 @@ struct Question: QuestionType, Equatable {
         try container.encode(quizId, forKey: .quizId)
         try container.encode(userId, forKey: .userId)
         try container.encodeIfPresent(questionStatus, forKey: .questionStatus)
+    }
+    
+    // MARK: - Hashable Conformance
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(refId)
+        hasher.combine(content)
+        hasher.combine(mcOptions)
+        hasher.combine(correctOption)
+        hasher.combine(selectedOption)
+        hasher.combine(correction)
+        hasher.combine(isAnsweredOptional)
+        hasher.combine(isAnsweredCorrectlyOptional)
+        hasher.combine(numberOfPresentations)
+        hasher.combine(questionScript)
+        hasher.combine(repeatQuestionScript)
+        hasher.combine(questionScriptAudioUrl)
+        hasher.combine(correctionAudioUrl)
+        hasher.combine(repeatQuestionAudioUrl)
+        hasher.combine(coreTopic)
+        hasher.combine(quizId)
+        hasher.combine(userId)
+        hasher.combine(questionStatus)
     }
 }

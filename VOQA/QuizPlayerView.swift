@@ -12,7 +12,6 @@ import Combine
 struct QuizPlayerView: View {
     @EnvironmentObject var databaseManager: DatabaseManager
     @Environment(\.dismiss) private var dismiss
-    @Environment(\.questions) private var questions
     
     @StateObject private var viewModel: QuizViewModel
     
@@ -21,17 +20,18 @@ struct QuizPlayerView: View {
     @State private var audioPlayer: SessionAudioPlayer?
     @State private var cancellables: Set<AnyCancellable> = []
     
-    var selectedVoqa: Voqa
+    var config: QuizSessionConfig
+    var voqa: Voqa
     
-    init(selectedVoqa: Voqa) {
+    init(config: QuizSessionConfig, voqa: Voqa) {
+        self.config = config
+        self.voqa = voqa
         let quizSessionManager = QuizSessionManager()
         let quizConfigManager = QuizConfigManager()
         _viewModel = StateObject(wrappedValue: QuizViewModel(quizSessionManager: quizSessionManager, quizConfigManager: quizConfigManager))
-        self.selectedVoqa = selectedVoqa
     }
     
     var body: some View {
-        
         VStack(alignment: .leading, spacing: 10) {
             // SESSION INTERACTION VIEW
             sessionInteractionView()
@@ -45,11 +45,10 @@ struct QuizPlayerView: View {
             
             // InteractionButtons Grid
             quizControlButtons()
-            
         }
         .padding()
         .background {
-            QuizPlayerBackground(backgroundImageResource: selectedVoqa.imageUrl)
+            QuizPlayerBackground(backgroundImageResource: voqa.imageUrl)
         }
         .navigationBarBackButtonHidden(true)
         .onReceive(viewModel.$sessionNowplayingAudio, perform: { nowPlaying in
@@ -57,37 +56,40 @@ struct QuizPlayerView: View {
                 self.isNowPlaying = nowPlaying
             }
         })
-        .onChange(of: viewModel.sessionNowplayingAudio, { _, nowPlaying in
+        .onChange(of: viewModel.sessionNowplayingAudio) {_, nowPlaying in
             DispatchQueue.main.async {
-                if nowPlaying {
-                    self.isNowPlaying = true
-                } else {
-                    self.isNowPlaying = false
-                }
+                self.isNowPlaying = nowPlaying
             }
-        })
-        .onChange(of: viewModel.currentQuestionIndex, { _, _ in
+        }
+        .onChange(of: viewModel.currentQuestionIndex) {_, _ in
             viewModel.playNextQuestionSfx()
-        })
-        .onChange(of: viewModel.sessionAwaitingResponse, { _, awaitingResponse in
+        }
+        .onChange(of: viewModel.sessionAwaitingResponse) {_, awaitingResponse in
             if awaitingResponse {
                 viewModel.playAwaitingResponseSfx()
             } else {
                 viewModel.playRecievedResponseSfx()
             }
-        })
+        }
         .onAppear {
             configureNewSession()
+            if !config.sessionQuestion.isEmpty {
+                print("Config has questions")
+            } else {
+                print("Config has no questions")
+            }
         }
     }
     
     private func configureNewSession() {
-        if var config = databaseManager.sessionConfiguration {
-            config.sessionTitle = selectedVoqa.quizTitle
-            viewModel.initializeSession(with: config)
-            viewModel.startNewQuizSession(questions: config.sessionQuestion)
-            print("QuizPlayer has: \(questions.count) questions")
-        }
+        var updatedConfig = config
+        updatedConfig.sessionTitle = voqa.quizTitle
+        viewModel.initializeSession(with: updatedConfig)
+        viewModel.startNewQuizSession(questions: updatedConfig.sessionQuestion)
+        print(updatedConfig.sessionTitle)
+        print(updatedConfig.sessionVoice)
+        print(updatedConfig.sessionQuestion.count)
+         
     }
     
     private func quizControlButtons() -> some View {
@@ -96,24 +98,19 @@ struct QuizPlayerView: View {
             selectButton: { option in
                 viewModel.selectAnswer(selectedOption: option)
             },
-            centralAction: { viewModel.playRecievedResponseSfx()})
+            centralAction: { viewModel.playRecievedResponseSfx() }
+        )
     }
 
-    @ViewBuilder
-    private func quizInfoView() -> some View {
-        QuizInfoView(selectedVoqa: selectedVoqa)
-    }
-    
-
-    private func playbackVisualizer() -> any View {
-        viewModel.playbackVisualizer()
-    }
+//    private func playbackVisualizer() -> some View {
+//        viewModel.playbackVisualizer()
+//    }
 
     @ViewBuilder
     private func sessionInteractionView() -> some View {
         VStack(spacing: 10) {
             HStack {
-                if let url = URL(string: selectedVoqa.imageUrl.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "") {
+                if let url = URL(string: voqa.imageUrl.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "") {
                     AsyncImage(url: url) { phase in
                         switch phase {
                         case .empty:
@@ -147,22 +144,23 @@ struct QuizPlayerView: View {
                 }
 
                 VStack(spacing: 4) {
-                    Text(selectedVoqa.acronym)
+                    Text(voqa.acronym)
                         .font(.footnote)
                         .fontWeight(.semibold)
                         .foregroundStyle(.primary)
-                        .hAlign(.leading)
+                        .frame(maxWidth: .infinity, alignment: .leading)
                     
                     Text(viewModel.sessionQuestionCounterText)
                         .font(.footnote)
                         .foregroundStyle(.primary)
-                        .hAlign(.leading)
+                        .frame(maxWidth: .infinity, alignment: .leading)
                     
-//                    if let session = viewModel.currentSession() {
-//                        VUMeterView(quizContext: session)
-//                            .padding(.top, 2)
-//                            .hAlign(.leading)
-//                    }
+                    // Uncomment and implement VUMeterView if needed
+                    // if let session = viewModel.currentSession() {
+                    //     VUMeterView(quizContext: session)
+                    //         .padding(.top, 2)
+                    //         .frame(maxWidth: .infinity, alignment: .leading)
+                    // }
                 }
                 .kerning(-0.2)
                 .frame(height: 80)
@@ -185,12 +183,8 @@ struct QuizPlayerView: View {
         }
     }
     
-    private func animateVisualizer(nowPlaying: Bool)  {
-        if nowPlaying == true {
-            self.isNowPlaying = true
-        } else {
-            self.isNowPlaying = false
-        }
+    private func animateVisualizer(nowPlaying: Bool) {
+        self.isNowPlaying = nowPlaying
     }
 
     @ViewBuilder
@@ -198,19 +192,15 @@ struct QuizPlayerView: View {
         VStack(alignment: .center) {
             ZStack {
                 FormattedQuestionContentView(questionTranscript: viewModel.currentQuestionText)
-                   // .opacity(viewModel.sessionCountdownTime > 0 ? 0 : 1)
                 
                 FormattedCountDownTextView(countdownTimerText: "viewModel.countdownTimerText")
-                   // .opacity(viewModel.sessionCountdownTime > 0 ? 1 : 0)
                 
                 RateQuizView(currentRating: $currentRating)
-                   // .opacity(viewModel.sessionInReview ? 1 : 0)
             }
         }
         .frame(maxHeight: .infinity)
     }
 }
-
 
 
 //#Preview {

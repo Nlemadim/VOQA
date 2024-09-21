@@ -29,11 +29,6 @@ struct MainView: View {
         }
         .environment(\.quizSessionConfig, config)
         .preferredColorScheme(.dark)
-        .onAppear {
-            Task {
-                await loadUserVoiceSelection()
-            }
-        }
         .alert(item: $databaseManager.currentError) { error in
             Alert(
                 title: Text(error.title ?? "Error"),

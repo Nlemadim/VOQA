@@ -24,7 +24,7 @@ protocol QuizViewModelProtocol {
 }
 
 class QuizViewModel: ObservableObject, QuizViewModelProtocol {
-
+    @Published var sessionConfiguration: QuizSessionConfig?
     @Published var currentQuestionText: String = ""
     @Published var sessionQuestionCounterText: String = ""
     @Published var questionCounter: String = ""
@@ -45,7 +45,7 @@ class QuizViewModel: ObservableObject, QuizViewModelProtocol {
     init(quizSessionManager: QuizSessionManager, quizConfigManager: QuizConfigManager) {
         self.quizSessionManager = quizSessionManager
         self.quizConfigManager = quizConfigManager
-
+        
         // Bind properties from quizSessionManager to the ViewModel
         quizSessionManager.$quizSession
             .compactMap { $0 }

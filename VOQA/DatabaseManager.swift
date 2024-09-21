@@ -8,10 +8,11 @@
 import Foundation
 import Combine
 
+@MainActor
 class DatabaseManager: ObservableObject {
-    //MARK: TO FIX Publishing from background threads
     @Published var currentError: DatabaseError?
     @Published var questions: [Question] = []
+    @Published var sessionConfiguration: QuizSessionConfig?
     @Published var quizCatalogue: [QuizCatalogue] = []  // Holds the QuizCatalogue
     @Published var quizCollection: [QuizData] = []
     @Published var showFullPageError: Bool = false
@@ -30,8 +31,6 @@ class DatabaseManager: ObservableObject {
     private let firebaseManager = FirebaseManager.shared
     private var networkService = NetworkService()
     private var configManager = QuizConfigManager()
-    
-    var sessionConfiguration: QuizSessionConfig?
     
     private init() {}
     
@@ -53,6 +52,49 @@ class DatabaseManager: ObservableObject {
             }
         }
     }
+    
+    func loadVoiceConfiguration(for voice: AddOnItem) async throws {
+        let loadedConfig = try await configManager.loadVoiceConfiguration(for: voice)
+        self.sessionConfiguration = loadedConfig
+    }
+        
+    func fetchProcessedQuestions(_ quizTitle: String, questionTypeRequest: String, maxNumberOfQuestions: Int) async throws {
+        // Initialize the QuestionDownloader with the UserConfig from the environment
+        let fakeConfig = FakeConfig(userId: "rBkUyTtc2XXXcj43u53N", quizTitle: "Data Privacy", narrator: "Gus", language: "")
+        let questionDownloader = QuestionDownloader(config: fakeConfig)
+        
+        // Fetch questions using the user's quiz title
+        let newQuestions = try await questionDownloader.downloadQuizQuestions(
+            quizTitle: quizTitle,
+            questionTypeRequest: questionTypeRequest,
+            maxNumberOfQuestions: maxNumberOfQuestions
+        )
+        
+        if var config = self.sessionConfiguration {
+            config.sessionQuestion.append(contentsOf: newQuestions)
+            self.sessionConfiguration = config
+            print("\(newQuestions.count) question(s) fetched")
+            print("config added \(config.sessionQuestion.count) new questions")
+        } else {
+            print("sessionConfiguration is nil")
+        }
+    }
+    
+    func fetchQuizCollection() async {
+        do {
+            let collection = try await firebaseManager.fetchQuizCollection()
+            self.quizCollection = collection
+            for quiz in collection {
+                print("Quiz Title: \(quiz.quizTitle)")
+            }
+            
+            // After fetching, create the catalogue
+            self.quizCatalogue = self.createQuizCatalogue(from: collection)
+        } catch {
+            print("Error fetching quiz collection: \(error.localizedDescription)")
+        }
+    }
+
     
     func addUserToChannel(userId: String) {
         /**
@@ -76,37 +118,6 @@ class DatabaseManager: ObservableObject {
          }
          
          */
-    }
-    
-    func loadVoiceConfiguration(for voice: AddOnItem) async throws  {
-        let loadedConfig = try await configManager.loadVoiceConfiguration(for: voice)
-        self.sessionConfiguration = loadedConfig
-    }
-    
-    func fetchProcessedQuestions(_ quizTitle: String, questionTypeRequest: String, maxNumberOfQuestions: Int) async throws  {
-        // Initialize the QuestionDownloader with the UserConfig from the environment
-        let fakeConfig: FakeConfig = FakeConfig(userId: "rBkUyTtc2XXXcj43u53N", quizTitle: "Data Privacy", narrator: "Gus", language: "")
-        let questionDownloader = QuestionDownloader(config: fakeConfig)
-        // Fetch questions using the user's quiz title
-        questions = try await questionDownloader.downloadQuizQuestions(quizTitle: quizTitle, questionTypeRequest: questionTypeRequest, maxNumberOfQuestions: maxNumberOfQuestions)
-        print("\(questions.count) question(s) fetched")
-    }
-    
-    func fetchQuizCollection() async {
-        do {
-            let collection = try await firebaseManager.fetchQuizCollection()
-            DispatchQueue.main.async {
-                self.quizCollection = collection
-                for quiz in collection {
-                    print("Quiz Title: \(quiz.quizTitle)")
-                }
-                
-                // After fetching, create the catalogue
-                self.quizCatalogue = self.createQuizCatalogue(from: collection)
-            }
-        } catch {
-            print("Error fetching quiz collection: \(error.localizedDescription)")
-        }
     }
     
     // Create Quiz Catalogue Locally
@@ -208,3 +219,5 @@ class DatabaseManager: ObservableObject {
         //networkService.postReview(userId: String, quizId: String, diificultyRating: Int, relevanceRating: Int, narratorRating: Int, comment: Int? = nil)
     }
 }
+
+

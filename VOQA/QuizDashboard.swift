@@ -12,23 +12,25 @@ struct QuizDashboard: View {
     @EnvironmentObject var user: User
     @EnvironmentObject var navigationRouter: NavigationRouter
     @EnvironmentObject var databaseManager: DatabaseManager
+    @EnvironmentObject var networkMonitor: NetworkMonitor
+
     @Environment(\.quizSessionConfig) private var config: QuizSessionConfig?
-    @Environment(\.questions) private var questions
-    @Environment(\.dismiss) private var dismiss
-    
+
+    var voqa: Voqa
+
     @State var ratingsAndReviews = RatingsAndReview()
     @State private var contributeQuestion = ContributeAQuestion(questionText: "")
     @State private var activeTab: DashboardTab.TabItem = .quizzes
     @State private var dashboardTabScrollState: DashboardTab.TabItem?
     @State private var mainViewScrollState: DashboardTab.TabItem?
     @State private var dashboardTabs: [DashboardTab] = [
-        .init(id:DashboardTab.TabItem.quizzes),
-        .init(id:DashboardTab.TabItem.latestScores),
-        .init(id:DashboardTab.TabItem.performance),
-        .init(id:DashboardTab.TabItem.contribute),
-        .init(id:DashboardTab.TabItem.rateAndReview)
+        .init(id: DashboardTab.TabItem.quizzes),
+        .init(id: DashboardTab.TabItem.latestScores),
+        .init(id: DashboardTab.TabItem.performance),
+        .init(id: DashboardTab.TabItem.contribute),
+        .init(id: DashboardTab.TabItem.rateAndReview)
     ]
-    
+
     @State private var questionsLoaded: Bool = false
     @State private var isDownloading: Bool = false
     @State private var isLoadingScores: Bool = false
@@ -36,19 +38,19 @@ struct QuizDashboard: View {
     @State private var selectedTopic: String?
     @State private var contributedQuestion: String = ""
     @State private var progress: CGFloat = .zero
-    
-    var voqa: Voqa
-    
+
+    @State private var showConfigError: Bool = false
+
     var body: some View {
-        
+
         VStack(spacing: 0) {
             HeaderView(voqa: voqa)
             DashboardTabBar()
-            
+
             /// Main View
-            GeometryReader {
-                let size = $0.size
-                
+            GeometryReader { geometry in
+                let size = geometry.size
+
                 ScrollView(.horizontal) {
                     LazyHStack(spacing: 0) {
                         /// Dashboard Tab label Views
@@ -56,78 +58,69 @@ struct QuizDashboard: View {
                             ViewThatFits {
                                 switch tab.id {
                                 case .quizzes:
-                                
-                                    QuizzesView(quizTopics: getCoreTopics(for: voqa) ?? []) { topicName in
-                                        
-                                        Task {
-                                            await getQuestions(quizTitle: "MCAT", questionTypeRequest: "ALL Categories", number: 10)
-                                        }
-                                        
-                                        navigationRouter.navigate(to: .quizPlayer(voqa))
-                                    }
                                     
+                                    QuizzesView(quizTopics: getCoreTopics(for: voqa) ?? []) { topicName in
+                                        // Call the questions download here, when downloaded navigate to QuizPlayer view
+                                        Task {
+                                            do {
+                                                try await databaseManager.fetchProcessedQuestions(
+                                                    "MCAT",
+                                                    questionTypeRequest: "All Categories",
+                                                    maxNumberOfQuestions: 10
+                                                )
+                                                
+                                                await navigateToQuizPlayer()
+                                            } catch {
+                                                print("Error fetching questions: \(error)")
+                                                // Optionally show an alert
+                                            }
+                                        }
+                                    }
+
                                 case .latestScores:
                                     LatestScoresView(
-                                        
                                         latestScore: databaseManager.latestScores,
-                                        
                                         onRestartQuiz: {
-                                            
+                                            // Implement restart quiz logic
                                         },
                                         onStartNewQuiz: {
-                                            
+                                            // Implement start new quiz logic
                                         },
                                         isLoading: isLoadingScores,
-                                        
                                         mainColor: Color.fromHex(voqa.colors.main),
-                                        
                                         subColor: Color.fromHex(voqa.colors.sub)
                                     )
-                                    
+
                                 case .performance:
-                                    
                                     PerformanceView(
-                                        
                                         highScore: CGFloat(databaseManager.userHighScore),
-                                        
                                         completedQuizzes: databaseManager.quizzesCompleted,
-                                        
                                         mainColor: Color.fromHex(voqa.colors.main),
-                                        
                                         subColor: Color.fromHex(voqa.colors.sub),
-                                        
                                         performanceHistory: databaseManager.performanceHistory
                                     )
-                                    
+
                                 case .contribute:
-                                    
                                     ContributeQuestionView(
-                                        
                                         isLoggedIn: $isLoggedIn,
-                                        
                                         themeColor: Color.fromHex(voqa.colors.main),
-                                        
                                         submitQuestionText: { contributedQuestion in
-                                            
-                                        postQuestion(questionText: contributedQuestion)
-                                            
-                                    })
-                                    
+                                            postQuestion(questionText: contributedQuestion)
+                                        }
+                                    )
+
                                 case .rateAndReview:
                                     RateAndReviewView(
-                                        
                                         review: $ratingsAndReviews,
-                                        
                                         themeColor: Color.fromHex(voqa.colors.main),
-                                        
                                         submitReview: {
-                                            
                                             postReview(review: self.ratingsAndReviews)
-                                    })
+                                        }
+                                    )
                                 }
                             }
                             .frame(width: size.width, height: size.height)
-                            .contentShape(.rect)
+                            .contentShape(Rectangle())
                         }
                     }
                     .scrollTargetLayout()
@@ -135,11 +128,6 @@ struct QuizDashboard: View {
                         progress = -rect.minX / size.width
                     }
                 }
-                .onChange(of: questions, { _, _ in
-                    if !questions.isEmpty {
-                        navigationRouter.navigate(to: .quizPlayer(voqa))
-                    }
-                })
                 /// To track current tab selection and adjust scroll view accordingly. NOTE: scrollPosition Must match the precise data type of the id supplied in the ForEach Loop
                 .scrollPosition(id: $mainViewScrollState)
                 .scrollIndicators(.hidden)
@@ -160,16 +148,15 @@ struct QuizDashboard: View {
         .navigationBarBackButtonHidden(true)
         .navigationTitle("Dashboard")
         .navigationBarTitleDisplayMode(.inline)
-        
-        //        .fullScreenCover(isPresented: $questionsLoaded) {
-        //            if let config = config {
-        //                QuizPlayerView(selectedVoqa: voqa)
-        //                    .environment(\.questions, databaseManager.questions)
-        //                    .onDisappear { dismiss() }
-        //            }
-        //        }
+        .alert(isPresented: $showConfigError) {
+            Alert(
+                title: Text("Configuration Error"),
+                message: Text("Quiz configuration is not available. Please try again later."),
+                dismissButton: .default(Text("OK"))
+            )
+        }
     }
-    
+
     private func getCoreTopics(for voqa: Voqa) -> [String]? {
         if let quizData = databaseManager.quizCollection.first(where: { $0.id == voqa.id }) {
             var quizTopics: [String] = []
@@ -191,7 +178,7 @@ struct QuizDashboard: View {
                     .foregroundStyle(.black.opacity(0.95))
             }
     }
-    
+
     private func getQuestions(quizTitle: String, questionTypeRequest: String, number: Int) async {
         isDownloading = true
         do {
@@ -202,27 +189,30 @@ struct QuizDashboard: View {
             print("Error fetching questions: \(error)")
         }
     }
-    
-    func navigateToQuizPlayer() {
+
+    private func navigateToQuizPlayer() async {
+        print("Current Config before guard: \(String(describing: config))")
         guard let config = config, !config.sessionQuestion.isEmpty else {
             print("Failed to load session Questions")
+            showConfigError = true
             return
         }
         
-        navigationRouter.navigate(to: .quizPlayer(voqa))
+        print("Navigating to QuizPlayer with config: \(config)")
+        navigationRouter.navigate(to: .quizPlayer(config: config, voqa: voqa))
     }
-    
+
     private func postQuestion(questionText: String) {
         guard !questionText.isEmptyOrWhiteSpace else { return }
         self.contributeQuestion.questionText = questionText
         databaseManager.postNewQuestion(contributeQuestion)
     }
-    
+
     private func postReview(review: RatingsAndReview) {
-        guard review.difficultyRating != 0 || review.narrationRating != 0 || review.relevanceRating != 0  else { return }
+        guard review.difficultyRating != 0 || review.narrationRating != 0 || review.relevanceRating != 0 else { return }
         databaseManager.postNewReview(review)
     }
-    
+
     @ViewBuilder
     func HeaderView(voqa: Voqa) -> some View {
         HStack {
@@ -232,11 +222,11 @@ struct QuizDashboard: View {
                 .padding(.vertical)
                 .allowsHitTesting(true)
                 .onTapGesture {
-                    dismiss()
+                    navigationRouter.goBack()
                 }
-            
-            Spacer(minLength: /*@START_MENU_TOKEN@*/0/*@END_MENU_TOKEN@*/)
-            
+
+            Spacer()
+
             Text(voqa.acronym)
                 .font(.title3.bold())
                 .primaryTextStyleForeground()
@@ -249,7 +239,7 @@ struct QuizDashboard: View {
                 .frame(height: 1)
         }
     }
-    
+
     @ViewBuilder
     func DashboardTabBar() -> some View {
         ScrollView(.horizontal) {
@@ -261,12 +251,11 @@ struct QuizDashboard: View {
                             mainViewScrollState = tab.id
                             dashboardTabScrollState = tab.id
                         }
-                        
                     }) {
                         Text(tab.id.rawValue)
                             .padding(.vertical, 12)
                             .foregroundStyle(activeTab == tab.id ? Color.primary : .gray)
-                            .contentShape(.rect)
+                            .contentShape(Rectangle())
                     }
                     .buttonStyle(.plain)
                     .rect { rect in
@@ -282,33 +271,28 @@ struct QuizDashboard: View {
         .scrollPosition(id: .init(get: {
             return dashboardTabScrollState
         }, set: { _ in
-            
+            // Do nothing
         }), anchor: .center)
         .overlay(alignment: .bottom) {
             ZStack(alignment: .leading) {
                 Rectangle()
                     .fill(.gray.opacity(0.3))
                     .frame(height: 1)
-                let inputRange = dashboardTabs.indices.compactMap { return CGFloat($0) }
-                    
-                let outputRange = dashboardTabs.compactMap { return $0.size.width }
-                
-                let outputPositionRange = dashboardTabs.compactMap {return $0.minX}
-                
+                let inputRange = dashboardTabs.indices.compactMap { CGFloat($0) }
+                let outputRange = dashboardTabs.compactMap { $0.size.width }
+                let outputPositionRange = dashboardTabs.compactMap { $0.minX }
+
                 let indicatorWidth = progress.interpolate(inputRange: inputRange, outputRange: outputRange)
-                
                 let indicatorPosition = progress.interpolate(inputRange: inputRange, outputRange: outputPositionRange)
-                
+
                 Rectangle()
                     .fill(.primary)
                     .frame(width: indicatorWidth, height: 1.5)
                     .offset(x: indicatorPosition)
             }
-            
         }
         .safeAreaPadding(.horizontal, 15)
         .scrollIndicators(.hidden)
-        
     }
 }
 
@@ -316,7 +300,7 @@ struct DashboardTab: Identifiable {
     private(set) var id: TabItem
     var size: CGSize = .zero
     var minX: CGFloat = .zero
-    
+
     enum TabItem: String, CaseIterable {
         case quizzes = "Quizzes"
         case latestScores = "Latest Scores"
@@ -336,3 +320,11 @@ struct DashboardTab: Identifiable {
         .environmentObject(dbMgr)
         .environmentObject(navMgr)
 }
+
+
+/**
+ Task {
+     await getQuestions(quizTitle: "MCAT", questionTypeRequest: "ALL Categories", number: 10)
+ }
+ 
+ */
