@@ -20,6 +20,7 @@ class QuizSession: ObservableObject, QuizServices {
     @Published var activeQuiz: Bool = false
     @Published var countdownTime: TimeInterval = 5.0
     @Published var responseTime: TimeInterval = 6.0
+    @Published var quizTimer: TimeInterval = 0.0
     
     // Session QuestionPlayer Specific Properties
     @Published var currentQuestion: (any QuestionType)? // Changed from 'Question?' to 'any QuestionType?'
@@ -66,6 +67,7 @@ class QuizSession: ObservableObject, QuizServices {
     private var countdownComplete: Bool = false
     
     private var timer: Timer?
+    private var quizStartTimer: Timer?
     
     init(state: QuizServices, questionPlayer: QuestionPlayer, reviewer: ReviewsManager, sessionCloser: SessionCloser, audioFileSorter: AudioFileSorter, sessionInfo: QuizSessionInfoProtocol, scoreRegistry: ScoreRegistry) {
         self.state = state
@@ -110,16 +112,18 @@ class QuizSession: ObservableObject, QuizServices {
         notifyObservers()
     }
 
-    func startNewQuizSession(questions: [any QuestionType]) { // Changed parameter type
+    func startNewQuizSession(questions: [any QuestionType]) {
         print("Context Player Hit")
-        // self.questions = questions // Removed as QuestionPlayer manages questions
         
+        // Start the quiz
         DispatchQueue.main.async {
             print("Ready to play \(questions.count) questions")
-            // self.updateQuestionCounter(questionIndex: 0, count: self.questions.count) // Removed
-            self.questionPlayer.setSessionQuestions(questions) // Delegate setting questions to QuestionPlayer
+            self.questionPlayer.setSessionQuestions(questions)
             self.activeQuiz = true
             self.startCountdown()
+            
+            // Start the quiz timer
+            self.startQuizTimer()
         }
     }
     
@@ -138,6 +142,30 @@ class QuizSession: ObservableObject, QuizServices {
                 self.playFirstQuestion()
             }
         }
+    }
+    
+    // Method to start the quiz timer
+    private func startQuizTimer() {
+        quizTimer = 0.0
+        quizStartTimer?.invalidate()
+        quizStartTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+            self?.quizTimer += 1.0
+        }
+    }
+
+    // Stop the timer when the quiz session ends
+    func prepareToEndSession() {
+        self.setState(self.sessionCloser)
+        self.sessionCloser.performAction(.quitAndReset, session: self)
+        
+        // Stop the quiz timer
+        stopQuizTimer()
+    }
+
+    // Method to stop the quiz timer
+    private func stopQuizTimer() {
+        quizStartTimer?.invalidate()
+        quizStartTimer = nil
     }
     
     func updateQuestionCounter(questionIndex: Int, count: Int) {
@@ -189,11 +217,6 @@ class QuizSession: ObservableObject, QuizServices {
        // self.sessionAudioPlayer.performAudioAction(.receivedResponse)
     }
     
-    func prepareToEndSession() {
-        self.setState(self.sessionCloser)
-        self.sessionCloser.performAction(.quitAndReset, session: self)
-    }
-    
     func resumeQuiz() {
         guard self.questionPlayer.hasMoreQuestions else {
             self.setState(self.reviewer)
@@ -215,6 +238,8 @@ class QuizSession: ObservableObject, QuizServices {
         self.finalScore = 0
         self.scoreRegistry.currentScore = 0
         self.questionPlayer.resetQuestionIndex()
+        
+        self.quizTimer = 0.0
     }
     
     func updateCurrentQuestionId(_ questionId: String) { // Changed parameter type

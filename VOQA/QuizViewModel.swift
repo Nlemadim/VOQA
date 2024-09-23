@@ -34,8 +34,10 @@ class QuizViewModel: ObservableObject, QuizViewModelProtocol {
     @Published var sessionTitle: String = ""
     @Published var sessionVoice: String = ""
     @Published var sessionCountdownTime: TimeInterval = 5.0
+    @Published var sessionTimer: TimeInterval = 5.0
     @Published var currentQuestionIndex: Int = 0
     @Published var sessionInReview: Bool = false
+    @Published var currentQuestion: (any QuestionType)? = nil
     
     private var sfxPlayer = SfxPlayer()
     var quizSessionManager: QuizSessionManager
@@ -75,12 +77,18 @@ class QuizViewModel: ObservableObject, QuizViewModelProtocol {
         session.$countdownTime
             .assign(to: &$sessionCountdownTime)
         
+        session.$quizTimer
+            .assign(to: &$sessionTimer)
+        
         session.$isReviewing
             .assign(to: &$sessionInReview)
         
         session.$currentQuestionIndex
             .assign(to: &$currentQuestionIndex)
-            
+        
+        // Bind the current question from the session
+        session.$currentQuestion
+            .assign(to: &$currentQuestion) // Now the view model tracks the current question
     }
     
     func currentQuizSession() -> QuizSession? {
@@ -149,5 +157,6 @@ class QuizViewModel: ObservableObject, QuizViewModelProtocol {
     func initializeVoqaExperience(questions: [Question]) {
         //sfxPlayer.playIntroMusic()
     }
+
 }
 

@@ -107,7 +107,6 @@
 		0B6561432C3E4F5A0013663B /* QuestionPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B6561422C3E4F5A0013663B /* QuestionPlayer.swift */; };
 		0B6561462C3E4F5F0013663B /* IdleSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B6561452C3E4F5F0013663B /* IdleSession.swift */; };
 		0B6561492C3E4F640013663B /* ReviewsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B6561482C3E4F640013663B /* ReviewsManager.swift */; };
-		0B65614F2C3E4F940013663B /* QuizDataModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B65614E2C3E4F940013663B /* QuizDataModels.swift */; };
 		0B6561552C3E4FA40013663B /* QuizConfigManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B6561542C3E4FA40013663B /* QuizConfigManager.swift */; };
 		0B6561582C3E4FAF0013663B /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B6561572C3E4FAF0013663B /* NetworkService.swift */; };
 		0B65615B2C3E4FB80013663B /* ConfigurationUrls.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B65615A2C3E4FB80013663B /* ConfigurationUrls.swift */; };
@@ -138,6 +137,7 @@
 		0BA63B692C762CCA00AE5048 /* FullTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BA63B682C762CCA00AE5048 /* FullTitleView.swift */; };
 		0BA63B6B2C762CF900AE5048 /* QuizPlayerBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BA63B6A2C762CF900AE5048 /* QuizPlayerBackground.swift */; };
 		0BA63B6D2C762D0E00AE5048 /* QuizControlButtonsGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BA63B6C2C762D0E00AE5048 /* QuizControlButtonsGrid.swift */; };
+		0BB3452C2CA20FD1003A0F5F /* DogonYaroNarratorConfiguration.json in Resources */ = {isa = PBXBuildFile; fileRef = 0BB3452B2CA20FD1003A0F5F /* DogonYaroNarratorConfiguration.json */; };
 		0BC091DE2C1D4463005FB223 /* VOQAApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BC091DD2C1D4463005FB223 /* VOQAApp.swift */; };
 		0BC091E02C1D4463005FB223 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BC091DF2C1D4463005FB223 /* ContentView.swift */; };
 		0BC091E42C1D4465005FB223 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0BC091E32C1D4465005FB223 /* Assets.xcassets */; };
@@ -252,7 +252,6 @@
 		0B6561422C3E4F5A0013663B /* QuestionPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestionPlayer.swift; sourceTree = "<group>"; };
 		0B6561452C3E4F5F0013663B /* IdleSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdleSession.swift; sourceTree = "<group>"; };
 		0B6561482C3E4F640013663B /* ReviewsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReviewsManager.swift; sourceTree = "<group>"; };
-		0B65614E2C3E4F940013663B /* QuizDataModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = QuizDataModels.swift; path = QuizPlayerStateManagement/QuizDataModels.swift; sourceTree = "<group>"; };
 		0B6561542C3E4FA40013663B /* QuizConfigManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = QuizConfigManager.swift; path = QuizPlayerStateManagement/QuizConfigManager.swift; sourceTree = "<group>"; };
 		0B6561572C3E4FAF0013663B /* NetworkService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NetworkService.swift; path = ../QuizPlayerStateManagement/NetworkService.swift; sourceTree = "<group>"; };
 		0B65615A2C3E4FB80013663B /* ConfigurationUrls.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ConfigurationUrls.swift; path = ../QuizPlayerStateManagement/ConfigurationUrls.swift; sourceTree = "<group>"; };
@@ -283,6 +282,7 @@
 		0BA63B682C762CCA00AE5048 /* FullTitleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FullTitleView.swift; sourceTree = "<group>"; };
 		0BA63B6A2C762CF900AE5048 /* QuizPlayerBackground.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuizPlayerBackground.swift; sourceTree = "<group>"; };
 		0BA63B6C2C762D0E00AE5048 /* QuizControlButtonsGrid.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuizControlButtonsGrid.swift; sourceTree = "<group>"; };
+		0BB3452B2CA20FD1003A0F5F /* DogonYaroNarratorConfiguration.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = DogonYaroNarratorConfiguration.json; path = "../../Voqa Docs/DogonYaroNarratorConfiguration.json"; sourceTree = "<group>"; };
 		0BC091DD2C1D4463005FB223 /* VOQAApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VOQAApp.swift; sourceTree = "<group>"; };
 		0BC091DF2C1D4463005FB223 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		0BC091E32C1D4465005FB223 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -552,6 +552,7 @@
 			children = (
 				0B53810F2C437DD5002EBCBB /* TestQuestions.json */,
 				0B55C8632C8025B70038ABE1 /* GusNarratorConfiguration.json */,
+				0BB3452B2CA20FD1003A0F5F /* DogonYaroNarratorConfiguration.json */,
 				0BA62FD92C40C6C00053F7C2 /* HomepageConfig.json */,
 			);
 			name = ConfigData;
@@ -642,11 +643,10 @@
 		0BA62FD62C4076250053F7C2 /* QuizConfigurations */ = {
 			isa = PBXGroup;
 			children = (
-				0B39A6392CA128D10040DF4C /* ConfigurationModels */,
-				0B65614E2C3E4F940013663B /* QuizDataModels.swift */,
 				0B6561542C3E4FA40013663B /* QuizConfigManager.swift */,
-				0B55C8612C8006CF0038ABE1 /* QuizSessionConfiguration.swift */,
 				0B55C8652C8027680038ABE1 /* VoiceConfigurationManager.swift */,
+				0B55C8612C8006CF0038ABE1 /* QuizSessionConfiguration.swift */,
+				0B39A6392CA128D10040DF4C /* ConfigurationModels */,
 			);
 			name = QuizConfigurations;
 			sourceTree = "<group>";
@@ -902,6 +902,7 @@
 				0B6561612C3E500B0013663B /* showResponderBell.wav in Resources */,
 				0B90E50C2C3E655A00903FB0 /* SessionConfigData2.json in Resources */,
 				0BC091E42C1D4465005FB223 /* Assets.xcassets in Resources */,
+				0BB3452C2CA20FD1003A0F5F /* DogonYaroNarratorConfiguration.json in Resources */,
 				0B09BDB42C4919FF00DD6452 /* Creative Beat.mp3 in Resources */,
 				0BA62FDA2C40C6C00053F7C2 /* HomepageConfig.json in Resources */,
 			);
@@ -989,7 +990,6 @@
 				0B43DD142C791405009F32EA /* User.swift in Sources */,
 				0BA63B552C762A2400AE5048 /* QuizPlayerView.swift in Sources */,
 				0BA63B612C762C8F00AE5048 /* VoqaCollectionView.swift in Sources */,
-				0B65614F2C3E4F940013663B /* QuizDataModels.swift in Sources */,
 				0B4E25172C99F175002AC7C3 /* RectKey.swift in Sources */,
 				0B65615B2C3E4FB80013663B /* ConfigurationUrls.swift in Sources */,
 				0BF408E42C92A87800998038 /* VoiceSelector.swift in Sources */,

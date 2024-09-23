@@ -17,12 +17,13 @@ struct QuizPlayerView: View {
     
     @State var currentRating: Int? = 1
     @State var isNowPlaying: Bool = false
-    @State private var audioPlayer: SessionAudioPlayer?
+    @State private var audioPlayer: SessionAudioPlayer? // Assuming this manages audio playback
     @State private var cancellables: Set<AnyCancellable> = []
     
     var config: QuizSessionConfig
     var voqa: Voqa
     
+    // Initialize ViewModel with required managers
     init(config: QuizSessionConfig, voqa: Voqa) {
         self.config = config
         self.voqa = voqa
@@ -30,196 +31,223 @@ struct QuizPlayerView: View {
         let quizConfigManager = QuizConfigManager()
         _viewModel = StateObject(wrappedValue: QuizViewModel(quizSessionManager: quizSessionManager, quizConfigManager: quizConfigManager))
     }
-    
+
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            // SESSION INTERACTION VIEW
-            sessionInteractionView()
-            
-            // CURRENT CONTENT VIEW
-            currentContentView()
-            
-            // Buttons Grid View
-            Divider()
-                .activeGlow(.teal, radius: 0.5)
-            
-            // InteractionButtons Grid
-            quizControlButtons()
+        VStack {
+            quizHeaderView() // Header for question count and time
+            quizQuestionView() // Display question text
+            Spacer()
+            quizOptionsScrollView() // Scrollable options
+            Spacer()
+            quizControlGridView() // Control buttons
         }
-        .padding()
-        .background {
-            QuizPlayerBackground(backgroundImageResource: voqa.imageUrl)
-        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .padding(.horizontal)
+        .background(quizBackgroundView()) // Background image with overlay
         .navigationBarBackButtonHidden(true)
         .onReceive(viewModel.$sessionNowplayingAudio, perform: { nowPlaying in
             DispatchQueue.main.async {
                 self.isNowPlaying = nowPlaying
             }
         })
-        .onChange(of: viewModel.sessionNowplayingAudio) {_, nowPlaying in
+        .onChange(of: viewModel.sessionNowplayingAudio) { _, nowPlaying in
             DispatchQueue.main.async {
                 self.isNowPlaying = nowPlaying
             }
         }
-        .onChange(of: viewModel.currentQuestionIndex) {_, _ in
-            viewModel.playNextQuestionSfx()
-        }
-        .onChange(of: viewModel.sessionAwaitingResponse) {_, awaitingResponse in
-            if awaitingResponse {
-                viewModel.playAwaitingResponseSfx()
-            } else {
-                viewModel.playRecievedResponseSfx()
-            }
-        }
         .onAppear {
-            configureNewSession()
-            if !config.sessionQuestion.isEmpty {
-                print("Config has questions")
-            } else {
-                print("Config has no questions")
-            }
+            configureNewSession() // Configure the new session
         }
     }
-    
+
+    // MARK: - Initial Setup for Quiz Session
     private func configureNewSession() {
         var updatedConfig = config
         updatedConfig.sessionTitle = voqa.quizTitle
+
+        // Since sessionQuestion is already [Question], no need to cast
+        let questions = updatedConfig.sessionQuestion
+
         viewModel.initializeSession(with: updatedConfig)
-        viewModel.startNewQuizSession(questions: updatedConfig.sessionQuestion)
+        viewModel.startNewQuizSession(questions: questions)
+
         print(updatedConfig.sessionTitle)
         print(updatedConfig.sessionVoice)
-        print(updatedConfig.sessionQuestion.count)
-         
+        print(questions.count)
     }
+
+
+    // MARK: - View Builders (Same as before, with additions as needed)
     
-    private func quizControlButtons() -> some View {
-        QuizControlButtonsGrid(
-            awaitingResponse: $viewModel.sessionAwaitingResponse,
-            selectButton: { option in
-                viewModel.selectAnswer(selectedOption: option)
-            },
-            centralAction: { viewModel.playRecievedResponseSfx() }
-        )
-    }
-
-//    private func playbackVisualizer() -> some View {
-//        viewModel.playbackVisualizer()
-//    }
-
     @ViewBuilder
-    private func sessionInteractionView() -> some View {
-        VStack(spacing: 10) {
-            HStack {
-                if let url = URL(string: voqa.imageUrl.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "") {
-                    AsyncImage(url: url) { phase in
-                        switch phase {
-                        case .empty:
-                            ProgressView()
-                                .frame(height: 100)
-                        case .success(let image):
-                            image
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .cornerRadius(10)
-                                .frame(height: 100)
-                                .padding(.horizontal)
-                        case .failure:
-                            Image(systemName: "exclamationmark.triangle")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .cornerRadius(10)
-                                .frame(height: 100)
-                                .foregroundColor(.red)
-                        @unknown default:
-                            EmptyView()
-                        }
-                    }
-                } else {
-                    Image(systemName: "exclamationmark.triangle")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .cornerRadius(10)
-                        .frame(height: 100)
-                        .foregroundColor(.red)
-                }
-
-                VStack(spacing: 4) {
-                    Text(voqa.acronym)
-                        .font(.footnote)
-                        .fontWeight(.semibold)
-                        .foregroundStyle(.primary)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                    
-                    Text(viewModel.sessionQuestionCounterText)
-                        .font(.footnote)
-                        .foregroundStyle(.primary)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                    
-                    // Uncomment and implement VUMeterView if needed
-                    // if let session = viewModel.currentSession() {
-                    //     VUMeterView(quizContext: session)
-                    //         .padding(.top, 2)
-                    //         .frame(maxWidth: .infinity, alignment: .leading)
-                    // }
-                }
-                .kerning(-0.2)
-                .frame(height: 80)
-
-                StopQuizButton(
-                    stopAction: {
-                        viewModel.stopQuiz()
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                            dismiss()
-                        }
-                    }
-                )
+    private func quizHeaderView() -> some View {
+        HStack {
+            Text("Question: \(viewModel.currentQuestionIndex + 1)/\(config.sessionQuestion.count)")
+                .font(.headline)
+            Spacer()
+            Text("Time: \(viewModel.sessionTimer)")
+                .font(.callout)
                 .padding(.horizontal)
-            }
-            .padding(.horizontal)
-            .padding(.top)
-            
-            Divider()
-                .activeGlow(.teal, radius: 0.5)
+                .foregroundStyle(.orange.opacity(0.9))
         }
-    }
-    
-    private func animateVisualizer(nowPlaying: Bool) {
-        self.isNowPlaying = nowPlaying
+        .padding(.horizontal)
+        .offset(y: 10)
     }
 
     @ViewBuilder
-    private func currentContentView() -> some View {
-        VStack(alignment: .center) {
-            ZStack {
-                FormattedQuestionContentView(questionTranscript: viewModel.currentQuestionText)
-                
-                FormattedCountDownTextView(countdownTimerText: "viewModel.countdownTimerText")
-                
-                RateQuizView(currentRating: $currentRating)
-            }
+    private func quizQuestionView() -> some View {
+        VStack {
+            Text(viewModel.currentQuestionText)
+                .font(.subheadline)
+                .frame(maxWidth: .infinity)
         }
-        .frame(maxHeight: .infinity)
+        .frame(maxWidth: .infinity)
+        .frame(height: 180)
+        .background(
+            RoundedRectangle(cornerRadius: 12)
+                .fill(Color.fromHex(voqa.colors.main).gradient)
+                .overlay {
+                    RoundedRectangle(cornerRadius: 12)
+                        .fill(Material.ultraThin)
+                }
+        )
+        .padding(.horizontal)
+        .padding(.top)
+        .padding(.bottom)
     }
+
+    @ViewBuilder
+    private func quizOptionsScrollView() -> some View {
+        // Safely access the current question using currentQuestionIndex
+        if let question = config.sessionQuestion[safe: viewModel.currentQuestionIndex] {
+            ScrollView {
+                ForEach(question.mcOptions.keys.sorted(), id: \.self) { option in
+                    quizOptionButton(option: option, color: Color.fromHex(voqa.colors.main))
+                }
+            }
+        } else {
+            Text("No question available.")
+        }
+    }
+
+
+    @ViewBuilder
+    private func quizOptionButton(option: String, color: Color) -> some View {
+        let optionColor = colorForOption(option: option)
+        Button(action: {
+            viewModel.selectAnswer(selectedOption: option)
+        }) {
+            Text(option)
+                .foregroundColor(.white)
+                .padding()
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .background(
+                    RoundedRectangle(cornerRadius: 12)
+                        .fill(optionColor.opacity(0.15))
+                )
+                .background(
+                    RoundedRectangle(cornerRadius: 12)
+                        .stroke(optionColor.opacity(optionColor == .black ? 0.15 : 1), lineWidth: 2)
+                )
+        }
+        .frame(maxWidth: .infinity)
+        .buttonStyle(PlainButtonStyle())
+        .padding(.horizontal)
+//        .padding(.top)
+//        .padding(.bottom)
+    }
+
+    @ViewBuilder
+    private func quizControlGridView() -> some View {
+        HStack {
+            Button(action: {
+                viewModel.stopQuiz()
+            }) {
+                Image(systemName: "stop.fill")
+                    .font(.title)
+                    .foregroundColor(.red.opacity(0.8))
+            }
+            .padding()
+
+            Button(action: {
+                viewModel.repeatQuestion()
+            }) {
+                Image(systemName: "repeat")
+                    .font(.title)
+                    .foregroundColor(Color.fromHex(voqa.colors.main))
+            }
+            .padding()
+
+            Button(action: {
+                isNowPlaying.toggle()
+            }) {
+                Image(systemName: isNowPlaying ? "pause.fill" : "play.fill")
+                    .font(.largeTitle)
+                    .foregroundColor(.white)
+            }
+            .padding()
+            .overlay {
+                Circle()
+                    .stroke(lineWidth: 5.0)
+                    .foregroundStyle(Color.fromHex(voqa.colors.main))
+            }
+
+            Button(action: {
+                // Mic toggle logic
+            }) {
+                Image(systemName: "mic")
+                    .font(.title)
+                    .foregroundColor(Color.fromHex(voqa.colors.main))
+            }
+            .padding()
+
+            Button(action: {
+                viewModel.nextQuestion()
+            }) {
+                Image(systemName: "forward.end.fill")
+                    .font(.title)
+                    .foregroundColor(.gray)
+            }
+            .padding()
+        }
+        .frame(maxWidth: .infinity)
+        .frame(alignment: .bottom)
+        .padding(.horizontal)
+        .padding()
+        .background(Color.black) // Ensures background color spans the entire control grid
+    }
+
+    @ViewBuilder
+    private func quizBackgroundView() -> some View {
+        CachedImageView(imageUrl: voqa.imageUrl)
+            .aspectRatio(contentMode: .fill)
+            .overlay {
+                Rectangle()
+                    .foregroundStyle(.black.opacity(0.95)) // Dark overlay on the image
+            }
+            .edgesIgnoringSafeArea(.all) // Make sure it covers the whole screen
+    }
+
+    private func colorForOption(option: String) -> Color {
+        // Access the underlying Question using `wrappedValue`
+        guard let currentQuestion = $viewModel.currentQuestion.wrappedValue else {
+            return .pink
+        }
+        
+        // Unwrap the optional correctOption and selectedOption
+        let correctOption = currentQuestion.correctOption ?? ""
+        let selectedOption = currentQuestion.selectedOption ?? ""
+
+        if viewModel.sessionAwaitingResponse {
+            return Color.fromHex(voqa.colors.main)
+        } else if option == correctOption {
+            return .green
+        } else if option == selectedOption {
+            return .red
+        } else {
+            return .black
+        }
+    }
+
 }
-
-
-//#Preview {
-//    
-//    var voqa: Voqa = Voqa(id: UUID().uuidString, quizTitle: "Sample Quiz", acronym: "SQ", about: "A sample quiz", imageUrl: "IconImage", rating: 5, curator: "Gista", users: 56, tags: ["A sample"], colors: themeColor, ratings: 99, requiresSubscription: true)
-//
-//    let controller = QuizConfigManager()
-//    return QuizPlayerView(config: controller.config ?? <#default value#>, selectedVoqa: voqa)
-//        .preferredColorScheme(.dark)
-//}
-
-//var themeColor: ThemeColors = ThemeColors(main: "", sub: "", third: "")
-
-
-
-//#Preview {
-//    let config = QuizSessionConfig()
-//    let controller = QuizController(sessionConfig: config)
-//    return QuizPlayerView(controller: controller, selectedVoqa: Voqa(id: UUID(), name: "Sample Quiz", acronym: "SQ", about: "A sample quiz", imageUrl: "", rating: 3, curator: "John Doe", users: 1000))
-//        .preferredColorScheme(.dark)
-//}
 
