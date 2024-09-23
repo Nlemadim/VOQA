@@ -41,23 +41,23 @@
       "audioUrls": [
         {
           "title": "firstIntro",
-          "urlScript": "Hi there, my name is Gus. Welcome to your first voiced over Q&A. Hope you're doing great!",
-          "audioUrl": ""
+          "urlScript": "Hi there! I’m Gus, your tutor and host of VOQA – Voiced Over Q&A. Welcome to our very first quiz session! Whether you're here to challenge your knowledge or just have some fun, you're in the perfect place. Let’s dive in!",
+          "audioUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/VoiceFeedBackUrls/Gus/hostMessages/GusIntro.mp3"
         },
         {
           "title": "start1",
-          "urlScript": "Let's get started.",
-          "audioUrl": ""
+          "urlScript": "Hi there! Welcome back. Let's get started.",
+          "audioUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/VoiceFeedBackUrls/Gus/hostMessages/gus_letsGetStarted.mp3"
         },
         {
           "title": "start2",
-          "urlScript": "Ready? Go.",
-          "audioUrl": ""
+          "urlScript": "How you doing? Ready for a new quiz?  Ok, Let's Go.",
+          "audioUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/VoiceFeedBackUrls/Gus/hostMessages/gus_OkLetsGo.mp3"
         },
         {
           "title": "start3",
-          "urlScript": "Starting now.",
-          "audioUrl": ""
+          "urlScript": "Hi! Great to have you back. Let's get started on a new Quiz.",
+          "audioUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/VoiceFeedBackUrls/Gus/hostMessages/gus_startNewQuiz.mp3"
         }
       ]
     },
@@ -67,17 +67,22 @@
         {
           "title": "next1",
           "urlScript": "Next question.",
-          "audioUrl": ""
+          "audioUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/VoiceFeedBackUrls/Gus/controlFeedback/nextQuestion/gus_nextQuestion.mp3"
         },
         {
           "title": "next2",
-          "urlScript": "Moving on.",
-          "audioUrl": ""
+          "urlScript": "Ok, let's Move on.",
+          "audioUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/VoiceFeedBackUrls/Gus/controlFeedback/nextQuestion/gus_okMoveOn.mp3"
         },
         {
           "title": "next3",
-          "urlScript": "Let's keep going.",
-          "audioUrl": ""
+          "urlScript": "Ok, Next Question",
+          "audioUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/VoiceFeedBackUrls/Gus/controlFeedback/nextQuestion/gus_okNextQuestion.mp3"
+        },
+        {
+          "title": "next4",
+          "urlScript": "Sure, lets skip this on. Going to the next question.",
+          "audioUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/VoiceFeedBackUrls/Gus/controlFeedback/nextQuestion/gus_okNextQuestion.mp3"
         }
       ]
     },
@@ -86,18 +91,18 @@
       "audioUrls": [
         {
           "title": "repeat1",
-          "urlScript": "Repeating the question.",
-          "audioUrl": ""
+          "urlScript": "Sure!, I'll repeat the question.",
+          "audioUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/VoiceFeedBackUrls/Gus/controlFeedback/repeatQuestion/gus_repeatQuestion.mp3"
         },
         {
           "title": "repeat2",
-          "urlScript": "I'll say it again.",
-          "audioUrl": ""
+          "urlScript": "Alright, lets take that last question again.",
+          "audioUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/VoiceFeedBackUrls/Gus/controlFeedback/repeatQuestion/gus_takeQuestionAgain.mp3"
         },
         {
           "title": "repeat3",
-          "urlScript": "Listen up. Here it is.",
-          "audioUrl": ""
+          "urlScript": "Ok, this was the last question",
+          "audioUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/VoiceFeedBackUrls/Gus/controlFeedback/repeatQuestion/gus_wasTheLastQuestion.mp3"
         }
       ]
     }
@@ -109,17 +114,17 @@
         {
           "title": "incorrect1",
           "urlScript": "That's not right.",
-          "audioUrl": ""
+          "audioUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/VoiceFeedBackUrls/Gus/quizFeedback/inCorrectAnswer/gus_notRight.mp3"
         },
         {
           "title": "incorrect2",
           "urlScript": "Nope, that's not it.",
-          "audioUrl": ""
+          "audioUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/VoiceFeedBackUrls/Gus/quizFeedback/inCorrectAnswer/gus_nopeThatsNotIt.mp3"
         },
         {
           "title": "incorrect3",
           "urlScript": "Wrong answer.",
-          "audioUrl": ""
+          "audioUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/VoiceFeedBackUrls/Gus/quizFeedback/inCorrectAnswer/gus_wrongAnswer.mp3"
         }
       ]
     },
@@ -129,17 +134,17 @@
         {
           "title": "correct1",
           "urlScript": "Correct! Good job.",
-          "audioUrl": ""
+          "audioUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/VoiceFeedBackUrls/Gus/quizFeedback/correctAnswer/gus_correctGoodJob.mp3"
         },
         {
           "title": "correct2",
           "urlScript": "Right on! Nice work.",
-          "audioUrl": ""
+          "audioUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/VoiceFeedBackUrls/Gus/quizFeedback/correctAnswer/gus_rightOn.mp3"
         },
         {
           "title": "correct3",
           "urlScript": "That's it. Well done.",
-          "audioUrl": ""
+          "audioUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/VoiceFeedBackUrls/Gus/quizFeedback/correctAnswer/gus_wellDone.mp3"
         }
       ]
     },
@@ -148,77 +153,27 @@
       "audioUrls": [
         {
           "title": "noResponse1",
-          "urlScript": "Didn't catch that. Moving on.",
-          "audioUrl": ""
+          "urlScript": "Didn't get a response. Moving on to the next question",
+          "audioUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/VoiceFeedBackUrls/Gus/quizFeedback/noResponse/gus_NoResponseMovingOn.mp3"
         },
         {
           "title": "noResponse2",
-          "urlScript": "No answer detected. Let's continue.",
-          "audioUrl": ""
+          "urlScript": "Emm... No response? Ok. Next question",
+          "audioUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/VoiceFeedBackUrls/Gus/quizFeedback/noResponse/gus_emmNoResponse.mp3"
         },
         {
           "title": "noResponse3",
-          "urlScript": "Nothing there. Moving ahead.",
-          "audioUrl": ""
+          "urlScript": "Nothing? No worries, you'll get another chance. Let's keep going",
+          "audioUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/VoiceFeedBackUrls/Gus/quizFeedback/noResponse/gus_youllGetAnother.mp3"
         }
       ]
     },
-    "giveScore": {
-      "title": "Give Scores",
+    "review": {
+      "title": "Session Review",
       "audioUrls": [
         {
-          "title": "0",
-          "urlScript": "You scored zero points. Better luck next time.",
-          "audioUrl": ""
-        },
-        {
-          "title": "10",
-          "urlScript": "You scored ten points. Not bad.",
-          "audioUrl": ""
-        },
-        {
-          "title": "20",
-          "urlScript": "You scored twenty points. Good effort.",
-          "audioUrl": ""
-        },
-        {
-          "title": "30",
-          "urlScript": "You scored thirty points. Nice work.",
-          "audioUrl": ""
-        },
-        {
-          "title": "40",
-          "urlScript": "You scored forty points. Keep it up.",
-          "audioUrl": ""
-        },
-        {
-          "title": "50",
-          "urlScript": "You scored fifty points. Well done. Keep practicing!",
-          "audioUrl": ""
-        },
-        {
-          "title": "60",
-          "urlScript": "You scored sixty points. Great progress.",
-          "audioUrl": ""
-        },
-        {
-          "title": "70",
-          "urlScript": "You scored seventy points. Fantastic.",
-          "audioUrl": ""
-        },
-        {
-          "title": "80",
-          "urlScript": "You scored eighty points. Impressive.",
-          "audioUrl": ""
-        },
-        {
-          "title": "90",
-          "urlScript": "You scored ninety points. Outstanding.",
-          "audioUrl": ""
-        },
-        {
-          "title": "100",
-          "urlScript": "You scored a perfect score! You're a pro.",
+          "title": "review",
+          "urlScript": "",
           "audioUrl": ""
         }
       ]
@@ -241,19 +196,24 @@
           "title": "Host Narrator Intro",
           "audioUrls": [
               {
-                  "title": "hostIntro1",
-                  "urlScript": "Welcome to the quiz session!",
-                  "audioUrl": ""
+                "title": "firstIntro",
+                "urlScript": "Hi there! I’m Gus, your tutor and host of VOQA – Voiced Over Q&A. Welcome to our very first quiz session! Whether you're here to challenge your knowledge or just have some fun, you're in the perfect place. Let’s dive in!",
+                "audioUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/VoiceFeedBackUrls/Gus/hostMessages/GusIntro.mp3"
               },
               {
-                  "title": "hostIntro2",
-                  "urlScript": "Let's get started with your questions.",
-                  "audioUrl": ""
+                "title": "intro1",
+                "urlScript": "Hi there! Welcome back. Let's get started.",
+                "audioUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/VoiceFeedBackUrls/Gus/hostMessages/gus_letsGetStarted.mp3"
               },
               {
-                  "title": "hostIntro3",
-                  "urlScript": "I'm your host, ready to guide you through.",
-                  "audioUrl": ""
+                "title": "intro2",
+                "urlScript": "How you doing? Ready for a new quiz?  Ok, Let's Go.",
+                "audioUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/VoiceFeedBackUrls/Gus/hostMessages/gus_OkLetsGo.mp3"
+              },
+              {
+                "title": "intro3",
+                "urlScript": "Hi! Great to have you back. Let's get started on a new Quiz.",
+                "audioUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/VoiceFeedBackUrls/Gus/hostMessages/gus_startNewQuiz.mp3"
               }
           ]
       },
@@ -381,8 +341,8 @@
           "title": "Outro",
           "audioUrls": [
               {
-                  "title": "outro1",
-                  "urlScript": "Thanks for finishing the session! Keep practicing, and you'll get even better. Till next time, cheers!",
+                  "title": "voqaOutro",
+                  "urlScript": "Thank you for completing yet another audio quiz on Voqa – Voiced Over Q&A!... We hope you had fun and learned something new today. Are you a business or an educational content creator aiming to reach a passionate and engaged audience?... Sponsor a quiz session on Voqa and have your message personally delivered by our expert AI tutors across over 100 specially curated audio quizzes. Perhaps you've developed resources on platforms like TikTok, Medium, or YouTube in fields such as medicine, law, or technology... voqa offers an affordable and unique way to engage your target audience by sponsoring a quiz that aligns with your content... allowing you to connect effectively with learners who are eager to expand their knowledge. Visit Voqa.io to explore our easy and cost-effective advertising opportunities... and join our growing community of partners. Until your next quiz session...this is Gus, see you soon.",
                   "audioUrl": ""
               },
               {
@@ -400,3 +360,5 @@
   },
   "sessionQuestion": []
 }
+
+

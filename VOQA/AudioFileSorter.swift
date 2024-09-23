@@ -77,7 +77,7 @@ class AudioFileSorter {
     
     func getScorePlaybackUrl(score: Int, config: QuizSessionConfig) -> String {
         var currentScoreUrl: String = ""
-        let scoreUrls = config.quizFeedback.giveScore.audioUrls
+        let scoreUrls = config.quizFeedback.review.audioUrls
 
         // Iterate over the scoreUrls
         for scoreUrl in scoreUrls {

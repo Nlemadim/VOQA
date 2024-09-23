@@ -13,7 +13,7 @@ class VoiceConfigurationManager {
     
     // Method to populate all fields of QuizSessionConfig
     func populateQuizSessionConfig(_ config: QuizSessionConfig) async throws -> QuizSessionConfig {
-        var updatedConfig = config
+        let updatedConfig = config
         
         // Populate control feedback
         updatedConfig.controlFeedback = try await populateControlFeedback(config.controlFeedback)
@@ -104,7 +104,7 @@ class VoiceConfigurationManager {
             incorrectAnswer: try await populateAudioUrls(for: quizFeedback.incorrectAnswer),
             correctAnswer: try await populateAudioUrls(for: quizFeedback.correctAnswer),
             noResponse: try await populateAudioUrls(for: quizFeedback.noResponse),
-            giveScore: try await populateAudioUrls(for: quizFeedback.giveScore)
+            review: try await populateAudioUrls(for: quizFeedback.review)
         )
     }
     
@@ -175,7 +175,7 @@ extension VoiceConfigurationManager {
         printVoicedFeedback(quizFeedback.incorrectAnswer, title: "Incorrect Answer")
         printVoicedFeedback(quizFeedback.correctAnswer, title: "Correct Answer")
         printVoicedFeedback(quizFeedback.noResponse, title: "No Response")
-        printVoicedFeedback(quizFeedback.giveScore, title: "Give Score")
+        printVoicedFeedback(quizFeedback.review, title: "Give Score")
     }
 
     // Method to print host messages
