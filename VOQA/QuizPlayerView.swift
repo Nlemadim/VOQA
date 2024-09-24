@@ -21,7 +21,8 @@ struct QuizPlayerView: View {
     @State private var cancellables: Set<AnyCancellable> = []
     
     var config: QuizSessionConfig
-    var voqa: Voqa
+    var voqa: VoqaItem
+    
     
     // Initialize ViewModel with required managers
     init(config: QuizSessionConfig, voqa: Voqa) {
@@ -31,11 +32,21 @@ struct QuizPlayerView: View {
         let quizConfigManager = QuizConfigManager()
         _viewModel = StateObject(wrappedValue: QuizViewModel(quizSessionManager: quizSessionManager, quizConfigManager: quizConfigManager))
     }
+    
+    // New initializer using VoqaItem protocol
+    init(config: QuizSessionConfig, voqaItem: VoqaItem) {
+        self.config = config
+        self.voqa = voqaItem
+        let quizSessionManager = QuizSessionManager()
+        let quizConfigManager = QuizConfigManager()
+        _viewModel = StateObject(wrappedValue: QuizViewModel(quizSessionManager: quizSessionManager, quizConfigManager: quizConfigManager))
+    }
 
     var body: some View {
         VStack {
             quizHeaderView() // Header for question count and time
-            quizQuestionView() // Display question text
+                .padding()
+            //quizQuestionView() // Display question text
             Spacer()
             quizOptionsScrollView() // Scrollable options
             Spacer()
@@ -62,7 +73,7 @@ struct QuizPlayerView: View {
 
     // MARK: - Initial Setup for Quiz Session
     private func configureNewSession() {
-        var updatedConfig = config
+        let updatedConfig = config
         updatedConfig.sessionTitle = voqa.quizTitle
 
         // Since sessionQuestion is already [Question], no need to cast
@@ -81,18 +92,40 @@ struct QuizPlayerView: View {
     
     @ViewBuilder
     private func quizHeaderView() -> some View {
-        HStack {
-            Text("Question: \(viewModel.currentQuestionIndex + 1)/\(config.sessionQuestion.count)")
-                .font(.headline)
-            Spacer()
-            Text("Time: \(viewModel.sessionTimer)")
-                .font(.callout)
-                .padding(.horizontal)
-                .foregroundStyle(.orange.opacity(0.9))
+        HStack(alignment: .center, spacing: 16) {
+            // Image for the voqaItem
+            CachedImageView(imageUrl: voqa.imageUrl)
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 160, height: 160)
+                .cornerRadius(8)
+            
+            VStack(alignment: .leading, spacing: 25) {
+                // Title for the voqaItem
+                Text(voqa.quizTitle)
+                    .font(.headline)
+                    .bold()
+                    .padding(.horizontal)
+                
+                // Question counter
+                Text("Question: \(viewModel.currentQuestionIndex + 1)/\(config.sessionQuestion.count)")
+                    .font(.callout)
+                    .foregroundColor(.gray)
+                    .padding(.horizontal)
+                
+                // Timer
+                Text("Time: \(viewModel.sessionTimer)")
+                    .font(.callout)
+                    .foregroundStyle(.orange.opacity(0.9))
+                    .padding(.horizontal)
+            }
         }
-        .padding(.horizontal)
-        .offset(y: 10)
+        .padding()
+        .background(
+            RoundedRectangle(cornerRadius: 12)
+                .fill(Material.ultraThin)
+        )
     }
+
 
     @ViewBuilder
     private func quizQuestionView() -> some View {
@@ -122,7 +155,13 @@ struct QuizPlayerView: View {
         if let question = config.sessionQuestion[safe: viewModel.currentQuestionIndex] {
             ScrollView {
                 ForEach(question.mcOptions.keys.sorted(), id: \.self) { option in
-                    quizOptionButton(option: option, color: Color.fromHex(voqa.colors.main))
+                    quizOptionButton(
+                        option: option,
+                        color: colorForOption(option: option, question: question),
+                        onSelect: { selectedOption in
+                            viewModel.selectAnswer(for: question, selectedOption: selectedOption)
+                        }
+                    )
                 }
             }
         } else {
@@ -130,12 +169,10 @@ struct QuizPlayerView: View {
         }
     }
 
-
     @ViewBuilder
-    private func quizOptionButton(option: String, color: Color) -> some View {
-        let optionColor = colorForOption(option: option)
+    private func quizOptionButton(option: String, color: Color, onSelect: @escaping (String) -> Void) -> some View {
         Button(action: {
-            viewModel.selectAnswer(selectedOption: option)
+            onSelect(option)  // Trigger the callback when an option is selected
         }) {
             Text(option)
                 .foregroundColor(.white)
@@ -143,18 +180,17 @@ struct QuizPlayerView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .background(
                     RoundedRectangle(cornerRadius: 12)
-                        .fill(optionColor.opacity(0.15))
+                        .fill(color.opacity(0.15))
                 )
                 .background(
                     RoundedRectangle(cornerRadius: 12)
-                        .stroke(optionColor.opacity(optionColor == .black ? 0.15 : 1), lineWidth: 2)
+                        .stroke(color.opacity(color == .black ? 0.15 : 1), lineWidth: 2)
                 )
         }
         .frame(maxWidth: .infinity)
         .buttonStyle(PlainButtonStyle())
         .padding(.horizontal)
-//        .padding(.top)
-//        .padding(.bottom)
+        .padding(10)
     }
 
     @ViewBuilder
@@ -223,31 +259,26 @@ struct QuizPlayerView: View {
             .aspectRatio(contentMode: .fill)
             .overlay {
                 Rectangle()
-                    .foregroundStyle(.black.opacity(0.95)) // Dark overlay on the image
+                    .foregroundStyle(.black.opacity(0.85)) // Dark overlay on the image
             }
             .edgesIgnoringSafeArea(.all) // Make sure it covers the whole screen
     }
 
-    private func colorForOption(option: String) -> Color {
-        // Access the underlying Question using `wrappedValue`
-        guard let currentQuestion = $viewModel.currentQuestion.wrappedValue else {
-            return .pink
+    private func colorForOption(option: String, question: Question) -> Color {
+        guard let isCorrect = question.mcOptions[option] else { return .gray }
+        
+        // If the question is answered, highlight based on correctness
+        if let isAnswered = question.isAnsweredOptional, isAnswered {
+            return isCorrect ? .green : .red
         }
         
-        // Unwrap the optional correctOption and selectedOption
-        let correctOption = currentQuestion.correctOption ?? ""
-        let selectedOption = currentQuestion.selectedOption ?? ""
-
-        if viewModel.sessionAwaitingResponse {
-            return Color.fromHex(voqa.colors.main)
-        } else if option == correctOption {
-            return .green
-        } else if option == selectedOption {
-            return .red
-        } else {
-            return .black
-        }
+        // If no selection is made, default to gray
+        return .gray
     }
-
 }
 
+
+#Preview {
+    TestQuizPlayerPreview()
+        .preferredColorScheme(.dark)
+}

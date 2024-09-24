@@ -337,3 +337,18 @@ struct Question: QuestionType, Equatable, Hashable {
         hasher.combine(questionStatus)
     }
 }
+
+extension Question {
+    mutating func selectAnswer(_ selectedOption: String) {
+        // Set the selected option
+        self.selectedOption = selectedOption
+        
+        // Mark the question as answered
+        self.isAnsweredOptional = true
+        
+        // Check if the selected option is correct based on mcOptions
+        if let isCorrect = mcOptions[selectedOption] {
+            self.isAnsweredCorrectlyOptional = isCorrect
+        }
+    }
+}

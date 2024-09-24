@@ -64,7 +64,8 @@ struct QuizDashboard: View {
                                         Task {
                                             do {
                                                 try await databaseManager.fetchProcessedQuestions(
-                                                    "MCAT",
+                                                    config: user.userConfig,
+                                                    quizTitle :"MCAT",
                                                     questionTypeRequest: "All Categories",
                                                     maxNumberOfQuestions: 10
                                                 )
@@ -182,7 +183,7 @@ struct QuizDashboard: View {
     private func getQuestions(quizTitle: String, questionTypeRequest: String, number: Int) async {
         isDownloading = true
         do {
-            try await databaseManager.fetchProcessedQuestions(quizTitle, questionTypeRequest: questionTypeRequest, maxNumberOfQuestions: number)
+            try await databaseManager.fetchProcessedQuestions(config: user.userConfig, quizTitle: quizTitle, questionTypeRequest: questionTypeRequest, maxNumberOfQuestions: number)
             isDownloading = false
         } catch {
             isDownloading = false

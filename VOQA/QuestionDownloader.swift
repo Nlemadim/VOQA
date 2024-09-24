@@ -24,11 +24,11 @@ struct FakeConfig {
 
 class QuestionDownloader {
     let networkService = NetworkService()
-    //var config: UserConfig
-    var config: FakeConfig
+    var config: UserConfig
+   // var config: FakeConfig
     
     // Initialize QuestionDownloader with a UserConfig
-    init(config: FakeConfig) {
+    init(config: UserConfig) {
         self.config = config
     }
     
@@ -65,8 +65,92 @@ class QuestionDownloader {
         // Return the voice designation for the selected narrator
         return selectedVoice.voiceDesignation
     }
+    
+    func loadMockQuestions() -> [Question] {
+        let question1 = Question(
+            refId: "ca007f3b-424c-45e8-8305-0408d576da03",
+            content: "In the context of cellular respiration, what role does the electron transport chain play?",
+            mcOptions: [
+                "A: Breaks down glucose into pyruvate": false,
+                "C: Generates ATP by oxidative phosphorylation": true,
+                "B: Synthesizes glucose through photosynthesis": false,
+                "D: Facilitates the synthesis of protein": false
+            ],
+            correctOption: "B",
+            selectedOption: nil,
+            correction: "Your engagement with this question is appreciated, yet the precise answer is Option C: Generates ATP by oxidative phosphorylation. The electron transport chain is integral to cellular respiration, transferring electrons from NADH and FADH2 to oxygen, a process known as oxidative phosphorylation. This critical step generates a significant amount of ATP, the energy currency of the cell, supporting various cellular functions. This understanding underscores the importance of energy production mechanisms in biology.",
+            isAnsweredOptional: nil,
+            isAnsweredCorrectlyOptional: nil,
+            numberOfPresentations: 2,
+            questionScript: "Let's dive into the fascinating world of cellular respiration, a crucial process that cells use to break down glucose and produce the energy carrier, ATP. A key player in this process is the electron transport chain, known for its role in oxidative phosphorylation. *Here are your options:* Option A: Breaks down glucose into pyruvate, Option B: Synthesizes glucose through photosynthesis, Option C: Generates ATP by oxidative phosphorylation, Option D: Facilitates the synthesis of protein. Reflect on each option and choose wisely.",
+            repeatQuestionScript: "In the context of cellular respiration, what role does the electron transport chain play? *Here are the options:* Option A: Breaks down glucose into pyruvate, Option B: Synthesizes glucose through photosynthesis, Option C: Generates ATP by oxidative phosphorylation, Option D: Facilitates the synthesis of protein.",
+            questionScriptAudioUrl: "https://storage.googleapis.com/buildship-ljnsun-us-central1/ca007f3b-424c-45e8-8305-0408d576da03_questionScript.mp3",
+            correctionAudioUrl: "https://storage.googleapis.com/buildship-ljnsun-us-central1/ca007f3b-424c-45e8-8305-0408d576da03_correction.mp3",
+            repeatQuestionAudioUrl: "https://storage.googleapis.com/buildship-ljnsun-us-central1/ca007f3b-424c-45e8-8305-0408d576da03_repeatQuestionScript.mp3",
+            coreTopic: "Biological and Biochemical Foundations",
+            quizId: "MCAT",
+            userId: "rBkUyTtc2XXXcj43u53N",
+            questionStatus: QuestionStatus(isAnsweredCorrectly: false, isAnswered: false, knowledgeConfirmed: false)
+        )
+        
+        let question2 = question1.copy(
+            refId: "e533677c-dbc8-4ffd-9259-7f6ede2c01bc",
+            content: "Which concept is central to understanding the flow of genetic information within a biological system?",
+            mcOptions: [
+                "C: Law of independent assortment": false,
+                "B: Central dogma of molecular biology": true,
+                "D: Law of segregation": false,
+                "A: Theory of evolution by natural selection": false
+            ],
+            questionScriptAudioUrl: "https://storage.googleapis.com/buildship-ljnsun-us-central1/e533677c-dbc8-4ffd-9259-7f6ede2c01bc_questionScript.mp3",
+            correctionAudioUrl: "https://storage.googleapis.com/buildship-ljnsun-us-central1/e533677c-dbc8-4ffd-9259-7f6ede2c01bc_correction.mp3",
+            repeatQuestionAudioUrl: "https://storage.googleapis.com/buildship-ljnsun-us-central1/e533677c-dbc8-4ffd-9259-7f6ede2c01bc_repeatQuestionScript.mp3"
+        )
+        
+        let question3 = question1.copy(
+            refId: "a5723acc-3857-44db-91ba-cdf5b34e5915",
+            content: "Which of the following enzymes is crucial for the unwinding of DNA during replication?",
+            mcOptions: [
+                "B: Ligase": false,
+                "D: RNA polymerase": false,
+                "A: Helicase": true,
+                "C: DNA polymerase": false
+            ],
+            questionScriptAudioUrl: "https://storage.googleapis.com/buildship-ljnsun-us-central1/a5723acc-3857-44db-91ba-cdf5b34e5915_questionScript.mp3",
+            correctionAudioUrl: "https://storage.googleapis.com/buildship-ljnsun-us-central1/a5723acc-3857-44db-91ba-cdf5b34e5915_correction.mp3",
+            repeatQuestionAudioUrl: "https://storage.googleapis.com/buildship-ljnsun-us-central1/a5723acc-3857-44db-91ba-cdf5b34e5915_repeatQuestionScript.mp3"
+        )
+        
+        return [question1, question2, question3]
+    }
 }
 
+
+extension Question {
+    
+    func copy(refId: String, content: String, mcOptions: [String: Bool], questionScriptAudioUrl: String, correctionAudioUrl: String, repeatQuestionAudioUrl: String) -> Question {
+        return Question(
+            refId: refId,
+            content: content,
+            mcOptions: mcOptions,
+            correctOption: self.correctOption,
+            selectedOption: self.selectedOption,
+            correction: self.correction,
+            isAnsweredOptional: self.isAnsweredOptional,
+            isAnsweredCorrectlyOptional: self.isAnsweredCorrectlyOptional,
+            numberOfPresentations: self.numberOfPresentations,
+            questionScript: self.questionScript,
+            repeatQuestionScript: self.repeatQuestionScript,
+            questionScriptAudioUrl: questionScriptAudioUrl,
+            correctionAudioUrl: correctionAudioUrl,
+            repeatQuestionAudioUrl: repeatQuestionAudioUrl,
+            coreTopic: self.coreTopic,
+            quizId: self.quizId,
+            userId: self.userId,
+            questionStatus: self.questionStatus
+        )
+    }
+}
 
 extension NetworkService {
 
@@ -145,3 +229,6 @@ extension NetworkService {
         }
     }
 }
+
+
+

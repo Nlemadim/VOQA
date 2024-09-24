@@ -11,23 +11,6 @@ class QuizConfigManager {
     let networkService = NetworkService()
     let voiceConfigurationManager = VoiceConfigurationManager()
     var config: QuizSessionConfig?
-
-    func loadLocalConfiguration() throws -> QuizSessionConfig {
-        guard let path = Bundle.main.path(forResource: "SessionConfigData2", ofType: "json") else {
-            print("Mock file not found in bundle.")
-            throw NSError(domain: "QuizConfigManager", code: 1, userInfo: [NSLocalizedDescriptionKey: "Local configuration file not found"])
-        }
-        
-        do {
-            let data = try Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe)
-            let config = try JSONDecoder().decode(QuizSessionConfig.self, from: data)
-            self.config = config
-            return config
-        } catch {
-            print("Error loading or decoding mock data: \(error)")
-            throw error
-        }
-    }
     
     func downloadConfiguration() async throws -> QuizSessionConfig {
         let url = URL(string: ConfigurationUrls.sessionConfiguration)!

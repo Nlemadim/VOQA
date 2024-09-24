@@ -58,10 +58,10 @@ class DatabaseManager: ObservableObject {
         self.sessionConfiguration = loadedConfig
     }
         
-    func fetchProcessedQuestions(_ quizTitle: String, questionTypeRequest: String, maxNumberOfQuestions: Int) async throws {
+    func fetchProcessedQuestions(config: UserConfig ,quizTitle: String, questionTypeRequest: String, maxNumberOfQuestions: Int) async throws {
         // Initialize the QuestionDownloader with the UserConfig from the environment
-        let fakeConfig = FakeConfig(userId: "rBkUyTtc2XXXcj43u53N", quizTitle: "Data Privacy", narrator: "Gus", language: "")
-        let questionDownloader = QuestionDownloader(config: fakeConfig)
+        
+        let questionDownloader = QuestionDownloader(config: config)
         
         // Fetch questions using the user's quiz title
         let newQuestions = try await questionDownloader.downloadQuizQuestions(

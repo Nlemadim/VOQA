@@ -110,6 +110,34 @@ class QuizViewModel: ObservableObject, QuizViewModelProtocol {
         quizSessionManager.selectAnswer(selectedOption: selectedOption)
         sfxPlayer.play(.hasReceivedResponse)
     }
+    
+    func selectAnswer(for question: any QuestionType, selectedOption: String) {
+        // Check if currentQuestion is nil or has a different id
+        guard let currentQuestion = currentQuestion else {
+            print("currentQuestion is nil")
+            return
+        }
+
+        print("Current question ID: \(currentQuestion.id)")
+        print("Selected question ID: \(question.id)")
+
+        guard currentQuestion.id == question.id else {
+            print("No matching current question found. Current: \(currentQuestion.id), Selected: \(question.id)")
+            return
+        }
+        
+        // Check if the current question conforms to `Question`
+        if var updatedQuestion = currentQuestion as? Question {
+            // Call the `selectAnswer` method on the `Question` struct
+            updatedQuestion.selectAnswer(selectedOption)
+            
+            // Update the `currentQuestion` to reflect the changes
+            self.currentQuestion = updatedQuestion
+        } else {
+            print("Current question does not conform to Question.")
+        }
+    }
+
 
     
     func stopQuiz() {

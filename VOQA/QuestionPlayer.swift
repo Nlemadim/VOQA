@@ -236,6 +236,7 @@ class QuestionPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate, Session
     ///   - session: The current quiz session.
     private func playQuestion(question: any QuestionType, session: QuizSession) {
         setUpCurrentQuestion(session: session, question: question)
+        session.currentQuestionText = question.questionScript
         updateHasNextQuestion()
         
         startPlayback(session: session)

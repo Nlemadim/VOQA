@@ -98,3 +98,4 @@ struct Voqa: Identifiable, Hashable, Decodable {
     }
 }
 
+extension Voqa: VoqaItem {}
