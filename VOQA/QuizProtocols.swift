@@ -25,7 +25,6 @@ protocol SessionObserver: AnyObject {
     func stateDidChange(to newState: QuizServices)
 }
 
-
 // Protocols for QuizSession
 protocol QuizSessionInfoProtocol {
     var sessionTitle: String { get }
@@ -55,5 +54,10 @@ protocol QuizControlInterface {
     func repeatQuestion()
     func skipQuestion()
 }
+
+protocol BgmPlayerDelegate: AnyObject {
+    func bgmPlayerDidFinishPlaying(_ player: BgmPlayer)
+}
+
 
 

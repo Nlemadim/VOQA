@@ -57,7 +57,7 @@ class DatabaseManager: ObservableObject {
         let loadedConfig = try await configManager.loadVoiceConfiguration(for: voice)
         self.sessionConfiguration = loadedConfig
     }
-        
+    
     func fetchProcessedQuestions(config: UserConfig ,quizTitle: String, questionTypeRequest: String, maxNumberOfQuestions: Int) async throws {
         // Initialize the QuestionDownloader with the UserConfig from the environment
         
@@ -94,15 +94,15 @@ class DatabaseManager: ObservableObject {
             print("Error fetching quiz collection: \(error.localizedDescription)")
         }
     }
-
+    
     
     func addUserToChannel(userId: String) {
         /**
          {
-          "userId":"",
-          "username":"",
-          "quizTitle":"",
-          "joinDate":""
+         "userId":"",
+         "username":"",
+         "quizTitle":"",
+         "joinDate":""
          }
          */
     }
@@ -111,10 +111,10 @@ class DatabaseManager: ObservableObject {
         /**
          Request Body
          {
-          "userId":"rBkUyTtc2XXXcj43u53N",
-          "quizTitle":"MCAT",
-          "questionStyle":"ALL Categories",
-          "numberOfQuestions":"5"
+         "userId":"rBkUyTtc2XXXcj43u53N",
+         "quizTitle":"MCAT",
+         "questionStyle":"ALL Categories",
+         "numberOfQuestions":"5"
          }
          
          */
@@ -155,12 +155,12 @@ class DatabaseManager: ObservableObject {
                 .generalBiology, .swiftProgramming
             ]
         ]
-
+        
         var quizCatalogue = [QuizCatalogue]()
-
+        
         for (category, quizEnums) in assignments {
             var quizzesInCategory: [Voqa] = []
-
+            
             for quizEnum in quizEnums {
                 if let quiz = quizCollection.first(where: { $0.quizTitle == quizEnum.rawValue }) {
                     print("Mapped Quiz: \(quiz.quizTitle) -> \(quizEnum.rawValue) in \(category.details.title)")
@@ -174,7 +174,7 @@ class DatabaseManager: ObservableObject {
                     }
                 }
             }
-
+            
             // Create and append the QuizCatalogue for each category
             let categoryData = QuizCatalogue(
                 categoryName: category.details.title,
@@ -183,7 +183,7 @@ class DatabaseManager: ObservableObject {
             )
             quizCatalogue.append(categoryData)
         }
-
+        
         return quizCatalogue
     }
     

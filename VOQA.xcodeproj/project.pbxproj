@@ -142,6 +142,9 @@
 		0BC091E02C1D4463005FB223 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BC091DF2C1D4463005FB223 /* ContentView.swift */; };
 		0BC091E42C1D4465005FB223 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0BC091E32C1D4465005FB223 /* Assets.xcassets */; };
 		0BC091E82C1D4465005FB223 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0BC091E72C1D4465005FB223 /* Preview Assets.xcassets */; };
+		0BD38EEC2CA3A6BF00FB9F09 /* CommandCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BD38EEB2CA3A6BF00FB9F09 /* CommandCenter.swift */; };
+		0BD38EEE2CA3A6DB00FB9F09 /* QuizOrchestra.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BD38EED2CA3A6DB00FB9F09 /* QuizOrchestra.swift */; };
+		0BD38EF02CA3AC0500FB9F09 /* BgmPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BD38EEF2CA3AC0500FB9F09 /* BgmPlayer.swift */; };
 		0BD6F8842C88DB8500ED80A1 /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BD6F8832C88DB8500ED80A1 /* UserProfile.swift */; };
 		0BEF0F3A2C78934200341F21 /* CachedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BEF0F392C78934200341F21 /* CachedImageView.swift */; };
 		0BF30B5D2C90D1F700AFE578 /* QuestionDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BF30B5C2C90D1F700AFE578 /* QuestionDownloader.swift */; };
@@ -288,6 +291,9 @@
 		0BC091E32C1D4465005FB223 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0BC091E52C1D4465005FB223 /* VOQA.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = VOQA.entitlements; sourceTree = "<group>"; };
 		0BC091E72C1D4465005FB223 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		0BD38EEB2CA3A6BF00FB9F09 /* CommandCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandCenter.swift; sourceTree = "<group>"; };
+		0BD38EED2CA3A6DB00FB9F09 /* QuizOrchestra.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizOrchestra.swift; sourceTree = "<group>"; };
+		0BD38EEF2CA3AC0500FB9F09 /* BgmPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BgmPlayer.swift; sourceTree = "<group>"; };
 		0BD6F8832C88DB8500ED80A1 /* UserProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
 		0BEF0F392C78934200341F21 /* CachedImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachedImageView.swift; sourceTree = "<group>"; };
 		0BEF0F3D2C78AE4700341F21 /* VoqaCollection.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = VoqaCollection.json; sourceTree = "<group>"; };
@@ -601,6 +607,9 @@
 				0B6561332C3E4F100013663B /* SessionInitializer.swift */,
 				0B6561782C3E50ED0013663B /* SessionCloser.swift */,
 				0B6561452C3E4F5F0013663B /* IdleSession.swift */,
+				0BD38EEB2CA3A6BF00FB9F09 /* CommandCenter.swift */,
+				0BD38EED2CA3A6DB00FB9F09 /* QuizOrchestra.swift */,
+				0BD38EEF2CA3AC0500FB9F09 /* BgmPlayer.swift */,
 			);
 			name = SessionManager;
 			sourceTree = "<group>";
@@ -957,6 +966,7 @@
 				0BF408E02C92A7C100998038 /* ReadoutDownloader.swift in Sources */,
 				0B6561252C3E4EE10013663B /* UIScreen+Extensions.swift in Sources */,
 				0B30DACB2C81A3AD00466544 /* PageLinkView.swift in Sources */,
+				0BD38EEE2CA3A6DB00FB9F09 /* QuizOrchestra.swift in Sources */,
 				0B65612E2C3E4F020013663B /* QuizSession.swift in Sources */,
 				0B55C8662C8027680038ABE1 /* VoiceConfigurationManager.swift in Sources */,
 				0B5994DD2C99156D00C0472D /* QuizzesView.swift in Sources */,
@@ -1022,6 +1032,7 @@
 				0B30DAC72C81876500466544 /* LatestScoreView.swift in Sources */,
 				0B4E25192C9A0038002AC7C3 /* MyChannels.swift in Sources */,
 				0B854D322C632AAE0025C2E1 /* Collection+Extension.swift in Sources */,
+				0BD38EF02CA3AC0500FB9F09 /* BgmPlayer.swift in Sources */,
 				0B55C8602C7FEDEF0038ABE1 /* AddOnItems.swift in Sources */,
 				0B511D052C7632F300D02CE6 /* AllRecordsView.swift in Sources */,
 				0B511D0B2C76335F00D02CE6 /* CustomSpinnerView.swift in Sources */,
@@ -1032,6 +1043,7 @@
 				0B4BD9392C752FD3006A043D /* QuizData.swift in Sources */,
 				0BA63B692C762CCA00AE5048 /* FullTitleView.swift in Sources */,
 				0B5BA5B12C76445E00E1155A /* CircularPlayButton.swift in Sources */,
+				0BD38EEC2CA3A6BF00FB9F09 /* CommandCenter.swift in Sources */,
 				0BA63B572C762A8E00AE5048 /* SfxPlayer.swift in Sources */,
 				0B65617B2C3E51060013663B /* AudioSessionManager.swift in Sources */,
 				0B5BA5B02C76445E00E1155A /* BaseView.swift in Sources */,

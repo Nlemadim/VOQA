@@ -58,10 +58,18 @@ class AudioFileSorter {
         case .playBGM:
             audioUrls = config.sessionMusic.compactMap { $0.audioUrl }
             return nil
-       
+
         case .giveScore(score: let score):
             let url = getScorePlaybackUrl(score: score, config: config)
             audioUrls.append(url)
+
+        case .playHostIntro:
+            if let hostMessages = config.quizHostMessages {
+                // Specifically target the "firstIntro" audio
+                if let firstIntro = hostMessages.hostNarratorIntro.audioUrls.first(where: { $0.title == "firstIntro" }) {
+                    return URL(string: firstIntro.audioUrl.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed) ?? "")
+                }
+            }
         }
         
         guard !audioUrls.isEmpty else {
@@ -74,7 +82,7 @@ class AudioFileSorter {
         print("Selected URL for action \(action): \(selectedUrl)")
         return URL(string: selectedUrl.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")
     }
-    
+
     func getScorePlaybackUrl(score: Int, config: QuizSessionConfig) -> String {
         var currentScoreUrl: String = ""
         let scoreUrls = config.quizFeedback.review.audioUrls

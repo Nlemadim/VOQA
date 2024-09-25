@@ -75,16 +75,9 @@ struct QuizPlayerView: View {
     private func configureNewSession() {
         let updatedConfig = config
         updatedConfig.sessionTitle = voqa.quizTitle
-
-        // Since sessionQuestion is already [Question], no need to cast
-        let questions = updatedConfig.sessionQuestion
-
         viewModel.initializeSession(with: updatedConfig)
-        viewModel.startNewQuizSession(questions: questions)
+        viewModel.startQuiz()
 
-        print(updatedConfig.sessionTitle)
-        print(updatedConfig.sessionVoice)
-        print(questions.count)
     }
 
 
@@ -215,6 +208,7 @@ struct QuizPlayerView: View {
             .padding()
 
             Button(action: {
+                viewModel.startQuiz()
                 isNowPlaying.toggle()
             }) {
                 Image(systemName: isNowPlaying ? "pause.fill" : "play.fill")

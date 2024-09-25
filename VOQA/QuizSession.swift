@@ -55,6 +55,7 @@ class QuizSession: ObservableObject, QuizServices {
         return SessionAudioPlayer(context: self, audioFileSorter: audioFileSorter)
     }()
     
+    
     var observers: [SessionObserver] = [] // Changed from 'private var observers' to 'var observers'
     var questionPlayer: QuestionPlayer
     var reviewer: ReviewsManager
@@ -62,14 +63,17 @@ class QuizSession: ObservableObject, QuizServices {
     var audioFileSorter: AudioFileSorter
     var sessionInfo: QuizSessionInfoProtocol
     var scoreRegistry: ScoreRegistry
+    var commandCenter: CommandCenter
+    var orchestra: QuizOrchestra
     
     // var questions: [Question] = [] // Removed as it's now managed by QuestionPlayer
     private var countdownComplete: Bool = false
     
     private var timer: Timer?
     private var quizStartTimer: Timer?
+    var bgmPlayer: BgmPlayer
     
-    init(state: QuizServices, questionPlayer: QuestionPlayer, reviewer: ReviewsManager, sessionCloser: SessionCloser, audioFileSorter: AudioFileSorter, sessionInfo: QuizSessionInfoProtocol, scoreRegistry: ScoreRegistry) {
+    init(state: QuizServices, questionPlayer: QuestionPlayer, reviewer: ReviewsManager, sessionCloser: SessionCloser, audioFileSorter: AudioFileSorter, sessionInfo: QuizSessionInfoProtocol, scoreRegistry: ScoreRegistry, commandCenter: CommandCenter, orchestra: QuizOrchestra, bgmPlayer: BgmPlayer) {
         self.state = state
         self.questionPlayer = questionPlayer
         self.reviewer = reviewer
@@ -77,32 +81,59 @@ class QuizSession: ObservableObject, QuizServices {
         self.audioFileSorter = audioFileSorter
         self.sessionInfo = sessionInfo
         self.scoreRegistry = scoreRegistry
-        
-        self.questionPlayer.session = self
-        self.reviewer.session = self
-        self.sessionCloser.context = self
+        self.commandCenter = commandCenter
+        self.orchestra = orchestra
+        self.bgmPlayer = bgmPlayer  // Assign bgmPlayer
         
         // Initialize properties from sessionInfo
         self.quizTitle = sessionInfo.sessionTitle
-        // self.questions = sessionInfo.sessionQuestions // Removed
         self.totalQuestionCount = sessionInfo.sessionQuestions.count
+        
         setupObservers()
     }
+        
+
     
     static func create(state: QuizServices, config: QuizSessionConfig) -> QuizSession {
         let questionPlayer = QuestionPlayer()
         let reviewer = ReviewsManager()
         let sessionCloser = SessionCloser()
         let sessionInitializer = SessionInitializer(config: config)
-        
+
         let sessionInfo = sessionInitializer.initializeSession()
         let audioFileSorter = AudioFileSorter(randomGenerator: SystemRandomNumberGenerator())
         audioFileSorter.configure(with: config)
-        
+
         let scoreRegistry = ScoreRegistry()
-        
-        return QuizSession(state: state, questionPlayer: questionPlayer, reviewer: reviewer, sessionCloser: sessionCloser, audioFileSorter: audioFileSorter, sessionInfo: sessionInfo, scoreRegistry: scoreRegistry)
+
+        // Create BgmPlayer first
+        let bgmPlayer = BgmPlayer(audioUrls: config.sessionMusic.map { $0.audioUrl })  // Passing sessionMusic to BgmPlayer
+
+        // Initialize CommandCenter and QuizOrchestra without session reference yet
+        let commandCenter = CommandCenter(session: nil)  // Temporarily set session as nil
+        let orchestra = QuizOrchestra(commandCenter: commandCenter)
+
+        // Create the QuizSession
+        let quizSession = QuizSession(
+            state: state,
+            questionPlayer: questionPlayer,
+            reviewer: reviewer,
+            sessionCloser: sessionCloser,
+            audioFileSorter: audioFileSorter,
+            sessionInfo: sessionInfo,
+            scoreRegistry: scoreRegistry,
+            commandCenter: commandCenter,
+            orchestra: orchestra,
+            bgmPlayer: bgmPlayer  // Pass bgmPlayer to QuizSession
+        )
+
+        // Now that the QuizSession is created, set it in the CommandCenter
+        commandCenter.session = quizSession
+
+        return quizSession
     }
+
+
     
     func setState(_ state: QuizServices) {
         print("Setting state to \(type(of: state))")
@@ -110,6 +141,13 @@ class QuizSession: ObservableObject, QuizServices {
         self.state.handleState(session: self)
   
         notifyObservers()
+    }
+    
+    func startQuiz() {
+        print("Session: Starting quiz.")
+        //MARK: TODO put a guard cj=heck to make sure there are questions before start
+        orchestra.startFlow()
+        self.isNowPlaying = true
     }
 
     func startNewQuizSession(questions: [any QuestionType]) {

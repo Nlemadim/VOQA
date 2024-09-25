@@ -21,33 +21,54 @@ class QuizSessionManager: ObservableObject {
         let scoreRegistry = ScoreRegistry()
         let audioFileSorter = AudioFileSorter(randomGenerator: SystemRandomNumberGenerator())
         audioFileSorter.configure(with: config)
-
-        self.quizSession = QuizSession(
-            state: IdleSession(), // Assuming IdleSession is a valid state
+        
+        // Initialize BgmPlayer with sessionMusic from the config
+        let bgmPlayer = BgmPlayer(audioUrls: config.sessionMusic.map { $0.audioUrl })  // Use the sessionMusic array from config
+        
+        // Initialize CommandCenter without session reference yet
+        let commandCenter = CommandCenter(session: nil)
+        let quizOrchestra = QuizOrchestra(commandCenter: commandCenter)
+        
+        // Create QuizSession with the CommandCenter, Orchestra, and BgmPlayer
+        let quizSession = QuizSession(
+            state: IdleSession(),
             questionPlayer: QuestionPlayer(),
             reviewer: ReviewsManager(),
             sessionCloser: SessionCloser(),
             audioFileSorter: audioFileSorter,
-            sessionInfo: sessionInfo, scoreRegistry: scoreRegistry
+            sessionInfo: sessionInfo,
+            scoreRegistry: scoreRegistry,
+            commandCenter: commandCenter,
+            orchestra: quizOrchestra,
+            bgmPlayer: bgmPlayer  
         )
-
-        // Bind properties from QuizSession to trigger updates
-        quizSession?.$currentQuestionText
+        
+        // Now that the QuizSession is created, set it in the CommandCenter
+        commandCenter.session = quizSession
+        bgmPlayer.delegate = quizOrchestra
+        
+        // Assign the created session to the Published quizSession property
+        self.quizSession = quizSession
+        
+        // Bind properties from QuizSession to trigger updates in the view model
+        quizSession.$currentQuestionText
             .sink { [weak self] _ in self?.objectWillChange.send() }
             .store(in: &cancellables)
-
-        quizSession?.$questionCounter
+        
+        quizSession.$questionCounter
             .sink { [weak self] _ in self?.objectWillChange.send() }
             .store(in: &cancellables)
-
-        quizSession?.$isNowPlaying
+        
+        quizSession.$isNowPlaying
             .sink { [weak self] _ in self?.objectWillChange.send() }
             .store(in: &cancellables)
-
-        quizSession?.$isAwaitingResponse
+        
+        quizSession.$isAwaitingResponse
             .sink { [weak self] _ in self?.objectWillChange.send() }
             .store(in: &cancellables)
     }
+
+
 
     // Expose necessary methods
     func nextQuestion() {
@@ -61,6 +82,10 @@ class QuizSessionManager: ObservableObject {
 //        let questionIndex = quizSession.questionPlayer.currentQuestionIndex
 //        let totalCount = quizSession.questionPlayer.currentQuestions.count
 //        quizSession.updateQuestionCounter(questionIndex: questionIndex, count: totalCount)
+    }
+    
+    func startNewQuiz() {
+        quizSession?.startQuiz()
     }
 
     func selectAnswer(selectedOption: String) {

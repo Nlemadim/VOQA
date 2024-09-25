@@ -99,6 +99,15 @@ class QuizViewModel: ObservableObject, QuizViewModelProtocol {
     func startNewQuizSession(questions: [Question]) {
         quizSessionManager.startNewQuizSession(questions: questions)
     }
+    
+    func startQuiz() {
+        
+        quizSessionManager.startNewQuiz()
+        
+        DispatchQueue.main.async {
+            self.sessionNowplayingAudio = true
+        }
+    }
 
 
     func nextQuestion() {

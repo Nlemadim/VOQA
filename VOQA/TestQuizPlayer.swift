@@ -12,11 +12,22 @@ import Combine
 final class TestQuizPlayer {
     @StateObject private var user = User()
     @StateObject private var databaseManager = DatabaseManager.shared
+    @StateObject private var viewModel: QuizViewModel
     private var quizConfigManager: QuizConfigManager
     private var cancellables = Set<AnyCancellable>()
 
     init() {
         self.quizConfigManager = QuizConfigManager()
+        let quizSessionManager = QuizSessionManager()
+        _viewModel = StateObject(wrappedValue: QuizViewModel(quizSessionManager: quizSessionManager, quizConfigManager: self.quizConfigManager))
+    }
+    
+    func configureNewSession() {
+        if let config = databaseManager.sessionConfiguration {
+            let updatedConfig = config
+            viewModel.initializeSession(with: updatedConfig)
+            viewModel.startQuiz()
+        }
     }
 
     func loadQuizPlayerView(completion: @escaping (QuizPlayerView?) -> Void) {
@@ -76,6 +87,7 @@ final class TestQuizPlayer {
 
 struct TestQuizPlayerPreview: View {
     @State private var quizPlayerView: QuizPlayerView?
+    private let testQuizPlayer = TestQuizPlayer()  // Single instance of TestQuizPlayer
 
     var body: some View {
         Group {
@@ -86,7 +98,10 @@ struct TestQuizPlayerPreview: View {
             }
         }
         .onAppear {
-            TestQuizPlayer().loadQuizPlayerView { view in
+            // Call configureNewSession and loadQuizPlayerView in sequence
+//            testQuizPlayer.configureNewSession()
+            
+            testQuizPlayer.loadQuizPlayerView { view in
                 self.quizPlayerView = view
             }
         }

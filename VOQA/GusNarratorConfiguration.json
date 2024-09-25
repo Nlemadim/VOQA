@@ -181,14 +181,9 @@
   },
   "sessionMusic": [
     {
-      "title": "Background Music 1",
-      "urlScript": "Soft instrumental music playing",
-      "audioUrl": ""
-    },
-    {
-      "title": "Background Music 2",
-      "urlScript": "Upbeat background music",
-      "audioUrl": ""
+      "title": "Song by Biting, Produced by Dj Drewpy",
+      "urlScript": "Soft Jazz Bop",
+      "audioUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/MusicPlaylist/Biting.mp3"
     }
   ],
   "quizHostMessages": {
@@ -197,8 +192,8 @@
           "audioUrls": [
               {
                 "title": "firstIntro",
-                "urlScript": "Hi there! I’m Gus, your tutor and host of VOQA – Voiced Over Q&A. Welcome to our very first quiz session! Whether you're here to challenge your knowledge or just have some fun, you're in the perfect place. Let’s dive in!",
-                "audioUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/VoiceFeedBackUrls/Gus/hostMessages/GusIntro.mp3"
+                "urlScript": "Hi there! Welcome to your very first Voqa - Voiced over Q&A session! Whether you’re here to test your knowledge or simply have some fun, you’re in the right place. I’m Gus, your host and tutor. Let’s get started!",
+                "audioUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/VoiceFeedBackUrls/Gus/hostMessages/hostIntro/GusIntro.mp3"
               },
               {
                 "title": "intro1",
