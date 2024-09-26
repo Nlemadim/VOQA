@@ -79,7 +79,7 @@ extension AddOnItem {
                 name: "Ini",
                 imageName: "Ini",
                 isSelected: false,
-                about: "Ini is a technology futurist. He deeply appreciates novelty and innovation.",
+                about: "Counter Sports Prediction Specialist",
                 audioURL: URL(string: "https://example.com/ini_voice.mp3"),
                 isPaid: true,
                 path: "IniNarratorConfiguration" // Updated path to match the new file naming convention
@@ -89,10 +89,40 @@ extension AddOnItem {
                 name: "Dogon Yaro",
                 imageName: "DogonYaro",
                 isSelected: false,
-                about: "Dogon Yaro only speaks when there is much to say.",
+                about: "Bio-Artificial Ent",
                 audioURL: URL(string: "https://example.com/dogon_yaro_voice.mp3"),
                 isPaid: false,
                 path: "DogonYaroNarratorConfiguration" // Updated path to match the new file naming convention
+            ),
+            AddOnItem(
+                id: UUID(),
+                name: "Amina",
+                imageName: "Amina",
+                isSelected: false,
+                about: "Mystic Queen",
+                audioURL: URL(string: "https://example.com/dogon_yaro_voice.mp3"),
+                isPaid: false,
+                path: "DogonYaroNarratorConfiguration" // Updated path to match the new file naming convention
+            ),
+            AddOnItem(
+                id: UUID(),
+                name: "Dross",
+                imageName: "Dross",
+                isSelected: false,
+                about: "17th Generation Mindbot",
+                audioURL: URL(string: "https://example.com/dogon_yaro_voice.mp3"),
+                isPaid: false,
+                path: "DrossNarratorConfiguration" // Updated path to match the new file naming convention
+            ),
+            AddOnItem(
+                id: UUID(),
+                name: "Dr Butters",
+                imageName: "DrButters",
+                isSelected: false,
+                about: "Mad Techno-human Biologist",
+                audioURL: URL(string: "https://example.com/dogon_yaro_voice.mp3"),
+                isPaid: false,
+                path: "DrossNarratorConfiguration" // Updated path to match the new file naming convention
             )
         ]
     }

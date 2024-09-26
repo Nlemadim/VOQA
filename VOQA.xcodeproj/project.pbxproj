@@ -118,6 +118,8 @@
 		0B747B362C79C08E000C5050 /* PageNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B747B352C79C08E000C5050 /* PageNavigationController.swift */; };
 		0B7B17BA2C4804D600B11974 /* ScoreRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B7B17B92C4804D600B11974 /* ScoreRegistry.swift */; };
 		0B854D322C632AAE0025C2E1 /* Collection+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B854D312C632AAE0025C2E1 /* Collection+Extension.swift */; };
+		0B8CF9922CA52F500087728A /* DogonYaroNarratorConfiguration.json in Resources */ = {isa = PBXBuildFile; fileRef = 0B8CF9912CA52F500087728A /* DogonYaroNarratorConfiguration.json */; };
+		0B8CF9942CA52FB90087728A /* DrossNarratorConfiguration.json in Resources */ = {isa = PBXBuildFile; fileRef = 0B8CF9932CA52FB90087728A /* DrossNarratorConfiguration.json */; };
 		0BA62FDA2C40C6C00053F7C2 /* HomepageConfig.json in Resources */ = {isa = PBXBuildFile; fileRef = 0BA62FD92C40C6C00053F7C2 /* HomepageConfig.json */; };
 		0BA63B3C2C76274200AE5048 /* HomepageConfigProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BA63B3B2C76274200AE5048 /* HomepageConfigProtocols.swift */; };
 		0BA63B3E2C76276100AE5048 /* VoqaConfigManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BA63B3D2C76276100AE5048 /* VoqaConfigManager.swift */; };
@@ -137,7 +139,6 @@
 		0BA63B6B2C762CF900AE5048 /* QuizPlayerBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BA63B6A2C762CF900AE5048 /* QuizPlayerBackground.swift */; };
 		0BA63B6D2C762D0E00AE5048 /* QuizControlButtonsGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BA63B6C2C762D0E00AE5048 /* QuizControlButtonsGrid.swift */; };
 		0BB011252CA31BC200376A8C /* TestQuizPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BB011242CA31BC200376A8C /* TestQuizPlayer.swift */; };
-		0BB3452C2CA20FD1003A0F5F /* DogonYaroNarratorConfiguration.json in Resources */ = {isa = PBXBuildFile; fileRef = 0BB3452B2CA20FD1003A0F5F /* DogonYaroNarratorConfiguration.json */; };
 		0BC091DE2C1D4463005FB223 /* VOQAApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BC091DD2C1D4463005FB223 /* VOQAApp.swift */; };
 		0BC091E02C1D4463005FB223 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BC091DF2C1D4463005FB223 /* ContentView.swift */; };
 		0BC091E42C1D4465005FB223 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0BC091E32C1D4465005FB223 /* Assets.xcassets */; };
@@ -266,6 +267,8 @@
 		0B747B352C79C08E000C5050 /* PageNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageNavigationController.swift; sourceTree = "<group>"; };
 		0B7B17B92C4804D600B11974 /* ScoreRegistry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreRegistry.swift; sourceTree = "<group>"; };
 		0B854D312C632AAE0025C2E1 /* Collection+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collection+Extension.swift"; sourceTree = "<group>"; };
+		0B8CF9912CA52F500087728A /* DogonYaroNarratorConfiguration.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = DogonYaroNarratorConfiguration.json; path = "../../Voqa Docs/Dogon Yaro/DogonYaroNarratorConfiguration.json"; sourceTree = "<group>"; };
+		0B8CF9932CA52FB90087728A /* DrossNarratorConfiguration.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = DrossNarratorConfiguration.json; path = "../../Voqa Docs/Dross/DrossNarratorConfiguration.json"; sourceTree = "<group>"; };
 		0BA62FD92C40C6C00053F7C2 /* HomepageConfig.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = HomepageConfig.json; sourceTree = "<group>"; };
 		0BA63B3B2C76274200AE5048 /* HomepageConfigProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomepageConfigProtocols.swift; sourceTree = SOURCE_ROOT; };
 		0BA63B3D2C76276100AE5048 /* VoqaConfigManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VoqaConfigManager.swift; sourceTree = SOURCE_ROOT; };
@@ -285,7 +288,6 @@
 		0BA63B6A2C762CF900AE5048 /* QuizPlayerBackground.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuizPlayerBackground.swift; sourceTree = "<group>"; };
 		0BA63B6C2C762D0E00AE5048 /* QuizControlButtonsGrid.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuizControlButtonsGrid.swift; sourceTree = "<group>"; };
 		0BB011242CA31BC200376A8C /* TestQuizPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestQuizPlayer.swift; sourceTree = "<group>"; };
-		0BB3452B2CA20FD1003A0F5F /* DogonYaroNarratorConfiguration.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = DogonYaroNarratorConfiguration.json; path = "../../Voqa Docs/DogonYaroNarratorConfiguration.json"; sourceTree = "<group>"; };
 		0BC091DD2C1D4463005FB223 /* VOQAApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VOQAApp.swift; sourceTree = "<group>"; };
 		0BC091DF2C1D4463005FB223 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		0BC091E32C1D4465005FB223 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -556,9 +558,10 @@
 		0B7B17BF2C4806D000B11974 /* ConfigData */ = {
 			isa = PBXGroup;
 			children = (
+				0B8CF9932CA52FB90087728A /* DrossNarratorConfiguration.json */,
+				0B8CF9912CA52F500087728A /* DogonYaroNarratorConfiguration.json */,
 				0B53810F2C437DD5002EBCBB /* TestQuestions.json */,
 				0B55C8632C8025B70038ABE1 /* GusNarratorConfiguration.json */,
-				0BB3452B2CA20FD1003A0F5F /* DogonYaroNarratorConfiguration.json */,
 				0BA62FD92C40C6C00053F7C2 /* HomepageConfig.json */,
 			);
 			name = ConfigData;
@@ -907,10 +910,11 @@
 				0B6561642C3E50260013663B /* NextQuestionWave.wav in Resources */,
 				0B4FE0CE2C6E46740086B43F /* GoogleService-Info.plist in Resources */,
 				0B55C8642C8025B70038ABE1 /* GusNarratorConfiguration.json in Resources */,
+				0B8CF9922CA52F500087728A /* DogonYaroNarratorConfiguration.json in Resources */,
 				0B6561672C3E50340013663B /* dismissResponderBell.wav in Resources */,
+				0B8CF9942CA52FB90087728A /* DrossNarratorConfiguration.json in Resources */,
 				0B6561612C3E500B0013663B /* showResponderBell.wav in Resources */,
 				0BC091E42C1D4465005FB223 /* Assets.xcassets in Resources */,
-				0BB3452C2CA20FD1003A0F5F /* DogonYaroNarratorConfiguration.json in Resources */,
 				0B09BDB42C4919FF00DD6452 /* Creative Beat.mp3 in Resources */,
 				0BA62FDA2C40C6C00053F7C2 /* HomepageConfig.json in Resources */,
 			);
