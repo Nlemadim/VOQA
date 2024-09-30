@@ -22,9 +22,11 @@ enum AudioAction: Equatable {
     case pausePlay
     case reset
     case playBGM
-    
-    //New case
     case playHostIntro
+    
+    //Updated Action
+    case playSessionIntro
+    
 
     static func ==(lhs: AudioAction, rhs: AudioAction) -> Bool {
         switch (lhs, rhs) {
@@ -37,7 +39,8 @@ enum AudioAction: Equatable {
              (.reviewing, .reviewing),
              (.pausePlay, .pausePlay),
              (.reset, .reset),
-             (.playHostIntro, .playHostIntro):  // Added playHostIntro comparison
+             (.playHostIntro, .playHostIntro),
+            (.playSessionIntro, .playSessionIntro):// Added playSessionIntro comparison
             return true
             
         case (.playQuestionAudioUrl(let lhsUrl), .playQuestionAudioUrl(let rhsUrl)),
@@ -55,13 +58,13 @@ enum AudioAction: Equatable {
 
     var description: String {
         switch self {
-        case .playQuestionAudioUrl(let url):
+        case .playQuestionAudioUrl(_):
             return "Playing Question"
         case .playAnswer(let url):
             return "Play Answer URL: \(url)"
-        case .playFeedbackMessage(let url):
+        case .playFeedbackMessage(_):
             return "Playing Feedback"
-        case .giveScore(let url):
+        case .giveScore(_):
             return "Your Score"
         case .playCorrectAnswerCallout:
             return "Playing Correct Answer Callout"
@@ -83,9 +86,10 @@ enum AudioAction: Equatable {
             return "Reset"
         case .playBGM:
             return "Background Music"
-        
         case .playHostIntro:
             return "Meet the Host!"
+        case .playSessionIntro:
+            return "About This Quiz"
         }
     }
 }

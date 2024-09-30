@@ -96,9 +96,6 @@ class QuizViewModel: ObservableObject, QuizViewModelProtocol {
         return session
     }
     
-    func startNewQuizSession(questions: [Question]) {
-        quizSessionManager.startNewQuizSession(questions: questions)
-    }
     
     func startQuiz() {
         

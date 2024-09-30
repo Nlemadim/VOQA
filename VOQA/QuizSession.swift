@@ -70,7 +70,7 @@ class QuizSession: ObservableObject, QuizServices {
     private var countdownComplete: Bool = false
     
     private var timer: Timer?
-    private var quizStartTimer: Timer?
+    var quizStartTimer: Timer?
     var bgmPlayer: BgmPlayer
     
     init(state: QuizServices, questionPlayer: QuestionPlayer, reviewer: ReviewsManager, sessionCloser: SessionCloser, audioFileSorter: AudioFileSorter, sessionInfo: QuizSessionInfoProtocol, scoreRegistry: ScoreRegistry, commandCenter: CommandCenter, orchestra: QuizOrchestra, bgmPlayer: BgmPlayer) {
@@ -129,6 +129,8 @@ class QuizSession: ObservableObject, QuizServices {
 
         // Now that the QuizSession is created, set it in the CommandCenter
         commandCenter.session = quizSession
+        bgmPlayer.delegate = orchestra
+        quizSession.sessionAudioPlayer.sessionAudioDelegate = orchestra
 
         return quizSession
     }
@@ -149,47 +151,26 @@ class QuizSession: ObservableObject, QuizServices {
         orchestra.startFlow()
         self.isNowPlaying = true
     }
-
-    func startNewQuizSession(questions: [any QuestionType]) {
-        print("Context Player Hit")
-        
-        // Start the quiz
-        DispatchQueue.main.async {
-            print("Ready to play \(questions.count) questions")
-            self.questionPlayer.setSessionQuestions(questions)
-            self.activeQuiz = true
-            self.startCountdown()
-            
-            // Start the quiz timer
-            self.startQuizTimer()
-        }
-    }
     
-    private func startCountdown() {
-        print("Starting countdown")
-        timer?.invalidate()
-        var remainingTime = countdownTime
-        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] timer in
-            guard let self = self else { return }
-            if remainingTime > 0 {
-                remainingTime -= 1
-                self.countdownTime = remainingTime
-            } else {
-                timer.invalidate()
-                self.countdownComplete = true // Added 'self.' for clarity
-                self.playFirstQuestion()
-            }
-        }
-    }
+//    private func startCountdown() {
+//        print("Starting countdown")
+//        timer?.invalidate()
+//        var remainingTime = countdownTime
+//        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] timer in
+//            guard let self = self else { return }
+//            if remainingTime > 0 {
+//                remainingTime -= 1
+//                self.countdownTime = remainingTime
+//            } else {
+//                timer.invalidate()
+//                self.countdownComplete = true // Added 'self.' for clarity
+//                //self.playFirstQuestion()
+//            }
+//        }
+//    }
     
     // Method to start the quiz timer
-    private func startQuizTimer() {
-        quizTimer = 0.0
-        quizStartTimer?.invalidate()
-        quizStartTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
-            self?.quizTimer += 1.0
-        }
-    }
+    
 
     // Stop the timer when the quiz session ends
     func prepareToEndSession() {
@@ -213,12 +194,6 @@ class QuizSession: ObservableObject, QuizServices {
             } else {
                 self.questionCounter = "Ready to play \(count) questions" // Changed to use 'count' parameter
             }
-        }
-    }
-    
-    private func playFirstQuestion() {
-        DispatchQueue.main.async {
-            self.questionPlayer.playCurrentQuestion() // Changed to use protocol method
         }
     }
     

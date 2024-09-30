@@ -70,6 +70,12 @@ class AudioFileSorter {
                     return URL(string: firstIntro.audioUrl.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed) ?? "")
                 }
             }
+        case .playSessionIntro:
+            if let sessionIntro = config.quizHostMessages?.quizSessionIntro {
+                if let sessionAudio = sessionIntro.audioUrls.first(where: { $0.title == "sessionAndSponsorIntro" }) {
+                    return URL(string: sessionAudio.audioUrl.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed) ?? "")
+                }
+            }
         }
         
         guard !audioUrls.isEmpty else {

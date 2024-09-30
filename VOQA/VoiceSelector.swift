@@ -23,7 +23,7 @@ enum VoiceSelector: String {
         case .ini:
             return "Patrick"
         case .dogonYaro:
-            return "George"
+            return "Grandpa Spuds Oxley"
         }
     }
 }

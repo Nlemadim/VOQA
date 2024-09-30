@@ -59,5 +59,10 @@ protocol BgmPlayerDelegate: AnyObject {
     func bgmPlayerDidFinishPlaying(_ player: BgmPlayer)
 }
 
+//new protocol
+protocol SessionAudioPlayerDelegate: AnyObject {
+    func sessionAudioPlayerDidFinishPlaying(_ player: SessionAudioPlayer)
+}
+
 
 

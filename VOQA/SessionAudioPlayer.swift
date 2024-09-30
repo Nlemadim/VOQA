@@ -17,6 +17,8 @@ class SessionAudioPlayer: NSObject, AVAudioPlayerDelegate {
     private var isProcessingAction = false
     private var lastAction: AudioAction?
     private var audioFileSorter: AudioFileSorter
+    
+    weak var sessionAudioDelegate: SessionAudioPlayerDelegate?
 
     init(context: QuizSession?, audioFileSorter: AudioFileSorter, action: AudioAction? = nil) {
         self.context = context
@@ -33,24 +35,16 @@ class SessionAudioPlayer: NSObject, AVAudioPlayerDelegate {
     func setContext(_ context: QuizSession) {
         self.context = context
     }
-
-    private func enqueueAction(_ action: AudioAction) {
-        actionQueue.append(action)
-        processNextAction()
-    }
-
+    
     func performAudioAction(_ action: AudioAction) {
         enqueueAction(action)
     }
-    
-    func pausePlayer() {
-        self.audioPlayerManager.pausePlayback()
-    }
-    
-    func stopPlayback() {
-        self.audioPlayerManager.stopPlayback()
-    }
 
+    func enqueueAction(_ action: AudioAction) {
+        actionQueue.append(action)
+        processNextAction()
+    }
+    
     private func processNextAction() {
         guard !isProcessingAction, !actionQueue.isEmpty else {
             return
@@ -60,7 +54,7 @@ class SessionAudioPlayer: NSObject, AVAudioPlayerDelegate {
         let nextAction = actionQueue.removeFirst()
         executeAudioAction(nextAction)
     }
-
+    
     private func executeAudioAction(_ action: AudioAction) {
         lastAction = action
         
@@ -74,59 +68,80 @@ class SessionAudioPlayer: NSObject, AVAudioPlayerDelegate {
             completeCurrentAction()
         }
     }
-
-    private func completeCurrentAction() {
+    
+   func completeCurrentAction() {
         isProcessingAction = false
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             self.processNextAction()
         }
     }
+    
+    func pausePlayer() {
+        self.audioPlayerManager.pausePlayback()
+    }
+    
+    func stopPlayback() {
+        self.audioPlayerManager.stopPlayback()
+    }
 
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
-        
-        handleAudioFinish()
+        sessionAudioDelegate?.sessionAudioPlayerDidFinishPlaying(self)
         
         if let context = context {
             context.isNowPlaying = false
         }
         
+        //        handleAudioFinish()
+        //
+        //        if let context = context {
+        //            context.isNowPlaying = false
+        //        }
     }
 
-    private func handleAudioFinish() {
-        guard let context = context else {
-            completeCurrentAction()
-            return
-        }
-        
-        print("Audio player finished playing on state: \(context.state)")
-        
-        context.isNowPlaying = false
-        
-        if context.state is QuizSession {
-            if lastAction == .playAnswer(url: context.currentQuestion?.correctionAudioURL ?? "") {
-                context.resumeQuiz()
-            }
-            
-            if lastAction == .playCorrectAnswerCallout {
-                context.resumeQuiz()
-            }
-        }
-        
-        if context.state is QuestionPlayer {
-            if lastAction == .playQuestionAudioUrl(url: context.currentQuestion?.questionScriptAudioURL ?? "") {
-                context.awaitResponse()
-            }
-        }
-        
-        if context.state is ReviewsManager {
-            if lastAction == .reviewing {
-                context.prepareToEndSession()
-                enqueueAction(.reset)
-            }
-        }
-        
-        completeCurrentAction()
-    }
+//    private func handleAudioFinish() {
+//        guard let context = context else {
+//            completeCurrentAction()
+//            return
+//        }
+//        
+//        print("Audio player finished playing on state: \(context.state)")
+//        
+//        context.isNowPlaying = false
+//        
+//        if lastAction == .playHostIntro {
+//            context.orchestra.conductNextAction()
+//        }
+//        
+//        if lastAction == .playSessionIntro {
+//            context.orchestra.conductNextAction()
+//        }
+//        
+//        if context.state is QuizSession {
+//            if lastAction == .playAnswer(url: context.currentQuestion?.correctionAudioURL ?? "") {
+//                context.orchestra.conductNextAction()
+//                //context.resumeQuiz()
+//            }
+//            
+//            if lastAction == .playCorrectAnswerCallout {
+//                //context.resumeQuiz()
+//            }
+//        }
+//        
+//        if context.state is QuestionPlayer {
+//            if lastAction == .playQuestionAudioUrl(url: context.currentQuestion?.questionScriptAudioURL ?? "") {
+//                context.awaitResponse()
+//            }
+//        }
+//        
+//        if context.state is ReviewsManager {
+//            if lastAction == .reviewing {
+//                context.prepareToEndSession()
+//                enqueueAction(.reset)
+//            }
+//        }
+//        
+//        completeCurrentAction()
+//    }
 }
 
 

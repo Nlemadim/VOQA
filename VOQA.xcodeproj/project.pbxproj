@@ -146,6 +146,7 @@
 		0BD38EEC2CA3A6BF00FB9F09 /* CommandCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BD38EEB2CA3A6BF00FB9F09 /* CommandCenter.swift */; };
 		0BD38EEE2CA3A6DB00FB9F09 /* QuizOrchestra.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BD38EED2CA3A6DB00FB9F09 /* QuizOrchestra.swift */; };
 		0BD38EF02CA3AC0500FB9F09 /* BgmPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BD38EEF2CA3AC0500FB9F09 /* BgmPlayer.swift */; };
+		0BD561E62CA90B6E00060540 /* AminaNarratorConfiguration.json in Resources */ = {isa = PBXBuildFile; fileRef = 0BD561E52CA90B6E00060540 /* AminaNarratorConfiguration.json */; };
 		0BD6F8842C88DB8500ED80A1 /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BD6F8832C88DB8500ED80A1 /* UserProfile.swift */; };
 		0BEF0F3A2C78934200341F21 /* CachedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BEF0F392C78934200341F21 /* CachedImageView.swift */; };
 		0BF30B5D2C90D1F700AFE578 /* QuestionDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BF30B5C2C90D1F700AFE578 /* QuestionDownloader.swift */; };
@@ -296,6 +297,7 @@
 		0BD38EEB2CA3A6BF00FB9F09 /* CommandCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandCenter.swift; sourceTree = "<group>"; };
 		0BD38EED2CA3A6DB00FB9F09 /* QuizOrchestra.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizOrchestra.swift; sourceTree = "<group>"; };
 		0BD38EEF2CA3AC0500FB9F09 /* BgmPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BgmPlayer.swift; sourceTree = "<group>"; };
+		0BD561E52CA90B6E00060540 /* AminaNarratorConfiguration.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = AminaNarratorConfiguration.json; path = "../../Voqa Docs/Amina/AminaNarratorConfiguration.json"; sourceTree = "<group>"; };
 		0BD6F8832C88DB8500ED80A1 /* UserProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
 		0BEF0F392C78934200341F21 /* CachedImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachedImageView.swift; sourceTree = "<group>"; };
 		0BEF0F3D2C78AE4700341F21 /* VoqaCollection.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = VoqaCollection.json; sourceTree = "<group>"; };
@@ -559,6 +561,7 @@
 			isa = PBXGroup;
 			children = (
 				0B8CF9932CA52FB90087728A /* DrossNarratorConfiguration.json */,
+				0BD561E52CA90B6E00060540 /* AminaNarratorConfiguration.json */,
 				0B8CF9912CA52F500087728A /* DogonYaroNarratorConfiguration.json */,
 				0B53810F2C437DD5002EBCBB /* TestQuestions.json */,
 				0B55C8632C8025B70038ABE1 /* GusNarratorConfiguration.json */,
@@ -908,6 +911,7 @@
 			files = (
 				0BC091E82C1D4465005FB223 /* Preview Assets.xcassets in Resources */,
 				0B6561642C3E50260013663B /* NextQuestionWave.wav in Resources */,
+				0BD561E62CA90B6E00060540 /* AminaNarratorConfiguration.json in Resources */,
 				0B4FE0CE2C6E46740086B43F /* GoogleService-Info.plist in Resources */,
 				0B55C8642C8025B70038ABE1 /* GusNarratorConfiguration.json in Resources */,
 				0B8CF9922CA52F500087728A /* DogonYaroNarratorConfiguration.json in Resources */,

@@ -46,6 +46,7 @@ class QuizSessionManager: ObservableObject {
         // Now that the QuizSession is created, set it in the CommandCenter
         commandCenter.session = quizSession
         bgmPlayer.delegate = quizOrchestra
+        quizSession.sessionAudioPlayer.sessionAudioDelegate = quizOrchestra
         
         // Assign the created session to the Published quizSession property
         self.quizSession = quizSession
@@ -92,9 +93,6 @@ class QuizSessionManager: ObservableObject {
         quizSession?.selectAnswer(selectedOption: selectedOption)
     }
 
-    func startNewQuizSession(questions: [Question]) {
-        quizSession?.startNewQuizSession(questions: questions)
-    }
     
     func stopQuiz() {
         quizSession?.stopQuiz()

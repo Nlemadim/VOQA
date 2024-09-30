@@ -216,18 +216,8 @@
           "title": "Quiz Session Intro",
           "audioUrls": [
               {
-                  "title": "sessionIntro1",
-                  "urlScript": "Here's your first question.",
-                  "audioUrl": ""
-              },
-              {
-                  "title": "sessionIntro2",
-                  "urlScript": "Let's dive into the quiz.",
-                  "audioUrl": ""
-              },
-              {
-                  "title": "sessionIntro3",
-                  "urlScript": "Are you ready to begin?",
+                  "title": "dynamicSessionIntro",
+                  "urlScript": "",
                   "audioUrl": ""
               }
           ]
@@ -236,19 +226,9 @@
           "title": "Message From Sponsor",
           "audioUrls": [
               {
-                  "title": "sponsorMessage1",
-                  "urlScript": "A special message from our sponsor.",
-                  "audioUrl": ""
-              },
-              {
-                  "title": "sponsorMessage2",
-                  "urlScript": "Thank you to our sponsor for supporting this quiz.",
-                  "audioUrl": ""
-              },
-              {
-                  "title": "sponsorMessage3",
-                  "urlScript": "Don't forget to check out our sponsor's offerings.",
-                  "audioUrl": ""
+                  "title": "gistaSponsoredMessage",
+                  "urlScript": "This session is sponsored by Gister.AI – where we just love talking technology. Specializing in conversational AI, Gister.AI integrates intelligent communication into everything from high-end computers to everyday appliances like microwaves. Imagine a world where your devices understand and interact with you seamlessly. Make that a reality with our cutting-edge AI solutions. Visit gista.ai today and let’s bring conversational technology to your business!",
+                  "audioUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/VoiceFeedBackUrls/Gus/hostMessages/gistaSponsoredMessage_gus.mp3"
               }
           ]
       },
@@ -256,19 +236,14 @@
           "title": "Resume From Sponsored Message",
           "audioUrls": [
               {
-                  "title": "resumeSponsor1",
-                  "urlScript": "Let's continue after the sponsor message.",
-                  "audioUrl": ""
+                  "title": "resumefromSponsor",
+                  "urlScript": "And now ... Let's get after it,
+                  "audioUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/VoiceFeedBackUrls/Gus/hostMessages/resumefromSponsor"
               },
               {
-                  "title": "resumeSponsor2",
-                  "urlScript": "Back to the quiz now.",
-                  "audioUrl": ""
-              },
-              {
-                  "title": "resumeSponsor3",
-                  "urlScript": "Continuing with your questions.",
-                  "audioUrl": ""
+                  "title": "resumefromSponsor2",
+                  "urlScript": "Alright! ... Ready to Go? ... Let's dive in",
+                  "audioUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/VoiceFeedBackUrls/Gus/hostMessages/resumefromSponsor2"
               }
           ]
       },
@@ -277,18 +252,18 @@
           "audioUrls": [
               {
                   "title": "prepareReview1",
-                  "urlScript": "Let's prepare to review your answers.",
-                  "audioUrl": ""
+                  "urlScript": "Ok! ... Quiz complete ... Nice work. Let's checkout your review",
+                  "audioUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/VoiceFeedBackUrls/Gus/hostMessages/prepareReview1"
               },
               {
                   "title": "prepareReview2",
-                  "urlScript": "Get ready to see your results.",
-                  "audioUrl": ""
+                  "urlScript": "Alright! That was the last question. Great job on completing the quiz. Let's hear how well... or not ... you performed.",
+                  "audioUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/VoiceFeedBackUrls/Gus/hostMessages/prepareReview2"
               },
               {
                   "title": "prepareReview3",
-                  "urlScript": "Preparing the review section.",
-                  "audioUrl": ""
+                  "urlScript": "And that! ... concludes the quiz! Great Job! Time for a review. Let's check it out",
+                  "audioUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/VoiceFeedBackUrls/Gus/hostMessages/prepareReview3"
               }
           ]
       },
@@ -296,19 +271,29 @@
           "title": "Resume From Review",
           "audioUrls": [
               {
-                  "title": "resumeReview1",
-                  "urlScript": "Resuming after the review.",
-                  "audioUrl": ""
+                  "title": "goodReview",
+                  "urlScript": "Hey ... that was a great review. So proud to work with you. Let's keep those coming. Deal?",
+                  "audioUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/VoiceFeedBackUrls/Gus/hostMessages/goodReview"
               },
               {
-                  "title": "resumeReview2",
-                  "urlScript": "Continuing the quiz.",
-                  "audioUrl": ""
+                  "title": "goodReview2",
+                  "urlScript": "Nice review! ... If yhou keep practicing, it will only keep getting better I promise.... Keep it up.",
+                  "audioUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/VoiceFeedBackUrls/Gus/hostMessages/goodReview2"
               },
               {
-                  "title": "resumeReview3",
-                  "urlScript": "Let's move forward.",
-                  "audioUrl": ""
+                  "title": "badReview",
+                  "urlScript": "We all have our good and bad days. But guess what ...  it's not what we do on the good days that count. No worries, buddy, you'll be great at this in no time.",
+                  "audioUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/VoiceFeedBackUrls/Gus/hostMessages/badReview"
+              },
+              {
+                  "title": "badReview2",
+                  "urlScript": "That ... well ... just feels like my coffee got cold. But hey! I'm gonna fire it right back up! How about you?",
+                  "audioUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/VoiceFeedBackUrls/Gus/hostMessages/badReview2"
+              },
+              {
+                  "title": "mehReview",
+                  "urlScript": "I'd normally say... not too bad. But honestly, no one likes a 3-star review so ... there is that ... How about some more practice.",
+                  "audioUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/VoiceFeedBackUrls/Gus/hostMessages/mehReview"
               }
           ]
       },
@@ -316,19 +301,14 @@
           "title": "Sponsored Outro Message",
           "audioUrls": [
               {
-                  "title": "sponsoredOutro1",
-                  "urlScript": "A final word from our sponsor.",
-                  "audioUrl": ""
+                  "title": "reEyeProgrammersSponsoredMessage",
+                  "urlScript": "This quiz review is brought to you by Red Eye Programmers – Experts in AI systems integration. From building scalable software designs and deployment, to reliable backend services  and cutting-edge AI integrations of all use cases, we empower your business with innovative solutions tailored to your needs. Ready to transform your operations and stay ahead of the competition? Visit redeyeprogrammers.com today and elevate your business to the next level!",
+                  "audioUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/VoiceFeedBackUrls/Gus/hostMessages/reEyeProgrammersSponsoredMessage"
               },
               {
-                  "title": "sponsoredOutro2",
-                  "urlScript": "Thank you to our sponsor for their support.",
-                  "audioUrl": ""
-              },
-              {
-                  "title": "sponsoredOutro3",
-                  "urlScript": "Don't miss our sponsor's latest offerings.",
-                  "audioUrl": ""
+                  "title": "payForMeSponsoredMessage",
+                  "urlScript": "This quiz review is sponsored by Pay For Me – your trusted platform to pay on behalf of others. Whether you're sending a thoughtful gift, managing corporate expenses, or handling any third-party payments, Pay For Me makes it simple and secure. Enjoy seamless transactions with our user-friendly and reliable service. Visit payforme.com today and take the hassle out of making payments!",
+                  "audioUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/VoiceFeedBackUrls/Gus/hostMessages/payForMeSponsoredMessage"
               }
           ]
       },
@@ -336,19 +316,14 @@
           "title": "Outro",
           "audioUrls": [
               {
+                  "title": "voqaSponsoredMessage",
+                  "urlScript": "Did you know? You can take this quiz from the perspective of another Tutor to get a different experience. Voqa offers a host of different tutors of different works of life and even ... worlds. Each tutor brings thier own story and domain knowledge to any quiz it applies. You should definitely give it a try.",
+                  "audioUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/VoiceFeedBackUrls/Gus/hostMessages/voqaSponsoredMessage"
+              },
+              {
                   "title": "voqaOutro",
                   "urlScript": "Thank you for completing yet another audio quiz on Voqa – Voiced Over Q&A!... We hope you had fun and learned something new today. Are you a business or an educational content creator aiming to reach a passionate and engaged audience?... Sponsor a quiz session on Voqa and have your message personally delivered by our expert AI tutors across over 100 specially curated audio quizzes. Perhaps you've developed resources on platforms like TikTok, Medium, or YouTube in fields such as medicine, law, or technology... voqa offers an affordable and unique way to engage your target audience by sponsoring a quiz that aligns with your content... allowing you to connect effectively with learners who are eager to expand their knowledge. Visit Voqa.io to explore our easy and cost-effective advertising opportunities... and join our growing community of partners. Until your next quiz session...this is Gus, see you soon.",
-                  "audioUrl": ""
-              },
-              {
-                  "title": "outro2",
-                  "urlScript": "Great job completing the session! Remember, practice makes perfect. Keep it up! That's a wrap for now. Till next time!",
-                  "audioUrl": ""
-              },
-              {
-                  "title": "outro3",
-                  "urlScript": "Well done on finishing the session! Keep practicing and improving. That's it for now. Be safe till the next time!",
-                  "audioUrl": ""
+                  "audioUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/VoiceFeedBackUrls/Gus/hostMessages/hostOutro/VoqaSponsoredOutro.mp3"
               }
           ]
       }
