@@ -30,30 +30,22 @@ class VoiceConfigurationManager {
     }
     
     // Method to load or download voice configuration based on the selected AddOnItem
-    func loadVoiceConfiguration(for voice: AddOnItem) async throws -> QuizSessionConfig? {
-        guard !(voice.isPaid ?? false) || hasAccessToVoice(voice) else {
-            print("User does not have access to this paid voice: \(voice.name)")
-            return nil
-        }
-        
-        if let path = voice.path, let localConfig = try? loadLocalVoiceConfiguration(forPath: path) {
-            return localConfig
-        }
-        
-        return try await downloadVoiceConfig(for: voice)
-    }
-    
-    // Load local voice configuration using the path property
-    private func loadLocalVoiceConfiguration(forPath path: String) throws -> QuizSessionConfig? {
+     func loadLocalVoiceConfiguration(forPath path: String) -> QuizSessionConfig? {
+        // Attempt to locate the JSON file in the app bundle
         guard let filePath = Bundle.main.path(forResource: path, ofType: "json") else {
-            print("Local configuration file not found for path: \(path)")
+            print("❌ Local configuration file not found for path: \(path).json")
             return nil
         }
         
         do {
-            let data = try Data(contentsOf: URL(fileURLWithPath: filePath), options: .mappedIfSafe)
-            let config = try JSONDecoder().decode(QuizSessionConfig.self, from: data)
-            print("Successfully loaded selected voice configuration")
+            let url = URL(fileURLWithPath: filePath)
+            let data = try Data(contentsOf: url, options: .mappedIfSafe)
+            let decoder = JSONDecoder()
+            let config = try decoder.decode(QuizSessionConfig.self, from: data)
+            
+            print("✅ Successfully loaded local voice configuration from \(path).json")
+            
+            // Optional: Print specific parts for debugging
             if let hostMessages = config.quizHostMessages {
                 printHostMessages(hostMessages)
             }
@@ -61,11 +53,25 @@ class VoiceConfigurationManager {
             printQuizFeedback(config.quizFeedback)
            
             return config
+        } catch let DecodingError.keyNotFound(key, context) {
+            print("❌ Missing key: '\(key.stringValue)' in \(context.codingPath).")
+            return nil
+        } catch let DecodingError.typeMismatch(type, context) {
+            print("❌ Type mismatch for type '\(type)' in \(context.codingPath).")
+            return nil
+        } catch let DecodingError.valueNotFound(value, context) {
+            print("❌ Value '\(value)' not found for key '\(context.codingPath)'.")
+            return nil
+        } catch let DecodingError.dataCorrupted(context) {
+            print("❌ Data corrupted: \(context.debugDescription).")
+            return nil
         } catch {
-            print("Error loading or decoding local data for path \(path): \(error)")
-            throw error
+            print("❌ Decoding failed with error: \(error.localizedDescription)")
+            return nil
         }
     }
+
+
     
     // Download voice configuration from a remote URL
     private func downloadVoiceConfig(for voice: AddOnItem) async throws -> QuizSessionConfig? {
@@ -123,9 +129,17 @@ class VoiceConfigurationManager {
     
     
     func populateAudioUrls(for feedback: VoicedFeedback) async throws -> VoicedFeedback {
-        let populatedAudioUrls = try await self.populateFeedbackSfx(feedback.audioUrls)
+        // Use audioUrls if present, else use an empty array
+        let audioUrlsToPopulate = feedback.audioUrls
+        
+        // Populate audioUrls
+        let populatedAudioUrls = try await self.populateFeedbackSfx(audioUrlsToPopulate)
+        
+        // Return updated VoicedFeedback with populated audioUrls
         return VoicedFeedback(title: feedback.title, audioUrls: populatedAudioUrls)
     }
+
+
     
     private func populateFeedbackSfx(_ feedbackSfx: [FeedbackSfx]) async throws -> [FeedbackSfx] {
         return try await withThrowingTaskGroup(of: FeedbackSfx.self) { group in
@@ -194,11 +208,11 @@ extension VoiceConfigurationManager {
 
     // Helper method to print VoicedFeedback details
     private func printVoicedFeedback(_ feedback: VoicedFeedback, title: String) {
-        print("\(title):")
-        for sfx in feedback.audioUrls {
-            print("  - Title: \(sfx.title)")
-            print("  - URL Script: \(sfx.urlScript)")
-            print("  - Audio URL: \(sfx.audioUrl)")
-        }
+//        print("\(title):")
+//        for sfx in feedback.audioUrls {
+//            print("  - Title: \(sfx.title)")
+//            print("  - URL Script: \(sfx.urlScript)")
+//            print("  - Audio URL: \(sfx.audioUrl)")
+//        }
     }
 }

@@ -15,6 +15,8 @@ class AudioFileSorter {
         self.randomGenerator = randomGenerator
     }
     
+    
+    //MARK> TODO DRY VIOLATION METHOD
     func configure(with config: QuizSessionConfig) {
         self.config = config
     }
@@ -111,6 +113,4 @@ class AudioFileSorter {
         // Return the currentScoreUrl
         return currentScoreUrl
     }
-
-    
 }

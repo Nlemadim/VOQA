@@ -279,7 +279,7 @@ class QuestionPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate, Session
         
         // Assuming session.sessionAudioPlayer handles audio playback
         session.sessionAudioPlayer.setContext(session)
-        session.sessionAudioPlayer.performAudioAction(.playQuestionAudioUrl(url: question.audioURL ?? ""))
+        session.sessionAudioPlayer.performAudioAction(.playQuestionAudioUrl(url: question.questionScriptAudioURL ?? ""))
         session.setState(session.questionPlayer)
         
         self.isPlayingQuestion = true
@@ -315,7 +315,7 @@ class QuestionPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate, Session
         
         let question = currentQuestions[currentQuestionIndex]
         
-        session.sessionAudioPlayer.performAudioAction(.playQuestionAudioUrl(url: question.audioURL ?? ""))
+        session.sessionAudioPlayer.performAudioAction(.playQuestionAudioUrl(url: question.repeatQuestionAudioURL ?? ""))
         
         // Optionally, you can reset the playback state
         self.isPlayingQuestion = true

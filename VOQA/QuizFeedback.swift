@@ -12,21 +12,21 @@ struct QuizFeedback: Codable, Hashable, Equatable {
     var correctAnswer: VoicedFeedback
     var noResponse: VoicedFeedback
     var review: VoicedFeedback
-
+    
     enum CodingKeys: String, CodingKey {
         case incorrectAnswer
         case correctAnswer
         case noResponse
         case review
     }
-
+    
     init(incorrectAnswer: VoicedFeedback, correctAnswer: VoicedFeedback, noResponse: VoicedFeedback, review: VoicedFeedback) {
         self.incorrectAnswer = incorrectAnswer
         self.correctAnswer = correctAnswer
         self.noResponse = noResponse
         self.review = review
     }
-
+    
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         incorrectAnswer = try container.decode(VoicedFeedback.self, forKey: .incorrectAnswer)
@@ -34,7 +34,7 @@ struct QuizFeedback: Codable, Hashable, Equatable {
         noResponse = try container.decode(VoicedFeedback.self, forKey: .noResponse)
         review = try container.decode(VoicedFeedback.self, forKey: .review)
     }
-
+    
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(incorrectAnswer, forKey: .incorrectAnswer)
@@ -42,18 +42,18 @@ struct QuizFeedback: Codable, Hashable, Equatable {
         try container.encode(noResponse, forKey: .noResponse)
         try container.encode(review, forKey: .review)
     }
-
+    
     // MARK: - Equatable Conformance
-
+    
     static func == (lhs: QuizFeedback, rhs: QuizFeedback) -> Bool {
         return lhs.incorrectAnswer == rhs.incorrectAnswer &&
-               lhs.correctAnswer == rhs.correctAnswer &&
-               lhs.noResponse == rhs.noResponse &&
-               lhs.review == rhs.review
+        lhs.correctAnswer == rhs.correctAnswer &&
+        lhs.noResponse == rhs.noResponse &&
+        lhs.review == rhs.review
     }
-
+    
     // MARK: - Hashable Conformance
-
+    
     func hash(into hasher: inout Hasher) {
         hasher.combine(incorrectAnswer)
         hasher.combine(correctAnswer)

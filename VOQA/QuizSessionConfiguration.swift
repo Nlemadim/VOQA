@@ -16,7 +16,7 @@ final class QuizSessionConfig: ObservableObject, Codable, Hashable, Equatable {
     var sessionId: UUID
     var sessionTitle: String
     var sessionVoice: String
-    var sessionVoiceId: String? // New optional property
+    var sessionVoiceId: String?
     var alerts: [AlertSfx]
     var controlFeedback: ControlsFeedback
     var quizFeedback: QuizFeedback
@@ -28,7 +28,7 @@ final class QuizSessionConfig: ObservableObject, Codable, Hashable, Equatable {
         case sessionId
         case sessionTitle
         case sessionVoice
-        case sessionVoiceId  // Added sessionVoiceId to the coding keys
+        case sessionVoiceId
         case sessionQuestion
         case alerts
         case controlFeedback
@@ -42,7 +42,7 @@ final class QuizSessionConfig: ObservableObject, Codable, Hashable, Equatable {
         sessionId: UUID,
         sessionTitle: String,
         sessionVoice: String,
-        sessionVoiceId: String?,  
+        sessionVoiceId: String?,
         sessionQuestion: [Question],
         alerts: [AlertSfx],
         controlFeedback: ControlsFeedback,
@@ -50,10 +50,10 @@ final class QuizSessionConfig: ObservableObject, Codable, Hashable, Equatable {
         sessionMusic: [BgmSfx],
         quizHostMessages: QuizSessionHostMessages?
     ) {
-        self.sessionId = UUID()
+        self.sessionId = sessionId
         self.sessionTitle = sessionTitle
         self.sessionVoice = sessionVoice
-        self.sessionVoiceId = sessionVoiceId  // Initialize the new property
+        self.sessionVoiceId = sessionVoiceId
         self.sessionQuestion = sessionQuestion
         self.alerts = alerts
         self.controlFeedback = controlFeedback
@@ -65,22 +65,33 @@ final class QuizSessionConfig: ObservableObject, Codable, Hashable, Equatable {
     // MARK: - Codable Conformance
     required convenience init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        let sessionId = (try? container.decode(UUID.self, forKey: .sessionId)) ?? UUID()
+        
+        // Decode sessionId as String first
+        let sessionIdString = try container.decode(String.self, forKey: .sessionId)
+        let sessionId: UUID
+        if let uuid = UUID(uuidString: sessionIdString), !sessionIdString.isEmpty {
+            sessionId = uuid
+        } else {
+            // Assign a new UUID if sessionId is empty or invalid
+            sessionId = UUID()
+            print("⚠️ sessionId was empty or invalid. Assigned new UUID: \(sessionId)")
+        }
+        
         let sessionTitle = try container.decode(String.self, forKey: .sessionTitle)
         let sessionVoice = try container.decode(String.self, forKey: .sessionVoice)
-        let sessionVoiceId = try? container.decode(String?.self, forKey: .sessionVoiceId) // Decode the new property
+        let sessionVoiceId = try container.decodeIfPresent(String.self, forKey: .sessionVoiceId)
         let sessionQuestion = try container.decode([Question].self, forKey: .sessionQuestion)
         let alerts = try container.decode([AlertSfx].self, forKey: .alerts)
         let controlFeedback = try container.decode(ControlsFeedback.self, forKey: .controlFeedback)
         let quizFeedback = try container.decode(QuizFeedback.self, forKey: .quizFeedback)
         let sessionMusic = try container.decode([BgmSfx].self, forKey: .sessionMusic)
-        let quizHostMessages = try? container.decode(QuizSessionHostMessages.self, forKey: .quizHostMessages)
+        let quizHostMessages = try container.decodeIfPresent(QuizSessionHostMessages.self, forKey: .quizHostMessages)
         
         self.init(
             sessionId: sessionId,
             sessionTitle: sessionTitle,
             sessionVoice: sessionVoice,
-            sessionVoiceId: sessionVoiceId, // Pass the new property
+            sessionVoiceId: sessionVoiceId,
             sessionQuestion: sessionQuestion,
             alerts: alerts,
             controlFeedback: controlFeedback,
@@ -92,10 +103,10 @@ final class QuizSessionConfig: ObservableObject, Codable, Hashable, Equatable {
     
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(sessionId, forKey: .sessionId)
+        try container.encode(sessionId.uuidString, forKey: .sessionId) // Encode as String
         try container.encode(sessionTitle, forKey: .sessionTitle)
         try container.encode(sessionVoice, forKey: .sessionVoice)
-        try container.encodeIfPresent(sessionVoiceId, forKey: .sessionVoiceId) // Encode the new property
+        try container.encodeIfPresent(sessionVoiceId, forKey: .sessionVoiceId)
         try container.encode(sessionQuestion, forKey: .sessionQuestion)
         try container.encode(alerts, forKey: .alerts)
         try container.encode(controlFeedback, forKey: .controlFeedback)
@@ -109,7 +120,7 @@ final class QuizSessionConfig: ObservableObject, Codable, Hashable, Equatable {
         return lhs.sessionId == rhs.sessionId &&
                lhs.sessionTitle == rhs.sessionTitle &&
                lhs.sessionVoice == rhs.sessionVoice &&
-               lhs.sessionVoiceId == rhs.sessionVoiceId && // Added new property check
+               lhs.sessionVoiceId == rhs.sessionVoiceId &&
                lhs.sessionQuestion == rhs.sessionQuestion &&
                lhs.alerts == rhs.alerts &&
                lhs.controlFeedback == rhs.controlFeedback &&
@@ -123,7 +134,7 @@ final class QuizSessionConfig: ObservableObject, Codable, Hashable, Equatable {
         hasher.combine(sessionId)
         hasher.combine(sessionTitle)
         hasher.combine(sessionVoice)
-        hasher.combine(sessionVoiceId) // Hash the new property
+        hasher.combine(sessionVoiceId)
         hasher.combine(sessionQuestion)
         hasher.combine(alerts)
         hasher.combine(controlFeedback)

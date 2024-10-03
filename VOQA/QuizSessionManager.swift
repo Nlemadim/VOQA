@@ -29,6 +29,7 @@ class QuizSessionManager: ObservableObject {
         let commandCenter = CommandCenter(session: nil)
         let quizConductor = Conductor(commandCenter: commandCenter)
         let dynamicContentmanager = DynamicContentManager()
+        dynamicContentmanager.configure(with: config)
         
         // Create QuizSession with the CommandCenter, Orchestra, and BgmPlayer
         let quizSession = QuizSession(
@@ -49,6 +50,7 @@ class QuizSessionManager: ObservableObject {
         commandCenter.session = quizSession
         bgmPlayer.delegate = quizConductor
         quizSession.sessionAudioPlayer.sessionAudioDelegate = quizConductor
+        d
         
         // Assign the created session to the Published quizSession property
         self.quizSession = quizSession

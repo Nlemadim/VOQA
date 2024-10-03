@@ -16,8 +16,7 @@ class QuizSessionHostMessages: Codable, Hashable, Equatable {
     var resumeFromReview: VoicedFeedback
     var sponsoredOutroMessage: VoicedFeedback
     var outro: VoicedFeedback
-
-    // Coding Keys for encoding/decoding
+    
     enum CodingKeys: String, CodingKey {
         case hostNarratorIntro
         case quizSessionIntro
@@ -28,7 +27,7 @@ class QuizSessionHostMessages: Codable, Hashable, Equatable {
         case sponsoredOutroMessage
         case outro
     }
-
+    
     // Initializer
     init(
         hostNarratorIntro: VoicedFeedback,
@@ -49,7 +48,7 @@ class QuizSessionHostMessages: Codable, Hashable, Equatable {
         self.sponsoredOutroMessage = sponsoredOutroMessage
         self.outro = outro
     }
-
+    
     // Decoding from JSON
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -62,7 +61,7 @@ class QuizSessionHostMessages: Codable, Hashable, Equatable {
         sponsoredOutroMessage = try container.decode(VoicedFeedback.self, forKey: .sponsoredOutroMessage)
         outro = try container.decode(VoicedFeedback.self, forKey: .outro)
     }
-
+    
     // Encoding to JSON
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
@@ -75,19 +74,19 @@ class QuizSessionHostMessages: Codable, Hashable, Equatable {
         try container.encode(sponsoredOutroMessage, forKey: .sponsoredOutroMessage)
         try container.encode(outro, forKey: .outro)
     }
-
+    
     // Hashable and Equatable conformance
     static func == (lhs: QuizSessionHostMessages, rhs: QuizSessionHostMessages) -> Bool {
         return lhs.hostNarratorIntro == rhs.hostNarratorIntro &&
-            lhs.quizSessionIntro == rhs.quizSessionIntro &&
-            lhs.messageFromSponsor == rhs.messageFromSponsor &&
-            lhs.resumeFromSponsoredMessage == rhs.resumeFromSponsoredMessage &&
-            lhs.prepareForReview == rhs.prepareForReview &&
-            lhs.resumeFromReview == rhs.resumeFromReview &&
-            lhs.sponsoredOutroMessage == rhs.sponsoredOutroMessage &&
-            lhs.outro == rhs.outro
+        lhs.quizSessionIntro == rhs.quizSessionIntro &&
+        lhs.messageFromSponsor == rhs.messageFromSponsor &&
+        lhs.resumeFromSponsoredMessage == rhs.resumeFromSponsoredMessage &&
+        lhs.prepareForReview == rhs.prepareForReview &&
+        lhs.resumeFromReview == rhs.resumeFromReview &&
+        lhs.sponsoredOutroMessage == rhs.sponsoredOutroMessage &&
+        lhs.outro == rhs.outro
     }
-
+    
     func hash(into hasher: inout Hasher) {
         hasher.combine(hostNarratorIntro)
         hasher.combine(quizSessionIntro)

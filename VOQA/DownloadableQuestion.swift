@@ -7,6 +7,22 @@
 
 import Foundation
 
+struct DynamicCodingKey: CodingKey {
+    var stringValue: String
+    var intValue: Int?
+
+    init?(intValue: Int) {
+        self.stringValue = "\(intValue)"
+        self.intValue = intValue
+    }
+
+    init?(stringValue: String) {
+        self.stringValue = stringValue
+        self.intValue = nil
+    }
+}
+
+
 /// A struct representing the status of the question.
 struct QuestionStatus: Codable, Hashable, Equatable {
     var isAnsweredCorrectly: Bool?
@@ -64,9 +80,6 @@ protocol QuestionType: Codable, Identifiable where ID == String {
     /// The main content or text of the question.
     var content: String { get }
     
-    /// The URL string pointing to the audio script of the question.
-    var audioURL: String? { get }
-    
     /// A dictionary representing the options for the question.
     var mcOptions: [String: Bool] { get }
     
@@ -116,19 +129,17 @@ protocol QuestionType: Codable, Identifiable where ID == String {
     var questionStatus: QuestionStatus? { get }
 }
 
-
 /// The updated `Question` model conforming to `QuestionType` and `Equatable`.
 struct Question: QuestionType, Equatable, Hashable {
     // MARK: - Properties
-    
     var refId: String
     var content: String
     var mcOptions: [String: Bool]
     var correctOption: String?
     var selectedOption: String?
     var correction: String
-    var isAnsweredOptional: Bool? // Optional to handle missing keys
-    var isAnsweredCorrectlyOptional: Bool? // Optional to handle missing keys
+    var isAnsweredOptional: Bool?
+    var isAnsweredCorrectlyOptional: Bool?
     var numberOfPresentations: Int
     var questionScript: String
     var repeatQuestionScript: String
@@ -140,23 +151,21 @@ struct Question: QuestionType, Equatable, Hashable {
     var userId: String
     var questionStatus: QuestionStatus?
     
-    // MARK: - Coding Keys
-    
     enum CodingKeys: String, CodingKey {
         case refId
-        case content = "question"
-        case mcOptions = "options" // Renamed to match protocol
+        case content
+        case mcOptions
         case correctOption
         case selectedOption
         case correction
-        case isAnsweredOptional = "isAnswered"
-        case isAnsweredCorrectlyOptional = "isAnsweredCorrectly"
+        case isAnsweredOptional
+        case isAnsweredCorrectlyOptional
         case numberOfPresentations
         case questionScript
         case repeatQuestionScript
-        case questionScriptAudioUrl = "questionScriptAudioURL"
-        case correctionAudioUrl = "correctionAudioUrl"
-        case repeatQuestionAudioUrl = "repeatQuestionAudioURL"
+        case questionScriptAudioUrl
+        case correctionAudioUrl
+        case repeatQuestionAudioUrl
         case coreTopic
         case quizId
         case userId
@@ -172,9 +181,8 @@ struct Question: QuestionType, Equatable, Hashable {
     
     // MARK: - QuestionType Protocol Conformance
     
-    /// The URL string pointing to the audio script of the question.
-    var audioURL: String? {
-        return questionScriptAudioUrl
+    var question: String {
+        return content
     }
     
     /// Indicates whether the question has been answered.
@@ -201,6 +209,8 @@ struct Question: QuestionType, Equatable, Hashable {
     var repeatQuestionAudioURL: String? {
         return repeatQuestionAudioUrl
     }
+    
+    // MARK: - Initializers
     
     init(
         refId: String,
@@ -242,30 +252,6 @@ struct Question: QuestionType, Equatable, Hashable {
         self.questionStatus = questionStatus
     }
     
-    // MARK: - Equatable Conformance
-    
-    static func == (lhs: Question, rhs: Question) -> Bool {
-        return lhs.refId == rhs.refId &&
-        lhs.content == rhs.content &&
-        lhs.mcOptions == rhs.mcOptions &&
-        lhs.correctOption == rhs.correctOption &&
-        lhs.selectedOption == rhs.selectedOption &&
-        lhs.correction == rhs.correction &&
-        lhs.isAnsweredOptional == rhs.isAnsweredOptional &&
-        lhs.isAnsweredCorrectlyOptional == rhs.isAnsweredCorrectlyOptional &&
-        lhs.numberOfPresentations == rhs.numberOfPresentations &&
-        lhs.questionScript == rhs.questionScript &&
-        lhs.repeatQuestionScript == rhs.repeatQuestionScript &&
-        lhs.questionScriptAudioUrl == rhs.questionScriptAudioUrl &&
-        lhs.correctionAudioUrl == rhs.correctionAudioUrl &&
-        lhs.repeatQuestionAudioUrl == rhs.repeatQuestionAudioUrl &&
-        lhs.coreTopic == rhs.coreTopic &&
-        lhs.quizId == rhs.quizId &&
-        lhs.userId == rhs.userId &&
-        lhs.questionStatus == rhs.questionStatus
-    }
-    
-    
     // MARK: - Codable Conformance
     
     /// Custom initializer to decode from JSON
@@ -273,7 +259,23 @@ struct Question: QuestionType, Equatable, Hashable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         refId = try container.decode(String.self, forKey: .refId)
         content = try container.decode(String.self, forKey: .content)
-        mcOptions = try container.decode([String: Bool].self, forKey: .mcOptions)
+        
+        // Custom decoding for mcOptions
+        let optionsContainer = try container.nestedContainer(keyedBy: DynamicCodingKey.self, forKey: .mcOptions)
+        var options: [String: Bool] = [:]
+        for key in optionsContainer.allKeys {
+            do {
+                let boolValue = try optionsContainer.decode(Bool.self, forKey: key)
+                options[key.stringValue] = boolValue
+            } catch {
+                // If decoding as Bool fails, default to false
+                options[key.stringValue] = false
+                // Optionally log a warning for debugging
+                print("Warning: mcOptions value for key '\(key.stringValue)' is not a Bool. Defaulting to false.")
+            }
+        }
+        mcOptions = options
+        
         correctOption = try container.decodeIfPresent(String.self, forKey: .correctOption)
         selectedOption = try container.decodeIfPresent(String.self, forKey: .selectedOption)
         correction = try container.decode(String.self, forKey: .correction)
@@ -314,6 +316,29 @@ struct Question: QuestionType, Equatable, Hashable {
         try container.encodeIfPresent(questionStatus, forKey: .questionStatus)
     }
     
+    // MARK: - Equatable Conformance
+    
+    static func == (lhs: Question, rhs: Question) -> Bool {
+        return lhs.refId == rhs.refId &&
+        lhs.content == rhs.content &&
+        lhs.mcOptions == rhs.mcOptions &&
+        lhs.correctOption == rhs.correctOption &&
+        lhs.selectedOption == rhs.selectedOption &&
+        lhs.correction == rhs.correction &&
+        lhs.isAnsweredOptional == rhs.isAnsweredOptional &&
+        lhs.isAnsweredCorrectlyOptional == rhs.isAnsweredCorrectlyOptional &&
+        lhs.numberOfPresentations == rhs.numberOfPresentations &&
+        lhs.questionScript == rhs.questionScript &&
+        lhs.repeatQuestionScript == rhs.repeatQuestionScript &&
+        lhs.questionScriptAudioUrl == rhs.questionScriptAudioUrl &&
+        lhs.correctionAudioUrl == rhs.correctionAudioUrl &&
+        lhs.repeatQuestionAudioUrl == rhs.repeatQuestionAudioUrl &&
+        lhs.coreTopic == rhs.coreTopic &&
+        lhs.quizId == rhs.quizId &&
+        lhs.userId == rhs.userId &&
+        lhs.questionStatus == rhs.questionStatus
+    }
+    
     // MARK: - Hashable Conformance
     
     func hash(into hasher: inout Hasher) {
@@ -338,6 +363,7 @@ struct Question: QuestionType, Equatable, Hashable {
     }
 }
 
+
 extension Question {
     mutating func selectAnswer(_ selectedOption: String) {
         // Set the selected option
@@ -349,6 +375,11 @@ extension Question {
         // Check if the selected option is correct based on mcOptions
         if let isCorrect = mcOptions[selectedOption] {
             self.isAnsweredCorrectlyOptional = isCorrect
+        } else {
+            // Option not found in mcOptions, mark as incorrect
+            self.isAnsweredCorrectlyOptional = false
         }
     }
 }
+
+

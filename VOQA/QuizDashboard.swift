@@ -65,8 +65,8 @@ struct QuizDashboard: View {
                                             do {
                                                 try await databaseManager.fetchProcessedQuestions(
                                                     config: user.userConfig,
-                                                    quizTitle: "",
-                                                    questionTypeRequest: "",
+                                                    quizTitle: voqa.quizTitle,
+                                                    prompt: nil,
                                                     maxNumberOfQuestions: 2
                                                 )
                                                 
@@ -184,7 +184,7 @@ struct QuizDashboard: View {
     private func getQuestions(quizTitle: String, questionTypeRequest: String, number: Int) async {
         isDownloading = true
         do {
-            try await databaseManager.fetchProcessedQuestions(config: user.userConfig, quizTitle: quizTitle, questionTypeRequest: questionTypeRequest, maxNumberOfQuestions: number)
+            try await databaseManager.fetchProcessedQuestions(config: user.userConfig, quizTitle: quizTitle, prompt: nil, maxNumberOfQuestions: number)
             isDownloading = false
         } catch {
             isDownloading = false

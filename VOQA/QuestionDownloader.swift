@@ -223,11 +223,11 @@ extension NetworkService {
 
             print("Received raw data size: \(data.count) bytes")
 
-//            if let jsonString = String(data: data, encoding: .utf8) {
-//                //print("Raw JSON data: \(jsonString)")
-//            } else {
-//                print("Unable to convert data to string for debugging")
-//            }
+            if let jsonString = String(data: data, encoding: .utf8) {
+                print("Raw JSON data: \(jsonString)")
+            } else {
+                print("Unable to convert data to string for debugging")
+            }
 
             if data.count == 0 {
                 print("Received empty data from the server.")

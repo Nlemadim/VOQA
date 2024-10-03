@@ -75,7 +75,7 @@ extension AddOnItem {
                 isSelected: false,
                 about: "Erin is an ancient librarian. She is very thorough and values accuracy very highly.",
                 audioURL: URL(string: "https://example.com/erin_voice.mp3"),
-                isPaid: true,
+                isPaid: false,
                 path: "ErinNarratorConfiguration",
                 voiceId: ""// Updated path to match the new file naming convention
             ),
@@ -86,7 +86,7 @@ extension AddOnItem {
                 isSelected: false,
                 about: "Counter Sports Prediction Specialist",
                 audioURL: URL(string: "https://example.com/ini_voice.mp3"),
-                isPaid: true,
+                isPaid: false,
                 path: "IniNarratorConfiguration" ,
                 voiceId: ""// Updated path to match the new file naming convention
             ),

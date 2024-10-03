@@ -29,8 +29,8 @@ class QuizConfigManager {
     }
 
     // Expose method to load voice configuration through VoiceConfigurationManager
-    func loadVoiceConfiguration(for voice: AddOnItem) async throws -> QuizSessionConfig? {
-        let loadedConfig = try await voiceConfigurationManager.loadVoiceConfiguration(for: voice)
+    func loadVoiceConfiguration(for voice: AddOnItem) -> QuizSessionConfig? {
+        let loadedConfig = voiceConfigurationManager.loadLocalVoiceConfiguration(forPath: voice.path ?? "")
         self.config = loadedConfig // Assign the loaded configuration to the config property
         return loadedConfig
     }

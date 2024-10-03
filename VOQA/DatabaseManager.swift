@@ -62,7 +62,7 @@ class DatabaseManager: ObservableObject {
         self.sessionConfiguration = loadedConfig
     }
     
-    func fetchProcessedQuestions(config: UserConfig, quizTitle: String, questionTypeRequest: String, maxNumberOfQuestions: Int) async throws {
+    func fetchProcessedQuestions(config: UserConfig, quizTitle: String, prompt: String?, maxNumberOfQuestions: Int) async throws {
         // Initialize the QuestionDownloader with the UserConfig from the environment
         let questionDownloader = QuestionDownloader(config: config)
         
@@ -88,6 +88,12 @@ class DatabaseManager: ObservableObject {
                     narrator: sessionConfig.sessionVoiceId ?? "UNKNOWN", // Ensure a valid voice ID is passed
                     questionIds: newQuestions.map { $0.id }
                 )
+                
+                quizHostMessages.quizSessionIntro.audioUrls = sessionIntro.audioUrls
+                
+                if quizHostMessages.quizSessionIntro.title.isEmptyOrWhiteSpace {
+                    quizHostMessages.quizSessionIntro.title = "dynamicSessionIntro"
+                }
                 
                 // Assign the fetched session intro to the quizSessionIntro in quizHostMessages
                 quizHostMessages.quizSessionIntro = sessionIntro

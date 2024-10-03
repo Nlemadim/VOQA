@@ -9,22 +9,24 @@ import Foundation
 
 struct VoicedFeedback: Codable, Hashable, Equatable {
     var title: String
-    var audioUrls: [FeedbackSfx]
+    var audioUrls: [FeedbackSfx] // Now non-optional
 
     enum CodingKeys: String, CodingKey {
         case title
         case audioUrls
     }
 
-    init(title: String, audioUrls: [FeedbackSfx]) {
+    // Custom Initializer with default empty array
+    init(title: String, audioUrls: [FeedbackSfx] = []) {
         self.title = title
         self.audioUrls = audioUrls
     }
 
+    // Codable Conformance
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         title = try container.decode(String.self, forKey: .title)
-        audioUrls = try container.decode([FeedbackSfx].self, forKey: .audioUrls)
+        audioUrls = try container.decodeIfPresent([FeedbackSfx].self, forKey: .audioUrls) ?? []
     }
 
     func encode(to encoder: Encoder) throws {
@@ -45,10 +47,5 @@ struct VoicedFeedback: Codable, Hashable, Equatable {
     func hash(into hasher: inout Hasher) {
         hasher.combine(title)
         hasher.combine(audioUrls)
-    }
-
-    // Example of a cloning method if needed
-    func clone(with audioUrls: [FeedbackSfx]) -> VoicedFeedback {
-        return VoicedFeedback(title: self.title, audioUrls: audioUrls)
     }
 }
