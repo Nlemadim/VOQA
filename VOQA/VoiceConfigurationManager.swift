@@ -75,7 +75,7 @@ class VoiceConfigurationManager {
         }
         
         let (data, _) = try await URLSession.shared.data(from: audioURL)
-        var config = try JSONDecoder().decode(QuizSessionConfig.self, from: data)
+        let config = try JSONDecoder().decode(QuizSessionConfig.self, from: data)
         
         config.controlFeedback = try await populateControlFeedback(config.controlFeedback)
         config.quizFeedback = try await populateQuizFeedback(config.quizFeedback)
@@ -163,33 +163,33 @@ extension VoiceConfigurationManager {
 
     // Method to print control feedback
     private func printControlFeedback(_ controlFeedback: ControlsFeedback) {
-        print("Control Feedback:")
-        printVoicedFeedback(controlFeedback.startQuiz, title: "Start Quiz")
-        printVoicedFeedback(controlFeedback.nextQuestion, title: "Next Question")
-        printVoicedFeedback(controlFeedback.repeatQuestion, title: "Repeat Question")
+//        print("Control Feedback:")
+//        printVoicedFeedback(controlFeedback.startQuiz, title: "Start Quiz")
+//        printVoicedFeedback(controlFeedback.nextQuestion, title: "Next Question")
+//        printVoicedFeedback(controlFeedback.repeatQuestion, title: "Repeat Question")
     }
 
     // Method to print quiz feedback
     private func printQuizFeedback(_ quizFeedback: QuizFeedback) {
-        print("Quiz Feedback:")
-        printVoicedFeedback(quizFeedback.incorrectAnswer, title: "Incorrect Answer")
-        printVoicedFeedback(quizFeedback.correctAnswer, title: "Correct Answer")
-        printVoicedFeedback(quizFeedback.noResponse, title: "No Response")
-        printVoicedFeedback(quizFeedback.review, title: "Give Score")
+//        print("Quiz Feedback:")
+//        printVoicedFeedback(quizFeedback.incorrectAnswer, title: "Incorrect Answer")
+//        printVoicedFeedback(quizFeedback.correctAnswer, title: "Correct Answer")
+//        printVoicedFeedback(quizFeedback.noResponse, title: "No Response")
+//        printVoicedFeedback(quizFeedback.review, title: "Give Score")
     }
 
     // Method to print host messages
     //MARK: TODO:- FIX Voice Config Inplementation
     private func printHostMessages(_ hostMessages: QuizSessionHostMessages) {
-        print("Host Messages:")
-        printVoicedFeedback(hostMessages.hostNarratorIntro, title: "Host Narrator Intro")
-        printVoicedFeedback(hostMessages.quizSessionIntro, title: "Quiz Session Intro")
-        printVoicedFeedback(hostMessages.messageFromSponsor, title: "Message From Sponsor")
-        printVoicedFeedback(hostMessages.resumeFromSponsoredMessage, title: "Resume From Sponsored Message")
-        printVoicedFeedback(hostMessages.prepareForReview, title: "Prepare For Review")
-        printVoicedFeedback(hostMessages.resumeFromReview, title: "Resume From Review")
-        printVoicedFeedback(hostMessages.sponsoredOutroMessage, title: "Sponsored Outro Message")
-        printVoicedFeedback(hostMessages.outro, title: "Outro")
+        print("Host Messages loaded:")
+//        printVoicedFeedback(hostMessages.hostNarratorIntro, title: "Host Narrator Intro")
+//        printVoicedFeedback(hostMessages.quizSessionIntro, title: "Quiz Session Intro")
+//        printVoicedFeedback(hostMessages.messageFromSponsor, title: "Message From Sponsor")
+//        printVoicedFeedback(hostMessages.resumeFromSponsoredMessage, title: "Resume From Sponsored Message")
+//        printVoicedFeedback(hostMessages.prepareForReview, title: "Prepare For Review")
+//        printVoicedFeedback(hostMessages.resumeFromReview, title: "Resume From Review")
+//        printVoicedFeedback(hostMessages.sponsoredOutroMessage, title: "Sponsored Outro Message")
+//        printVoicedFeedback(hostMessages.outro, title: "Outro")
     }
 
     // Helper method to print VoicedFeedback details

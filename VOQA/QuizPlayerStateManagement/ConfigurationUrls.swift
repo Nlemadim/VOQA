@@ -15,4 +15,5 @@ struct ConfigurationUrls  {
     static let createUserProfile = "https://ljnsun.buildship.run/createUserProfile"
     static let downloadVoqalizedQuestions = "https://ljnsun.buildship.run/downloadVoqalizedQuestions"
     static let testQuestionsDownload = "https://ljnsun.buildship.run/testQuestionsDownload"
+    static let dynamicSessioninfo = "https://ljnsun.buildship.run/getDynamicSessionInfo"
 }

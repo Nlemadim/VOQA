@@ -27,7 +27,8 @@ class QuizSessionManager: ObservableObject {
         
         // Initialize CommandCenter without session reference yet
         let commandCenter = CommandCenter(session: nil)
-        let quizOrchestra = QuizOrchestra(commandCenter: commandCenter)
+        let quizConductor = Conductor(commandCenter: commandCenter)
+        let dynamicContentmanager = DynamicContentManager()
         
         // Create QuizSession with the CommandCenter, Orchestra, and BgmPlayer
         let quizSession = QuizSession(
@@ -39,14 +40,15 @@ class QuizSessionManager: ObservableObject {
             sessionInfo: sessionInfo,
             scoreRegistry: scoreRegistry,
             commandCenter: commandCenter,
-            orchestra: quizOrchestra,
-            bgmPlayer: bgmPlayer  
+            conductor: quizConductor,
+            bgmPlayer: bgmPlayer,
+            dynamicContentmanager: dynamicContentmanager
         )
         
         // Now that the QuizSession is created, set it in the CommandCenter
         commandCenter.session = quizSession
-        bgmPlayer.delegate = quizOrchestra
-        quizSession.sessionAudioPlayer.sessionAudioDelegate = quizOrchestra
+        bgmPlayer.delegate = quizConductor
+        quizSession.sessionAudioPlayer.sessionAudioDelegate = quizConductor
         
         // Assign the created session to the Published quizSession property
         self.quizSession = quizSession

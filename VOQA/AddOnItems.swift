@@ -17,6 +17,7 @@ struct AddOnItem: Identifiable {
     var isPaid: Bool? // Optional flag to indicate if the item is paid
     var path: String? // Optional property to store the path for local configurations
     var isAvailableOffline: Bool? // Optional flag to indicate if the item is available offline
+    var voiceId: String?
 
     init(
         id: UUID = UUID(),
@@ -27,7 +28,8 @@ struct AddOnItem: Identifiable {
         audioURL: URL? = nil,  // Default to nil
         isPaid: Bool? = nil, // Default to nil for backward compatibility
         path: String? = nil, // Default to nil for backward compatibility
-        isAvailableOffline: Bool? = nil // Default to nil for backward compatibility
+        isAvailableOffline: Bool? = nil, // Default to nil for backward compatibility
+        voiceId: String? = nil
     ) {
         self.id = id
         self.name = name
@@ -38,6 +40,7 @@ struct AddOnItem: Identifiable {
         self.isPaid = isPaid
         self.path = path
         self.isAvailableOffline = isAvailableOffline
+        self.voiceId = voiceId
     }
 }
 
@@ -62,7 +65,8 @@ extension AddOnItem {
                 about: "Gus is a straight to the point narrator who will keep things moving without much delay.",
                 audioURL: URL(string: "https://example.com/gus_voice.mp3"),
                 isPaid: false,
-                path: "GusNarratorConfiguration" // Updated path to match the new file naming convention
+                path: "GusNarratorConfiguration", // Updated path to match the new file naming convention
+                voiceId: ""
             ),
             AddOnItem(
                 id: UUID(),
@@ -72,7 +76,8 @@ extension AddOnItem {
                 about: "Erin is an ancient librarian. She is very thorough and values accuracy very highly.",
                 audioURL: URL(string: "https://example.com/erin_voice.mp3"),
                 isPaid: true,
-                path: "ErinNarratorConfiguration" // Updated path to match the new file naming convention
+                path: "ErinNarratorConfiguration",
+                voiceId: ""// Updated path to match the new file naming convention
             ),
             AddOnItem(
                 id: UUID(),
@@ -82,7 +87,8 @@ extension AddOnItem {
                 about: "Counter Sports Prediction Specialist",
                 audioURL: URL(string: "https://example.com/ini_voice.mp3"),
                 isPaid: true,
-                path: "IniNarratorConfiguration" // Updated path to match the new file naming convention
+                path: "IniNarratorConfiguration" ,
+                voiceId: ""// Updated path to match the new file naming convention
             ),
             AddOnItem(
                 id: UUID(),
@@ -92,7 +98,8 @@ extension AddOnItem {
                 about: "Bio-Artificial Ent",
                 audioURL: URL(string: "https://example.com/dogon_yaro_voice.mp3"),
                 isPaid: false,
-                path: "DogonYaroNarratorConfiguration" // Updated path to match the new file naming convention
+                path: "DogonYaroNarratorConfiguration",
+                voiceId: ""// Updated path to match the new file naming convention
             ),
             AddOnItem(
                 id: UUID(),
@@ -102,7 +109,8 @@ extension AddOnItem {
                 about: "Mystic Queen",
                 audioURL: URL(string: "https://example.com/dogon_yaro_voice.mp3"),
                 isPaid: false,
-                path: "DogonYaroNarratorConfiguration" // Updated path to match the new file naming convention
+                path: "DogonYaroNarratorConfiguration",
+                voiceId: ""// Updated path to match the new file naming convention
             ),
             AddOnItem(
                 id: UUID(),
@@ -112,7 +120,8 @@ extension AddOnItem {
                 about: "17th Generation Mindbot",
                 audioURL: URL(string: "https://example.com/dogon_yaro_voice.mp3"),
                 isPaid: false,
-                path: "DrossNarratorConfiguration" // Updated path to match the new file naming convention
+                path: "DrossNarratorConfiguration",
+                voiceId: ""// Updated path to match the new file naming convention
             ),
             AddOnItem(
                 id: UUID(),

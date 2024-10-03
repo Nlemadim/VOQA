@@ -10,8 +10,8 @@ import Foundation
 struct QuestionRequestBody: Codable {
     var userId: String
     var quizTitle: String
-    var request: String
-    var narrator: String
+    var prompt: String?
+    var narratorId: String
     var numberOfQuestions: Int
 }
 

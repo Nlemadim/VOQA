@@ -16,6 +16,7 @@ final class QuizSessionConfig: ObservableObject, Codable, Hashable, Equatable {
     var sessionId: UUID
     var sessionTitle: String
     var sessionVoice: String
+    var sessionVoiceId: String? // New optional property
     var alerts: [AlertSfx]
     var controlFeedback: ControlsFeedback
     var quizFeedback: QuizFeedback
@@ -27,6 +28,7 @@ final class QuizSessionConfig: ObservableObject, Codable, Hashable, Equatable {
         case sessionId
         case sessionTitle
         case sessionVoice
+        case sessionVoiceId  // Added sessionVoiceId to the coding keys
         case sessionQuestion
         case alerts
         case controlFeedback
@@ -36,11 +38,11 @@ final class QuizSessionConfig: ObservableObject, Codable, Hashable, Equatable {
     }
     
     // MARK: - Initializers
-    
     init(
         sessionId: UUID,
         sessionTitle: String,
         sessionVoice: String,
+        sessionVoiceId: String?,  
         sessionQuestion: [Question],
         alerts: [AlertSfx],
         controlFeedback: ControlsFeedback,
@@ -48,9 +50,10 @@ final class QuizSessionConfig: ObservableObject, Codable, Hashable, Equatable {
         sessionMusic: [BgmSfx],
         quizHostMessages: QuizSessionHostMessages?
     ) {
-        self.sessionId = sessionId
+        self.sessionId = UUID()
         self.sessionTitle = sessionTitle
         self.sessionVoice = sessionVoice
+        self.sessionVoiceId = sessionVoiceId  // Initialize the new property
         self.sessionQuestion = sessionQuestion
         self.alerts = alerts
         self.controlFeedback = controlFeedback
@@ -60,12 +63,12 @@ final class QuizSessionConfig: ObservableObject, Codable, Hashable, Equatable {
     }
     
     // MARK: - Codable Conformance
-    
     required convenience init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let sessionId = (try? container.decode(UUID.self, forKey: .sessionId)) ?? UUID()
         let sessionTitle = try container.decode(String.self, forKey: .sessionTitle)
         let sessionVoice = try container.decode(String.self, forKey: .sessionVoice)
+        let sessionVoiceId = try? container.decode(String?.self, forKey: .sessionVoiceId) // Decode the new property
         let sessionQuestion = try container.decode([Question].self, forKey: .sessionQuestion)
         let alerts = try container.decode([AlertSfx].self, forKey: .alerts)
         let controlFeedback = try container.decode(ControlsFeedback.self, forKey: .controlFeedback)
@@ -77,6 +80,7 @@ final class QuizSessionConfig: ObservableObject, Codable, Hashable, Equatable {
             sessionId: sessionId,
             sessionTitle: sessionTitle,
             sessionVoice: sessionVoice,
+            sessionVoiceId: sessionVoiceId, // Pass the new property
             sessionQuestion: sessionQuestion,
             alerts: alerts,
             controlFeedback: controlFeedback,
@@ -91,6 +95,7 @@ final class QuizSessionConfig: ObservableObject, Codable, Hashable, Equatable {
         try container.encode(sessionId, forKey: .sessionId)
         try container.encode(sessionTitle, forKey: .sessionTitle)
         try container.encode(sessionVoice, forKey: .sessionVoice)
+        try container.encodeIfPresent(sessionVoiceId, forKey: .sessionVoiceId) // Encode the new property
         try container.encode(sessionQuestion, forKey: .sessionQuestion)
         try container.encode(alerts, forKey: .alerts)
         try container.encode(controlFeedback, forKey: .controlFeedback)
@@ -100,11 +105,11 @@ final class QuizSessionConfig: ObservableObject, Codable, Hashable, Equatable {
     }
     
     // MARK: - Equatable Conformance
-    
     static func == (lhs: QuizSessionConfig, rhs: QuizSessionConfig) -> Bool {
         return lhs.sessionId == rhs.sessionId &&
                lhs.sessionTitle == rhs.sessionTitle &&
                lhs.sessionVoice == rhs.sessionVoice &&
+               lhs.sessionVoiceId == rhs.sessionVoiceId && // Added new property check
                lhs.sessionQuestion == rhs.sessionQuestion &&
                lhs.alerts == rhs.alerts &&
                lhs.controlFeedback == rhs.controlFeedback &&
@@ -114,11 +119,11 @@ final class QuizSessionConfig: ObservableObject, Codable, Hashable, Equatable {
     }
     
     // MARK: - Hashable Conformance
-    
     func hash(into hasher: inout Hasher) {
         hasher.combine(sessionId)
         hasher.combine(sessionTitle)
         hasher.combine(sessionVoice)
+        hasher.combine(sessionVoiceId) // Hash the new property
         hasher.combine(sessionQuestion)
         hasher.combine(alerts)
         hasher.combine(controlFeedback)

@@ -65,10 +65,11 @@ struct QuizDashboard: View {
                                             do {
                                                 try await databaseManager.fetchProcessedQuestions(
                                                     config: user.userConfig,
-                                                    quizTitle :"MCAT",
-                                                    questionTypeRequest: "All Categories",
-                                                    maxNumberOfQuestions: 10
+                                                    quizTitle: "",
+                                                    questionTypeRequest: "",
+                                                    maxNumberOfQuestions: 2
                                                 )
+                                                
                                                 
                                                 await navigateToQuizPlayer()
                                             } catch {
@@ -190,6 +191,8 @@ struct QuizDashboard: View {
             print("Error fetching questions: \(error)")
         }
     }
+    
+
 
     private func navigateToQuizPlayer() async {
         print("Current Config before guard: \(String(describing: config))")
@@ -199,7 +202,7 @@ struct QuizDashboard: View {
             return
         }
         
-        print("Navigating to QuizPlayer with config: \(config)")
+       // print("Navigating to QuizPlayer with config: \(config)")
         navigationRouter.navigate(to: .quizPlayer(config: config, voqa: voqa))
     }
 
@@ -328,4 +331,13 @@ struct DashboardTab: Identifiable {
      await getQuestions(quizTitle: "MCAT", questionTypeRequest: "ALL Categories", number: 10)
  }
  
+ */
+/**
+ 
+ try await databaseManager.fetchProcessedQuestions(
+     config: user.userConfig,
+     quizTitle :"MCAT",
+     questionTypeRequest: "All Categories",
+     maxNumberOfQuestions: 10
+ )
  */

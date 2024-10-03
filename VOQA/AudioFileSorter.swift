@@ -72,8 +72,10 @@ class AudioFileSorter {
             }
         case .playSessionIntro:
             if let sessionIntro = config.quizHostMessages?.quizSessionIntro {
-                if let sessionAudio = sessionIntro.audioUrls.first(where: { $0.title == "sessionAndSponsorIntro" }) {
+                if let sessionAudio = sessionIntro.audioUrls.first(where: { $0.title == "dynamicSessionIntro" }) {
                     return URL(string: sessionAudio.audioUrl.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed) ?? "")
+                } else {
+                    print("Unavailable URL")
                 }
             }
         }

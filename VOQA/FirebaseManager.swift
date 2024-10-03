@@ -83,11 +83,11 @@ final class FirebaseManager {
             print("Quiz collection successfully decoded into QuizDataStruct.")
             
             // For visibility, print out one item from the fetched collection
-            if let firstItem = quizCollection.first {
-                print("First quiz item fetched: \(firstItem)")
-            } else {
-                print("No items found in the fetched quiz collection.")
-            }
+//            if let firstItem = quizCollection.first {
+//                //print("First quiz item fetched: \(firstItem)")
+//            } else {
+//                print("No items found in the fetched quiz collection.")
+//            }
             
             self.quizCollection = quizCollection
             return quizCollection

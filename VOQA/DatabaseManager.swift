@@ -17,6 +17,9 @@ class DatabaseManager: ObservableObject {
     @Published var quizCollection: [QuizData] = []
     @Published var showFullPageError: Bool = false
     
+    //added
+    @Published var fetchingSessionIntro: Bool = false
+    
     @Published var ratingsAndReview: RatingsAndReview?
     @Published var latestScores: LatestScore?
     @Published var contributedQuestion: [ContributeAQuestion] = []
@@ -53,41 +56,69 @@ class DatabaseManager: ObservableObject {
         }
     }
     
+    //MARK: Load Vopice Config:- Local Voice Config Data
     func loadVoiceConfiguration(for voice: AddOnItem) async throws {
         let loadedConfig = try await configManager.loadVoiceConfiguration(for: voice)
         self.sessionConfiguration = loadedConfig
     }
     
-    func fetchProcessedQuestions(config: UserConfig ,quizTitle: String, questionTypeRequest: String, maxNumberOfQuestions: Int) async throws {
+    func fetchProcessedQuestions(config: UserConfig, quizTitle: String, questionTypeRequest: String, maxNumberOfQuestions: Int) async throws {
         // Initialize the QuestionDownloader with the UserConfig from the environment
-        
         let questionDownloader = QuestionDownloader(config: config)
         
-        // Fetch questions using the user's quiz title
+        // Fetch the questions from the live API
         let newQuestions = try await questionDownloader.downloadQuizQuestions(
+            userId: config.userId,
             quizTitle: quizTitle,
-            questionTypeRequest: questionTypeRequest,
-            maxNumberOfQuestions: maxNumberOfQuestions
+            narratorId: self.sessionConfiguration?.sessionVoiceId ?? "UNKNOWN", // Ensure voice ID is available
+            numberOfQuestions: 3
         )
         
-        if var config = self.sessionConfiguration {
-            config.sessionQuestion.append(contentsOf: newQuestions)
-            self.sessionConfiguration = config
-            print("\(newQuestions.count) question(s) fetched")
-            print("config added \(config.sessionQuestion.count) new questions")
+        // Check if session configuration is available
+        if let sessionConfig = self.sessionConfiguration {
+            print("Session ID: \(sessionConfig.sessionId)")
+            print("Quiz Title: \(quizTitle)")
+            
+            // Ensure quizHostMessages is available and safely unwrap
+            if let quizHostMessages = sessionConfig.quizHostMessages {
+                // Fetch the session intro using the network service
+                let sessionIntro = try await networkService.fetchCurrentSessionIntro(
+                    userId: config.userId,
+                    quizTitle: sessionConfig.sessionTitle,
+                    narrator: sessionConfig.sessionVoiceId ?? "UNKNOWN", // Ensure a valid voice ID is passed
+                    questionIds: newQuestions.map { $0.id }
+                )
+                
+                // Assign the fetched session intro to the quizSessionIntro in quizHostMessages
+                quizHostMessages.quizSessionIntro = sessionIntro
+                
+                // Update the session config's host messages
+                sessionConfig.quizHostMessages = quizHostMessages
+                
+                // Append the new questions to the session configuration
+                sessionConfig.sessionQuestion.append(contentsOf: newQuestions)
+                
+                print("\(newQuestions.count) question(s) fetched")
+                print("Session config now contains \(sessionConfig.sessionQuestion.count) questions")
+                
+                // Debugging: Print each question's details
+                for (index, question) in newQuestions.enumerated() {
+                    print("Question \(index + 1): ID = \(question.id), Content = \(question.content)")
+                }
+            } else {
+                print("quizHostMessages is nil.")
+            }
         } else {
-            print("sessionConfiguration is nil")
+            print("sessionConfiguration is nil.")
         }
     }
+
     
+    //MARK: Fetch Quiz Collection from Firebase
     func fetchQuizCollection() async {
         do {
             let collection = try await firebaseManager.fetchQuizCollection()
             self.quizCollection = collection
-            for quiz in collection {
-                print("Quiz Title: \(quiz.quizTitle)")
-            }
-            
             // After fetching, create the catalogue
             self.quizCatalogue = self.createQuizCatalogue(from: collection)
         } catch {
@@ -163,14 +194,14 @@ class DatabaseManager: ObservableObject {
             
             for quizEnum in quizEnums {
                 if let quiz = quizCollection.first(where: { $0.quizTitle == quizEnum.rawValue }) {
-                    print("Mapped Quiz: \(quiz.quizTitle) -> \(quizEnum.rawValue) in \(category.details.title)")
+                    //print("Mapped Quiz: \(quiz.quizTitle) -> \(quizEnum.rawValue) in \(category.details.title)")
                     quizzesInCategory.append(Voqa(from: quiz))
                 } else {
                     print("No match found for \(quizEnum.rawValue) in \(category.details.title)")
                     // Optionally log possible matches based on lowercased quiz titles for debugging
                     let possibleMatches = quizCollection.filter { $0.quizTitle.lowercased() == quizEnum.rawValue.lowercased() }
                     if !possibleMatches.isEmpty {
-                        print("Possible matches found for \(quizEnum.rawValue): \(possibleMatches.map { $0.quizTitle })")
+                        //print("Possible matches found for \(quizEnum.rawValue): \(possibleMatches.map { $0.quizTitle })")
                     }
                 }
             }
@@ -217,6 +248,41 @@ class DatabaseManager: ObservableObject {
         print(reviewToPost.comment as Any)
         //Set up validation and question post configuration
         //networkService.postReview(userId: String, quizId: String, diificultyRating: Int, relevanceRating: Int, narratorRating: Int, comment: Int? = nil)
+    }
+}
+
+extension NetworkService {
+    
+    // Async method version
+    func fetchCurrentSessionIntro(userId: String, quizTitle: String, narrator: String, questionIds: [String]) async throws -> VoicedFeedback {
+        print("Networkk Service fetching Quiz Session Info")
+        // Create the request body
+        let requestBody: [String: Any] = [
+            "userId": userId,
+            "quizTitle": quizTitle,
+            "narrator": narrator,
+            "questionIds": questionIds
+        ]
+        
+        // Ensure the URL is valid
+        guard let url = URL(string: ConfigurationUrls.dynamicSessioninfo) else {
+            throw NetworkError.invalidURL
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        // Convert the request body to JSON
+        request.httpBody = try JSONSerialization.data(withJSONObject: requestBody, options: [])
+        
+        // Perform the async network call using URLSession
+        let (data, _) = try await URLSession.shared.data(for: request)
+        
+        // Decode the response into VoicedFeedback
+        let feedback = try JSONDecoder().decode(VoicedFeedback.self, from: data)
+        
+        return feedback
     }
 }
 

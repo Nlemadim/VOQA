@@ -83,5 +83,10 @@ struct IdentifiableError: Identifiable {
     var message: String
 }
 
-
+enum NetworkError: Error {
+    case invalidURL
+    case invalidRequestBody
+    case noData
+    case decodingError
+}
 

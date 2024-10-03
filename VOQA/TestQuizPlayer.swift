@@ -27,6 +27,8 @@ final class TestQuizPlayer {
             let updatedConfig = config
             viewModel.initializeSession(with: updatedConfig)
             viewModel.startQuiz()
+        } else {
+            print("failed to load config")
         }
     }
 
@@ -50,12 +52,14 @@ final class TestQuizPlayer {
             DispatchQueue.main.async {
                 if let config = self.databaseManager.sessionConfiguration {
                     config.sessionQuestion = questions
+                    
                     let quizPlayerView = QuizPlayerView(config: config, voqaItem: mockVoqaItem)
                     completion(quizPlayerView)
                 }
             }
         }
     }
+    
 
     private func loadUserVoiceSelection() async {
         let defaultVoiceItems = AddOnItem.defaultNarratorItems
@@ -99,7 +103,8 @@ struct TestQuizPlayerPreview: View {
         }
         .onAppear {
             // Call configureNewSession and loadQuizPlayerView in sequence
-//            testQuizPlayer.configureNewSession()
+            testQuizPlayer.configureNewSession()
+            
             
             testQuizPlayer.loadQuizPlayerView { view in
                 self.quizPlayerView = view

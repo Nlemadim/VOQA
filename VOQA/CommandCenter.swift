@@ -29,7 +29,7 @@ class CommandCenter {
         session.sessionAudioPlayer.performAudioAction(introAction)
     }
     
-    // new Methods
+    
     func playSessionIntro() {
         guard let session = session else { return }
         print("Command Center: Playing session intro.")

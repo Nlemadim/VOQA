@@ -3,6 +3,8 @@
 {
   "sessionTitle": "",
   "sessionVoice": "Gus",
+  "sessionId": "",
+  "sessionVoiceId": "nPczCjzI2devNBz1zQrb",
   "alerts": [
     {
       "title": "Correct Answer Bell",
@@ -237,7 +239,7 @@
           "audioUrls": [
               {
                   "title": "resumefromSponsor",
-                  "urlScript": "And now ... Let's get after it,
+                  "urlScript": "And now ... Let's get after it",
                   "audioUrl": "https://storage.googleapis.com/buildship-ljnsun-us-central1/VoiceFeedBackUrls/Gus/hostMessages/resumefromSponsor"
               },
               {
@@ -328,7 +330,9 @@
           ]
       }
   },
-  "sessionQuestion": []
+  "sessionQuestion": [
+      
+  ]
 }
 
 

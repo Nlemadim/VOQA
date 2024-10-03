@@ -7,7 +7,7 @@
 
 import Foundation
 
-class QuizOrchestra: BgmPlayerDelegate, SessionAudioPlayerDelegate {
+class Conductor: BgmPlayerDelegate, SessionAudioPlayerDelegate {
     var commandCenter: CommandCenter
     var session: QuizSession?
 
@@ -43,10 +43,10 @@ class QuizOrchestra: BgmPlayerDelegate, SessionAudioPlayerDelegate {
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) { [weak self] in
             guard let self = self else { return }
-
+            
             // Handle the last action and decide the next step
             if self.lastAction == .playHostIntro {
-                print("Orchestra: Host intro finished, playing session intro.")
+                print("Orchestra: Host intro finished, checking if session intro is ready.")
                 self.commandCenter.playSessionIntro()
             }
             
@@ -64,7 +64,7 @@ class QuizOrchestra: BgmPlayerDelegate, SessionAudioPlayerDelegate {
                 print("Orchestra: Correct answer callout finished, moving to next action.")
                 self.commandCenter.resumeQuiz()
             }
-
+            
             // Ensure the queued actions are processed if there are any
             session.sessionAudioPlayer.completeCurrentAction()
         }
@@ -83,3 +83,23 @@ class QuizOrchestra: BgmPlayerDelegate, SessionAudioPlayerDelegate {
         conductNextAction() // This can control the next action in the flow based on what just finished
     }
 }
+
+
+
+
+
+/***
+ 
+ 
+//                // Check if the session intro has been fetched
+//                if session.sessionInfo.dynamicSessionInfo != nil {
+//                    print("Orchestra: Session intro fetched, playing session intro.")
+//                    self.commandCenter.playSessionIntro()
+//                } else {
+//                    self.commandCenter.playFirstQuestion()
+//                    print("Orchestra: Session intro not fetched yet, skipping this action or proceeding with another.")
+//                    // You can either skip this step or decide to trigger another action
+//                    // For now, just log and continue
+//                }
+ 
+ */

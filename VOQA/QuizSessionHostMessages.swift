@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct QuizSessionHostMessages: Codable, Hashable, Equatable {
+class QuizSessionHostMessages: Codable, Hashable, Equatable {
     var hostNarratorIntro: VoicedFeedback
     var quizSessionIntro: VoicedFeedback
     var messageFromSponsor: VoicedFeedback
@@ -17,6 +17,7 @@ struct QuizSessionHostMessages: Codable, Hashable, Equatable {
     var sponsoredOutroMessage: VoicedFeedback
     var outro: VoicedFeedback
 
+    // Coding Keys for encoding/decoding
     enum CodingKeys: String, CodingKey {
         case hostNarratorIntro
         case quizSessionIntro
@@ -28,6 +29,7 @@ struct QuizSessionHostMessages: Codable, Hashable, Equatable {
         case outro
     }
 
+    // Initializer
     init(
         hostNarratorIntro: VoicedFeedback,
         quizSessionIntro: VoicedFeedback,
@@ -48,7 +50,8 @@ struct QuizSessionHostMessages: Codable, Hashable, Equatable {
         self.outro = outro
     }
 
-    init(from decoder: Decoder) throws {
+    // Decoding from JSON
+    required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         hostNarratorIntro = try container.decode(VoicedFeedback.self, forKey: .hostNarratorIntro)
         quizSessionIntro = try container.decode(VoicedFeedback.self, forKey: .quizSessionIntro)
@@ -60,6 +63,7 @@ struct QuizSessionHostMessages: Codable, Hashable, Equatable {
         outro = try container.decode(VoicedFeedback.self, forKey: .outro)
     }
 
+    // Encoding to JSON
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(hostNarratorIntro, forKey: .hostNarratorIntro)
@@ -72,20 +76,17 @@ struct QuizSessionHostMessages: Codable, Hashable, Equatable {
         try container.encode(outro, forKey: .outro)
     }
 
-    // MARK: - Equatable Conformance
-
+    // Hashable and Equatable conformance
     static func == (lhs: QuizSessionHostMessages, rhs: QuizSessionHostMessages) -> Bool {
         return lhs.hostNarratorIntro == rhs.hostNarratorIntro &&
-               lhs.quizSessionIntro == rhs.quizSessionIntro &&
-               lhs.messageFromSponsor == rhs.messageFromSponsor &&
-               lhs.resumeFromSponsoredMessage == rhs.resumeFromSponsoredMessage &&
-               lhs.prepareForReview == rhs.prepareForReview &&
-               lhs.resumeFromReview == rhs.resumeFromReview &&
-               lhs.sponsoredOutroMessage == rhs.sponsoredOutroMessage &&
-               lhs.outro == rhs.outro
+            lhs.quizSessionIntro == rhs.quizSessionIntro &&
+            lhs.messageFromSponsor == rhs.messageFromSponsor &&
+            lhs.resumeFromSponsoredMessage == rhs.resumeFromSponsoredMessage &&
+            lhs.prepareForReview == rhs.prepareForReview &&
+            lhs.resumeFromReview == rhs.resumeFromReview &&
+            lhs.sponsoredOutroMessage == rhs.sponsoredOutroMessage &&
+            lhs.outro == rhs.outro
     }
-
-    // MARK: - Hashable Conformance
 
     func hash(into hasher: inout Hasher) {
         hasher.combine(hostNarratorIntro)
@@ -98,3 +99,4 @@ struct QuizSessionHostMessages: Codable, Hashable, Equatable {
         hasher.combine(outro)
     }
 }
+

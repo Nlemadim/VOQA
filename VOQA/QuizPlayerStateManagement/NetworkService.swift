@@ -9,6 +9,8 @@ import Foundation
 
 class NetworkService {
     
+    
+    
     func fetchAudioUrl(for feedbackMessage: String) async throws -> String {
         let cleanedMessage = cleanMessage(feedbackMessage)
         let encodedMessage = cleanedMessage.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""

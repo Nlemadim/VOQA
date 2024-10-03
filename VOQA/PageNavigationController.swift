@@ -23,7 +23,7 @@ class NavigationRouter: ObservableObject {
     // Navigate to a specific destination
     func navigate(to destination: NavigationDestination) {
         path.append(destination)
-        print("Calling navigation to: \(destination)")
+        //print("Calling navigation to: \(destination)")
     }
     
     // Go back by removing the last destination

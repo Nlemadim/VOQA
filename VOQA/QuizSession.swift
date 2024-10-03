@@ -64,7 +64,7 @@ class QuizSession: ObservableObject, QuizServices {
     var sessionInfo: QuizSessionInfoProtocol
     var scoreRegistry: ScoreRegistry
     var commandCenter: CommandCenter
-    var orchestra: QuizOrchestra
+    var conductor: Conductor
     
     // var questions: [Question] = [] // Removed as it's now managed by QuestionPlayer
     private var countdownComplete: Bool = false
@@ -72,8 +72,9 @@ class QuizSession: ObservableObject, QuizServices {
     private var timer: Timer?
     var quizStartTimer: Timer?
     var bgmPlayer: BgmPlayer
+    var dynamicContentManager: DynamicContentManager
     
-    init(state: QuizServices, questionPlayer: QuestionPlayer, reviewer: ReviewsManager, sessionCloser: SessionCloser, audioFileSorter: AudioFileSorter, sessionInfo: QuizSessionInfoProtocol, scoreRegistry: ScoreRegistry, commandCenter: CommandCenter, orchestra: QuizOrchestra, bgmPlayer: BgmPlayer) {
+    init(state: QuizServices, questionPlayer: QuestionPlayer, reviewer: ReviewsManager, sessionCloser: SessionCloser, audioFileSorter: AudioFileSorter, sessionInfo: QuizSessionInfoProtocol, scoreRegistry: ScoreRegistry, commandCenter: CommandCenter, conductor: Conductor, bgmPlayer: BgmPlayer, dynamicContentmanager: DynamicContentManager) {
         self.state = state
         self.questionPlayer = questionPlayer
         self.reviewer = reviewer
@@ -82,8 +83,9 @@ class QuizSession: ObservableObject, QuizServices {
         self.sessionInfo = sessionInfo
         self.scoreRegistry = scoreRegistry
         self.commandCenter = commandCenter
-        self.orchestra = orchestra
-        self.bgmPlayer = bgmPlayer  // Assign bgmPlayer
+        self.conductor = conductor
+        self.bgmPlayer = bgmPlayer
+        self.dynamicContentManager = dynamicContentmanager
         
         // Initialize properties from sessionInfo
         self.quizTitle = sessionInfo.sessionTitle
@@ -91,7 +93,6 @@ class QuizSession: ObservableObject, QuizServices {
         
         setupObservers()
     }
-        
 
     
     static func create(state: QuizServices, config: QuizSessionConfig) -> QuizSession {
@@ -111,7 +112,8 @@ class QuizSession: ObservableObject, QuizServices {
 
         // Initialize CommandCenter and QuizOrchestra without session reference yet
         let commandCenter = CommandCenter(session: nil)  // Temporarily set session as nil
-        let orchestra = QuizOrchestra(commandCenter: commandCenter)
+        let conductor = Conductor(commandCenter: commandCenter)
+        let dynamicContentManager = DynamicContentManager()
 
         // Create the QuizSession
         let quizSession = QuizSession(
@@ -123,20 +125,20 @@ class QuizSession: ObservableObject, QuizServices {
             sessionInfo: sessionInfo,
             scoreRegistry: scoreRegistry,
             commandCenter: commandCenter,
-            orchestra: orchestra,
-            bgmPlayer: bgmPlayer  // Pass bgmPlayer to QuizSession
+            conductor: conductor,
+            bgmPlayer: bgmPlayer,
+            dynamicContentmanager: dynamicContentManager  // Pass bgmPlayer to QuizSession
         )
 
         // Now that the QuizSession is created, set it in the CommandCenter
         commandCenter.session = quizSession
-        bgmPlayer.delegate = orchestra
-        quizSession.sessionAudioPlayer.sessionAudioDelegate = orchestra
+        dynamicContentManager.session = quizSession
+        bgmPlayer.delegate = conductor
+        quizSession.sessionAudioPlayer.sessionAudioDelegate = conductor
 
         return quizSession
     }
 
-
-    
     func setState(_ state: QuizServices) {
         print("Setting state to \(type(of: state))")
         self.state = state
@@ -145,10 +147,15 @@ class QuizSession: ObservableObject, QuizServices {
         notifyObservers()
     }
     
+    func fetchSessionIntro() -> [String] {
+        
+        return []
+    }
+    
     func startQuiz() {
         print("Session: Starting quiz.")
         //MARK: TODO put a guard cj=heck to make sure there are questions before start
-        orchestra.startFlow()
+        conductor.startFlow()
         self.isNowPlaying = true
     }
     
