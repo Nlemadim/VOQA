@@ -19,6 +19,7 @@ class AudioFileSorter {
     //MARK> TODO DRY VIOLATION METHOD
     func configure(with config: QuizSessionConfig) {
         self.config = config
+        print("AudioFilesorter registers config \(config.sessionId)")
     }
     
     func getAudioFile(for action: AudioAction) -> URL? {
@@ -60,11 +61,11 @@ class AudioFileSorter {
         case .playBGM:
             audioUrls = config.sessionMusic.compactMap { $0.audioUrl }
             return nil
-
+            
         case .giveScore(score: let score):
             let url = getScorePlaybackUrl(score: score, config: config)
             audioUrls.append(url)
-
+            
         case .playHostIntro:
             if let hostMessages = config.quizHostMessages {
                 // Specifically target the "firstIntro" audio
@@ -72,12 +73,12 @@ class AudioFileSorter {
                     return URL(string: firstIntro.audioUrl.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed) ?? "")
                 }
             }
+            
         case .playSessionIntro:
-            if let sessionIntro = config.quizHostMessages?.quizSessionIntro {
-                if let sessionAudio = sessionIntro.audioUrls.first(where: { $0.title == "dynamicSessionIntro" }) {
-                    return URL(string: sessionAudio.audioUrl.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed) ?? "")
-                } else {
-                    print("Unavailable URL")
+            if let hostMessages = config.quizHostMessages {
+                // Specifically target the "firstIntro" audio
+                if let firstIntro = hostMessages.quizSessionIntro.audioUrls.first(where: { !$0.audioUrl.isEmptyOrWhiteSpace }) {
+                    return URL(string: firstIntro.audioUrl.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed) ?? "")
                 }
             }
         }

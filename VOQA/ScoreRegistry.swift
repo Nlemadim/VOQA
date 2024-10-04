@@ -16,14 +16,14 @@ class ScoreRegistry: ObservableObject {
     
     // Check the answer and update the score
     func checkAnswer(question: Question, selectedOption: String, isCorrect: @escaping (Bool) -> Void) {
-        if selectedOption == question.correctOption {
-            currentScore += 1
-            currentScoreStreak += 1
-            isCorrect(true)
-        } else {
-            currentScoreStreak = 0
-            isCorrect(false)
-        }
+//        if selectedOption == question.correctOption {
+//            currentScore += 1
+//            currentScoreStreak += 1
+//            isCorrect(true)
+//        } else {
+//            currentScoreStreak = 0
+//            isCorrect(false)
+//        }
     }
     
     // Create a performance record

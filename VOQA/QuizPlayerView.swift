@@ -12,6 +12,8 @@ import Combine
 struct QuizPlayerView: View {
     @EnvironmentObject var databaseManager: DatabaseManager
     @Environment(\.dismiss) private var dismiss
+   
+    @ObservedObject var config: QuizSessionConfig
     
     @StateObject private var viewModel: QuizViewModel
     
@@ -20,9 +22,7 @@ struct QuizPlayerView: View {
     @State private var audioPlayer: SessionAudioPlayer? // Assuming this manages audio playback
     @State private var cancellables: Set<AnyCancellable> = []
     
-    var config: QuizSessionConfig
     var voqa: VoqaItem
-    
     
     // Initialize ViewModel with required managers
     init(config: QuizSessionConfig, voqa: Voqa) {
@@ -37,6 +37,7 @@ struct QuizPlayerView: View {
     init(config: QuizSessionConfig, voqaItem: VoqaItem) {
         self.config = config
         self.voqa = voqaItem
+        print("Initialized QuizPlayerView with config: \(config.sessionId)")
         let quizSessionManager = QuizSessionManager()
         let quizConfigManager = QuizConfigManager()
         _viewModel = StateObject(wrappedValue: QuizViewModel(quizSessionManager: quizSessionManager, quizConfigManager: quizConfigManager))
@@ -262,9 +263,9 @@ struct QuizPlayerView: View {
         guard let isCorrect = question.mcOptions[option] else { return .gray }
         
         // If the question is answered, highlight based on correctness
-        if let isAnswered = question.isAnsweredOptional, isAnswered {
-            return isCorrect ? .green : .red
-        }
+//        if let isAnswered = question.isAnsweredOptional, isAnswered {
+//            return isCorrect ? .green : .red
+//        }
         
         // If no selection is made, default to gray
         return .gray

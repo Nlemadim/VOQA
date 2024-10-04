@@ -90,6 +90,7 @@ class QuizSession: ObservableObject, QuizServices {
         // Initialize properties from sessionInfo
         self.quizTitle = sessionInfo.sessionTitle
         self.totalQuestionCount = sessionInfo.sessionQuestions.count
+       
         
         setupObservers()
     }
@@ -114,6 +115,7 @@ class QuizSession: ObservableObject, QuizServices {
         let commandCenter = CommandCenter(session: nil)  // Temporarily set session as nil
         let conductor = Conductor(commandCenter: commandCenter)
         let dynamicContentManager = DynamicContentManager()
+        dynamicContentManager.configure(with: config)
 
         // Create the QuizSession
         let quizSession = QuizSession(
@@ -133,6 +135,7 @@ class QuizSession: ObservableObject, QuizServices {
         // Now that the QuizSession is created, set it in the CommandCenter
         commandCenter.session = quizSession
         dynamicContentManager.session = quizSession
+        conductor.session = quizSession
         bgmPlayer.delegate = conductor
         quizSession.sessionAudioPlayer.sessionAudioDelegate = conductor
 
@@ -154,30 +157,10 @@ class QuizSession: ObservableObject, QuizServices {
     
     func startQuiz() {
         print("Session: Starting quiz.")
-        //MARK: TODO put a guard cj=heck to make sure there are questions before start
+        self.setState(conductor)
         conductor.startFlow()
         self.isNowPlaying = true
     }
-    
-//    private func startCountdown() {
-//        print("Starting countdown")
-//        timer?.invalidate()
-//        var remainingTime = countdownTime
-//        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] timer in
-//            guard let self = self else { return }
-//            if remainingTime > 0 {
-//                remainingTime -= 1
-//                self.countdownTime = remainingTime
-//            } else {
-//                timer.invalidate()
-//                self.countdownComplete = true // Added 'self.' for clarity
-//                //self.playFirstQuestion()
-//            }
-//        }
-//    }
-    
-    // Method to start the quiz timer
-    
 
     // Stop the timer when the quiz session ends
     func prepareToEndSession() {
@@ -330,6 +313,25 @@ class QuizSession: ObservableObject, QuizServices {
     }
 }
 
+//    private func startCountdown() {
+//        print("Starting countdown")
+//        timer?.invalidate()
+//        var remainingTime = countdownTime
+//        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] timer in
+//            guard let self = self else { return }
+//            if remainingTime > 0 {
+//                remainingTime -= 1
+//                self.countdownTime = remainingTime
+//            } else {
+//                timer.invalidate()
+//                self.countdownComplete = true // Added 'self.' for clarity
+//                //self.playFirstQuestion()
+//            }
+//        }
+//    }
+    
+    // Method to start the quiz timer
+    
 
 
 //class QuizSession: ObservableObject, QuizServices {

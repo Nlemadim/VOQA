@@ -15,7 +15,7 @@ class SessionAudioPlayer: NSObject, AVAudioPlayerDelegate {
     private weak var context: QuizSession?
     private var actionQueue: [AudioAction] = []
     private var isProcessingAction = false
-    private var lastAction: AudioAction?
+    var lastAction: AudioAction?
     private var audioFileSorter: AudioFileSorter
     
     weak var sessionAudioDelegate: SessionAudioPlayerDelegate?

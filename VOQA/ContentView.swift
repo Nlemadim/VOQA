@@ -72,12 +72,7 @@ struct ContentView: View {
     private func loadUserVoiceSelection() async {
         let defaultVoiceItems = AddOnItem.defaultNarratorItems
         if let currentItem = defaultVoiceItems.first(where: { $0.name == user.userConfig.selectedVoiceNarrator }) {
-            do {
-                try await databaseManager.loadVoiceConfiguration(for: currentItem)
-                // No need to set a separate config state variable
-            } catch {
-                print("Error loading default voice selection: \(error.localizedDescription)")
-            }
+            databaseManager.loadVoiceConfiguration(for: currentItem)
         }
     }
 
@@ -97,7 +92,7 @@ struct ContentView: View {
                 .environmentObject(databaseManager)
                 .environmentObject(networkMonitor)
                 .environmentObject(user)
-
+            
         case .mainView:
             MainView(logStatus: logStatus)
                 .environmentObject(navigationRouter)
@@ -145,7 +140,7 @@ struct ContentView: View {
 }
 
 /**
- 
+ [{"quizId":"Human Anatomy","userId":"4A41E2FE-7F42-4A9E-BE4D-3DFE23EDAA58","refId":"d4003d1c-c8a4-4afa-99ec-f2f6fdd60490","content":"Which muscle is primarily responsible for the movement of external rotation of the shoulder?","mcOptions":{"A (Infraspinatus)":true,"B (Deltoid)":false,"C (Teres Minor)":false,"D (Pectoralis Major)":false},"selectedOption":"","correction":"Let us correct this misconception. The infraspinatus muscle, a vital component of the rotator cuff, expertly controls the shoulder's external rotation.","numberOfPresentations":0,"questionScript":"Within the realm of shoulder movements, can you discern which muscle is chiefly responsible for external rotation?","repeatQuestionScript":"Consider again: Which muscle primarily directs the shoulder's external rotation?","questionScriptAudioUrl":"","correctionAudioUrl":"","repeatQuestionAudioUrl":"","coreTopic":"Muscular System","questionStatus":{"knowledgeConfirmed":false,"isAnsweredCorrectly":false,"isAnswered":false}}]
  
  Quiz Player viewModel has initialized a session
  QuizSessionManager initialized
@@ -156,16 +151,15 @@ struct ContentView: View {
  1 question(s) fetched
  config added Optional(1) new questions
  
- if logStatus {
-     BaseView {
-         HomePage()
-     }
- } else {
-     AppLaunch()
  
  
- {
-   "category": "Others",
+ 
+ {"title":"dynamicSessionIntro","audioUrls":[{"title":"dynamicSessionIntro","urlScript":"Welcome to the NCLEX-RN quiz, a vital component of your preparation as an aspiring registered nurse. This quiz presents a set of 10 questions that delve into essential topics such as Safe and Effective Care Environment, Health Promotion and Maintenance, Psychosocial Integrity, and Physiological Integrity. As you work through these questions, you will have the opportunity to assess and hone your knowledge across these critical domains. This exercise is designed to help you identify your strengths and uncover areas that may benefit from additional study, ultimately guiding you toward success on the NCLEX-RN examination. Let's embark on this important step in your nursing journey!","audioUrl":"https://storage.googleapis.com/buildship-ljnsun-us-central1/CurrentQuizSession/rfsvshgvsdfngdhdjkdkd/sessionIntro.mp3"}]}
+ 
+ 
+ {"title":"dynamicSessionIntro","urlScript":"Welcome to the NCLEX-RN quiz, a vital component of your preparation as an aspiring registered nurse. This quiz presents a set of 10 questions that delve into essential topics such as Safe and Effective Care Environment, Health Promotion and Maintenance, Psychosocial Integrity, and Physiological Integrity. As you work through these questions, you will have the opportunity to assess and hone your knowledge across these critical domains. This exercise is designed to help you identify your strengths and uncover areas that may benefit from additional study, ultimately guiding you toward success on the NCLEX-RN examination. Let's embark on this important step in your nursing journey!","audioUrl":"https://storage.googleapis.com/buildship-ljnsun-us-central1/CurrentQuizSession/rfsvshgvsdfngdhdjkdkd/sessionIntro.mp3"}
+ 
+ ory": "Others",
    "subtitle": "Discover a diverse range of quizzes that don't fit the typical mold. Perfect for expanding your knowledge across various fields.",
    "quizzes": [
      {

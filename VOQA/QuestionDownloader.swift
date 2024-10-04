@@ -8,24 +8,9 @@
 import SwiftUI
 import AVKit
 
-struct FakeConfig {
-    let userId: String
-    let quizTitle: String
-    let narrator: String
-    let language: String
-    
-    init(userId: String, quizTitle: String, narrator: String, language: String) {
-        self.userId = userId
-        self.quizTitle = quizTitle
-        self.narrator = narrator
-        self.language = language
-    }
-}
-
 class QuestionDownloader {
     let networkService = NetworkService()
     var config: UserConfig
-   // var config: FakeConfig
     
     // Initialize QuestionDownloader with a UserConfig
     init(config: UserConfig) {
@@ -33,18 +18,24 @@ class QuestionDownloader {
     }
     
     // MARK: - Expose a public method to download quiz questions
-    func downloadQuizQuestions(userId: String, quizTitle: String, narratorId: String, numberOfQuestions: Int?) async throws -> [Question] {
+    func downloadQuizQuestions(userId: String, quizTitle: String, narratorId: String, narrator: String, numberOfQuestions: Int?) async throws -> [Question] {
+        // Prepare the request body for the API call
         let requestBody = QuestionRequestBody(
             userId: userId,
             quizTitle: quizTitle,
             narratorId: narratorId,
-            numberOfQuestions: 0
+            narrator: narrator,
+            numberOfQuestions: numberOfQuestions ?? 5
         )
-        
+
+        // Use live data by calling the fetchQuestions method
         let questions = try await fetchQuestions(requestBody: requestBody)
+        
+        //MARK: TEST DATA
+       // let questions = try await networkService.testFetchQuestions(with: jsonData)
+        
         return questions
     }
-    
 
     // MARK: - Private: Fetch Questions and manage audio download
     private func fetchQuestions(requestBody: QuestionRequestBody) async throws -> [Question] {
@@ -54,6 +45,7 @@ class QuestionDownloader {
         let processedQuestions = questions
 
         return processedQuestions
+       
     }
     
     private func narratorVoiceSelection(narrator: String) -> String {
@@ -63,138 +55,19 @@ class QuestionDownloader {
             return VoiceSelector.gus.voiceDesignation
         }
         
-        // Return the voice designation for the selected narrator
         return selectedVoice.voiceDesignation
     }
-    
-    func loadMockQuestions() -> [Question] {
-        return [
-            Question(
-                refId: "5ebaeb7e-36b5-4abb-8ea9-111cf5250cc2",
-                content: "What was the primary purpose of the Articles of Confederation prior to the drafting of the US Constitution?",
-                mcOptions: [
-                    "A": false,
-                    "B": false,
-                    "C": true,
-                    "D": false
-                ], 
-                correctOption: "C",
-                selectedOption: "",
-                correction: "To serve as the first national government structure. The Articles of Confederation aimed to coordinate efforts during the Revolutionary War but resulted in a weak central government, leading to the drafting of the Constitution for a more robust federal structure.",
-                isAnsweredOptional: false,
-                isAnsweredCorrectlyOptional: false,
-                numberOfPresentations: 0,
-                questionScript: "Let’s analyze the historical context: What was the primary role of the Articles of Confederation leading up to the creation of the US Constitution?",
-                repeatQuestionScript: "Here’s the question again: What was the primary purpose of the Articles of Confederation prior to the drafting of the US Constitution?",
-                questionScriptAudioUrl: "https://storage.googleapis.com/buildship-ljnsun-us-central1/5ebaeb7e-36b5-4abb-8ea9-111cf5250cc2_questionScript.mp3",
-                correctionAudioUrl: "https://storage.googleapis.com/buildship-ljnsun-us-central1/5ebaeb7e-36b5-4abb-8ea9-111cf5250cc2_correction.mp3",
-                repeatQuestionAudioUrl: "https://storage.googleapis.com/buildship-ljnsun-us-central1/5ebaeb7e-36b5-4abb-8ea9-111cf5250cc2_repeatQuestionScript.mp3",
-                coreTopic: "Foundations and Framework",
-                quizId: "US Constitution",
-                userId: "rBkUyTtc2XXXcj43u53N",
-                questionStatus: QuestionStatus(
-                    isAnsweredCorrectly: false,
-                    isAnswered: false,
-                    knowledgeConfirmed: false
-                )
-            ),
-            Question(
-                refId: "9573daa7-5ed1-4127-88df-185f171fc276",
-                content: "Which branch of the US government is primarily responsible for interpreting laws?",
-                mcOptions: [
-                    "A": false,
-                    "B": false,
-                    "C": false,
-                    "D": true
-                ],
-                correctOption: "D",
-                selectedOption: "",
-                correction: "The Judicial branch. The Judicial branch, particularly through the Supreme Court, interprets laws to ensure compliance with the Constitution—aiming to maintain the balance of power through checks and balances.",
-                isAnsweredOptional: false,
-                isAnsweredCorrectlyOptional: false,
-                numberOfPresentations: 0,
-                questionScript: "Consider this fundamental aspect of governance: Which branch of the US government primarily interprets laws?",
-                repeatQuestionScript: "Let’s reiterate: Which branch of the US government is primarily responsible for interpreting laws?",
-                questionScriptAudioUrl: "https://storage.googleapis.com/buildship-ljnsun-us-central1/9573daa7-5ed1-4127-88df-185f171fc276_questionScript.mp3",
-                correctionAudioUrl: "https://storage.googleapis.com/buildship-ljnsun-us-central1/9573daa7-5ed1-4127-88df-185f171fc276_correction.mp3",
-                repeatQuestionAudioUrl: "https://storage.googleapis.com/buildship-ljnsun-us-central1/9573daa7-5ed1-4127-88df-185f171fc276_repeatQuestionScript.mp3",
-                coreTopic: "Branches of Government and Their Powers",
-                quizId: "US Constitution",
-                userId: "rBkUyTtc2XXXcj43u53N",
-                questionStatus: QuestionStatus(
-                    isAnsweredCorrectly: false,
-                    isAnswered: false,
-                    knowledgeConfirmed: false
-                )
-            ),
-            Question(
-                refId: "5493669e-739d-4b8f-be5b-60905c0cfa3f",
-                content: "According to the concept of 'originalism' in constitutional interpretation, what is primarily considered?",
-                mcOptions: [
-                    "A": false,
-                    "B": true,
-                    "C": false,
-                    "D": false
-                ],
-                correctOption: "B",
-                selectedOption: "",
-                correction: "The intentions of the framers at the time of writing. 'Originalism' emphasizes understanding the Constitution based on the authors' original intentions, prioritizing the text's meaning as it was understood in its historical context.",
-                isAnsweredOptional: false,
-                isAnsweredCorrectlyOptional: false,
-                numberOfPresentations: 0,
-                questionScript: "Reflecting on constitutional interpretation: What is the primary focus of 'originalism' when analyzing the Constitution?",
-                repeatQuestionScript: "Here’s another look: According to the concept of 'originalism' in constitutional interpretation, what is primarily considered?",
-                questionScriptAudioUrl: "https://storage.googleapis.com/buildship-ljnsun-us-central1/5493669e-739d-4b8f-be5b-60905c0cfa3f_questionScript.mp3",
-                correctionAudioUrl: "https://storage.googleapis.com/buildship-ljnsun-us-central1/5493669e-739d-4b8f-be5b-60905c0cfa3f_correction.mp3",
-                repeatQuestionAudioUrl: "https://storage.googleapis.com/buildship-ljnsun-us-central1/5493669e-739d-4b8f-be5b-60905c0cfa3f_repeatQuestionScript.mp3",
-                coreTopic: "Interpretation and Civil Liberties",
-                quizId: "US Constitution",
-                userId: "rBkUyTtc2XXXcj43u53N",
-                questionStatus: QuestionStatus(
-                    isAnsweredCorrectly: false,
-                    isAnswered: false,
-                    knowledgeConfirmed: false
-                )
-            )
-        ]
-    }
 }
 
-
-extension Question {
-    
-    func copy(refId: String, content: String, mcOptions: [String: Bool], questionScriptAudioUrl: String, correctionAudioUrl: String, repeatQuestionAudioUrl: String) -> Question {
-        return Question(
-            refId: refId,
-            content: content,
-            mcOptions: mcOptions,
-            correctOption: self.correctOption,
-            selectedOption: self.selectedOption,
-            correction: self.correction,
-            isAnsweredOptional: self.isAnsweredOptional,
-            isAnsweredCorrectlyOptional: self.isAnsweredCorrectlyOptional,
-            numberOfPresentations: self.numberOfPresentations,
-            questionScript: self.questionScript,
-            repeatQuestionScript: self.repeatQuestionScript,
-            questionScriptAudioUrl: questionScriptAudioUrl,
-            correctionAudioUrl: correctionAudioUrl,
-            repeatQuestionAudioUrl: repeatQuestionAudioUrl,
-            coreTopic: self.coreTopic,
-            quizId: self.quizId,
-            userId: self.userId,
-            questionStatus: self.questionStatus
-        )
-    }
-}
 
 extension NetworkService {
 
     // MARK: - Fetch Questions V2 with request body
     func fetchQuestions(requestBody: QuestionRequestBody) async throws -> [Question] {
-        print("Fetching questions V2 from URL: \(ConfigurationUrls.testQuestionsDownload)")
+        print("Fetching questions V2 from URL: \(ConfigurationUrls.downloadVoqalizedQuestions)")
 
         // Prepare the URL and request
-        guard let url = URL(string: ConfigurationUrls.testQuestionsDownload) else {
+        guard let url = URL(string: ConfigurationUrls.downloadVoqalizedQuestions) else {
             throw URLError(.badURL)
         }
 
@@ -239,7 +112,8 @@ extension NetworkService {
             let questions = try JSONDecoder().decode([Question].self, from: data)
 
             print("Successfully decoded \(questions.count) questions V2.")
-            //print("Decoded questions: \(questions)")  // Print the decoded data
+            // Optionally print the decoded data
+            // print("Decoded questions: \(questions)")
 
             return questions
 
@@ -263,7 +137,100 @@ extension NetworkService {
             throw error
         }
     }
+
+    // MARK: - Fetch Questions V2 with test data
+    func testFetchQuestions(with testData: String) async throws -> [Question] {
+        print("Testing fetchQuestions with provided JSON data.")
+
+        // Convert the provided test data string into Data
+        guard let data = testData.data(using: .utf8) else {
+            throw URLError(.badURL)
+        }
+
+        print("Received raw data size: \(data.count) bytes")
+
+        if data.count == 0 {
+            print("Received empty data from the server.")
+            throw URLError(.zeroByteResource)
+        }
+
+        print("Attempting to decode response data into Question models...")
+
+        // Attempt to decode the provided data into Question models
+        let questions = try JSONDecoder().decode([Question].self, from: data)
+
+        print("Successfully decoded \(questions.count) questions V2.")
+        // Optionally print the decoded data
+        print("Decoded questions: \(questions)")
+
+        return questions
+    }
 }
+
+
+let jsonData = """
+[
+    {
+        "quizId": "Human Anatomy",
+        "userId": "4A41E2FE-7F42-4A9E-BE4D-3DFE23EDAA58",
+        "refId": "d4003d1c-c8a4-4afa-99ec-f2f6fdd60490",
+        "content": "Which muscle is primarily responsible for the movement of external rotation of the shoulder?",
+        "mcOptions": {
+            "A (Infraspinatus)": true,
+            "B (Deltoid)": false,
+            "C (Teres Minor)": false,
+            "D (Pectoralis Major)": false
+        },
+        "selectedOption": "",
+        "correction": "Let us correct this misconception. The infraspinatus muscle, a vital component of the rotator cuff, expertly controls the shoulder's external rotation.",
+        "numberOfPresentations": 0,
+        "questionScript": "Within the realm of shoulder movements, can you discern which muscle is chiefly responsible for external rotation?",
+        "repeatQuestionScript": "Consider again: Which muscle primarily directs the shoulder's external rotation?",
+        "questionScriptAudioUrl": null,
+        "correctionAudioUrl": null,
+        "repeatQuestionAudioUrl": null,
+        "coreTopic": "Muscular System",
+        "questionStatus": {
+            "knowledgeConfirmed": false,
+            "isAnsweredCorrectly": false,
+            "isAnswered": false
+        }
+    },
+    {
+        "quizId": "Human Anatomy",
+        "userId": "4A41E2FE-7F42-4A9E-BE4D-3DFE23EDAA58",
+        "refId": "d628bfc2-8bad-41a3-b0b4-5f7319fc9a8c",
+        "content": "Which part of the brain is responsible for regulating heart rate and respiration?",
+        "mcOptions": {
+            "A (Cerebrum)": false,
+            "B (Cerebellum)": false,
+            "C (Medulla Oblongata)": true,
+            "D (Thalamus)": false
+        },
+        "selectedOption": "",
+        "correction": "The Medulla Oblongata, an ancient guardian nestled within our brain, maintains the rhythm of heart and breath.",
+        "numberOfPresentations": 0,
+        "questionScript": "In the vast expanse of the brain's territories, which region sovereignly rules over heart rate and respiration?",
+        "repeatQuestionScript": "Reconsider this: Which brain part commands the heart's beat and breath's flow?",
+        "questionScriptAudioUrl": null,
+        "correctionAudioUrl": null,
+        "repeatQuestionAudioUrl": null,
+        "coreTopic": "Nervous System",
+        "questionStatus": {
+            "knowledgeConfirmed": false,
+            "isAnsweredCorrectly": false,
+            "isAnswered": false
+        }
+    }
+]
+"""
+
+
+
+
+
+
+
 
 
 

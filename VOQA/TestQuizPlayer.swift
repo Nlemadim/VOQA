@@ -15,6 +15,7 @@ final class TestQuizPlayer {
     @StateObject private var viewModel: QuizViewModel
     private var quizConfigManager: QuizConfigManager
     private var cancellables = Set<AnyCancellable>()
+    private let networkService = NetworkService()
 
     init() {
         self.quizConfigManager = QuizConfigManager()
@@ -33,8 +34,9 @@ final class TestQuizPlayer {
     }
 
     func loadQuizPlayerView(completion: @escaping (QuizPlayerView?) -> Void) {
+        loadUserVoiceSelection()
         Task {
-            await loadUserVoiceSelection()
+            //await loadUserVoiceSelection()
 
             let mockVoqaItem = MockVoqaItem(
                 quizTitle: "World War II History",
@@ -46,7 +48,7 @@ final class TestQuizPlayer {
 
             // Load questions using the QuestionLoader
             let questionLoader = QuestionDownloader(config: user.userConfig)
-            let questions = questionLoader.loadMockQuestions()
+            let questions = try await networkService.testFetchQuestions(with: jsonData)
             
 
             DispatchQueue.main.async {
@@ -61,8 +63,9 @@ final class TestQuizPlayer {
     }
     
 
-    private func loadUserVoiceSelection() async {
-        let defaultVoiceItems = AddOnItem.defaultNarratorItems
+    private func loadUserVoiceSelection() {
+        let defaultVoiceItems = AddOnItem.defaultNarratorItems[0]
+        databaseManager.loadVoiceConfiguration(for: defaultVoiceItems)
         let selectedVoiceNarrator = user.userConfig.selectedVoiceNarrator
 
         // Safely unwrap userConfig.selectedVoiceNarrator
@@ -72,14 +75,10 @@ final class TestQuizPlayer {
         }
 
         // Proceed with voice selection logic
-        if let currentItem = defaultVoiceItems.first(where: { $0.name == selectedVoiceNarrator }) {
-            do {
-                try await databaseManager.loadVoiceConfiguration(for: currentItem)
-            } catch {
-                print("Error loading default voice selection: \(error.localizedDescription)")
-            }
+        if let mockQuestions = Question.decodeMockAPI3() {
+            print("Successfully decoded \(mockQuestions.count) questions.")
         } else {
-            print("No matching voice found in defaultVoiceItems")
+            print("Failed to decode questions.")
         }
     }
 }
@@ -104,7 +103,11 @@ struct TestQuizPlayerPreview: View {
         .onAppear {
             // Call configureNewSession and loadQuizPlayerView in sequence
             testQuizPlayer.configureNewSession()
-            
+            if let mockQuestion = Question.fromMockData() {
+                print("Successfully decoded Question: \(mockQuestion)")
+            } else {
+                print("Failed to decode Question.")
+            }
             
             testQuizPlayer.loadQuizPlayerView { view in
                 self.quizPlayerView = view

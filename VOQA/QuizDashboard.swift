@@ -60,19 +60,20 @@ struct QuizDashboard: View {
                                 case .quizzes:
                                     
                                     QuizzesView(quizTopics: getCoreTopics(for: voqa) ?? []) { topicName in
-                                        // Call the questions download here, when downloaded navigate to QuizPlayer view
+                                        
                                         Task {
                                             do {
                                                 try await databaseManager.fetchProcessedQuestions(
                                                     config: user.userConfig,
                                                     quizTitle: voqa.quizTitle,
                                                     prompt: nil,
-                                                    maxNumberOfQuestions: 2
+                                                    narrator: user.userConfig.selectedVoiceNarrator,
+                                                    maxNumberOfQuestions: 5
                                                 )
-                                                
                                                 
                                                 await navigateToQuizPlayer()
                                             } catch {
+                                                //MARK: TODO:- Present Error Alert
                                                 print("Error fetching questions: \(error)")
                                                 // Optionally show an alert
                                             }
@@ -184,7 +185,7 @@ struct QuizDashboard: View {
     private func getQuestions(quizTitle: String, questionTypeRequest: String, number: Int) async {
         isDownloading = true
         do {
-            try await databaseManager.fetchProcessedQuestions(config: user.userConfig, quizTitle: quizTitle, prompt: nil, maxNumberOfQuestions: number)
+            try await databaseManager.fetchProcessedQuestions(config: user.userConfig, quizTitle: quizTitle, prompt: nil, narrator: "", maxNumberOfQuestions: number)
             isDownloading = false
         } catch {
             isDownloading = false
@@ -192,8 +193,6 @@ struct QuizDashboard: View {
         }
     }
     
-
-
     private func navigateToQuizPlayer() async {
         print("Current Config before guard: \(String(describing: config))")
         guard let config = config, !config.sessionQuestion.isEmpty else {
@@ -202,7 +201,7 @@ struct QuizDashboard: View {
             return
         }
         
-       // print("Navigating to QuizPlayer with config: \(config)")
+        print("Navigating to QuizPlayer with config: \(config.sessionId)")
         navigationRouter.navigate(to: .quizPlayer(config: config, voqa: voqa))
     }
 

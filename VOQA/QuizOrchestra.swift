@@ -7,25 +7,28 @@
 
 import Foundation
 
-class Conductor: BgmPlayerDelegate, SessionAudioPlayerDelegate {
+class Conductor: BgmPlayerDelegate, QuizServices, SessionObserver, SessionAudioPlayerDelegate {
+    
+    var observers: [SessionObserver] = []
     var commandCenter: CommandCenter
     var session: QuizSession?
-
     private var lastAction: AudioAction?
 
     init(commandCenter: CommandCenter) {
         self.commandCenter = commandCenter
+        
     }
 
     // Orchestrate the start of the quiz, playing background music and voice intro
     func startFlow() {
         print("Orchestra: Starting quiz flow.")
-
-        // Step 1: Start the background music
+        // Step 1: Load up questions
+        commandCenter.setSessionQuestions()
+        // Step 2: Start the background music
         commandCenter.startBackgroundMusic()
-        session?.isNowPlaying = true
-
-        // Step 2: After a delay, play the voice intro
+        // Step 3: Session Info request
+        commandCenter.requestSeesionInfo()
+        // Step 4: After a delay, play the voice intro
         DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) { [weak self] in
             guard let self = self else { return }
             self.playHostIntro()
@@ -39,28 +42,28 @@ class Conductor: BgmPlayerDelegate, SessionAudioPlayerDelegate {
     }
 
     func conductNextAction() {
-        guard let session = session else { return }
-        
+        guard let session = session else {  return }
+           
         DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) { [weak self] in
             guard let self = self else { return }
             
             // Handle the last action and decide the next step
-            if self.lastAction == .playHostIntro {
-                print("Orchestra: Host intro finished, checking if session intro is ready.")
+            if session.sessionAudioPlayer.lastAction == .playHostIntro {
+                print("Conductor ordered session Intro")
                 self.commandCenter.playSessionIntro()
-            }
+            } 
             
-            else if self.lastAction == .playSessionIntro {
+            else if session.sessionAudioPlayer.lastAction == .playSessionIntro {
                 print("Orchestra: Session intro finished, playing first question.")
                 self.commandCenter.playFirstQuestion()
             }
             
-            else if self.lastAction == .playAnswer(url: session.currentQuestion?.correctionAudioURL ?? "") {
+            else if session.sessionAudioPlayer.lastAction == .playAnswer(url: session.currentQuestion?.correctionAudioURL ?? "") {
                 print("Orchestra: Answer playback finished, moving to next action.")
                 self.commandCenter.resumeQuiz()
             }
             
-            else if self.lastAction == .playCorrectAnswerCallout {
+            else if session.sessionAudioPlayer.lastAction == .playCorrectAnswerCallout {
                 print("Orchestra: Correct answer callout finished, moving to next action.")
                 self.commandCenter.resumeQuiz()
             }
@@ -81,6 +84,22 @@ class Conductor: BgmPlayerDelegate, SessionAudioPlayerDelegate {
     func sessionAudioPlayerDidFinishPlaying(_ player: SessionAudioPlayer) {
         print("Orchestra: Session audio finished playing.")
         conductNextAction() // This can control the next action in the flow based on what just finished
+    }
+    
+    func handleState(session: QuizSession) {
+        
+    }
+    
+    func addObserver(_ observer: any SessionObserver) {
+        
+    }
+    
+    func notifyObservers() {
+    
+    }
+    
+    func stateDidChange(to newState: any QuizServices) {
+        
     }
 }
 

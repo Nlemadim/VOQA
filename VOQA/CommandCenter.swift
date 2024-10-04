@@ -9,9 +9,21 @@ import Foundation
 
 class CommandCenter {
     var session: QuizSession?
+    private var config: QuizSessionConfig?
     
     init(session: QuizSession?) {
         self.session = session
+    }
+    
+    func configure(with config: QuizSessionConfig) {
+        self.config = config
+        print("CommandCenter registers config \(config.sessionId)")
+    }
+    
+    func setSessionQuestions() {
+        guard let session = session, let config = config else { return }
+        session.setState(session.questionPlayer)
+        session.questionPlayer.setSessionQuestions(config.sessionQuestion)
     }
     
     // Start background music using the BgmPlayer
@@ -22,19 +34,40 @@ class CommandCenter {
         session.activeQuiz = true
     }
     
+    func requestSeesionInfo() {
+        guard let session = session else { return }
+        print("Command Center: Requesting Session info.")
+        Task {
+            await sessionInfoRequest()
+        }
+    }
+    
+    private func sessionInfoRequest() async {
+        guard let session = session else { return }
+        await session.dynamicContentManager.getSessionIntro()
+    }
+    
+    var didFetchSessionInfo: Bool {
+        guard let session = session else { return false }
+        return session.dynamicContentManager.hasFetchedSessionIntro == true
+    }
+    
     func playHostIntro() {
         guard let session = session else { return }
         print("Command Center: Playing host intro.")
         let introAction = AudioAction.playHostIntro
         session.sessionAudioPlayer.performAudioAction(introAction)
+        session.isNowPlaying = true
     }
-    
     
     func playSessionIntro() {
         guard let session = session else { return }
-        print("Command Center: Playing session intro.")
-        let sessionIntroAction = AudioAction.playSessionIntro
-        session.sessionAudioPlayer.performAudioAction(sessionIntroAction)
+        print("checking dynamic content manager status")
+        if session.dynamicContentManager.hasFetchedSessionIntro {
+            let sessionIntroAction = AudioAction.playSessionIntro
+            session.sessionAudioPlayer.performAudioAction(sessionIntroAction)
+            print("Command Center: Playing session intro.")
+        }
     }
     
     func playFirstQuestion() {
@@ -76,6 +109,8 @@ class CommandCenter {
         session.setState(session.questionPlayer)
         session.questionPlayer.prepareNextQuestion() // Changed to use protocol method
     }
+    
+    
 }
 
 

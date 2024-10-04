@@ -57,12 +57,12 @@ class DatabaseManager: ObservableObject {
     }
     
     //MARK: Load Vopice Config:- Local Voice Config Data
-    func loadVoiceConfiguration(for voice: AddOnItem) async throws {
-        let loadedConfig = try await configManager.loadVoiceConfiguration(for: voice)
+    func loadVoiceConfiguration(for voice: AddOnItem) {
+        let loadedConfig = configManager.loadVoiceConfiguration(for: voice)
         self.sessionConfiguration = loadedConfig
     }
     
-    func fetchProcessedQuestions(config: UserConfig, quizTitle: String, prompt: String?, maxNumberOfQuestions: Int) async throws {
+    func fetchProcessedQuestions(config: UserConfig, quizTitle: String, prompt: String?, narrator: String, maxNumberOfQuestions: Int) async throws {
         // Initialize the QuestionDownloader with the UserConfig from the environment
         let questionDownloader = QuestionDownloader(config: config)
         
@@ -71,7 +71,8 @@ class DatabaseManager: ObservableObject {
             userId: config.userId,
             quizTitle: quizTitle,
             narratorId: self.sessionConfiguration?.sessionVoiceId ?? "UNKNOWN", // Ensure voice ID is available
-            numberOfQuestions: 3
+            narrator: narrator,
+            numberOfQuestions: 5
         )
         
         // Check if session configuration is available
@@ -79,47 +80,11 @@ class DatabaseManager: ObservableObject {
             print("Session ID: \(sessionConfig.sessionId)")
             print("Quiz Title: \(quizTitle)")
             
-            // Ensure quizHostMessages is available and safely unwrap
-            if let quizHostMessages = sessionConfig.quizHostMessages {
-                // Fetch the session intro using the network service
-                let sessionIntro = try await networkService.fetchCurrentSessionIntro(
-                    userId: config.userId,
-                    quizTitle: sessionConfig.sessionTitle,
-                    narrator: sessionConfig.sessionVoiceId ?? "UNKNOWN", // Ensure a valid voice ID is passed
-                    questionIds: newQuestions.map { $0.id }
-                )
-                
-                quizHostMessages.quizSessionIntro.audioUrls = sessionIntro.audioUrls
-                
-                if quizHostMessages.quizSessionIntro.title.isEmptyOrWhiteSpace {
-                    quizHostMessages.quizSessionIntro.title = "dynamicSessionIntro"
-                }
-                
-                // Assign the fetched session intro to the quizSessionIntro in quizHostMessages
-                quizHostMessages.quizSessionIntro = sessionIntro
-                
-                // Update the session config's host messages
-                sessionConfig.quizHostMessages = quizHostMessages
-                
-                // Append the new questions to the session configuration
-                sessionConfig.sessionQuestion.append(contentsOf: newQuestions)
-                
-                print("\(newQuestions.count) question(s) fetched")
-                print("Session config now contains \(sessionConfig.sessionQuestion.count) questions")
-                
-                // Debugging: Print each question's details
-                for (index, question) in newQuestions.enumerated() {
-                    print("Question \(index + 1): ID = \(question.id), Content = \(question.content)")
-                }
-            } else {
-                print("quizHostMessages is nil.")
-            }
-        } else {
-            print("sessionConfiguration is nil.")
+            sessionConfig.sessionQuestion.append(contentsOf: newQuestions)
+            print("Session loaded with \(sessionConfig.sessionQuestion.count)")
         }
     }
 
-    
     //MARK: Fetch Quiz Collection from Firebase
     func fetchQuizCollection() async {
         do {
@@ -131,7 +96,6 @@ class DatabaseManager: ObservableObject {
             print("Error fetching quiz collection: \(error.localizedDescription)")
         }
     }
-    
     
     func addUserToChannel(userId: String) {
         /**
@@ -257,39 +221,6 @@ class DatabaseManager: ObservableObject {
     }
 }
 
-extension NetworkService {
-    
-    // Async method version
-    func fetchCurrentSessionIntro(userId: String, quizTitle: String, narrator: String, questionIds: [String]) async throws -> VoicedFeedback {
-        print("Networkk Service fetching Quiz Session Info")
-        // Create the request body
-        let requestBody: [String: Any] = [
-            "userId": userId,
-            "quizTitle": quizTitle,
-            "narrator": narrator,
-            "questionIds": questionIds
-        ]
-        
-        // Ensure the URL is valid
-        guard let url = URL(string: ConfigurationUrls.dynamicSessioninfo) else {
-            throw NetworkError.invalidURL
-        }
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        
-        // Convert the request body to JSON
-        request.httpBody = try JSONSerialization.data(withJSONObject: requestBody, options: [])
-        
-        // Perform the async network call using URLSession
-        let (data, _) = try await URLSession.shared.data(for: request)
-        
-        // Decode the response into VoicedFeedback
-        let feedback = try JSONDecoder().decode(VoicedFeedback.self, from: data)
-        
-        return feedback
-    }
-}
+
 
 

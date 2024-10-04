@@ -12,8 +12,25 @@ struct QuestionRequestBody: Codable {
     var quizTitle: String
     var prompt: String?
     var narratorId: String
+    var narrator: String
     var numberOfQuestions: Int
 }
+
+struct DynamicCodingKey: CodingKey {
+    var stringValue: String
+    var intValue: Int?
+
+    init?(intValue: Int) {
+        self.stringValue = "\(intValue)"
+        self.intValue = intValue
+    }
+
+    init?(stringValue: String) {
+        self.stringValue = stringValue
+        self.intValue = nil
+    }
+}
+
 
 /**
  

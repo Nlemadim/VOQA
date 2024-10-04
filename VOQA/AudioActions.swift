@@ -40,12 +40,12 @@ enum AudioAction: Equatable {
              (.pausePlay, .pausePlay),
              (.reset, .reset),
              (.playHostIntro, .playHostIntro),
-            (.playSessionIntro, .playSessionIntro):// Added playSessionIntro comparison
+             (.playSessionIntro, .playSessionIntro):
             return true
             
         case (.playQuestionAudioUrl(let lhsUrl), .playQuestionAudioUrl(let rhsUrl)),
              (.playAnswer(let lhsUrl), .playAnswer(let rhsUrl)),
-             (.playFeedbackMessage(let lhsUrl), .playFeedbackMessage(let rhsUrl)):
+            (.playFeedbackMessage(let lhsUrl), .playFeedbackMessage(let rhsUrl)):
             return lhsUrl == rhsUrl
             
         case (.giveScore(let lhsScore), .giveScore(let rhsScore)):
