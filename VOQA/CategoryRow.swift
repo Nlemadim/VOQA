@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-struct Category: Identifiable {
+struct QuizSelection: Identifiable {
     let id = UUID()
     let name: String
     let subtitle: String?
@@ -17,8 +17,8 @@ struct Category: Identifiable {
 }
 
 // MARK: - CategoryRow View
-struct CategoryRow: View {
-    let category: Category
+struct QuizSelectionRow: View {
+    let category: QuizSelection
     let isLoadingQuiz: Bool?
     let action: () -> Void
     

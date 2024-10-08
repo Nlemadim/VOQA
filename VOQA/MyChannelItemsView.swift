@@ -10,32 +10,66 @@ import Foundation
 import SwiftUI
 import Shimmer
 
+// ChannelListView: Displays a list of Voqa items
+
 struct ChannelListView: View {
     @EnvironmentObject var navigationRouter: NavigationRouter
-    var voqaCollection: [Voqa]
-    var onSelectVoqa: (Voqa) -> Void
+    var voqaCollection: [Voqa]  // Use concrete type Voqa
+    var onSelectVoqa: (Voqa) -> Void  // Change to use Voqa
 
     var body: some View {
-        List {
-            if voqaCollection.isEmpty {
-                ForEach(0..<25, id: \.self) { _ in
-                    MyChannelItemPlaceholderView()
-                }
-            } else {
-                ForEach(voqaCollection, id: \.self) { voqa in
-                    MyChannelItemView(audioQuiz: voqa) { voqa in
-                        onSelectVoqa(voqa)
+        VStack {
+            Text("Audio Quiz Channels")
+                .font(.headline)
+                .fontWeight(.bold)
+                .padding()
+                .hAlign(.leading)
+            // Show empty placeholder cells if the collection is empty
+            ScrollView(showsIndicators: false) {
+                if voqaCollection.isEmpty {
+                    ForEach(0..<25, id: \.self) { _ in
+                        Divider()
+                            .padding(.horizontal)
+                        MyChannelItemPlaceholderView()
+                            .background(Color.black)
+                        Divider()
+                            .padding(.horizontal)
+                    }
+                } else {
+                    // Display each Voqa item in the list
+                    ForEach(voqaCollection, id: \.id) { voqa in
+                        VStack {
+                            Divider()
+                                .padding(.horizontal)
+                            
+                            MyChannelItemView(audioQuiz: voqa) { selectedVoqa in
+                                onSelectVoqa(selectedVoqa)
+                            }
+                            
+                            Divider()
+                                .padding(.horizontal)
+                            
+                            Spacer()
+                                
+                        }
+                        .background(Color.black) // Set background color for each item view
                     }
                 }
             }
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color.black) // Set the overall background color of the List
+       /* .listStyle(PlainListStyle())*/ // Use plain list style for better control over appearance
+        .frame(maxHeight: .infinity) // Allow the list to take up infinite height
     }
 }
 
+
+// MyChannelItemView: Displays an individual Voqa item
 struct MyChannelItemView: View {
     @EnvironmentObject var user: User
-    var audioQuiz: Voqa
-    var onTap: (Voqa) -> Void
+    var audioQuiz: Voqa  // Change to use Voqa directly
+    var onTap: (Voqa) -> Void  // Change type to Voqa
 
     var body: some View {
         Button(action: {
@@ -53,12 +87,15 @@ struct MyChannelItemView: View {
                     Text(audioQuiz.acronym)
                         .fontWeight(.semibold)
                         .font(.caption)
+                       
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
         })
+        .foregroundStyle(.primary)
     }
 }
+
 
 struct MyChannelItemPlaceholderView: View {
     var body: some View {
@@ -90,3 +127,4 @@ struct MyChannelItemPlaceholderView: View {
         .padding(.vertical, 8)
     }
 }
+

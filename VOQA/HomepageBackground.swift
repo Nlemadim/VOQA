@@ -19,3 +19,20 @@ struct HomePageBackground: View {
             }
     }
 }
+
+
+struct ChannelsBackgroundView: View {
+    @State private var backgroundImage: String = "VoqaIcon"
+    var body: some View {
+        VStack {
+            Image(backgroundImage)
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(height: 30)
+                .blur(radius: 70)
+                .offset(y: -160)
+            
+            Spacer().frame(height: 100)
+        }
+    }
+}

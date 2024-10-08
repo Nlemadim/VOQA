@@ -8,7 +8,6 @@
 import Foundation
 import SwiftUI
 
-
 struct QuizData: Decodable {
     var id: String
     var coreTopics: [String]

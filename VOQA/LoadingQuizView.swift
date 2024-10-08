@@ -10,7 +10,7 @@ import SwiftUI
 
 // MARK: - LoadingQuizView
 struct LoadingQuizView: View {
-    var category: Category
+    var category: QuizSelection
     let onCancel: () -> Void
     @State private var isLoading = false
     
@@ -26,7 +26,7 @@ struct LoadingQuizView: View {
                 .hAlign(.leading)
                 .opacity(isLoading ? 1 : 0)
             
-            CategoryRow(category: category, isLoadingQuiz: true) {
+            QuizSelectionRow(category: category, isLoadingQuiz: true) {
                 
             }
             .allowsHitTesting(false) // Disable interactions with the row while loading

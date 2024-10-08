@@ -9,7 +9,6 @@ import Foundation
 
 class NetworkService {
     
-
     func fetchAudioUrl(for feedbackMessage: String) async throws -> String {
         let cleanedMessage = cleanMessage(feedbackMessage)
         let encodedMessage = cleanedMessage.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
@@ -23,7 +22,7 @@ class NetworkService {
             print("Invalid URL")
             throw URLError(.badURL)
         }
-
+        
         let (data, response) = try await URLSession.shared.data(from: url)
         
         if let httpResponse = response as? HTTPURLResponse {
@@ -31,7 +30,7 @@ class NetworkService {
         } else {
             print("No valid HTTP response received")
         }
-
+        
         let audioUrl = String(data: data, encoding: .utf8) ?? ""
         
         print("Downloaded audio URL: \(audioUrl)")
@@ -56,7 +55,7 @@ class NetworkService {
         return data
     }
     
-
+    
     
     private func cleanMessage(_ message: String) -> String {
         var cleanedMessage = message.replacingOccurrences(of: "\n", with: " ")

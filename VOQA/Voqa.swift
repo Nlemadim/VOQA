@@ -14,46 +14,45 @@ struct Voqa: Identifiable, Hashable, Decodable {
     var acronym: String
     var about: String
     var imageUrl: String
-    var rating: Int
-    var curator: String
-    var users: Int
-    var tags: [String]
+    var rating: Int = 0  // Default value
+    var curator: String = ""  // Default value
+    var users: Int = 0  // Default value
+    var tags: [String] = []  // Default value
     var colors: ThemeColors
-    var ratings: Int
-    var requiresSubscription: Bool
+    var ratings: Int = 0  // Default value
+    var requiresSubscription: Bool = false  // Default value
     
     private enum CodingKeys: String, CodingKey {
         case id, quizTitle, acronym, about, imageUrl, rating, curator, users, tags, colors, ratings, requiresSubscription
     }
-    
     // Custom initializer
-        init(
-            id: String,
-            quizTitle: String,
-            acronym: String,
-            about: String,
-            imageUrl: String,
-            rating: Int,
-            curator: String,
-            users: Int,
-            tags: [String],
-            colors: ThemeColors,
-            ratings: Int,
-            requiresSubscription: Bool
-        ) {
-            self.id = id
-            self.quizTitle = quizTitle
-            self.acronym = acronym
-            self.about = about
-            self.imageUrl = imageUrl
-            self.rating = rating
-            self.curator = curator
-            self.users = users
-            self.tags = tags
-            self.colors = colors
-            self.ratings = ratings
-            self.requiresSubscription = requiresSubscription
-        }
+    init(
+        id: String,
+        quizTitle: String,
+        acronym: String,
+        about: String,
+        imageUrl: String,
+        rating: Int,
+        curator: String,
+        users: Int,
+        tags: [String],
+        colors: ThemeColors,
+        ratings: Int,
+        requiresSubscription: Bool
+    ) {
+        self.id = id
+        self.quizTitle = quizTitle
+        self.acronym = acronym
+        self.about = about
+        self.imageUrl = imageUrl
+        self.rating = rating
+        self.curator = curator
+        self.users = users
+        self.tags = tags
+        self.colors = colors
+        self.ratings = ratings
+        self.requiresSubscription = requiresSubscription
+    }
     
     // Decoding initializer
     init(from decoder: Decoder) throws {
@@ -98,4 +97,15 @@ struct Voqa: Identifiable, Hashable, Decodable {
     }
 }
 
-extension Voqa: VoqaItem {}
+extension Voqa: VoqaItem {
+    // Initializer from VoqaItem
+    init(from item: VoqaItem, id: String) {
+        self.id = id
+        self.quizTitle = item.quizTitle
+        self.acronym = item.acronym
+        self.about = item.about
+        self.imageUrl = item.imageUrl
+        self.colors = item.colors
+        // Other properties will use their default values
+    }
+}

@@ -53,26 +53,14 @@ struct MainView: View {
     private func loadUserVoiceSelection() async {
         let defaultVoiceItems = AddOnItem.defaultNarratorItems
         if let currentItem = defaultVoiceItems.first(where: { $0.name == user.userConfig.selectedVoiceNarrator }) {
-            do {
-                try await databaseManager.loadVoiceConfiguration(for: currentItem)
-                self.config = databaseManager.sessionConfiguration
-                
-            } catch {
-                
-                print("Error loading default voice selection: \(error.localizedDescription)")
-            }
+            databaseManager.loadVoiceConfiguration(for: currentItem)
+            self.config = databaseManager.sessionConfiguration
         }
     }
     
     func loadVoiceConfiguration(for voice: AddOnItem) async {
-        do {
-            let newConfig = try await configManager.loadVoiceConfiguration(for: voice)
-            self.config = newConfig
-            print("Loaded up AddOn voice configuration successfully")
-            
-        } catch {
-            print("Failed to load configuration: \(error)")
-        }
+        let newConfig = configManager.loadVoiceConfiguration(for: voice)
+        self.config = newConfig
     }
     
     var fullPageErrorView: some View {

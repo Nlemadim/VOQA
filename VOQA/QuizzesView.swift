@@ -8,10 +8,15 @@
 import SwiftUI
 import Combine
 
+enum QuizTab: Int {
+    case categories = 0
+    case loading = 1
+}
+
 // MARK: - QuizzesView
 struct QuizzesView: View {
     @State private var selectedTab: QuizTab = .categories
-    @State private var selectedCategory: Category? = nil
+    @State private var selectedCategory: QuizSelection? = nil
     @State private var showLockedAlert: Bool = false
     @State private var isLoadingQuestions: Bool = false
     
@@ -20,13 +25,8 @@ struct QuizzesView: View {
     
     var loadAction: (String) -> Void
     
-    enum QuizTab: Int {
-        case categories = 0
-        case loading = 1
-    }
-    
     // Computed property to generate and sort categories from quizTopics
-    var categories: [Category] {
+    var categories: [QuizSelection] {
         quizTopics.map { topicName in
             let isLocked = ["All Categories", "Learning Path", "Community Questions"].contains(topicName)
             let subtitle: String?
@@ -38,7 +38,7 @@ struct QuizzesView: View {
                 subtitle = nil
             }
             let icon = iconImage(topicName)
-            return Category(name: topicName, subtitle: subtitle, isLocked: isLocked, iconName: icon)
+            return QuizSelection(name: topicName, subtitle: subtitle, isLocked: isLocked, iconName: icon)
         }
         .sorted {
             if $0.isLocked == $1.isLocked {
@@ -56,7 +56,7 @@ struct QuizzesView: View {
                     ScrollView {
                         VStack(alignment: .leading, spacing: 16) {
                             ForEach(categories) { category in
-                                CategoryRow(
+                                QuizSelectionRow(
                                     category: category,
                                     isLoadingQuiz: selectedCategory?.id == category.id && selectedTab == .loading
                                 ) {
