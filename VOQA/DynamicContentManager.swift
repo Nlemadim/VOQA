@@ -33,15 +33,15 @@ final class DynamicContentManager: ObservableObject, SessionObserver, QuizServic
         
         do {
             //MARK: Test Session Intro Request
-            //let sessionIntro = try await networkService.fetchCurrentSessionIntroTest()
+            let sessionIntro = try await networkService.fetchCurrentSessionIntroTest()
             
             //MARK: Live Session Intro Request
-            let sessionIntro = try await networkService.fetchCurrentSessionIntro(
-                userId: config.sessionId.uuidString,
-                quizTitle: config.sessionTitle,
-                narratorId: config.sessionVoiceId ?? "UNKNOWN",
-                questionIds: config.sessionQuestion.map{$0.id}
-            )
+//            let sessionIntro = try await networkService.fetchCurrentSessionIntro(
+//                userId: config.sessionId.uuidString,
+//                quizTitle: config.sessionTitle,
+//                narratorId: config.sessionVoiceId ?? "UNKNOWN",
+//                questionIds: config.sessionQuestion.map{$0.id}
+//            )
             
             // Update the published property on the main thread
             await MainActor.run {

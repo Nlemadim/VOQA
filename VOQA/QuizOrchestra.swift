@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Combine
 
 class Conductor: BgmPlayerDelegate, QuizServices, SessionObserver, SessionAudioPlayerDelegate {
     
@@ -13,6 +14,8 @@ class Conductor: BgmPlayerDelegate, QuizServices, SessionObserver, SessionAudioP
     var commandCenter: CommandCenter
     var session: QuizSession?
     private var lastAction: AudioAction?
+    
+    private var cancellables: Set<AnyCancellable> = []
 
     init(commandCenter: CommandCenter) {
         self.commandCenter = commandCenter
@@ -24,8 +27,10 @@ class Conductor: BgmPlayerDelegate, QuizServices, SessionObserver, SessionAudioP
         print("Orchestra: Starting quiz flow.")
         // Step 1: Load up questions
         commandCenter.setSessionQuestions()
+        
         // Step 2: Start the background music
         commandCenter.startBackgroundMusic()
+        
         // Step 3: Session Info request
         commandCenter.requestSeesionInfo()
         // Step 4: After a delay, play the voice intro
@@ -58,6 +63,11 @@ class Conductor: BgmPlayerDelegate, QuizServices, SessionObserver, SessionAudioP
                 self.commandCenter.playFirstQuestion()
             }
             
+            else if session.sessionAudioPlayer.lastAction == .playQuestionAudioUrl(url: session.questionPlayer.currentQuestion?.questionScriptAudioURL ?? "") {
+                print("Orchestra: Session intro finished, playing first question.")
+                self.commandCenter.awaitUserResponse()
+            }
+            
             else if session.sessionAudioPlayer.lastAction == .playAnswer(url: session.currentQuestion?.correctionAudioURL ?? "") {
                 print("Orchestra: Answer playback finished, moving to next action.")
                 self.commandCenter.resumeQuiz()
@@ -72,6 +82,36 @@ class Conductor: BgmPlayerDelegate, QuizServices, SessionObserver, SessionAudioP
             session.sessionAudioPlayer.completeCurrentAction()
         }
     }
+    
+    private func setupObservers() {
+        guard let session = session else { return }
+        
+        session.questionPlayer.$isPlayingQuestion
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] isPlaying in
+                guard let self = self else { return }
+                if isPlaying {
+                    self.commandCenter.displayQuestionText()
+                }
+            }
+            .store(in: &cancellables)
+        
+        session.scoreRegistry.$playCorrection
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] playCorrection in
+                guard let self = self else { return }
+                if playCorrection {
+                    self.commandCenter.playCorrection()
+                }
+            }
+            .store(in: &cancellables)
+        
+      //MARK: TODO check State of Score Registry for next action
+
+       
+       
+    }
+
 
 
     // MARK: - BgmPlayerDelegate

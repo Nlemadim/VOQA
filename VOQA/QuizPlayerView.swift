@@ -45,9 +45,9 @@ struct QuizPlayerView: View {
 
     var body: some View {
         VStack {
-            quizHeaderView() // Header for question count and time
-                .padding()
-            //quizQuestionView() // Display question text
+            //quizHeaderView() // Header for question count and time
+                //.padding()
+            quizQuestionView() // Display question text
             Spacer()
             quizOptionsScrollView() // Scrollable options
             Spacer()
@@ -90,7 +90,7 @@ struct QuizPlayerView: View {
             // Image for the voqaItem
             CachedImageView(imageUrl: voqa.imageUrl)
                 .aspectRatio(contentMode: .fit)
-                .frame(width: 160, height: 160)
+                .frame(width: 100, height: 100)
                 .cornerRadius(8)
             
             VStack(alignment: .leading, spacing: 25) {
@@ -104,12 +104,6 @@ struct QuizPlayerView: View {
                 Text("Question: \(viewModel.currentQuestionIndex + 1)/\(config.sessionQuestion.count)")
                     .font(.callout)
                     .foregroundColor(.gray)
-                    .padding(.horizontal)
-                
-                // Timer
-                Text("Time: \(viewModel.sessionTimer)")
-                    .font(.callout)
-                    .foregroundStyle(.orange.opacity(0.9))
                     .padding(.horizontal)
             }
         }
@@ -127,6 +121,7 @@ struct QuizPlayerView: View {
             Text(viewModel.currentQuestionText)
                 .font(.subheadline)
                 .frame(maxWidth: .infinity)
+                .foregroundStyle(Color.fromHex(voqa.colors.main).dynamicTextColor())
         }
         .frame(maxWidth: .infinity)
         .frame(height: 180)
@@ -142,50 +137,79 @@ struct QuizPlayerView: View {
         .padding(.top)
         .padding(.bottom)
     }
-
+    
     @ViewBuilder
-    private func quizOptionsScrollView() -> some View {
-        // Safely access the current question using currentQuestionIndex
-        if let question = config.sessionQuestion[safe: viewModel.currentQuestionIndex] {
-            ScrollView {
-                ForEach(question.mcOptions.keys.sorted(), id: \.self) { option in
-                    quizOptionButton(
-                        option: option,
-                        color: colorForOption(option: option, question: question),
-                        onSelect: { selectedOption in
-                            viewModel.selectAnswer(for: question, selectedOption: selectedOption)
-                        }
-                    )
-                }
-            }
-        } else {
-            Text("No question available.")
-        }
-    }
+       private func quizOptionsScrollView() -> some View {
+           // Safely access the current question using currentQuestionIndex
+           if let question = config.sessionQuestion[safe: viewModel.currentQuestionIndex] {
+               ScrollView {
+                   ForEach(question.mcOptions.keys.sorted(), id: \.self) { option in
+                       QuizOptionButton(
+                           option: option,
+                           color: colorForOption(option: option, question: question, isAwaitingResponse: viewModel.sessionAwaitingResponse),
+                           onSelect: { selectedOption in
+                               viewModel.selectAnswer(selectedOption: selectedOption)
+                           },
+                           viewModel: viewModel
+                       )
+                       .environmentObject(TimerManager()) // Inject TimerManager
+                       .environmentObject(viewModel) // Inject ViewModel
+                   }
+               }
+           } else {
+               Text("No question available.")
+                   .foregroundColor(.red)
+                   .padding()
+           }
+               
+       }
 
-    @ViewBuilder
-    private func quizOptionButton(option: String, color: Color, onSelect: @escaping (String) -> Void) -> some View {
-        Button(action: {
-            onSelect(option)  // Trigger the callback when an option is selected
-        }) {
-            Text(option)
-                .foregroundColor(.white)
-                .padding()
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .background(
-                    RoundedRectangle(cornerRadius: 12)
-                        .fill(color.opacity(0.15))
-                )
-                .background(
-                    RoundedRectangle(cornerRadius: 12)
-                        .stroke(color.opacity(color == .black ? 0.15 : 1), lineWidth: 2)
-                )
-        }
-        .frame(maxWidth: .infinity)
-        .buttonStyle(PlainButtonStyle())
-        .padding(.horizontal)
-        .padding(10)
-    }
+//    @ViewBuilder
+//    private func quizOptionsScrollView() -> some View {
+//        // Safely access the current question using currentQuestionIndex
+//        if let question = config.sessionQuestion[safe: viewModel.currentQuestionIndex] {
+//            ScrollView {
+//                ForEach(question.mcOptions.keys.sorted(), id: \.self) { option in
+//                    quizOptionButton(
+//                        option: option,
+//                        color: viewModel.sessionAwaitingResponse ? Color.fromHex(voqa.colors.main) : colorForOption(option: option, question: question),
+//                        onSelect: { selectedOption in
+//                            viewModel.selectAnswer(for: question, selectedOption: selectedOption)
+//                        }
+//                    )
+//                }
+//            }
+//        } else {
+//            Text("No question available.")
+//        }
+//    }
+    
+    
+//
+//    @ViewBuilder
+//    private func quizOptionButton(option: String, color: Color, onSelect: @escaping (String) -> Void) -> some View {
+//        Button(action: {
+//            onSelect(option)  // Trigger the callback when an option is selected
+//        }) {
+//            Text(option)
+//                .foregroundColor(.white)
+//                .padding()
+//                .frame(maxWidth: .infinity, alignment: .leading)
+//                .background(
+//                    RoundedRectangle(cornerRadius: 12)
+//                        .fill(color.opacity(0.15))
+//                )
+//                .background(
+//                    RoundedRectangle(cornerRadius: 12)
+//                        .stroke(color.opacity(color == .black ? 0.15 : 1), lineWidth: 2)
+//                )
+//        }
+//        .frame(maxWidth: .infinity)
+//        .buttonStyle(PlainButtonStyle())
+//        .padding(.horizontal)
+//        .padding(10)
+//        .disabled(!viewModel.sessionAwaitingResponse)
+//    }
 
     @ViewBuilder
     private func quizControlGridView() -> some View {
@@ -259,15 +283,25 @@ struct QuizPlayerView: View {
             .edgesIgnoringSafeArea(.all) // Make sure it covers the whole screen
     }
 
-    private func colorForOption(option: String, question: Question) -> Color {
-        guard let isCorrect = question.mcOptions[option] else { return .gray }
+    private func colorForOption(option: String, question: Question, isAwaitingResponse: Bool) -> Color {
+        // If no option is selected yet, return gray
+        guard let selected = question.selectedOption else {
+            if isAwaitingResponse {
+                return Color.fromHex(voqa.colors.main)
+            } else {
+                return .gray
+            }
+        }
         
-        // If the question is answered, highlight based on correctness
-//        if let isAnswered = question.isAnsweredOptional, isAnswered {
-//            return isCorrect ? .green : .red
-//        }
+        // Check if the current option is the one selected by the user
+        if option == selected {
+            // Determine if the selected option is correct
+            if let isCorrect = question.mcOptions[option] {
+                return isCorrect ? .green : .red
+            }
+        }
         
-        // If no selection is made, default to gray
+        // If the option is not selected, return gray
         return .gray
     }
 }
@@ -276,4 +310,112 @@ struct QuizPlayerView: View {
 #Preview {
     TestQuizPlayerPreview()
         .preferredColorScheme(.dark)
+}
+
+
+// MARK: - TimerManager
+class TimerManager: ObservableObject {
+    @Published var currentTime: Date = Date()
+    private var timer: AnyCancellable?
+
+    init(interval: TimeInterval = 0.1) {
+        timer = Timer.publish(every: interval, on: .main, in: .common)
+            .autoconnect()
+            .sink { [weak self] date in
+                self?.currentTime = date
+            }
+    }
+}
+
+// MARK: - EncryptedText View
+
+struct EncryptedText: View {
+    let text: String
+    let isEncrypted: Bool
+    @EnvironmentObject var timerManager: TimerManager
+    @State private var displayedText: String = ""
+    
+    private let letters: [Character] = [
+        // English uppercase letters
+        "A","B","C","D","E","F","G","H","I","J","K","L","M",
+        "N","O","P","Q","R","S","T","U","V","W","X","Y","Z",
+        // English lowercase letters
+        "a","b","c","d","e","f","g","h","i","j","k","l","m",
+        "n","o","p","q","r","s","t","u","v","w","x","y","z",
+        // Greek uppercase letters
+        "Α","Β","Γ","Δ","Ε","Ζ","Η","Θ","Ι","Κ","Λ","Μ","Ν",
+        "Ο","Π","Ρ","Σ","Τ","Υ","Φ","Χ","Ψ","Ω",
+        // Greek lowercase letters
+        "α","β","γ","δ","ε","ζ","η","θ","ι","κ","λ","μ","ν",
+        "ο","π","ρ","σ","τ","υ","φ","χ","ψ","ω",
+        // Cyrillic uppercase letters
+        "А","Б","В","Г","Д","Е","Ж","З","И","Й","К","Л","М",
+        "Н","О","П","Р","С","Т","У","Ф","Х","Ц","Ч","Ш","Щ",
+        "Ъ","Ы","Ь","Э","Ю","Я",
+        // Cyrillic lowercase letters
+        "а","б","в","г","д","е","ж","з","и","й","к","л","м",
+        "н","о","п","р","с","т","у","ф","х","ц","ч","ш","щ",
+        "ъ","ы","ь","э","ю","я"
+    ]
+    
+    var body: some View {
+        Text(displayedText)
+            .foregroundColor(.white) // Ensure text color matches button styling
+            .onAppear {
+                updateText()
+            }
+            .onReceive(timerManager.$currentTime) { _ in
+                updateText()
+            }
+    }
+    
+    private func updateText() {
+        if isEncrypted {
+            displayedText = generateEncryptedText()
+        } else {
+            displayedText = text
+        }
+    }
+    
+    private func generateEncryptedText() -> String {
+        let groupSize = 8
+        let numberOfGroups = 3
+        let groups = (0..<numberOfGroups).map { _ in
+            (0..<groupSize).compactMap { _ in letters.randomElement() }.map { String($0) }.joined()
+        }
+        return groups.joined(separator: " ")
+    }
+}
+
+
+// MARK: - QuizOptionButton View
+struct QuizOptionButton: View {
+    let option: String
+    let color: Color
+    let onSelect: (String) -> Void
+    @EnvironmentObject var timerManager: TimerManager
+    @ObservedObject var viewModel: QuizViewModel
+    
+    var body: some View {
+        Button(action: {
+            onSelect(option)
+        }) {
+            EncryptedText(text: option, isEncrypted: !viewModel.sessionAwaitingResponse)
+                .padding()
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .background(
+                    RoundedRectangle(cornerRadius: 12)
+                        .fill(color.opacity(0.15))
+                )
+                .overlay(
+                    RoundedRectangle(cornerRadius: 12)
+                        .stroke(color.opacity(color == .black ? 0.15 : 1), lineWidth: 2)
+                )
+        }
+        .frame(maxWidth: .infinity)
+        .buttonStyle(PlainButtonStyle())
+        .padding(.horizontal)
+        .padding(10)
+        .disabled(!viewModel.sessionAwaitingResponse) // Disable buttons when awaiting response
+    }
 }

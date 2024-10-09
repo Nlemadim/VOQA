@@ -35,7 +35,7 @@ class CommandCenter {
     }
     
     func requestSeesionInfo() {
-        guard let session = session else { return }
+        //guard let session = session else { return }
         print("Command Center: Requesting Session info.")
         Task {
             await sessionInfoRequest()
@@ -82,6 +82,37 @@ class CommandCenter {
             self.startQuizTimer()
             
             session.questionPlayer.playCurrentQuestion()
+        }
+    }
+    
+    func awaitUserResponse() {
+        guard let session = session else { return }
+        DispatchQueue.main.async {
+            session.isAwaitingResponse = true
+        }
+    }
+    
+    func displayQuestionText() {
+        guard let session = session else { return }
+        session.currentQuestionText = session.questionPlayer.currentQuestion?.content ?? ""
+    }
+    
+    func playAffirmation() {
+        guard let session = session else { return }
+        let audioAction = AudioAction.playCorrectAnswerCallout
+        session.sessionAudioPlayer.performAudioAction(audioAction)
+    }
+    
+    func playCorrection() {
+        guard let session = session else { return }
+        let audioAction = AudioAction.playWrongAnswerCallout
+        session.sessionAudioPlayer.performAudioAction(audioAction)
+    }
+    
+    func triggerTestUserResponse() {
+        guard let session = session else { return }
+        DispatchQueue.main.async {
+            session.isAwaitingResponse = false
         }
     }
     

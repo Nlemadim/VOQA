@@ -47,13 +47,14 @@ final class TestQuizPlayer {
             )
 
             // Load questions using the QuestionLoader
-            let questionLoader = QuestionDownloader(config: user.userConfig)
-            let questions = try await networkService.testFetchQuestions(with: jsonData)
+            //let questionLoader = QuestionDownloader(config: user.userConfig)
+            let questions =  Question.getMockQuestionCollection() /*try await networkService.testFetchQuestions(with: jsonData)*/
             
 
             DispatchQueue.main.async {
                 if let config = self.databaseManager.sessionConfiguration {
                     config.sessionQuestion = questions
+                    self.viewModel.quizSessionManager.initializeSession(with: config)
                     
                     let quizPlayerView = QuizPlayerView(config: config, voqaItem: mockVoqaItem)
                     completion(quizPlayerView)
@@ -72,13 +73,6 @@ final class TestQuizPlayer {
         guard !selectedVoiceNarrator.isEmptyOrWhiteSpace else {
             print("No selected voice narrator found")
             return
-        }
-
-        // Proceed with voice selection logic
-        if let mockQuestions = Question.decodeMockAPI3() {
-            print("Successfully decoded \(mockQuestions.count) questions.")
-        } else {
-            print("Failed to decode questions.")
         }
     }
 }
@@ -103,11 +97,6 @@ struct TestQuizPlayerPreview: View {
         .onAppear {
             // Call configureNewSession and loadQuizPlayerView in sequence
             testQuizPlayer.configureNewSession()
-            if let mockQuestion = Question.fromMockData() {
-                print("Successfully decoded Question: \(mockQuestion)")
-            } else {
-                print("Failed to decode Question.")
-            }
             
             testQuizPlayer.loadQuizPlayerView { view in
                 self.quizPlayerView = view
@@ -132,4 +121,5 @@ let previewVoqaItem = MockVoqaItem(
     imageUrl: "https://storage.googleapis.com/buildship-ljnsun-us-central1/VoqaCollection/WorldWar2/WorldWar2.png",
     colors: ThemeColors(main: "#8E44AD", sub: "#9B59B6", third: "#34495E")
 )
+
 

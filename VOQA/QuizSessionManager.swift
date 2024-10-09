@@ -18,6 +18,7 @@ class QuizSessionManager: ObservableObject {
         print("QuizSessionManager initialized")
         let sessionInitializer = SessionInitializer(config: config)
         let sessionInfo = sessionInitializer.initializeSession()
+        let questionPlayer = QuestionPlayer()
         let scoreRegistry = ScoreRegistry()
         let audioFileSorter = AudioFileSorter(randomGenerator: SystemRandomNumberGenerator())
         
@@ -33,7 +34,7 @@ class QuizSessionManager: ObservableObject {
         // Create QuizSession with the CommandCenter, Orchestra, and BgmPlayer
         let quizSession = QuizSession(
             state: IdleSession(),
-            questionPlayer: QuestionPlayer(),
+            questionPlayer: questionPlayer,
             reviewer: ReviewsManager(),
             sessionCloser: SessionCloser(),
             audioFileSorter: audioFileSorter,
@@ -50,6 +51,7 @@ class QuizSessionManager: ObservableObject {
         audioFileSorter.configure(with: config)
         
         // Now that the QuizSession is created, set it in the CommandCenter
+        questionPlayer.session = quizSession
         quizConductor.session = quizSession
         commandCenter.session = quizSession
         dynamicContentmanager.session = quizSession
@@ -96,10 +98,17 @@ class QuizSessionManager: ObservableObject {
     func startNewQuiz() {
         quizSession?.startQuiz()
     }
-
+    
     func selectAnswer(selectedOption: String) {
-        quizSession?.selectAnswer(selectedOption: selectedOption)
+        guard let session = quizSession else {
+            print("Quiz session is not available.")
+            return
+        }
+        
+        // Forward the selection to the Session
+        session.selectAnswer(selectedOption: selectedOption)
     }
+
 
     
     func stopQuiz() {

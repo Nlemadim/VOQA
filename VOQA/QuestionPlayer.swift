@@ -227,7 +227,7 @@ class QuestionPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate, Session
         self.currentQuestion = currentQuestion
         self.currentQuestionId = currentQuestion.id
         
-        performAction(.playCurrentQuestion(currentQuestion), session: session)
+//        performAction(.playCurrentQuestion(currentQuestion), session: session)
     }
     
     /// Plays the given question.
@@ -276,7 +276,7 @@ class QuestionPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate, Session
         }
         
         let question = currentQuestions[currentQuestionIndex]
-        
+
         // Assuming session.sessionAudioPlayer handles audio playback
         session.sessionAudioPlayer.setContext(session)
         session.sessionAudioPlayer.performAudioAction(.playQuestionAudioUrl(url: question.questionScriptAudioURL ?? ""))

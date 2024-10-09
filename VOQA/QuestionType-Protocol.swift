@@ -55,3 +55,12 @@ protocol QuestionType: Codable, Identifiable where ID == String {
 }
 
 
+extension QuestionType where Self == Question {
+    /// Selects an option and checks if it's correct.
+    /// - Parameter selectedOption: The option selected by the user.
+    /// - Returns: `true` if the selected option is correct, `false` otherwise.
+    mutating func selectOption(selectedOption: String) -> Bool {
+        self.selectedOption = selectedOption
+        return self.mcOptions[selectedOption] ?? false
+    }
+}

@@ -23,7 +23,7 @@ struct Question: QuestionType, Equatable, Hashable {
     var quizId: String  // Required
     var userId: String  // Required
     var questionStatus: QuestionStatus?  // Required, cannot be nil
-
+    
     enum CodingKeys: String, CodingKey {
         case refId
         case content
@@ -41,12 +41,12 @@ struct Question: QuestionType, Equatable, Hashable {
         case userId
         case questionStatus
     }
-
+    
     // MARK: - Identifiable Conformance
     var id: String {
         return refId
     }
-
+    
     // MARK: - Initializers
     init(
         refId: String,
@@ -81,7 +81,7 @@ struct Question: QuestionType, Equatable, Hashable {
         self.userId = userId
         self.questionStatus = questionStatus
     }
-
+    
     // MARK: - Codable Conformance
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -101,7 +101,7 @@ struct Question: QuestionType, Equatable, Hashable {
         userId = try container.decode(String.self, forKey: .userId)
         questionStatus = try container.decode(QuestionStatus.self, forKey: .questionStatus)
     }
-
+    
     // MARK: - Encoding to JSON
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
@@ -121,26 +121,26 @@ struct Question: QuestionType, Equatable, Hashable {
         try container.encode(userId, forKey: .userId)
         try container.encode(questionStatus, forKey: .questionStatus)
     }
-
+    
     // MARK: - Equatable and Hashable Conformance
     static func == (lhs: Question, rhs: Question) -> Bool {
         return lhs.refId == rhs.refId &&
-               lhs.content == rhs.content &&
-               lhs.mcOptions == rhs.mcOptions &&
-               lhs.selectedOption == rhs.selectedOption &&
-               lhs.correction == rhs.correction &&
-               lhs.numberOfPresentations == rhs.numberOfPresentations &&
-               lhs.questionScript == rhs.questionScript &&
-               lhs.repeatQuestionScript == rhs.repeatQuestionScript &&
-               lhs.questionScriptAudioURL == rhs.questionScriptAudioURL &&
-               lhs.correctionAudioURL == rhs.correctionAudioURL &&
-               lhs.repeatQuestionAudioURL == rhs.repeatQuestionAudioURL &&
-               lhs.coreTopic == rhs.coreTopic &&
-               lhs.quizId == rhs.quizId &&
-               lhs.userId == rhs.userId &&
-               lhs.questionStatus == rhs.questionStatus
+        lhs.content == rhs.content &&
+        lhs.mcOptions == rhs.mcOptions &&
+        lhs.selectedOption == rhs.selectedOption &&
+        lhs.correction == rhs.correction &&
+        lhs.numberOfPresentations == rhs.numberOfPresentations &&
+        lhs.questionScript == rhs.questionScript &&
+        lhs.repeatQuestionScript == rhs.repeatQuestionScript &&
+        lhs.questionScriptAudioURL == rhs.questionScriptAudioURL &&
+        lhs.correctionAudioURL == rhs.correctionAudioURL &&
+        lhs.repeatQuestionAudioURL == rhs.repeatQuestionAudioURL &&
+        lhs.coreTopic == rhs.coreTopic &&
+        lhs.quizId == rhs.quizId &&
+        lhs.userId == rhs.userId &&
+        lhs.questionStatus == rhs.questionStatus
     }
-
+    
     func hash(into hasher: inout Hasher) {
         hasher.combine(refId)
         hasher.combine(content)
@@ -157,6 +157,14 @@ struct Question: QuestionType, Equatable, Hashable {
         hasher.combine(quizId)
         hasher.combine(userId)
         hasher.combine(questionStatus)
+    }
+    
+    /// Selects an option and checks if it's correct.
+    /// - Parameter selectedOption: The option selected by the user.
+    /// - Returns: `true` if the selected option is correct, `false` otherwise.
+    mutating func selectOption(selectedOption: String) -> Bool {
+        self.selectedOption = selectedOption
+        return mcOptions[selectedOption] ?? false
     }
 }
 
@@ -356,6 +364,11 @@ extension Question {
             print("Error decoding JSON: \(error)")
             return nil
         }
+    }
+    
+    static func getMockQuestionCollection() -> [Question] {
+        let questions = [question1,question2,question3,question2,question3]
+        return questions
     }
 }
 

@@ -8,22 +8,50 @@
 import Foundation
 import SwiftUI
 
+
 class ScoreRegistry: ObservableObject {
-    @EnvironmentObject private var databaseManager: DatabaseManager
+    @ObservedObject private var databaseManager = DatabaseManager.shared
+    @ObservedObject private var user = User()
+    
     @Published var currentScore: CGFloat = 0.0
     @Published var currentScoreStreak: Int = 0
     @Published var currentScorePercentage: Int = 0
+
+    @Published var playCorrection: Bool = false
+    @Published var confirmCorrectAnswer: Bool = false
+    @Published var confirmInCorrectAnswer: Bool = false
+    @Published var readyToResumed: Bool = false
     
+    var session: QuizSession?
     // Check the answer and update the score
-    func checkAnswer(question: Question, selectedOption: String, isCorrect: @escaping (Bool) -> Void) {
-//        if selectedOption == question.correctOption {
-//            currentScore += 1
-//            currentScoreStreak += 1
-//            isCorrect(true)
-//        } else {
-//            currentScoreStreak = 0
-//            isCorrect(false)
-//        }
+    func checkAnswer(isCorrect: Bool, refId: String) {
+        guard let session = session else { return }
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            
+            if isCorrect {
+                 if session.answerFeebackEnabled {
+                    self.confirmCorrectAnswer = true
+                }
+                
+            } else {
+                
+                if session.answerFeebackEnabled {
+                    self.confirmInCorrectAnswer = true
+                }
+                
+                if session.isQandASession {
+                    session.answerFeebackEnabled = true
+                    self.playCorrection = true
+                }
+                
+                self.readyToResumed = true
+            }
+        }
+    }
+
+    private func saveScore(refId: String) {
+        
     }
     
     // Create a performance record

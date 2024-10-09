@@ -57,8 +57,9 @@ class QuizViewModel: ObservableObject, QuizViewModelProtocol {
             }
             .store(in: &cancellables)
     }
-
+    
     private func bindSession(_ session: QuizSession) {
+        // 1. Assign published properties to ViewModel's properties
         session.$currentQuestionText
             .assign(to: &$currentQuestionText)
         
@@ -88,7 +89,20 @@ class QuizViewModel: ObservableObject, QuizViewModelProtocol {
         
         // Bind the current question from the session
         session.$currentQuestion
-            .assign(to: &$currentQuestion) // Now the view model tracks the current question
+            .assign(to: &$currentQuestion)
+        
+        // 2. Sink to observe changes and perform actions
+        session.$isAwaitingResponse
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] isWaiting in
+                guard let self = self else { return }
+                if isWaiting {
+                    // Perform actions when awaiting response
+                    self.playAwaitingResponseSfx()
+                }
+            }
+            .store(in: &cancellables) // Store the sink subscription
+        
     }
     
     func currentQuizSession() -> QuizSession? {
@@ -117,32 +131,32 @@ class QuizViewModel: ObservableObject, QuizViewModelProtocol {
         sfxPlayer.play(.hasReceivedResponse)
     }
     
-    func selectAnswer(for question: any QuestionType, selectedOption: String) {
-        // Check if currentQuestion is nil or has a different id
-        guard let currentQuestion = currentQuestion else {
-            print("currentQuestion is nil")
-            return
-        }
-
-        print("Current question ID: \(currentQuestion.id)")
-        print("Selected question ID: \(question.id)")
-
-        guard currentQuestion.id == question.id else {
-            print("No matching current question found. Current: \(currentQuestion.id), Selected: \(question.id)")
-            return
-        }
-        
-        // Check if the current question conforms to `Question`
-        if var updatedQuestion = currentQuestion as? Question {
-            // Call the `selectAnswer` method on the `Question` struct
-            updatedQuestion.selectAnswer(selectedOption)
-            
-            // Update the `currentQuestion` to reflect the changes
-            self.currentQuestion = updatedQuestion
-        } else {
-            print("Current question does not conform to Question.")
-        }
-    }
+//    func selectAnswer(for question: any QuestionType, selectedOption: String) {
+//        // Check if currentQuestion is nil or has a different id
+//        guard let currentQuestion = currentQuestion else {
+//            print("currentQuestion is nil")
+//            return
+//        }
+//
+//        print("Current question ID: \(currentQuestion.id)")
+//        print("Selected question ID: \(question.id)")
+//
+//        guard currentQuestion.id == question.id else {
+//            print("No matching current question found. Current: \(currentQuestion.id), Selected: \(question.id)")
+//            return
+//        }
+//        
+//        // Check if the current question conforms to `Question`
+//        if var updatedQuestion = currentQuestion as? Question {
+//            // Call the `selectAnswer` method on the `Question` struct
+//            updatedQuestion.selectAnswer(selectedOption)
+//            
+//            // Update the `currentQuestion` to reflect the changes
+//            self.currentQuestion = updatedQuestion
+//        } else {
+//            print("Current question does not conform to Question.")
+//        }
+//    }
 
 
     
@@ -194,3 +208,43 @@ class QuizViewModel: ObservableObject, QuizViewModelProtocol {
 
 }
 
+
+//    private func bindSession(_ session: QuizSession) {
+//        session.$currentQuestionText
+//            .assign(to: &$currentQuestionText)
+//
+//        session.$questionCounter
+//            .assign(to: &$questionCounter)
+//
+//        session.$isNowPlaying
+//            .assign(to: &$sessionNowplayingAudio)
+//
+//        session.$isAwaitingResponse
+//            .assign(to: &$sessionAwaitingResponse)
+//            .sink { [weak self] isWaiting in
+//                guard let self = self else { return }
+//                if isWaiting {
+//
+//                }
+//            }
+//            .store(in: &cancellables) // 4. Store the subscription
+//
+//        session.$questionCounter
+//            .assign(to: &$sessionQuestionCounterText)
+//
+//        session.$countdownTime
+//            .assign(to: &$sessionCountdownTime)
+//
+//        session.$quizTimer
+//            .assign(to: &$sessionTimer)
+//
+//        session.$isReviewing
+//            .assign(to: &$sessionInReview)
+//
+//        session.$currentQuestionIndex
+//            .assign(to: &$currentQuestionIndex)
+//
+//        // Bind the current question from the session
+//        session.$currentQuestion
+//            .assign(to: &$currentQuestion) // Now the view model tracks the current question
+//    }
