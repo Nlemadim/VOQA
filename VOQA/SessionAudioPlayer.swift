@@ -16,6 +16,7 @@ class SessionAudioPlayer: NSObject, AVAudioPlayerDelegate {
     private var actionQueue: [AudioAction] = []
     private var isProcessingAction = false
     var lastAction: AudioAction?
+    var currentAction: AudioAction?
     private var audioFileSorter: AudioFileSorter
     
     weak var sessionAudioDelegate: SessionAudioPlayerDelegate?
@@ -41,6 +42,7 @@ class SessionAudioPlayer: NSObject, AVAudioPlayerDelegate {
     }
 
     func enqueueAction(_ action: AudioAction) {
+        guard currentAction != action else { return }
         actionQueue.append(action)
         processNextAction()
     }
@@ -52,6 +54,7 @@ class SessionAudioPlayer: NSObject, AVAudioPlayerDelegate {
         
         isProcessingAction = true
         let nextAction = actionQueue.removeFirst()
+        currentAction = nextAction
         executeAudioAction(nextAction)
     }
     

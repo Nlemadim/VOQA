@@ -126,6 +126,11 @@ class CommandCenter {
         }
     }
     
+    func pauseBgmPlayer() {
+        guard let session = session else { return }
+        session.bgmPlayer.pauseBackgroundMusic()
+    }
+    
     func resumeQuiz() {
         guard let session = session else { return }
         guard session.questionPlayer.hasMoreQuestions else {

@@ -10,7 +10,7 @@ import Foundation
 import Combine
 
 struct QuizPlayerView: View {
-    @EnvironmentObject var databaseManager: DatabaseManager
+//    @EnvironmentObject var databaseManager: DatabaseManager
     @Environment(\.dismiss) private var dismiss
    
     @ObservedObject var config: QuizSessionConfig
@@ -45,12 +45,12 @@ struct QuizPlayerView: View {
 
     var body: some View {
         VStack {
-            //quizHeaderView() // Header for question count and time
-                //.padding()
-            quizQuestionView() // Display question text
-            Spacer()
+            
+            quizQuestionView()
+           
             quizOptionsScrollView() // Scrollable options
             Spacer()
+            TutorHeaderView(themeColors: [Color.fromHex(voqa.colors.main), Color.fromHex(voqa.colors.sub), Color.fromHex(voqa.colors.third)], quizSession: viewModel.currentQuizSession())
             quizControlGridView() // Control buttons
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -118,36 +118,36 @@ struct QuizPlayerView: View {
     @ViewBuilder
     private func quizQuestionView() -> some View {
         VStack {
-            Text(viewModel.currentQuestionText)
-                .font(.subheadline)
-                .frame(maxWidth: .infinity)
-                .foregroundStyle(Color.fromHex(voqa.colors.main).dynamicTextColor())
+            ScrollView {
+                Text(viewModel.currentQuestionText)
+                    .font(.system(size: 18, weight: .regular, design: .default))
+                    .kerning(-0.5)
+                    .frame(maxWidth: .infinity)
+                    .padding(16)
+                    .lineLimit(nil)
+                    .multilineTextAlignment(.center)
+                    .activeGlow(.white, radius: 0.5)
+            }
         }
-        .frame(maxWidth: .infinity)
-        .frame(height: 180)
-        .background(
-            RoundedRectangle(cornerRadius: 12)
-                .fill(Color.fromHex(voqa.colors.main).gradient)
-                .overlay {
-                    RoundedRectangle(cornerRadius: 12)
-                        .fill(Material.ultraThin)
-                }
-        )
+        .frame(maxWidth: .infinity, maxHeight: 180)
         .padding(.horizontal)
         .padding(.top)
         .padding(.bottom)
+        .background(Color.clear) // Remove background
     }
+
     
     @ViewBuilder
        private func quizOptionsScrollView() -> some View {
            // Safely access the current question using currentQuestionIndex
-           if let question = config.sessionQuestion[safe: viewModel.currentQuestionIndex] {
-               ScrollView {
+           if let question = viewModel.currentQuestion as? Question {
+               VStack(alignment: .center) {
                    ForEach(question.mcOptions.keys.sorted(), id: \.self) { option in
                        QuizOptionButton(
                            option: option,
-                           color: colorForOption(option: option, question: question, isAwaitingResponse: viewModel.sessionAwaitingResponse),
+                           color: colorForOption(option: option, question: question, isAwaitingResponse: viewModel.sessionAwaitingResponse, hasResponded: viewModel.userHasResponded),
                            onSelect: { selectedOption in
+            
                                viewModel.selectAnswer(selectedOption: selectedOption)
                            },
                            viewModel: viewModel
@@ -161,64 +161,16 @@ struct QuizPlayerView: View {
                    .foregroundColor(.red)
                    .padding()
            }
-               
        }
-
-//    @ViewBuilder
-//    private func quizOptionsScrollView() -> some View {
-//        // Safely access the current question using currentQuestionIndex
-//        if let question = config.sessionQuestion[safe: viewModel.currentQuestionIndex] {
-//            ScrollView {
-//                ForEach(question.mcOptions.keys.sorted(), id: \.self) { option in
-//                    quizOptionButton(
-//                        option: option,
-//                        color: viewModel.sessionAwaitingResponse ? Color.fromHex(voqa.colors.main) : colorForOption(option: option, question: question),
-//                        onSelect: { selectedOption in
-//                            viewModel.selectAnswer(for: question, selectedOption: selectedOption)
-//                        }
-//                    )
-//                }
-//            }
-//        } else {
-//            Text("No question available.")
-//        }
-//    }
-    
-    
-//
-//    @ViewBuilder
-//    private func quizOptionButton(option: String, color: Color, onSelect: @escaping (String) -> Void) -> some View {
-//        Button(action: {
-//            onSelect(option)  // Trigger the callback when an option is selected
-//        }) {
-//            Text(option)
-//                .foregroundColor(.white)
-//                .padding()
-//                .frame(maxWidth: .infinity, alignment: .leading)
-//                .background(
-//                    RoundedRectangle(cornerRadius: 12)
-//                        .fill(color.opacity(0.15))
-//                )
-//                .background(
-//                    RoundedRectangle(cornerRadius: 12)
-//                        .stroke(color.opacity(color == .black ? 0.15 : 1), lineWidth: 2)
-//                )
-//        }
-//        .frame(maxWidth: .infinity)
-//        .buttonStyle(PlainButtonStyle())
-//        .padding(.horizontal)
-//        .padding(10)
-//        .disabled(!viewModel.sessionAwaitingResponse)
-//    }
 
     @ViewBuilder
     private func quizControlGridView() -> some View {
-        HStack {
+        HStack(spacing: 20) {
             Button(action: {
                 viewModel.stopQuiz()
             }) {
                 Image(systemName: "stop.fill")
-                    .font(.title)
+                    .font(.title3)
                     .foregroundColor(.red.opacity(0.8))
             }
             .padding()
@@ -227,7 +179,7 @@ struct QuizPlayerView: View {
                 viewModel.repeatQuestion()
             }) {
                 Image(systemName: "repeat")
-                    .font(.title)
+                    .font(.title3)
                     .foregroundColor(Color.fromHex(voqa.colors.main))
             }
             .padding()
@@ -237,7 +189,7 @@ struct QuizPlayerView: View {
                 isNowPlaying.toggle()
             }) {
                 Image(systemName: isNowPlaying ? "pause.fill" : "play.fill")
-                    .font(.largeTitle)
+                    .font(.title)
                     .foregroundColor(.white)
             }
             .padding()
@@ -251,7 +203,7 @@ struct QuizPlayerView: View {
                 // Mic toggle logic
             }) {
                 Image(systemName: "mic")
-                    .font(.title)
+                    .font(.title3)
                     .foregroundColor(Color.fromHex(voqa.colors.main))
             }
             .padding()
@@ -260,16 +212,17 @@ struct QuizPlayerView: View {
                 viewModel.nextQuestion()
             }) {
                 Image(systemName: "forward.end.fill")
-                    .font(.title)
+                    .font(.title3)
                     .foregroundColor(.gray)
             }
             .padding()
         }
+        //.frame(height: 100)
         .frame(maxWidth: .infinity)
         .frame(alignment: .bottom)
         .padding(.horizontal)
-        .padding()
-        .background(Color.black) // Ensures background color spans the entire control grid
+        .padding(10)
+        .background(Color.black).ignoresSafeArea()
     }
 
     @ViewBuilder
@@ -283,27 +236,35 @@ struct QuizPlayerView: View {
             .edgesIgnoringSafeArea(.all) // Make sure it covers the whole screen
     }
 
-    private func colorForOption(option: String, question: Question, isAwaitingResponse: Bool) -> Color {
-        // If no option is selected yet, return gray
+    private func colorForOption(option: String, question: any QuestionType, isAwaitingResponse: Bool, hasResponded: Bool) -> Color {
+        // If no option is selected yet
         guard let selected = question.selectedOption else {
             if isAwaitingResponse {
-                return Color.fromHex(voqa.colors.main)
+                return Color.fromHex(voqa.colors.main) // Color while awaiting response
             } else {
+                return .gray // Default color if no response has been made
+            }
+        }
+        
+        // If the user has responded, update colors based on selection
+        if hasResponded {
+            // Check if the current option is the one selected by the user
+            if option == selected {
+                // Determine if the selected option is correct
+                if let question = question as? Question, let isCorrect = question.mcOptions[option] {
+                    return isCorrect ? .green : .red // Green for correct, red for incorrect
+                }
+            } else {
+                // If option is not selected, return gray
                 return .gray
             }
         }
         
-        // Check if the current option is the one selected by the user
-        if option == selected {
-            // Determine if the selected option is correct
-            if let isCorrect = question.mcOptions[option] {
-                return isCorrect ? .green : .red
-            }
-        }
-        
-        // If the option is not selected, return gray
+        // If option was not selected, return gray
         return .gray
     }
+
+
 }
 
 
@@ -360,6 +321,8 @@ struct EncryptedText: View {
     
     var body: some View {
         Text(displayedText)
+            .font(.system(size: 14, weight: .regular, design: .default))
+            .kerning(-0.5)
             .foregroundColor(.white) // Ensure text color matches button styling
             .onAppear {
                 updateText()
@@ -393,29 +356,30 @@ struct QuizOptionButton: View {
     let option: String
     let color: Color
     let onSelect: (String) -> Void
+    @State private var buttonSelected: Bool = false
     @EnvironmentObject var timerManager: TimerManager
     @ObservedObject var viewModel: QuizViewModel
     
     var body: some View {
         Button(action: {
             onSelect(option)
+            buttonSelected = true
         }) {
-            EncryptedText(text: option, isEncrypted: !viewModel.sessionAwaitingResponse)
+            EncryptedText(text: option, isEncrypted: !viewModel.sessionAwaitingResponse && !viewModel.userHasResponded)
                 .padding()
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .background(
                     RoundedRectangle(cornerRadius: 12)
-                        .fill(color.opacity(0.15))
+                        .fill(buttonSelected ? .purple.opacity(0.5) : color.opacity(0.15))
                 )
                 .overlay(
                     RoundedRectangle(cornerRadius: 12)
-                        .stroke(color.opacity(color == .black ? 0.15 : 1), lineWidth: 2)
+                        .stroke(buttonSelected ? .purple : color.opacity(color == .black ? 0.15 : 1), lineWidth: 2)
                 )
         }
         .frame(maxWidth: .infinity)
         .buttonStyle(PlainButtonStyle())
-        .padding(.horizontal)
         .padding(10)
-        .disabled(!viewModel.sessionAwaitingResponse) // Disable buttons when awaiting response
+        .disabled(!viewModel.sessionAwaitingResponse || viewModel.userHasResponded && !buttonSelected) // Disable buttons when awaiting response
     }
 }

@@ -30,6 +30,7 @@ class QuizViewModel: ObservableObject, QuizViewModelProtocol {
     @Published var questionCounter: String = ""
     @Published var sessionNowplayingAudio: Bool = false
     @Published var sessionAwaitingResponse: Bool = false
+    @Published var userHasResponded: Bool = false
     @Published var seesionId: UUID = UUID()
     @Published var sessionTitle: String = ""
     @Published var sessionVoice: String = ""
@@ -71,6 +72,9 @@ class QuizViewModel: ObservableObject, QuizViewModelProtocol {
         
         session.$isAwaitingResponse
             .assign(to: &$sessionAwaitingResponse)
+        
+        session.$hasResponded
+            .assign(to: &$userHasResponded)
         
         session.$questionCounter
             .assign(to: &$sessionQuestionCounterText)
@@ -127,38 +131,13 @@ class QuizViewModel: ObservableObject, QuizViewModelProtocol {
     }
 
     func selectAnswer(selectedOption: String) {
-        quizSessionManager.selectAnswer(selectedOption: selectedOption)
-        sfxPlayer.play(.hasReceivedResponse)
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            self.sessionAwaitingResponse = false
+            self.quizSessionManager.selectAnswer(selectedOption: selectedOption)
+            self.sfxPlayer.play(.hasReceivedResponse)
+        }
     }
-    
-//    func selectAnswer(for question: any QuestionType, selectedOption: String) {
-//        // Check if currentQuestion is nil or has a different id
-//        guard let currentQuestion = currentQuestion else {
-//            print("currentQuestion is nil")
-//            return
-//        }
-//
-//        print("Current question ID: \(currentQuestion.id)")
-//        print("Selected question ID: \(question.id)")
-//
-//        guard currentQuestion.id == question.id else {
-//            print("No matching current question found. Current: \(currentQuestion.id), Selected: \(question.id)")
-//            return
-//        }
-//        
-//        // Check if the current question conforms to `Question`
-//        if var updatedQuestion = currentQuestion as? Question {
-//            // Call the `selectAnswer` method on the `Question` struct
-//            updatedQuestion.selectAnswer(selectedOption)
-//            
-//            // Update the `currentQuestion` to reflect the changes
-//            self.currentQuestion = updatedQuestion
-//        } else {
-//            print("Current question does not conform to Question.")
-//        }
-//    }
-
-
     
     func stopQuiz() {
         quizSessionManager.stopQuiz()

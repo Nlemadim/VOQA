@@ -21,8 +21,9 @@ class QuizSession: ObservableObject, QuizServices {
     @Published var countdownTime: TimeInterval = 5.0
     @Published var responseTime: TimeInterval = 6.0
     @Published var quizTimer: TimeInterval = 0.0
-    @Published var isQandASession: Bool = false
-    @Published var answerFeebackEnabled: Bool = false
+    @Published var isQandASession: Bool = true
+    @Published var answerFeebackEnabled: Bool = true
+    
     
     // Session QuestionPlayer Specific Properties
     @Published var currentQuestion: (any QuestionType)? // Changed from 'Question?' to 'any QuestionType?'
@@ -196,7 +197,7 @@ class QuizSession: ObservableObject, QuizServices {
     }
     
     func selectAnswer(selectedOption: String) {
-        guard let currentQuestion = self.questionPlayer.currentQuestion else {
+        guard let currentQuestion = self.currentQuestion else {
             print("No current question available.")
             return
         }
@@ -207,7 +208,7 @@ class QuizSession: ObservableObject, QuizServices {
             // Attempt to cast to the concrete Question type
             if var concreteQuestion = currentQuestion as? Question {
                 print("Recieving Question Response")
-                // Use the selectOption method to determine correctness
+                // Uses inherent mutating selectOption method to determine correctness and assign its own selectedOption
                 let isCorrect = concreteQuestion.selectOption(selectedOption: selectedOption)
                 let refId = concreteQuestion.refId
                 
@@ -216,6 +217,7 @@ class QuizSession: ObservableObject, QuizServices {
                 self.recieveResponse()
                 
                 // Register the score based on correctness
+                
                 self.registerScore(isCorrect: isCorrect, refId: refId)
             } else {
                 print("Failed to cast currentQuestion to Question.")
@@ -228,7 +230,6 @@ class QuizSession: ObservableObject, QuizServices {
     private func recieveResponse() {
         self.setState(self)
         self.currentQuestionText = "Registering your score"
-        //self.isAwaitingResponse = false
         self.hasResponded = true
     }
     
@@ -236,8 +237,6 @@ class QuizSession: ObservableObject, QuizServices {
     private func registerScore(isCorrect: Bool, refId: String) {
         self.scoreRegistry.checkAnswer(isCorrect: isCorrect, refId: refId)
     }
-    
-    
     
     
     func resumeQuiz() {
@@ -318,7 +317,7 @@ class QuizSession: ObservableObject, QuizServices {
     
     //TODO: Refactor Controls out of QuizSession
     func pauseQuiz() {
-        self.sessionAudioPlayer.pausePlayer()
+        combinedPause()
     }
     
     func stopQuiz() {
@@ -332,6 +331,11 @@ class QuizSession: ObservableObject, QuizServices {
     
     func replayQuestion() {
         questionPlayer.replayQuestion() // Changed to use protocol method
+    }
+    
+    func combinedPause() {
+        self.commandCenter.pauseBgmPlayer()
+        self.sessionAudioPlayer.pausePlayer()
     }
 }
 

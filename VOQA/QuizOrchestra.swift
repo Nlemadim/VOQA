@@ -33,9 +33,12 @@ class Conductor: BgmPlayerDelegate, QuizServices, SessionObserver, SessionAudioP
         
         // Step 3: Session Info request
         commandCenter.requestSeesionInfo()
+        
         // Step 4: After a delay, play the voice intro
         DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) { [weak self] in
             guard let self = self else { return }
+//            self.session?.currentQuestionText = self.session?.questionPlayer.currentQuestion?.content ?? ""
+//            self.session?.isAwaitingResponse = true
             self.playHostIntro()
         }
     }
@@ -46,6 +49,7 @@ class Conductor: BgmPlayerDelegate, QuizServices, SessionObserver, SessionAudioP
         commandCenter.playHostIntro()
     }
 
+    //Step 5
     func conductNextAction() {
         guard let session = session else {  return }
            

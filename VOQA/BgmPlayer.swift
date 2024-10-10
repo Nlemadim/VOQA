@@ -16,7 +16,7 @@ class BgmPlayer: NSObject, AVAudioPlayerDelegate {
     private var currentAudioUrl: String?
     
     weak var delegate: BgmPlayerDelegate?
-
+    
     // MARK: - Initializer
     init(audioUrls: [String]) {
         self.audioUrls = audioUrls
@@ -24,7 +24,7 @@ class BgmPlayer: NSObject, AVAudioPlayerDelegate {
         selectRandomAudioUrl()
         AudioSessionManager.setupAudioSession()  // Ensure audio session is set up on initialization
     }
-
+    
     // MARK: - Helper Methods
     
     // Select a random audio URL from the array (if available)
@@ -35,17 +35,17 @@ class BgmPlayer: NSObject, AVAudioPlayerDelegate {
         }
         currentAudioUrl = audioUrls.randomElement()
     }
-
+    
     // Plays the selected background music (if available)
     func playStartUpMusic() {
         guard let urlString = currentAudioUrl else {
             print("No background music available.")
             return
         }
-
+        
         // Activate audio session before playing
         AudioSessionManager.activateAudioSession()
-
+        
         // Check if audio is already cached
         if let cachedData = audioCache[urlString] {
             playAudio(from: cachedData)
@@ -55,7 +55,7 @@ class BgmPlayer: NSObject, AVAudioPlayerDelegate {
                 print("Invalid URL string: \(urlString)")
                 return
             }
-
+            
             // Download and cache the audio if not already cached
             downloadAudio(from: url) { [weak self] data in
                 guard let self = self else { return }
@@ -63,7 +63,7 @@ class BgmPlayer: NSObject, AVAudioPlayerDelegate {
                 self.playAudio(from: data)
             }
         }
-
+        
         // Start loud and fade to 30% volume after 5 seconds
         adjustVolume(to: 1.0, fadeDuration: 0.0)  // Start loud
         DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) { [weak self] in
@@ -73,24 +73,24 @@ class BgmPlayer: NSObject, AVAudioPlayerDelegate {
             self?.fadeOutIntro()
         }
     }
-
+    
     // Fade out the background music over 30 seconds and stop it at the end
     func fadeOutIntro() {
         let fadeDuration: TimeInterval = 55.0
         let fadeSteps = 300  // Increasing the number of steps for a smoother fade-out
         let fadeInterval: TimeInterval = fadeDuration / TimeInterval(fadeSteps)
         let fadeAmount: Float = 0.003  // Smaller amount for each step (this can be adjusted based on testing)
-
+        
         // Perform volume fade out in steps
         for i in 1...fadeSteps {
             DispatchQueue.main.asyncAfter(deadline: .now() + fadeInterval * TimeInterval(i)) { [weak self] in
                 guard let self = self else { return }
                 let currentVolume = self.audioPlayer?.volume ?? 0
                 let newVolume = max(0, currentVolume - fadeAmount)  // Gradually reduce volume
-
+                
                 // Adjust volume for this step
                 self.adjustVolume(to: newVolume, fadeDuration: 0.0)
-
+                
                 // Stop music when volume reaches zero
                 if newVolume <= 0 {
                     self.stopBackgroundMusic()
@@ -98,7 +98,7 @@ class BgmPlayer: NSObject, AVAudioPlayerDelegate {
             }
         }
     }
-
+    
     // Downloads audio from a URL asynchronously
     private func downloadAudio(from url: URL, completion: @escaping (Data) -> Void) {
         let task = URLSession.shared.dataTask(with: url) { data, _, error in
@@ -110,7 +110,7 @@ class BgmPlayer: NSObject, AVAudioPlayerDelegate {
         }
         task.resume()
     }
-
+    
     // Plays the audio from the provided data
     private func playAudio(from data: Data) {
         do {
@@ -122,38 +122,79 @@ class BgmPlayer: NSObject, AVAudioPlayerDelegate {
             print("Failed to play audio: \(error.localizedDescription)")
         }
     }
-
+    
     // Adjust volume to the specified level over a given duration
     func adjustVolume(to volume: Float, fadeDuration: TimeInterval) {
         audioPlayer?.setVolume(volume, fadeDuration: fadeDuration)
     }
-
-    // Stops the currently playing audio
+    
+    // Fades out the audio over a specified duration
+    private func fadeOut(duration: TimeInterval) {
+        guard let player = audioPlayer else { return }
+        let initialVolume = player.volume
+        
+        // Create a timer to decrease the volume gradually
+        let step: Float = 0.1 // Volume decrement step
+        let steps = Int(initialVolume / step)
+        let interval = duration / Double(steps)
+        
+        for i in 0...steps {
+            DispatchQueue.main.asyncAfter(deadline: .now() + interval * Double(i)) {
+                player.volume = initialVolume - (step * Float(i))
+                
+                // Stop the player once volume reaches zero
+                if player.volume <= 0 {
+                    player.stop()
+                    player.volume = initialVolume // Reset volume for future use
+                }
+            }
+        }
+    }
+    
+    // Fades in the audio over a specified duration
+    private func fadeIn(duration: TimeInterval) {
+        guard let player = audioPlayer else { return }
+        player.volume = 0 // Start with volume 0
+        player.play() // Start playing the audio
+        
+        let finalVolume: Float = 1.0 // Desired final volume
+        let step: Float = 0.1 // Volume increment step
+        let steps = Int(finalVolume / step)
+        let interval = duration / Double(steps)
+        
+        for i in 0...steps {
+            DispatchQueue.main.asyncAfter(deadline: .now() + interval * Double(i)) {
+                player.volume = step * Float(i) // Increment volume
+            }
+        }
+    }
+    
+    // Stops the currently playing audio with fade out
     func stopBackgroundMusic() {
-        audioPlayer?.stop()
+        fadeOut(duration: 1.0) // Fade out over 1 second
     }
-
-    // Pauses the currently playing audio
+    
+    // Pauses the currently playing audio with fade out
     func pauseBackgroundMusic() {
-        audioPlayer?.pause()
+        fadeOut(duration: 1.0) // Fade out over 1 second before pausing
     }
-
-    // Resumes the currently playing audio
+    
+    // Resumes the currently playing audio with fade in
     func resumeBackgroundMusic() {
-        audioPlayer?.play()
+        fadeIn(duration: 1.0) // Fade in over 1 second
     }
-
+    
     // Clears the cached audio files
     func clearCache() {
         audioCache.removeAll()
     }
-
+    
     // MARK: - AVAudioPlayerDelegate Methods
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         print("Background music finished playing.")
         delegate?.bgmPlayerDidFinishPlaying(self)
     }
-
+    
     func audioPlayerDecodeErrorDidOccur(_ player: AVAudioPlayer, error: Error?) {
         print("Audio player decode error occurred: \(String(describing: error?.localizedDescription))")
     }
