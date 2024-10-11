@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import Combine
 
 
 class ScoreRegistry: ObservableObject {
@@ -25,33 +26,61 @@ class ScoreRegistry: ObservableObject {
     var session: QuizSession?
     // Check the answer and update the score
     func checkAnswer(isCorrect: Bool, refId: String) {
-        guard let session = session else { return }
+        guard let session = session else {
+            print("Guard blocked Registry")
+            return
+        }
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
             
             if isCorrect {
+                print("Registered as Correct")
                  if session.answerFeebackEnabled {
-                    self.confirmCorrectAnswer = true
+                     self.confirmCorrectAnswer = true
+                     self.acceptAnswer(refId: refId)
                 }
                 
             } else {
                 
+                print("Registered as InCorrect")
+                
                 if session.answerFeebackEnabled {
                     self.confirmInCorrectAnswer = true
+                    self.rejectAnswer(refId: refId)
+                } else {
+                    self.resumeQuiz()
                 }
-                
-                if session.isQandASession {
-                    session.answerFeebackEnabled = true
-                    self.playCorrection = true
-                }
-                
-                self.readyToResumed = true
             }
         }
     }
+    
+    private func acceptAnswer(refId: String) {
+        guard let session = session else { return }
+        saveScore(refId: refId, isAnweredCorrectly: false)
+        session.commandCenter.confirmAnswer()
+    }
+    
+    private func rejectAnswer(refId: String) {
+        guard let session = session else { return }
+        saveScore(refId: refId, isAnweredCorrectly: true)
+        session.commandCenter.rejectAnswer()
+    }
+    
+    
+    private func requestCorrection() {
+        guard let session = session else { return }
+        session.commandCenter.playCorrection()
+    }
+    
+    private func resumeQuiz() {
+        guard let session = session else { return }
+        session.commandCenter.resumeQuiz()
+    }
 
-    private func saveScore(refId: String) {
-        
+
+    private func saveScore(refId: String, isAnweredCorrectly: Bool) {
+        guard let session = session else { return }
+
     }
     
     // Create a performance record
@@ -75,3 +104,19 @@ class ScoreRegistry: ObservableObject {
     }
 }
 
+struct QuestionScoreRecord {
+    var refId: String
+    var isAnsweredCorrectly: Bool
+}
+
+struct SessionScoreRecords {
+    var id: UUID
+    var date: Date
+    var performanceRecords: [QuestionScoreRecord]
+    
+    init(performanceRecords: [QuestionScoreRecord]) {
+        self.id = UUID()
+        self.date = .now
+        self.performanceRecords = []
+    }
+}

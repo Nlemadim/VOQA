@@ -116,9 +116,12 @@ class QuizViewModel: ObservableObject, QuizViewModelProtocol {
     
     
     func startQuiz() {
+        guard !self.sessionNowplayingAudio else {
+            quizSessionManager.pauseQuiz()
+            return
+        }
         
         quizSessionManager.startNewQuiz()
-        
         DispatchQueue.main.async {
             self.sessionNowplayingAudio = true
         }

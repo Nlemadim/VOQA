@@ -36,8 +36,24 @@ class SessionCloser: SessionObserver, QuizServices {
     }
     
     func resetSession(session: QuizSession) {
-        session.sessionReset()
+        self.sessionReset(session: session)
         session.setState(IdleSession())
+    }
+    
+    private func sessionReset(session: QuizSession) {
+        session.activeQuiz = false
+        session.countdownTime = 5.0
+        session.currentQuestionText = "Quiz Complete"
+        session.questionCounter = "0 Questions"
+        session.totalQuestionCount = 0
+        session.finalScore = 0
+        session.scoreRegistry.currentScore = 0
+        session.dynamicContentManager.hasFetchedSessionIntro = false
+        session.dynamicContentManager.dynamicSessionIntro = nil
+        session.dynamicContentManager.dynamicReviewUrl = ""
+        session.questionPlayer.resetQuestionIndex()
+
+        session.quizTimer = 0.0
     }
     
     

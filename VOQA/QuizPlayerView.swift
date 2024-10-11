@@ -12,7 +12,7 @@ import Combine
 struct QuizPlayerView: View {
 //    @EnvironmentObject var databaseManager: DatabaseManager
     @Environment(\.dismiss) private var dismiss
-   
+    @State private var didQuitQuiz: Bool = false
     @ObservedObject var config: QuizSessionConfig
     
     @StateObject private var viewModel: QuizViewModel
@@ -46,15 +46,17 @@ struct QuizPlayerView: View {
     var body: some View {
         VStack {
             
+            QuizHeaderView(voqa: voqa, secondaryInfo: "Audio Quiz")
+                .offset(y: -20)
+            
             quizQuestionView()
-           
-            quizOptionsScrollView() // Scrollable options
-            Spacer()
-            TutorHeaderView(themeColors: [Color.fromHex(voqa.colors.main), Color.fromHex(voqa.colors.sub), Color.fromHex(voqa.colors.third)], quizSession: viewModel.currentQuizSession())
-            quizControlGridView() // Control buttons
+            
+            quizOptionsScrollView()
+            
+            TutorHeaderView(isNowSpeaking: $isNowPlaying, themeColors: [Color.fromHex(voqa.colors.main), Color.fromHex(voqa.colors.sub), Color.fromHex(voqa.colors.third)])
+            
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .padding(.horizontal)
         .background(quizBackgroundView()) // Background image with overlay
         .navigationBarBackButtonHidden(true)
         .onReceive(viewModel.$sessionNowplayingAudio, perform: { nowPlaying in
@@ -70,6 +72,13 @@ struct QuizPlayerView: View {
         .onAppear {
             configureNewSession() // Configure the new session
         }
+        
+        Rectangle()
+         .fill(Color.black)
+         .frame(height: 100)
+         .overlay{
+             quizControlGridView()
+         }
     }
 
     // MARK: - Initial Setup for Quiz Session
@@ -78,9 +87,7 @@ struct QuizPlayerView: View {
         updatedConfig.sessionTitle = voqa.quizTitle
         viewModel.initializeSession(with: updatedConfig)
         viewModel.startQuiz()
-
     }
-
 
     // MARK: - View Builders (Same as before, with additions as needed)
     
@@ -128,12 +135,13 @@ struct QuizPlayerView: View {
                     .multilineTextAlignment(.center)
                     .activeGlow(.white, radius: 0.5)
             }
+            .frame(maxHeight: .infinity)
         }
-        .frame(maxWidth: .infinity, maxHeight: 180)
-        .padding(.horizontal)
+        .frame(maxWidth: .infinity)
+        .padding()
         .padding(.top)
         .padding(.bottom)
-        .background(Color.clear) // Remove background
+        .background(Color.clear)
     }
 
     
@@ -141,7 +149,7 @@ struct QuizPlayerView: View {
        private func quizOptionsScrollView() -> some View {
            // Safely access the current question using currentQuestionIndex
            if let question = viewModel.currentQuestion as? Question {
-               VStack(alignment: .center) {
+               VStack(alignment: .center, spacing: 8) {
                    ForEach(question.mcOptions.keys.sorted(), id: \.self) { option in
                        QuizOptionButton(
                            option: option,
@@ -152,6 +160,7 @@ struct QuizPlayerView: View {
                            },
                            viewModel: viewModel
                        )
+                       .padding(.horizontal, 5)
                        .environmentObject(TimerManager()) // Inject TimerManager
                        .environmentObject(viewModel) // Inject ViewModel
                    }
@@ -165,9 +174,10 @@ struct QuizPlayerView: View {
 
     @ViewBuilder
     private func quizControlGridView() -> some View {
-        HStack(spacing: 20) {
+        HStack(spacing: 25) {
             Button(action: {
                 viewModel.stopQuiz()
+                dismiss()
             }) {
                 Image(systemName: "stop.fill")
                     .font(.title3)
@@ -217,12 +227,7 @@ struct QuizPlayerView: View {
             }
             .padding()
         }
-        //.frame(height: 100)
         .frame(maxWidth: .infinity)
-        .frame(alignment: .bottom)
-        .padding(.horizontal)
-        .padding(10)
-        .background(Color.black).ignoresSafeArea()
     }
 
     @ViewBuilder
@@ -259,12 +264,8 @@ struct QuizPlayerView: View {
                 return .gray
             }
         }
-        
-        // If option was not selected, return gray
         return .gray
     }
-
-
 }
 
 
@@ -379,7 +380,8 @@ struct QuizOptionButton: View {
         }
         .frame(maxWidth: .infinity)
         .buttonStyle(PlainButtonStyle())
-        .padding(10)
-        .disabled(!viewModel.sessionAwaitingResponse || viewModel.userHasResponded && !buttonSelected) // Disable buttons when awaiting response
+        .padding(4)
+        .padding(.horizontal)
+        .disabled(!viewModel.sessionAwaitingResponse || viewModel.userHasResponded && !buttonSelected)
     }
 }

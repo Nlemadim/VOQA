@@ -12,7 +12,8 @@ import Combine
 final class DynamicContentManager: ObservableObject, SessionObserver, QuizServices {
 
     @Published var hasFetchedSessionIntro: Bool = false
-    @Published var dynamicSessionIntro: FeedbackSfx? 
+    @Published var dynamicSessionIntro: FeedbackSfx?
+    @Published var dynamicReviewUrl: String = ""
     
     private var config: QuizSessionConfig?
     var session: QuizSession?
@@ -54,6 +55,11 @@ final class DynamicContentManager: ObservableObject, SessionObserver, QuizServic
             // Handle error as needed, e.g., set isSessionIntroFetched to false or show an alert
             //❌ Failed to fetch session intro: The operation couldn’t be completed. (NSURLErrorDomain error -1011.)
         }
+    }
+    
+    func fetchReview() {
+        print("Dynamic Content Not Set Up to Fetch Reviews Yet")
+        //MARK: TODO
     }
     
     func stateDidChange(to newState: any QuizServices) {

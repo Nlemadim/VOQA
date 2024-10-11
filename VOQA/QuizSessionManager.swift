@@ -53,6 +53,7 @@ class QuizSessionManager: ObservableObject {
         // Now that the QuizSession is created, set it in the CommandCenter
         questionPlayer.session = quizSession
         quizConductor.session = quizSession
+        scoreRegistry.session = quizSession
         commandCenter.session = quizSession
         dynamicContentmanager.session = quizSession
         bgmPlayer.delegate = quizConductor
@@ -107,6 +108,10 @@ class QuizSessionManager: ObservableObject {
         
         // Forward the selection to the Session
         session.selectAnswer(selectedOption: selectedOption)
+    }
+    
+    func pauseQuiz() {
+        quizSession?.combinedPause()
     }
 
 

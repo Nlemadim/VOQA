@@ -46,7 +46,7 @@ class ReviewsManager: SessionObserver, QuizServices {
             print("Reviewer reviewing action triggered")
             
             session.currentQuestionText = "Reviewing"
-            session.sessionAudioPlayer.performAudioAction(.reviewing)
+           // session.sessionAudioPlayer.performAudioAction(.dynamicReview)
             
         case .doneReviewing:
             print("Reviewer doneReviewing action triggered")

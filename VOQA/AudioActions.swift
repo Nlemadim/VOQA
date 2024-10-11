@@ -18,13 +18,14 @@ enum AudioAction: Equatable {
     case playFeedbackMessage(url: String)
     case giveScore(score: Int)
     case nextQuestion
-    case reviewing
+    case prepareReview
+    case sponsoredOutro
+    case dynamicReview(url: String)
     case pausePlay
     case reset
     case playBGM
     case playHostIntro
-    
-    //Updated Action
+    case playClosingRemarks
     case playSessionIntro
     
 
@@ -36,16 +37,19 @@ enum AudioAction: Equatable {
              (.waitingForResponse, .waitingForResponse),
              (.receivedResponse, .receivedResponse),
              (.nextQuestion, .nextQuestion),
-             (.reviewing, .reviewing),
+             (.prepareReview, .prepareReview),
+             (.sponsoredOutro, .sponsoredOutro),
              (.pausePlay, .pausePlay),
              (.reset, .reset),
              (.playHostIntro, .playHostIntro),
+             (.playClosingRemarks, .playClosingRemarks),
              (.playSessionIntro, .playSessionIntro):
             return true
             
         case (.playQuestionAudioUrl(let lhsUrl), .playQuestionAudioUrl(let rhsUrl)),
              (.playAnswer(let lhsUrl), .playAnswer(let rhsUrl)),
-            (.playFeedbackMessage(let lhsUrl), .playFeedbackMessage(let rhsUrl)):
+             (.dynamicReview(let lhsUrl), .dynamicReview(let rhsUrl)),
+             (.playFeedbackMessage(let lhsUrl), .playFeedbackMessage(let rhsUrl)):
             return lhsUrl == rhsUrl
             
         case (.giveScore(let lhsScore), .giveScore(let rhsScore)):
@@ -67,29 +71,35 @@ enum AudioAction: Equatable {
         case .giveScore(_):
             return "Your Score"
         case .playCorrectAnswerCallout:
-            return "Playing Correct Answer Callout"
+            return "Correct!"
         case .playWrongAnswerCallout:
-            return "Play Wrong Answer Callout"
+            return "Wrong Answer."
         case .playNoResponseCallout:
-            return "Play No Response Callout"
+            return "No Response?"
         case .waitingForResponse:
-            return "Waiting For Response"
+            return "Waiting For Response..."
         case .receivedResponse:
-            return "Received Response"
+            return "Received Response!"
         case .nextQuestion:
-            return "Next Question"
-        case .reviewing:
-            return "Reviewing"
+            return "Next Question..."
+        case .dynamicReview:
+            return "Reviewing your performance."
         case .pausePlay:
-            return "Pause Play"
+            return "Paused Play"
         case .reset:
-            return "Reset"
+            return "Ok Bye!"
         case .playBGM:
             return "Background Music"
         case .playHostIntro:
             return "Meet the Host!"
         case .playSessionIntro:
-            return "About This Quiz"
+            return "About This Quiz!"
+        case .prepareReview:
+            return "Getting Your Review!"
+        case .sponsoredOutro:
+            return "Sponsored Message"
+        case .playClosingRemarks:
+            return "Thanks for joining us!"
         }
     }
 }

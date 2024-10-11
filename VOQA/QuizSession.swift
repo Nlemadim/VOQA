@@ -26,8 +26,8 @@ class QuizSession: ObservableObject, QuizServices {
     
     
     // Session QuestionPlayer Specific Properties
-    @Published var currentQuestion: (any QuestionType)? // Changed from 'Question?' to 'any QuestionType?'
-    // @Published var currentQuestionv2: QuestionV2? // Removed as redundant
+    @Published var currentQuestion: (any QuestionType)?
+    @Published var SessionScoreRecords: SessionScoreRecords?
     @Published var currentQuestionIndex: Int = 0
     @Published var currentQuestionId: String? // Changed from UUID? to String?
     @Published var currentQuestionText: String = ""
@@ -137,6 +137,8 @@ class QuizSession: ObservableObject, QuizServices {
         )
         
         // Now that the QuizSession is created, set it in the CommandCenter
+        questionPlayer.session = quizSession
+        scoreRegistry.session = quizSession
         commandCenter.session = quizSession
         dynamicContentManager.session = quizSession
         conductor.session = quizSession
@@ -252,19 +254,7 @@ class QuizSession: ObservableObject, QuizServices {
         self.questionPlayer.prepareNextQuestion() // Changed to use protocol method
     }
     
-    func sessionReset() {
-        self.activeQuiz = false
-        self.countdownTime = 5.0
-        self.currentQuestion = nil
-        self.currentQuestionText = "Ended"
-        self.questionCounter = "_:_"
-        self.totalQuestionCount = 0
-        self.finalScore = 0
-        self.scoreRegistry.currentScore = 0
-        self.questionPlayer.resetQuestionIndex()
-        
-        self.quizTimer = 0.0
-    }
+    
     
     func updateCurrentQuestionId(_ questionId: String) { // Changed parameter type
         self.currentQuestionId = questionId

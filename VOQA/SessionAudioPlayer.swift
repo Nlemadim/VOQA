@@ -42,7 +42,7 @@ class SessionAudioPlayer: NSObject, AVAudioPlayerDelegate {
     }
 
     func enqueueAction(_ action: AudioAction) {
-        guard currentAction != action else { return }
+       // guard currentAction != action else { return }
         actionQueue.append(action)
         processNextAction()
     }

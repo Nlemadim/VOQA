@@ -15,7 +15,6 @@ class AudioFileSorter {
         self.randomGenerator = randomGenerator
     }
     
-    
     //MARK> TODO DRY VIOLATION METHOD
     func configure(with config: QuizSessionConfig) {
         self.config = config
@@ -49,9 +48,9 @@ class AudioFileSorter {
         case .nextQuestion:
             audioUrls = config.controlFeedback.nextQuestion.audioUrls.compactMap { $0.audioUrl }
             print("Action: nextQuestion, Audio URLs: \(audioUrls)")
-        case .reviewing:
-            audioUrls = config.sessionMusic.compactMap { $0.audioUrl }
-            print("Action: reviewing, Audio URLs: \(audioUrls)")
+        case .dynamicReview(let url):
+            print("Action: \(action), URL: \(url)")
+            return URL(string: url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")
         case .playQuestionAudioUrl(let url), .playAnswer(let url), .playFeedbackMessage(let url):
             print("Action: \(action), URL: \(url)")
             return URL(string: url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")
@@ -80,6 +79,24 @@ class AudioFileSorter {
                 if let firstIntro = hostMessages.quizSessionIntro.audioUrls.first(where: { !$0.audioUrl.isEmptyOrWhiteSpace }) {
                     return URL(string: firstIntro.audioUrl.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed) ?? "")
                 }
+            }
+            
+        case .prepareReview:
+            if let hostMessages = config.quizHostMessages {
+                let prepReviewUrl = hostMessages.prepareForReview.audioUrls
+                audioUrls = prepReviewUrl.compactMap { $0.audioUrl }
+            }
+            
+        case .sponsoredOutro:
+            if let hostMessages = config.quizHostMessages {
+                let sponsoredOutroUrls = hostMessages.sponsoredOutroMessage.audioUrls
+                audioUrls = sponsoredOutroUrls.compactMap { $0.audioUrl }
+            }
+            
+        case .playClosingRemarks:
+            if let hostMessages = config.quizHostMessages {
+                let outroUrls = hostMessages.outro.audioUrls
+                audioUrls = outroUrls.compactMap { $0.audioUrl }
             }
         }
         

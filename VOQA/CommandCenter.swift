@@ -97,23 +97,73 @@ class CommandCenter {
         session.currentQuestionText = session.questionPlayer.currentQuestion?.content ?? ""
     }
     
-    func playAffirmation() {
+    func confirmAnswer() {
         guard let session = session else { return }
         let audioAction = AudioAction.playCorrectAnswerCallout
         session.sessionAudioPlayer.performAudioAction(audioAction)
     }
     
-    func playCorrection() {
+    func rejectAnswer() {
         guard let session = session else { return }
         let audioAction = AudioAction.playWrongAnswerCallout
         session.sessionAudioPlayer.performAudioAction(audioAction)
     }
     
-    func triggerTestUserResponse() {
+    func playCorrection() {
         guard let session = session else { return }
-        DispatchQueue.main.async {
-            session.isAwaitingResponse = false
+        let answerUrl = session.currentQuestion?.correctionAudioURL ?? ""
+        let audioAction = AudioAction.playAnswer(url: answerUrl)
+        session.sessionAudioPlayer.performAudioAction(audioAction)
+    }
+    
+    func resumeQuiz() {
+        guard let session = session else { return }
+        guard session.questionPlayer.hasMoreQuestions else {
+            print("No More Questions")
+            print("Command Center requires continuation action")
+            session.conductor.closeFlow()
+            return
         }
+
+        session.setState(session.questionPlayer)
+        session.questionPlayer.prepareNextQuestion() // Changed to use protocol method
+    }
+    
+    func prepareReview() {
+        guard let session = session else { return }
+        let prepareForReviewAction = AudioAction.prepareReview
+        session.sessionAudioPlayer.performAudioAction(prepareForReviewAction)
+    }
+    
+    func playSponsoredOutro() {
+        guard let session = session else { return }
+        let sponsoredOutroAction = AudioAction.sponsoredOutro
+        session.sessionAudioPlayer.performAudioAction(sponsoredOutroAction)
+    }
+    
+    private func getReview() {
+        guard let session = session else { return }
+        session.dynamicContentManager.fetchReview()
+    }
+    
+    func playReview() {
+        guard let session = session else { return }
+        let dynamicReviewUrl = session.dynamicContentManager.dynamicReviewUrl
+        print(dynamicReviewUrl)
+        let testDynamicReview = "https://storage.googleapis.com/buildship-ljnsun-us-central1/a5723acc-3857-44db-91ba-cdf5b34e5915_repeatQuestionScript.mp3"
+        let audioAction = AudioAction.dynamicReview(url: testDynamicReview)
+        session.sessionAudioPlayer.performAudioAction(audioAction)
+    }
+    
+    func prepareToCloseSession() {
+        guard let session = session else { return }
+        let closingAction = AudioAction.playClosingRemarks
+        session.sessionAudioPlayer.performAudioAction(closingAction)
+    }
+    
+    func closeSession() {
+        guard let session = session else { return }
+        session.sessionCloser.performAction(.quitAndReset, session: session)
     }
     
     private func startQuizTimer() {
@@ -130,23 +180,6 @@ class CommandCenter {
         guard let session = session else { return }
         session.bgmPlayer.pauseBackgroundMusic()
     }
-    
-    func resumeQuiz() {
-        guard let session = session else { return }
-        guard session.questionPlayer.hasMoreQuestions else {
-            print("No More Questions")
-            print("Command Center requires continuation action")
-            //Commented out continuation logic for now
-//            session.setState(session.reviewer)
-//            session.reviewer.performAction(.giveScore, session: session)
-            return
-        }
-
-        session.setState(session.questionPlayer)
-        session.questionPlayer.prepareNextQuestion() // Changed to use protocol method
-    }
-    
-    
 }
 
 

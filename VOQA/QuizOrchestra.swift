@@ -29,18 +29,26 @@ class Conductor: BgmPlayerDelegate, QuizServices, SessionObserver, SessionAudioP
         commandCenter.setSessionQuestions()
         
         // Step 2: Start the background music
-        commandCenter.startBackgroundMusic()
+       // commandCenter.startBackgroundMusic()
         
         // Step 3: Session Info request
-        commandCenter.requestSeesionInfo()
+       // commandCenter.requestSeesionInfo()
         
         // Step 4: After a delay, play the voice intro
         DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) { [weak self] in
             guard let self = self else { return }
-//            self.session?.currentQuestionText = self.session?.questionPlayer.currentQuestion?.content ?? ""
-//            self.session?.isAwaitingResponse = true
-            self.playHostIntro()
+            self.session?.currentQuestionText = self.session?.questionPlayer.currentQuestion?.content ?? ""
+            self.session?.isAwaitingResponse = true
+            self.session?.isNowPlaying = true
+          //  self.playHostIntro()
         }
+    }
+    
+    func closeFlow() {
+        print("Orchestra: closing quiz flow.")
+        
+        commandCenter.prepareReview()
+        
     }
 
     // Play the voice intro
@@ -48,10 +56,14 @@ class Conductor: BgmPlayerDelegate, QuizServices, SessionObserver, SessionAudioP
         print("Orchestra: Playing voice intro.")
         commandCenter.playHostIntro()
     }
+    
 
     //Step 5
     func conductNextAction() {
-        guard let session = session else {  return }
+        guard let session = session else { 
+            print("Conductor guard blocked")
+            return
+        }
            
         DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) { [weak self] in
             guard let self = self else { return }
@@ -72,14 +84,39 @@ class Conductor: BgmPlayerDelegate, QuizServices, SessionObserver, SessionAudioP
                 self.commandCenter.awaitUserResponse()
             }
             
-            else if session.sessionAudioPlayer.lastAction == .playAnswer(url: session.currentQuestion?.correctionAudioURL ?? "") {
-                print("Orchestra: Answer playback finished, moving to next action.")
-                self.commandCenter.resumeQuiz()
-            }
-            
             else if session.sessionAudioPlayer.lastAction == .playCorrectAnswerCallout {
                 print("Orchestra: Correct answer callout finished, moving to next action.")
                 self.commandCenter.resumeQuiz()
+            }
+            
+            else if session.sessionAudioPlayer.lastAction == .playWrongAnswerCallout {
+                print("Orchestra: Wrong answer callout finished, moving to next action.")
+                self.commandCenter.playCorrection()
+            }
+            
+            else if session.sessionAudioPlayer.lastAction == .playAnswer(url: session.currentQuestion?.correctionAudioURL ?? "") {
+                print("Orchestra: Correction playback finished, moving to next action.")
+                self.commandCenter.resumeQuiz()
+            }
+            
+            else if session.sessionAudioPlayer.lastAction == .prepareReview {
+                print("Orchestra: prepare for review finished, moving to next action.")
+                self.commandCenter.playSponsoredOutro()
+            }
+            
+            else if session.sessionAudioPlayer.lastAction == .sponsoredOutro {
+                print("Orchestra: Sponsored outro finished, moving to next action.")
+                self.commandCenter.playReview()
+            }
+            
+            else if session.sessionAudioPlayer.lastAction == .dynamicReview(url: session.dynamicContentManager.dynamicReviewUrl) {
+                print("Orchestra: Review finished, moving to next action.")
+                self.commandCenter.prepareToCloseSession()
+            }
+            
+            else if session.sessionAudioPlayer.lastAction == .playClosingRemarks {
+                print("Orchestra: Review finished, moving to next action.")
+                self.commandCenter.closeSession()
             }
             
             // Ensure the queued actions are processed if there are any
@@ -110,9 +147,8 @@ class Conductor: BgmPlayerDelegate, QuizServices, SessionObserver, SessionAudioP
             }
             .store(in: &cancellables)
         
+        
       //MARK: TODO check State of Score Registry for next action
-
-       
        
     }
 
