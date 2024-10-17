@@ -13,27 +13,53 @@ struct MyChannels: View {
     @EnvironmentObject var user: User
     @EnvironmentObject var databaseManager: DatabaseManager
     @Binding var hideTabBar: Bool
-    
+
+    @StateObject private var playlistManager: PlaylistManager
+
+    init(hideTabBar: Binding<Bool>, user: User) {
+        _hideTabBar = hideTabBar
+        // Initialize PlaylistManager with UserConfig from user
+        _playlistManager = StateObject(wrappedValue: PlaylistManager(userConfig: user.userConfig))
+    }
+
     var body: some View {
         ZStack {
             ChannelsBackgroundView()  // Background view
-        
+
             VStack {
-                
                 VStack {
                     if let voqa = user.currentUserVoqa {
-                        ChannelPlaylistCarouselView(voqa: voqa) {
-                            // Tap action can be implemented here if needed
+                        ChannelPlaylistCarouselView2(voqa: voqa, playlistManager: playlistManager) {
+                           //MARK: TODO:- Navigate to QuizPlayer after question downlosd
+                        }
+                        .onAppear {
+                            let voqaID = voqa.id
+                            // Only generate playlists if not already available
+                            if playlistManager.playlists[voqaID]?.isEmpty ?? true {
+                                playlistManager.generatePlaylists(for: voqa)
+                                print("Playlists generated for voqaID: \(voqaID)")
+                            } else {
+                                print("Playlists already exist for voqaID: \(voqaID)")
+                            }
                         }
                     } else {
-                        EmptyChannelPlaylistView()  // Show empty view when no Voqa is selected
+                        EmptyChannelPlaylistView()
                     }
                 }
-                
+
                 ChannelListView(voqaCollection: user.voqaCollection) { selectedVoqa in
                     hideTabBar = true
-              
                     user.currentUserVoqa = selectedVoqa
+                    
+                    // Ensure the playlists are up-to-date when a new Voqa is selected
+                    let voqaID = selectedVoqa.id
+                    if playlistManager.playlists[voqaID]?.isEmpty ?? true {
+                        playlistManager.generatePlaylists(for: selectedVoqa)
+                        print("Playlists generated for newly selected voqaID: \(voqaID)")
+                    } else {
+                        print("Playlists already exist for newly selected voqaID: \(voqaID)")
+                    }
+
                     navigationRouter.navigate(to: .quizDashboard(selectedVoqa))
                 }
                 .listStyle(PlainListStyle())
@@ -45,11 +71,11 @@ struct MyChannels: View {
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 HStack {
-                    Image(systemName: "tv") // Change to your desired image name
+                    Image(systemName: "tv")
                     Text("Dashboard")
                 }
                 .onTapGesture {
-                    
+                    // Handle navigation to Dashboard
                 }
             }
         }
@@ -61,25 +87,91 @@ struct MyChannels: View {
             }
         }
     }
-    
+
     private func loadUserCollection() {
-        // Ensure this method handles any empty collections appropriately
         if !databaseManager.quizCollection.isEmpty {
             user.voqaCollection = databaseManager.quizCollection.map { Voqa(from: $0) }
             user.currentUserVoqa = user.voqaCollection.first
         }
-        
-        //MARK: TEST FUNCTION CALLS
-        //        user.voqaCollection = mockItems.map { Voqa(from: $0, id: UUID().uuidString) }
-        //        user.currentUserVoqa = user.voqaCollection.first
     }
 }
+
+
+
+
+
+//struct MyChannels: View {
+//    @EnvironmentObject var navigationRouter: NavigationRouter
+//    @EnvironmentObject var user: User
+//    @EnvironmentObject var databaseManager: DatabaseManager
+//    @Binding var hideTabBar: Bool
+//    
+//    var body: some View {
+//        ZStack {
+//            ChannelsBackgroundView()  // Background view
+//        
+//            VStack {
+//                
+//                VStack {
+//                    if let voqa = user.currentUserVoqa {
+//                        ChannelPlaylistCarouselView(voqa: voqa) {
+//                            // Tap action can be implemented here if needed
+//                        }
+//                    } else {
+//                        EmptyChannelPlaylistView()  // Show empty view when no Voqa is selected
+//                    }
+//                }
+//                
+//                ChannelListView(voqaCollection: user.voqaCollection) { selectedVoqa in
+//                    hideTabBar = true
+//              
+//                    user.currentUserVoqa = selectedVoqa
+//                    navigationRouter.navigate(to: .quizDashboard(selectedVoqa))
+//                }
+//                .listStyle(PlainListStyle())
+//            }
+//        }
+//        .navigationTitle("My Channels")
+//        .navigationBarTitleDisplayMode(.inline)
+//        .preferredColorScheme(.dark)
+//        .toolbar {
+//            ToolbarItem(placement: .navigationBarTrailing) {
+//                HStack {
+//                    Image(systemName: "tv") // Change to your desired image name
+//                    Text("Dashboard")
+//                }
+//                .onTapGesture {
+//                    
+//                }
+//            }
+//        }
+//        .onAppear {
+//            Task {
+//                await databaseManager.fetchQuizCollection()
+//                loadUserCollection()
+//                hideTabBar = false
+//            }
+//        }
+//    }
+//    
+//    private func loadUserCollection() {
+//        // Ensure this method handles any empty collections appropriately
+//        if !databaseManager.quizCollection.isEmpty {
+//            user.voqaCollection = databaseManager.quizCollection.map { Voqa(from: $0) }
+//            user.currentUserVoqa = user.voqaCollection.first
+//        }
+//        
+//        //MARK: TEST FUNCTION CALLS
+//        //        user.voqaCollection = mockItems.map { Voqa(from: $0, id: UUID().uuidString) }
+//        //        user.currentUserVoqa = user.voqaCollection.first
+//    }
+//}
 
 #Preview {
     let dbMgr = DatabaseManager.shared
     let navRouter = NavigationRouter()
     let user = User()
-    return   MyChannels(hideTabBar: .constant(false))
+    return   MyChannels(hideTabBar: .constant(false), user: user)
         .environmentObject(user)
         .environmentObject(dbMgr)
         .environmentObject(navRouter)
@@ -160,7 +252,6 @@ struct ChannelPlaylistCarouselView: View {
     }
 }
 
-import SwiftUI
 
 struct EmptyChannelPlaylistView: View {
     var body: some View {

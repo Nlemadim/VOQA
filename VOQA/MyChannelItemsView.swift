@@ -52,15 +52,14 @@ struct ChannelListView: View {
                             Spacer()
                                 
                         }
-                        .background(Color.black) // Set background color for each item view
+                        .background(Color.black)
                     }
                 }
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color.black) // Set the overall background color of the List
-       /* .listStyle(PlainListStyle())*/ // Use plain list style for better control over appearance
-        .frame(maxHeight: .infinity) // Allow the list to take up infinite height
+        .background(Color.black)
+        .frame(maxHeight: .infinity)
     }
 }
 

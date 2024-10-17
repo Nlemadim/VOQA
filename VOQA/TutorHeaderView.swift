@@ -16,8 +16,8 @@ struct TutorHeaderView: View {
     
     var body: some View {
         ZStack {
-            VoqaWaveViewWithSwitch(switchOn: $isNowSpeaking, colors: themeColors, supportLineColor: .white)
-                .frame(height: 45)
+//            VoqaWaveViewWithSwitch(switchOn: $isNowSpeaking, colors: themeColors, supportLineColor: .white)
+//                .frame(height: 45)
                 
             HStack {
                 Image(tutorImage)

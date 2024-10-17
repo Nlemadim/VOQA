@@ -46,3 +46,7 @@ struct VOQAApp: App {
 
 
 
+/**
+ 
+ error: Build input files cannot be found: '/Users/tonynlemadim/Documents/FLAQ-BETA/Exam Genius/Utilities/VoqaWave.swift', '/Users/tonynlemadim/Documents/FLAQ-BETA/Exam Genius/Utilities/VoqaWaveView.swift', '/Users/tonynlemadim/Documents/FLAQ-BETA/Exam Genius/Utilities/SupportLine.swift', '/Users/tonynlemadim/Documents/FLAQ-BETA/Exam Genius/Utilities/WaveGeometry.swift'. Did you forget to declare these files as outputs of any script phases or custom build rules which produce them? (in target 'VOQA' from project 'VOQA')
+ */

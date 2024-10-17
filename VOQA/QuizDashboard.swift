@@ -318,7 +318,7 @@ struct DashboardTab: Identifiable {
     let dbMgr = DatabaseManager.shared
     let user = User()
     let navMgr = NavigationRouter()
-    return MyChannels(hideTabBar: .constant(false))
+    return MyChannels(hideTabBar: .constant(false), user: user)
         .environmentObject(user)
         .environmentObject(dbMgr)
         .environmentObject(navMgr)
